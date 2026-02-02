@@ -1,0 +1,63 @@
+/* ===== CSS FOUNDATION ===== */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+/* ===== FONTS ===== */
+@font-face {
+  font-family: "HitMePunk04";
+  src: url("../assets/fonts/HitMePunk04.woff2") format("woff2"),
+       url("../assets/fonts/HitMePunk04.woff") format("woff"),
+       url("../assets/fonts/Hit-me-punk-04.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* page text uses the handwritten font */
+body {
+  margin: 0;
+  font-family: "a-song-for-jennifer", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: clamp(0.5px, 0.4vw, 3px);
+  line-height: 1.1;
+  padding: 0 10px;
+  color: #111;
+  background: transparent;
+}
+
+/* ===== HEADER / TITLE ===== */
+.header {
+  position: relative;
+  padding: clamp(18px, 4vw, 48px) 10px 16px;
+  text-align: center;
+  color: hwb(40 0% 99%);
+  overflow: visible;
+}
+
+/* title / branding */
+.title {
+  margin: 0;
+  display: inline-block;
+  font-family: "HitMePunk04", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: clamp(1px, 0.6vw, 6px);
+  line-height: 0.95;
+  padding: 0 10px; /* prevents edge-crash on small screens */
+  position: relative;
+  z-index: 2;
+  color: #000; 
+  -webkit-font-smoothing: antialiased;
+  text-shadow: none;
+}
+
+/* keep the two-line structure readable */
+.title-line { display: block; }
+.title-line:first-child {
+  font-size: clamp(8.2rem, 9vw, 13.2rem);
+  margin-bottom: 6px;
+  -webkit-text-stroke: 0px transparent;
+}
+
+.title-line:last-child {
+  font-size: clamp(1.6rem, 5vw, 6.4rem);
+  opacity: 0.95;
+}
+
