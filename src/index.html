@@ -10,6 +10,24 @@
   <body>
     <div id="app">
       
+      <!-- HEADER -->
+      <header class="header" id="header">
+        <h1 class="title" id="title">
+          <span class="title-line" id="titleLine1">dUMb sHIT</span>
+          <span class="title-line" id="titleLine2">I GotTA Do TODay</span>
+        </h1>
+        <div class="header-texture" aria-hidden="true"></div>
+      </header>
+
+      <!-- TABS -->
+      <nav class="tabs" id="tabs" aria-label="Task lists">
+        <button class="tab tab--active" type="button" data-tab="dueToday" aria-current="page">DUE TODAY</button>
+        <button class="tab" type="button" data-tab="soon">NEXT UP</button>
+        <button class="tab" type="button" data-tab="asSoonAsICan">WHEN I CAN</button>
+        <button class="tab" type="button" data-tab="dontForget">DON’T FORGET</button>
+      </nav>
+
+      <main class="main" id="main">
         
         <!-- TASKS -->
         <section class="card card--tasks" id="tasksCard" aria-labelledby="tasksHeading">
