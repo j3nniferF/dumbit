@@ -1,15 +1,31 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!--
+      HP (Home Page) - HTML Skeleton
+      Purpose: Structure only. CSS handles visuals. JS handles behavior.
+
+      HEAD RULES:
+      - Keep paths relative to /src because Live Server is serving /src as the site root.
+      - Avoid favicon.ico 404 by using a data-URI favicon (no file needed).
+    -->
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dUMb shit  I GotTA Do TODay</title>
+
+    <title>dUMb shit I GotTA Do TODay</title>
+
+    <!-- No-file favicon (stops console 404 spam) -->
+    <link
+      rel="icon"
+      href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="0.9em" font-size="90">✅</text></svg>'
+    />
+
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
 
   <body>
-    <div id="app">
-
+    <div class="app" id="app">
       <!-- HEADER -->
       <header class="header" id="header">
         <h1 class="title" id="title">
@@ -21,16 +37,30 @@
 
       <!-- TABS -->
       <nav class="tabs" id="tabs" aria-label="Task lists">
-        <button class="tab tab--active" type="button" data-tab="dueToday" aria-current="page">DUE TODAY</button>
+        <button
+          class="tab tab--active"
+          type="button"
+          data-tab="dueToday"
+          aria-current="page"
+        >
+          DUE TODAY
+        </button>
         <button class="tab" type="button" data-tab="soon">NEXT UP</button>
-        <button class="tab" type="button" data-tab="asSoonAsICan">WHEN I CAN</button>
-        <button class="tab" type="button" data-tab="dontForget">DON’T FORGET</button>
+        <button class="tab" type="button" data-tab="asSoonAsICan">
+          WHEN I CAN
+        </button>
+        <button class="tab" type="button" data-tab="dontForget">
+          DON’T FORGET
+        </button>
       </nav>
 
       <main class="main" id="main">
-        
         <!-- TASKS -->
-        <section class="card card--tasks" id="tasksCard" aria-labelledby="tasksHeading">
+        <section
+          class="card card--tasks"
+          id="tasksCard"
+          aria-labelledby="tasksHeading"
+        >
           <h2 class="card-title" id="tasksHeading">DUE TODAY:</h2>
 
           <ul class="task-list" id="taskList"></ul>
@@ -45,70 +75,100 @@
               placeholder="+ ADD MORE SHIT"
             />
             <button class="task-add-btn" type="submit">ADD</button>
-            <p class="task-error" id="taskError" role="status" aria-live="polite"></p>
+            <p
+              class="task-error"
+              id="taskError"
+              role="status"
+              aria-live="polite"
+            ></p>
           </form>
         </section>
 
         <!-- TIMER -->
-<section class="card card--timer" id="timerCard" aria-labelledby="timerHeading">
-  <h2 class="card-title" id="timerHeading">TIMER</h2>
+        <section
+          class="card card--timer"
+          id="timerCard"
+          aria-labelledby="timerHeading"
+        >
+          <h2 class="card-title" id="timerHeading">TIMER</h2>
 
-  <p class="rules-callout" id="timerHelperText">
-  → Choose violence:<br />
-  (pick a tab / pick a task)<br />
-  → Set timer<br />
-  → Murder tasks<br />
-  → ✅<br />
-  → Prize!
-  </p>
+          <p class="rules-callout" id="timerHelperText">
+            → Choose violence:<br />
+            (pick a tab / pick a task)<br />
+            → Set timer<br />
+            → Murder tasks<br />
+            → ✅<br />
+            → Prize!
+          </p>
 
-  <div class="field">
-    <label class="field-label" for="focusTabSelect">PICK A TAB:</label>
-    <select class="field-select" id="focusTabSelect" name="focusTabSelect">
-      <option value="all">ALL TABS</option>
-      <option value="dueToday">DUE TODAY</option>
-      <option value="soon">NEXT UP</option>
-      <option value="asSoonAsICan">WHEN I CAN</option>
-      <option value="dontForget">DON’T FORGET</option>
-    </select>
-  </div>
+          <div class="field">
+            <label class="field-label" for="focusTabSelect">PICK A TAB:</label>
+            <select
+              class="field-select"
+              id="focusTabSelect"
+              name="focusTabSelect"
+            >
+              <option value="all">ALL TABS</option>
+              <option value="dueToday">DUE TODAY</option>
+              <option value="soon">NEXT UP</option>
+              <option value="asSoonAsICan">WHEN I CAN</option>
+              <option value="dontForget">DON’T FORGET</option>
+            </select>
+          </div>
 
-  <div class="field">
-    <label class="field-label" for="focusSelect">PICK A TASK:</label>
-    <select class="field-select" id="focusSelect" name="focusSelect">
-      <option value="">(Pick a task)</option>
-    </select>
-  </div>
+          <div class="field">
+            <label class="field-label" for="focusSelect">PICK A TASK:</label>
+            <select class="field-select" id="focusSelect" name="focusSelect">
+              <option value="">(Pick a task)</option>
+            </select>
+          </div>
 
-  <p class="helper-text helper-text--tiny">
-    To finish it: check the box on the left. ✅
-  </p>
+          <p class="current-task" id="currentTaskText">
+            CURRENT: <span class="current-task__name">(none)</span>
+          </p>
+          <p class="helper-text helper-text--tiny">
+            To finish it for real: check the box on the left. ✅
+          </p>
 
-  <div class="field">
-    <label class="field-label" for="durationSelect">DURATION:</label>
-    <select class="field-select" id="durationSelect" name="durationSelect">
-      <option value="300">5 min</option>
-      <option value="900" selected>15 min</option>
-      <option value="1800">30 min</option>
-      <option value="2700">45 min</option>
-      <option value="3600">60 min</option>
-    </select>
-  </div>
+          <div class="field">
+            <label class="field-label" for="durationSelect">DURATION:</label>
+            <select
+              class="field-select"
+              id="durationSelect"
+              name="durationSelect"
+            >
+              <option value="300">5 min</option>
+              <option value="900" selected>15 min</option>
+              <option value="1800">30 min</option>
+              <option value="2700">45 min</option>
+              <option value="3600">60 min</option>
+            </select>
+          </div>
 
-  <button class="linkish" id="customTimerBtn" type="button">+ SET A CUSTOM TIMER</button>
-  <button class="linkish" id="resetBtn" type="button">🧨 RESET EVERYTHING</button>
+          <button class="linkish" id="customTimerBtn" type="button">
+            + SET A CUSTOM TIMER
+          </button>
+          <button class="linkish" id="resetBtn" type="button">
+            🧨 RESET EVERYTHING
+          </button>
 
-  <div class="timer-display" id="timerDisplay" aria-live="polite">15:00</div>
+          <div class="timer-display" id="timerDisplay" aria-live="polite">
+            15:00
+          </div>
 
-  <div class="timer-controls">
-    <button class="btn" id="startBtn" type="button">START</button>
-    <button class="btn" id="pauseBtn" type="button">PAUSE</button>
-    <button class="btn" id="stopBtn" type="button">STOP</button>
-  </div>
-</section>
+          <div class="timer-controls">
+            <button class="btn" id="startBtn" type="button">START</button>
+            <button class="btn" id="pauseBtn" type="button">PAUSE</button>
+            <button class="btn" id="stopBtn" type="button">STOP</button>
+          </div>
+        </section>
 
         <!-- PROGRESS -->
-        <section class="card card--progress" id="progressCard" aria-labelledby="progressHeading">
+        <section
+          class="card card--progress"
+          id="progressCard"
+          aria-labelledby="progressHeading"
+        >
           <h2 class="card-title" id="progressHeading">PROGRESS</h2>
           <p class="progress-text" id="progressText">0 / 0 TASKS DONE</p>
 
@@ -121,13 +181,40 @@
         </section>
 
         <!-- COMPLETED -->
-        <section class="card card--completed" id="completedCard" aria-labelledby="completedHeading">
+        <section
+          class="card card--completed"
+          id="completedCard"
+          aria-labelledby="completedHeading"
+        >
           <h2 class="card-title" id="completedHeading">SHIT I DID</h2>
 
           <!-- JS renders one section per tab -->
           <div class="completed-groups" id="completedGroups"></div>
         </section>
       </main>
+
+      <!-- MUSIC PLAYER -->
+      <footer class="music" id="musicPlayer" aria-label="Music player">
+        <div class="music-title">NOW PLAYING:</div>
+        <div class="music-track" id="musicTrack">GRUNGY TUNES</div>
+        <div class="music-controls">
+          <button
+            class="btn btn--small"
+            type="button"
+            aria-label="Previous track"
+          >
+            ◀
+          </button>
+          <button class="btn btn--small" type="button" aria-label="Play/Pause">
+            ▶
+          </button>
+          <button class="btn btn--small" type="button" aria-label="Next track">
+            ▶▶
+          </button>
+        </div>
+        <div class="music-progress" aria-hidden="true"></div>
+      </footer>
+    </div>
 
     <!-- PRIZE MODAL (unchanged) -->
     <div
@@ -147,11 +234,12 @@
           <li>GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.</li>
         </ul>
 
-        <button class="btn btn--primary" id="backToItBtn" type="button">HELL YAH!</button>
+        <button class="btn btn--primary" id="backToItBtn" type="button">
+          HELL YAH!
+        </button>
       </div>
     </div>
 
     <script src="./js/app.js" defer></script>
   </body>
 </html>
-
