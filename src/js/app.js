@@ -352,18 +352,21 @@ function syncCurrentTaskText() {
   const wrap = document.getElementById("currentTaskText");
   if (!wrap) return;
 
-  const nameEl = wrap.querySelector(".current-task__name");
-  if (!nameEl) return;
+  const tabEl = wrap.querySelector(".current-task__tab");
+  const taskEl = wrap.querySelector(".current-task__task");
+  if (!tabEl || !taskEl) return;
 
   if (!selectedFocusValue) {
-    nameEl.textContent = "(none)";
+    tabEl.textContent = "(none)";
+    taskEl.textContent = "(none)";
     wrap.classList.add("is-hidden");
     return;
   }
 
   wrap.classList.remove("is-hidden");
-  const { taskText } = parseTaskValue(selectedFocusValue);
-  nameEl.textContent = taskText || "(none)";
+  const { tabKey, taskText } = parseTaskValue(selectedFocusValue);
+  tabEl.textContent = TAB_LABELS[tabKey] || tabKey || "(none)";
+  taskEl.textContent = taskText || "(none)";
 }
 
 function updateProgress() {
@@ -419,14 +422,12 @@ function renderCompletedGrouped() {
 
   TAB_ORDER.forEach((tabKey) => {
     const done = COMPLETED_TASKS[tabKey] || [];
-    if (done.length === 0) return;
+    const details = document.createElement("details");
+    details.className = "completed-group";
 
-    const section = document.createElement("section");
-    section.className = "completed-group";
-
-    const h3 = document.createElement("h3");
-    h3.className = "completed-subheading";
-    h3.textContent = TAB_LABELS[tabKey] || tabKey;
+    const summary = document.createElement("summary");
+    summary.className = "completed-subheading";
+    summary.textContent = TAB_LABELS[tabKey] || tabKey;
 
     const ul = document.createElement("ul");
     ul.className = "completed-list";
@@ -437,9 +438,9 @@ function renderCompletedGrouped() {
       ul.appendChild(li);
     });
 
-    section.appendChild(h3);
-    section.appendChild(ul);
-    groups.appendChild(section);
+    details.appendChild(summary);
+    details.appendChild(ul);
+    groups.appendChild(details);
   });
 }
 
@@ -783,8 +784,8 @@ function wireTimer() {
   const pauseBtn = document.getElementById("pauseBtn");
   const stopBtn = document.getElementById("stopBtn");
   const durationSelect = document.getElementById("durationSelect");
-  const customHoursSelect = document.getElementById("customHoursSelect");
-  const customMinutesSelect = document.getElementById("customMinutesSelect");
+  const customHoursInput = document.getElementById("customHoursInput");
+  const customMinutesInput = document.getElementById("customMinutesInput");
 
   if (!startBtn || !pauseBtn || !stopBtn || !durationSelect) {
     console.warn("Timer elements missing. Check IDs in index.html.");
@@ -798,9 +799,9 @@ function wireTimer() {
   });
 
   function applyCustomTimerStart() {
-    if (!customHoursSelect || !customMinutesSelect) return;
-    const hours = Number(customHoursSelect.value || 0);
-    const minutes = Number(customMinutesSelect.value || 0);
+    if (!customHoursInput || !customMinutesInput) return;
+    const hours = Number(customHoursInput.value || 0);
+    const minutes = Number(customMinutesInput.value || 0);
     const seconds = Math.max(0, hours * 3600 + minutes * 60);
     if (seconds <= 0) return;
     stopInterval();
@@ -809,11 +810,11 @@ function wireTimer() {
     startCountdown();
   }
 
-  if (customHoursSelect) {
-    customHoursSelect.addEventListener("change", () => applyCustomTimerStart());
+  if (customHoursInput) {
+    customHoursInput.addEventListener("change", () => applyCustomTimerStart());
   }
-  if (customMinutesSelect) {
-    customMinutesSelect.addEventListener("change", () => applyCustomTimerStart());
+  if (customMinutesInput) {
+    customMinutesInput.addEventListener("change", () => applyCustomTimerStart());
   }
 
   startBtn.addEventListener("click", () => startCountdown());

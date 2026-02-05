@@ -97,68 +97,83 @@
           >
             <h2 class="card-title" id="timerHeading">TIMER</h2>
 
-            <p class="rules-callout" id="timerHelperText">
-              → Choose violence:<br />
-              (pick a tab / pick a task)<br />
-              → Set timer<br />
-              → Murder tasks<br />
-              → ✅<br />
-              → Prize!
+            <div class="timer-grid">
+              <div class="timer-block">
+                <p class="timer-block__title">→ CHOOSE VIOLENCE:</p>
+                <p class="timer-block__hint">(pick a tab / pick a task)</p>
+
+                <div class="timer-selects">
+                  <select
+                    class="field-select"
+                    id="focusTabSelect"
+                    name="focusTabSelect"
+                  >
+                    <option value="all">ALL TABS</option>
+                    <option value="dueToday">DUE TODAY</option>
+                    <option value="soon">NEXT UP</option>
+                    <option value="asSoonAsICan">WHEN I CAN</option>
+                    <option value="dontForget">DON’T FORGET</option>
+                  </select>
+
+                  <select
+                    class="field-select"
+                    id="focusSelect"
+                    name="focusSelect"
+                  >
+                    <option value="">(Pick a task)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="timer-block">
+                <p class="timer-block__title">→ SET YOUR TIME:</p>
+
+                <select
+                  class="field-select"
+                  id="durationSelect"
+                  name="durationSelect"
+                >
+                  <option value="300">5 min</option>
+                  <option value="900" selected>15 min</option>
+                  <option value="1800">30 min</option>
+                  <option value="2700">45 min</option>
+                  <option value="3600">60 min</option>
+                </select>
+
+                <p class="timer-block__sub">CUSTOM:</p>
+                <div class="custom-timer__controls">
+                  <input
+                    class="field-input"
+                    id="customHoursInput"
+                    name="customHoursInput"
+                    type="number"
+                    min="0"
+                    max="8"
+                    placeholder="hrs"
+                    inputmode="numeric"
+                  />
+                  <input
+                    class="field-input"
+                    id="customMinutesInput"
+                    name="customMinutesInput"
+                    type="number"
+                    min="0"
+                    max="59"
+                    placeholder="mins"
+                    inputmode="numeric"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <p class="current-task current-task--hero" id="currentTaskText">
+              TAB:
+              <span class="current-task__tab">(none)</span>
+              <span class="current-task__divider">|</span>
+              TASK:
+              <span class="current-task__task">(none)</span>
             </p>
-
-            <div class="field">
-              <label class="field-label" for="focusTabSelect"
-                >PICK A TAB:</label
-              >
-              <select
-                class="field-select"
-                id="focusTabSelect"
-                name="focusTabSelect"
-              >
-                <option value="all">ALL TABS</option>
-                <option value="dueToday">DUE TODAY</option>
-                <option value="soon">NEXT UP</option>
-                <option value="asSoonAsICan">WHEN I CAN</option>
-                <option value="dontForget">DON’T FORGET</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label class="field-label" for="focusSelect">PICK A TASK:</label>
-              <select class="field-select" id="focusSelect" name="focusSelect">
-                <option value="">(Pick a task)</option>
-              </select>
-            </div>
-
-            <!-- <p class="current-task" id="currentTaskText">
-              CURRENT: <span class="current-task__name">(none)</span>
-            </p> -->
-            <p class="helper-text helper-text--tiny">
-              To finish it for real: check the box on the left. ✅
-            </p>
-
-            <div class="field">
-              <label class="field-label" for="durationSelect">DURATION:</label>
-              <select
-                class="field-select"
-                id="durationSelect"
-                name="durationSelect"
-              >
-                <option value="300">5 min</option>
-                <option value="900" selected>15 min</option>
-                <option value="1800">30 min</option>
-                <option value="2700">45 min</option>
-                <option value="3600">60 min</option>
-              </select>
-            </div>
-
-            <button class="linkish" id="customTimerBtn" type="button">
-              + SET A CUSTOM TIMER
-            </button>
-            <button class="linkish" id="resetBtn" type="button">
-              🧨 RESET EVERYTHING
-            </button>
-
+            <p class="timer-block__footer">→ MURDER TASKS! ✅ GET A PRIZE!</p>
             <div class="timer-display" id="timerDisplay" aria-live="polite">
               15:00
             </div>
@@ -176,29 +191,23 @@
             id="completedCard"
             aria-labelledby="completedHeading"
           >
-            <h2 class="card-title" id="completedHeading">SHIT I DID</h2>
+            <h2 class="card-title card-title--big" id="completedHeading">
+              SHIT I DID
+            </h2>
 
-            <div class="completed-header">
-              <p class="completed-stat" id="progressText">
-                <span class="completed-stat__count" id="completedCount"
-                  >0/0</span
-                >
-                OF ALL TASKS DONE
-              </p>
-              <div
-                class="progress-ring"
-                id="progressRing"
-                aria-hidden="true"
-              ></div>
-            </div>
+            <p class="completed-stat completed-stat--center" id="progressText">
+              <span class="completed-stat__count" id="completedCount">0/0</span>
+              OF ALL TASKS DONE
+            </p>
 
-            <details class="progress-details">
-              <summary class="progress-summary">SEE BREAKDOWN</summary>
-              <ul class="progress-breakdown" id="progressBreakdown"></ul>
-            </details>
+            <div
+              class="completed-groups completed-groups--tabs"
+              id="completedGroups"
+            ></div>
 
-            <!-- JS renders one section per tab -->
-            <div class="completed-groups" id="completedGroups"></div>
+            <button class="linkish reset-global" id="resetBtn" type="button">
+              🧨 RESET EVERYTHING
+            </button>
           </section>
         </main>
 
