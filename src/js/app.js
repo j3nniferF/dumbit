@@ -93,6 +93,62 @@ function closePrizeModal() {
   overlay.classList.add("is-hidden");
 }
 
+function openTimerModal(taskName) {
+  const overlay = document.getElementById("timerOverlay");
+  const taskText = document.getElementById("timerModalTask");
+  if (!overlay || !taskText) return;
+
+  taskText.textContent = `DONE WITH "${taskName || "THIS TASK"}"?`;
+  overlay.classList.remove("is-hidden");
+}
+
+function closeTimerModal() {
+  const overlay = document.getElementById("timerOverlay");
+  if (!overlay) return;
+  overlay.classList.add("is-hidden");
+}
+
+function wireTimerModal() {
+  const overlay = document.getElementById("timerOverlay");
+  const doneBtn = document.getElementById("timerDoneBtn");
+  const addTimeBtn = document.getElementById("timerAddTimeBtn");
+  const addTimeSelect = document.getElementById("timerAddSelect");
+  const notDoneBtn = document.getElementById("timerNotDoneBtn");
+
+  if (doneBtn) {
+    doneBtn.addEventListener("click", () => {
+      if (selectedFocusValue) {
+        const { tabKey, taskText } = parseTaskValue(selectedFocusValue);
+        if (tabKey && taskText) completeTask(tabKey, taskText);
+      }
+      closeTimerModal();
+    });
+  }
+
+  if (notDoneBtn) {
+    notDoneBtn.addEventListener("click", () => closeTimerModal());
+  }
+
+  if (addTimeBtn) {
+    addTimeBtn.addEventListener("click", () => {
+      const seconds = Number(addTimeSelect?.value ?? 300);
+      const minutes = Math.max(1, Math.round(seconds / 60));
+      addTimeMinutes(minutes);
+      closeTimerModal();
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) closeTimerModal();
+    });
+  }
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeTimerModal();
+  });
+}
+
 function wirePrizeModalClose() {
   const overlay = document.getElementById("prizeOverlay");
   const btn = document.getElementById("backToItBtn");
@@ -497,25 +553,29 @@ function renderTasks(tabKey) {
     // Checkbox completes task
     checkbox.addEventListener("change", (event) => {
       if (!event.target.checked) return;
-
-      if (!COMPLETED_TASKS[tabKey]) COMPLETED_TASKS[tabKey] = [];
-      if (!COMPLETED_TASKS[tabKey].includes(taskText)) {
-        COMPLETED_TASKS[tabKey].push(taskText);
-      }
-
-      if (selectedFocusValue === value) selectedFocusValue = "";
-
-      saveState();
-      syncCurrentTaskText();
-      renderTasks(tabKey);
-      renderCompletedGrouped();
-      buildFocusSelect();
-      updateProgress();
-
-      // ✅ celebration after UI updates
-      celebrateIfTabJustCompleted(tabKey);
+      completeTask(tabKey, taskText);
     });
   });
+}
+
+function completeTask(tabKey, taskText) {
+  if (!COMPLETED_TASKS[tabKey]) COMPLETED_TASKS[tabKey] = [];
+  if (!COMPLETED_TASKS[tabKey].includes(taskText)) {
+    COMPLETED_TASKS[tabKey].push(taskText);
+  }
+
+  const value = makeTaskValue(tabKey, taskText);
+  if (selectedFocusValue === value) selectedFocusValue = "";
+
+  saveState();
+  syncCurrentTaskText();
+  renderTasks(tabKey);
+  renderCompletedGrouped();
+  buildFocusSelect();
+  updateProgress();
+
+  // ✅ celebration after UI updates
+  celebrateIfTabJustCompleted(tabKey);
 }
 
 /* -------------------------------
@@ -663,6 +723,54 @@ function resetTimerToSelectedDuration() {
   setTimerDisplay(remainingSeconds);
 }
 
+function startCountdown() {
+  if (!selectedFocusValue) {
+    alert("Pick a task first. That becomes your CURRENT task.");
+    return;
+  }
+
+  if (intervalId !== null) return;
+  if (remainingSeconds <= 0) resetTimerToSelectedDuration();
+
+  intervalId = setInterval(() => {
+    remainingSeconds -= 1;
+    setTimerDisplay(remainingSeconds);
+
+    if (remainingSeconds <= 0) {
+      stopInterval();
+      remainingSeconds = 0;
+      setTimerDisplay(0);
+      const { taskText } = parseTaskValue(selectedFocusValue);
+      openTimerModal(taskText);
+    }
+  }, 1000);
+}
+
+function addTimeMinutes(minutes) {
+  const extra = Math.max(1, Number(minutes)) * 60;
+  remainingSeconds = Math.max(0, remainingSeconds) + extra;
+  setTimerDisplay(remainingSeconds);
+  startCountdown();
+}
+
+function parseCustomDuration(input) {
+  if (!input) return null;
+  const trimmed = String(input).trim();
+
+  if (trimmed.includes(":")) {
+    const [mmStr, ssStr] = trimmed.split(":");
+    const mm = Number(mmStr);
+    const ss = Number(ssStr);
+    if (!Number.isFinite(mm) || !Number.isFinite(ss)) return null;
+    if (mm < 0 || ss < 0 || ss > 59) return null;
+    return mm * 60 + ss;
+  }
+
+  const minutes = Number(trimmed);
+  if (!Number.isFinite(minutes) || minutes <= 0) return null;
+  return Math.round(minutes * 60);
+}
+
 function stopInterval() {
   if (intervalId !== null) {
     clearInterval(intervalId);
@@ -675,6 +783,8 @@ function wireTimer() {
   const pauseBtn = document.getElementById("pauseBtn");
   const stopBtn = document.getElementById("stopBtn");
   const durationSelect = document.getElementById("durationSelect");
+  const customHoursSelect = document.getElementById("customHoursSelect");
+  const customMinutesSelect = document.getElementById("customMinutesSelect");
 
   if (!startBtn || !pauseBtn || !stopBtn || !durationSelect) {
     console.warn("Timer elements missing. Check IDs in index.html.");
@@ -687,26 +797,26 @@ function wireTimer() {
     if (intervalId === null) resetTimerToSelectedDuration();
   });
 
-  startBtn.addEventListener("click", () => {
-    if (!selectedFocusValue) {
-      alert("Pick a task first. That becomes your CURRENT task.");
-      return;
-    }
+  function applyCustomTimerStart() {
+    if (!customHoursSelect || !customMinutesSelect) return;
+    const hours = Number(customHoursSelect.value || 0);
+    const minutes = Number(customMinutesSelect.value || 0);
+    const seconds = Math.max(0, hours * 3600 + minutes * 60);
+    if (seconds <= 0) return;
+    stopInterval();
+    remainingSeconds = seconds;
+    setTimerDisplay(remainingSeconds);
+    startCountdown();
+  }
 
-    if (intervalId !== null) return;
-    if (remainingSeconds <= 0) resetTimerToSelectedDuration();
+  if (customHoursSelect) {
+    customHoursSelect.addEventListener("change", () => applyCustomTimerStart());
+  }
+  if (customMinutesSelect) {
+    customMinutesSelect.addEventListener("change", () => applyCustomTimerStart());
+  }
 
-    intervalId = setInterval(() => {
-      remainingSeconds -= 1;
-      setTimerDisplay(remainingSeconds);
-
-      if (remainingSeconds <= 0) {
-        stopInterval();
-        remainingSeconds = 0;
-        setTimerDisplay(0);
-      }
-    }, 1000);
-  });
+  startBtn.addEventListener("click", () => startCountdown());
 
   pauseBtn.addEventListener("click", () => stopInterval());
 
@@ -727,6 +837,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTabCompleteLast();
 
   wirePrizeModalClose();
+  wireTimerModal();
   wireResetButton(tabs);
   wireAddTaskForm();
   wireFocusPickers();

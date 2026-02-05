@@ -250,11 +250,41 @@
           <li>GO FOR A WALK.</li>
           <li>TAKE A QUICK NAP.</li>
           <li>GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.</li>
+          <li>THEN GET BACK TO WORK!</li>
         </ul>
 
         <button class="btn btn--primary" id="backToItBtn" type="button">
           HELL YAH!
         </button>
+      </div>
+    </div>
+
+    <!-- TIMER DONE MODAL -->
+    <div
+      class="modal-overlay is-hidden"
+      id="timerOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="timerModalTitle"
+    >
+      <div class="modal modal--timer" id="timerModal">
+        <h2 class="modal-title" id="timerModalTitle">TIME’S UP</h2>
+        <p class="modal-subtitle" id="timerModalTask">DONE WITH THIS TASK?</p>
+        <p class="modal-hint" id="timerModalHint">
+          Need more time? Add 5 minutes.
+        </p>
+
+        <div class="timer-modal-actions">
+          <button class="btn btn--primary" id="timerDoneBtn" type="button">
+            YES, DONE
+          </button>
+          <button class="btn" id="timerAddTimeBtn" type="button">
+            ADD 5 MIN
+          </button>
+          <button class="btn" id="timerNotDoneBtn" type="button">
+            NOT YET
+          </button>
+        </div>
       </div>
     </div>
 
