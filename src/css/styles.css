@@ -1,4 +1,5 @@
 /* ===== CSS FOUNDATION ===== */
+
 * {
   box-sizing: border-box;
 }
@@ -10,23 +11,26 @@ body {
 /* paper texture */
 html,
 body {
-  min-height: 1220%;
+  min-height: 100%;
 }
 
 body {
   margin: 0;
-  background: #0b0b0b url("../assets/textures/board.png") center/cover fixed;
+  background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover
+    fixed;
   color: #eaeaea;
-  font-family: var(--font-body);
+  font-family: var(--font-body), var(--font-stack);
+  font-size: var(--size-body);
   position: relative;
 }
 
+/* SAVE-SPOT: /* TODO: SAVE-SPOT: resume-here */
 .app {
   position: relative;
   z-index: 1;
-  max-width: 1040px;
+  max-width: 920px; /* reduced from 1040 */
   margin: 0 auto;
-  padding: 28px 24px 40px;
+  padding: 32px 20px 48px;
 }
 
 .sr-only {
@@ -43,19 +47,40 @@ body {
 
 /* ===== DESIGN TOKENS ===== */
 :root {
+  /* ===== FONT OPTIONS (swap freely) ===== */
+  --font-anarchy: "Anarchy";
+  --font-punk: "HitMePunk04";
+  --font-song: "Song";
+  --font-wrong: "Wrong";
+
+  /* ===== QUICK PICKS ===== */
+  --font-title: var(--font-anarchy);
+  --font-label: var(--font-wrong);
+  --font-body: var(--font-song);
+
+  /* ===== SIZE TWEAKS (increased for readability) ===== */
+  --size-body: 1.125rem; /* page body text */
+  --size-card-body: 1.0625rem; /* card content */
+  --size-label: 0.95rem; /* small labels/buttons */
+  --size-tab: clamp(1.6rem, 2.8vw, 2.2rem); /* slightly larger tabs */
+
+  /* ===== COLOR / SURFACE TOKENS ===== */
   --ink: #111111;
   --ink-soft: #2a2a2a;
   --paper: #f2efe7;
   --paper-dark: #e7e1d3;
+  --paper-border: rgba(0, 0, 0, 0.08);
+
+  /* card background variants for consistent visual language */
+  --card-bg: linear-gradient(180deg, #f6f4ef 0%, #ece8dd 100%);
+  --card-bg-strong: linear-gradient(180deg, #f1efe9 0%, #e3e0d6 100%);
+  --card-bg-muted: linear-gradient(180deg, #f9f8f6 0%, #efebe2 100%);
+
   --shadow-strong: 0 18px 40px rgba(0, 0, 0, 0.45);
   --shadow-soft: 0 10px 22px rgba(0, 0, 0, 0.25);
   --accent-red: #c51616;
   --accent-red-dark: #9f1010;
-  --font-title:
-    "Anarchy", "HitMePunk04", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-label:
-    "Wrong", "HitMePunk04", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-body: "Song", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* grime overlay on top of everything */
@@ -64,20 +89,14 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-
+  background-image: url("../assets/textures/grime-overlay.png");
+  opacity: 0.45; /* tweak */
+  mix-blend-mode: burn; /* keeps it gritty */
   z-index: 0; /* KEY: behind content */
 }
 
-/* Your app content sits above the grime */
-.app {
-  position: relative;
-  z-index: 1;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
 /* ===== LAYOUT GRID ===== */
+/* center items inside the grid so cards don't stretch edge-to-edge */
 .layout {
   display: grid;
   grid-template-areas:
@@ -88,6 +107,7 @@ body::before {
     "completed"
     "music";
   gap: 20px;
+  justify-items: center; /* center grid children */
 }
 
 .header {
@@ -98,18 +118,16 @@ body::before {
   grid-area: tabs;
 }
 
-.card--tasks {
+/* card grid areas */
+/* .card--tasks {
   grid-area: tasks;
 }
-
 .card--timer {
   grid-area: timer;
-}
-
+} */
 .card--completed {
   grid-area: completed;
 }
-
 .music {
   grid-area: music;
 }
@@ -122,7 +140,7 @@ body::before {
 
 .title {
   margin: 0;
-  font-family: var(--font-title);
+  font-family: var(--font-title), var(--font-stack);
   letter-spacing: clamp(1px, 0.6vw, 5px);
   line-height: 0.9;
   padding: 0 10px; /* prevents edge-crash on small screens */
@@ -138,7 +156,6 @@ body::before {
   width: fit-content;
   padding: 6px 14px 8px;
   background: #efe7d6;
-  border: 2px solid rgba(0, 0, 0, 0.75);
   box-shadow:
     0 3px 0 rgba(0, 0, 0, 0.35),
     inset 0 0 0 2px rgba(255, 255, 255, 0.4);
@@ -146,36 +163,36 @@ body::before {
 }
 
 .title-line:first-child {
-  font-size: clamp(3.2rem, 9vw, 13.2rem);
+  font-family: var(--font-title);
+  font-size: clamp(3rem, 8.5vw, 11.5rem); /* toned down slightly */
   margin-bottom: 10px;
-  text-shadow:
-    2px 2px 0 rgba(0, 0, 0, 0.25),
-    -2px -2px 0 rgba(255, 255, 255, 0.25);
 }
 
 .title-line:last-child {
+  font-family: var(--font-label);
   font-size: clamp(1.6rem, 5vw, 6.4rem);
-  opacity: 0.95;
-  letter-spacing: clamp(1px, 1.2vw, 8px);
+  letter-spacing: clamp(6px, 1.2vw, 19px); /* corrected ordering */
 }
 
 /* ===== TABS ===== */
 .tabs {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
 
   margin: 16px auto 30px;
   padding: 18px 28px;
 
   width: min(100%, 980px);
-  border-radius: 10px;
-  flex-wrap: wrap;
+  border-radius: 80px;
+
+  /* allow wrapping to multiple rows */
 
   background: var(--paper);
   color: var(--ink);
+  position: relative; /* for pseudo element */
 }
-
+/* red thing?
 .tabs::before {
   content: "";
   position: absolute;
@@ -186,21 +203,21 @@ body::before {
   background: var(--accent-red);
   border-radius: 2px;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
-}
+} */
 
 .tab {
   background: transparent;
   border: none;
-  padding: 12px 16px;
+  padding: 14px 18px;
   font: inherit;
-  font-family: var(--font-label);
+  font-family: var(--font-label), var(--font-stack);
   font-weight: 900;
-  letter-spacing: 2.4px;
+  letter-spacing: 9px;
   text-transform: uppercase;
-  opacity: 0.7;
+  opacity: 0.5;
   cursor: pointer;
   position: relative;
-  font-size: clamp(1.25rem, 2.3vw, 1.9rem);
+  font-size: var(--size-tab);
   color: var(--ink);
 }
 
@@ -216,6 +233,9 @@ body::before {
 .tab--active {
   opacity: 1;
   position: relative;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.15),
+    -1px -1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .tab--active::after {
@@ -226,7 +246,7 @@ body::before {
   bottom: -14px;
   height: 10px;
 
-  background: #c51616;
+  background: var(--accent-red);
   border-radius: 999px;
 
   /* makes it feel less perfect */
@@ -234,36 +254,39 @@ body::before {
   opacity: 0.95;
 }
 
-.tab--active {
-  text-shadow:
-    1px 1px 0 rgba(0, 0, 0, 0.15),
-    -1px -1px 0 rgba(255, 255, 255, 0.2);
-}
-
 /* ===== CARDS ===== */
 .card {
-  background: var(--paper);
+  background: var(--card-bg); /* unified base card background */
   color: var(--ink);
-  padding: 18px 20px;
-  margin: 0;
-  border-radius: 16px;
-  border: none;
+  padding: 20px 22px; /* a bit more breathing room */
+  margin: 0 auto 18px;
+  border-radius: 14px;
+  border: 1px solid var(--paper-border);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
   position: relative;
+  font-size: var(--size-card-body);
+  font-family: var(--font-body), var(--font-stack); /* consistent card font */
+
+  width: 100%;
+  max-width: 820px; /* cap card width so they don't become huge */
+  line-height: 1.35;
 }
 
 /* card tape removed (no visible edges) */
 
+/* increase card-title scale for readability */
 .card-title {
   margin: 0 0 12px;
-  font-size: 1.05rem;
-  letter-spacing: 1px;
-  opacity: 1;
+  font-size: 1.9rem;
+  letter-spacing: 4px;
   color: var(--ink);
-  font-family: var(--font-label);
+  font-family: var(--font-punk);
   text-transform: uppercase;
+  text-align: center;
+  display: block;
 }
 
+/* Use label font for UI items */
 .field-label,
 .field-select,
 .task-input,
@@ -278,23 +301,27 @@ body::before {
 .btn,
 .task-add-btn,
 .linkish {
-  font-family: var(--font-body);
-}
-
-.timer-display {
-  font-family: var(--font-label);
-}
-
-.card--tasks .card-title {
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  color: var(--accent-red);
+  font-family: var(--font-label), var(--font-stack);
   text-transform: uppercase;
 }
 
+.timer-display {
+  font-size: clamp(2.6rem, 4.2vw, 4.6rem);
+}
+
+.card--tasks .card-title {
+  font-family: var(--font-punk);
+  font-size: 4.9rem;
+  letter-spacing: 4px;
+  color: var(--accent-ink);
+  text-transform: uppercase;
+}
+
+/* SHIT I DID */
 .card--completed .card-title {
+  font-family: var(--font-wrong);
   font-size: clamp(1.6rem, 4vw, 3rem);
-  letter-spacing: 1.6px;
+  letter-spacing: 3.6px;
   text-transform: uppercase;
   opacity: 1;
 }
@@ -305,40 +332,34 @@ body::before {
 }
 
 /* ===== PHASE 1: MOCKUP LAYOUT + CARDS ===== */
+/* keep the stronger radial accent for timer, softer for others */
 .card--tasks {
-  background:
-    radial-gradient(
-      circle at 20% 0%,
-      rgba(0, 0, 0, 0.06),
-      transparent 55%
-    ),
-    linear-gradient(180deg, #f2f1ed 0%, #e8e6de 100%);
+  .card--timer {
+    background:
+      radial-gradient(circle at 10% 0%, rgba(0, 0, 0, 0.48), transparent 55%),
+      var(--card-bg-strong);
+    font-family: var(--font-body);
+    box-shadow: var(--shadow-strong);
+  }
 }
 
 .card--timer {
   background:
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(0, 0, 0, 0.06),
-      transparent 55%
-    ),
-    linear-gradient(180deg, #efede6 0%, #e3e0d6 100%);
+    /* radial-gradient(circle at 10% 0%, rgba(0, 0, 0, 0.48), transparent 55%), */ var(
+    --card-bg-strong
+  );
   font-family: var(--font-body);
+  box-shadow: var(--shadow-strong);
 }
 
 .card--completed {
   background:
-    radial-gradient(
-      circle at 60% 0%,
-      rgba(0, 0, 0, 0.06),
-      transparent 55%
-    ),
-    linear-gradient(180deg, #f2f1ed 0%, #e8e6de 100%);
+    radial-gradient(circle at 60% 0%, rgba(0, 0, 0, 0.06), transparent 55%),
+    var(--card-bg-muted);
 }
 
 .task-text {
   color: var(--ink);
-  font-weight: 700;
   letter-spacing: 0.2px;
 }
 
@@ -350,10 +371,12 @@ body::before {
 }
 
 .task-input {
+  font-family: var(--font-wrong);
   border: 1px solid var(--paper-border);
   background: #fff;
   padding: 10px 12px;
   font-weight: 700;
+  border-radius: 8px;
 }
 
 .task-add-btn {
@@ -365,7 +388,7 @@ body::before {
 .btn,
 .task-add-btn {
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   padding: 10px 14px;
   font-weight: 800;
 }
@@ -440,13 +463,21 @@ body::before {
   justify-content: center;
 }
 
-.rules-callout {
+/* .rules-callout {
   margin: 0 0 12px;
   background: rgba(0, 0, 0, 0.06);
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 83px;
   border: 1px dashed rgba(0, 0, 0, 0.2);
-  font-weight: 700;
+  font-weight: 200;
+} */
+
+.rules-callout {
+  margin: 0 auto 12px; /* centers the block */
+  text-align: center; /* centers the text */
+  max-width: 800px; /* optional: keeps it tighter */
+  font-size: 2rem; /* bigger text */
+  font-family: var(--font-punk); /* swap if you want */
 }
 
 .completed-header {
@@ -590,6 +621,7 @@ body::before {
   padding: 6px 10px;
 }
 
+/* ===== DESKTOP LAYOUT ===== */
 @media (min-width: 900px) {
   .layout {
     grid-template-areas:
@@ -672,8 +704,7 @@ body::before {
 }
 
 .field-label {
-  font-size: 0.75rem;
-  opacity: 0.8;
+  font-size: var(--size-body);
 }
 
 .field-select {
@@ -683,20 +714,6 @@ body::before {
   border-radius: 12px;
   background: #ffffff;
   color: var(--ink);
-}
-
-/* ===== DESKTOP LAYOUT ===== */
-@media (min-width: 900px) {
-  .layout {
-    grid-template-columns: 1.4fr 1fr;
-    grid-template-areas:
-      "header header"
-      "tabs tabs"
-      "tasks timer"
-      "completed completed"
-      "music music";
-    align-items: start;
-  }
 }
 
 /* ===== FONTS ===== */
@@ -796,3 +813,4 @@ body::before {
   letter-spacing: 0.6px;
   text-transform: uppercase;
 }
+/* ...existing code... */
