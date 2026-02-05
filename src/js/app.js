@@ -301,9 +301,11 @@ function syncCurrentTaskText() {
 
   if (!selectedFocusValue) {
     nameEl.textContent = "(none)";
+    wrap.classList.add("is-hidden");
     return;
   }
 
+  wrap.classList.remove("is-hidden");
   const { taskText } = parseTaskValue(selectedFocusValue);
   nameEl.textContent = taskText || "(none)";
 }
@@ -768,4 +770,3 @@ document.addEventListener("DOMContentLoaded", () => {
   syncCurrentTaskText();
   updateProgress();
 });
-// ...existing code...
