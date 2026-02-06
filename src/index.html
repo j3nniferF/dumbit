@@ -55,7 +55,9 @@
             WHEN I CAN
           </button>
           <button class="tab" type="button" data-tab="dontForget">
-            DON’T FORGET
+            <button class="tab" type="button" data-tab="dontForget">
+              DON'T FORGET
+            </button>
           </button>
         </nav>
 
@@ -99,8 +101,8 @@
 
             <div class="timer-grid">
               <div class="timer-block">
-                <p class="timer-block__title">→ CHOOSE VIOLENCE:</p>
-                <p class="timer-block__hint">(pick a tab / pick a task)</p>
+                <p class="timer-block__title">CHOOSE VIOLENCE:</p>
+                <p class="timer-block__hint">(PICK A TAB / PICK A TASK)</p>
 
                 <div class="timer-selects">
                   <select
@@ -112,7 +114,7 @@
                     <option value="dueToday">DUE TODAY</option>
                     <option value="soon">NEXT UP</option>
                     <option value="asSoonAsICan">WHEN I CAN</option>
-                    <option value="dontForget">DON’T FORGET</option>
+                    <option value="dontForget">DON'T FORGET</option>
                   </select>
 
                   <select
@@ -166,13 +168,13 @@
               </div>
             </div>
 
-            <p class="current-task current-task--hero" id="currentTaskText">
+            <!-- <p class="current-task current-task--hero" id="currentTaskText">
               TAB:
               <span class="current-task__tab">(none)</span>
               <span class="current-task__divider">|</span>
               TASK:
               <span class="current-task__task">(none)</span>
-            </p>
+            </p> -->
             <p class="timer-block__footer">→ MURDER TASKS! ✅ GET A PRIZE!</p>
             <div class="timer-display" id="timerDisplay" aria-live="polite">
               15:00
@@ -277,7 +279,7 @@
       aria-labelledby="timerModalTitle"
     >
       <div class="modal modal--timer" id="timerModal">
-        <h2 class="modal-title" id="timerModalTitle">TIME’S UP</h2>
+        <h2 class="modal-title" id="timerModalTitle">TIME'S UP</h2>
         <p class="modal-subtitle" id="timerModalTask">DONE WITH THIS TASK?</p>
         <p class="modal-hint" id="timerModalHint">
           Need more time? Add 5 minutes.
@@ -298,5 +300,6 @@
     </div>
 
     <script src="./js/app.js" defer></script>
+    <script src="./js/tasks-edit.js" defer></script>
   </body>
 </html>

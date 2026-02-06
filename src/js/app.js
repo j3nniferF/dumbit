@@ -1,4 +1,4 @@
-console.log("App loaded — feat/iterative-work");
+console.log("App loaded — feature/test-inline-edit");
 
 /* =====================================================
    DSIGDT — MVP v3.4 (CLEAN + CELEBRATION)
@@ -24,7 +24,7 @@ const TAB_LABELS = {
   dueToday: "DUE TODAY",
   soon: "NEXT UP",
   asSoonAsICan: "WHEN I CAN",
-  dontForget: "DONT FORGET",
+  dontForget: "DON'T FORGET",
 };
 
 // Default seed (only used if no localStorage state exists)
@@ -220,7 +220,6 @@ function fireConfettiBurst() {
     wrap.remove();
   }, 5000);
 }
-/* ...existing code... */
 
 function celebrateIfTabJustCompleted(tabKey) {
   const nowComplete = isTabComplete(tabKey);
@@ -536,6 +535,14 @@ function renderTasks(tabKey) {
       </label>
     `;
 
+    // --- NEW: attach identifying data so inline editor can find and update this task ---
+    const rowLabel = li.querySelector(".task-row");
+    if (rowLabel) {
+      rowLabel.dataset.tab = tabKey;
+      rowLabel.dataset.task = taskText;
+    }
+    // -------------------------------------------------------------------------------
+
     li.querySelector(".task-text").textContent = taskText;
     taskList.appendChild(li);
 
@@ -849,6 +856,33 @@ document.addEventListener("DOMContentLoaded", () => {
   wireFocusPickers();
   wireTimer();
 
+  // MAYBE TO DELETE LATER?
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const element = document.querySelector("section#tasksCard");
+
+    if (element) {
+      const parallaxSpeed = 0.3; // Adjust this value for different speeds
+
+      function updateParallax() {
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+        const yPos = -(scrollTop - element.offsetTop) * parallaxSpeed;
+        element.style.backgroundPosition = `center ${yPos}px`;
+      }
+
+      window.addEventListener("scroll", updateParallax);
+      updateParallax(); // Set initial position
+      console.log(
+        "JavaScript parallax effect applied with dirty paper background.",
+      );
+    } else {
+      console.warn(
+        "Element section#tasksCard not found, parallax not applied.",
+      );
+    }
+  });
+
   // Tab click behavior
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
@@ -886,4 +920,39 @@ document.addEventListener("DOMContentLoaded", () => {
   buildFocusSelect(selectedFocusValue);
   syncCurrentTaskText();
   updateProgress();
+
+  // Listen for inline edits from tasks-edit.js
+  document.addEventListener("task:edited", (e) => {
+    const { tabKey, originalText, newText, row } = e.detail || {};
+
+    // If we don't have tab/original, bail
+    if (!tabKey || typeof originalText !== "string") return;
+
+    // Ensure tab exists
+    if (!Array.isArray(TASKS_BY_TAB[tabKey])) TASKS_BY_TAB[tabKey] = [];
+
+    const idx = TASKS_BY_TAB[tabKey].findIndex((t) => t === originalText);
+
+    if (newText === "") {
+      // delete task if empty
+      if (idx > -1) TASKS_BY_TAB[tabKey].splice(idx, 1);
+    } else {
+      if (idx > -1) {
+        TASKS_BY_TAB[tabKey][idx] = newText;
+      } else {
+        // fallback: add if original wasn't found
+        TASKS_BY_TAB[tabKey].push(newText);
+      }
+    }
+
+    // Persist and refresh UI
+    saveState();
+
+    // If current tab is the edited tab, re-render tasks for it; otherwise keep UI stable
+    renderTasks(activeTabKey);
+    renderCompletedGrouped();
+    buildFocusSelect(selectedFocusValue);
+    syncCurrentTaskText();
+    updateProgress();
+  });
 });

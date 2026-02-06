@@ -1,0 +1,1465 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2867
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 Menlo-Regular;
+\f3\fnil\fcharset0 AppleColorEmoji;}
+{\colortbl;\red255\green255\blue255;\red185\green188\blue186;\red78\green117\blue165;\red197\green166\blue53;
+\red137\green154\blue45;\red136\green137\blue135;\red251\green0\blue7;\red84\green85\blue84;\red184\green47\blue58;
+\red108\green101\blue255;\red133\green92\blue145;\red51\green110\blue109;\red193\green82\blue5;\red196\green112\blue51;
+}
+{\*\expandedcolortbl;;\cspthree\c77466\c78393\c77698;\cspthree\c41088\c53286\c69129;\cspthree\c79702\c70613\c34243;
+\cspthree\c61413\c65710\c29827;\cspthree\c60462\c60771\c60064;\cspthree\c91776\c21045\c13966;\cspthree\c40462\c40771\c40421;\cspthree\c72201\c30325\c30608;
+\cspthree\c50198\c50195\c96851;\cspthree\c57316\c45302\c62339;\cspthree\c31425\c49604\c49893;\cspthree\c75586\c42575\c15322;\cspthree\c77340\c53117\c30764;
+}
+\margl1440\margr1440\vieww28860\viewh17400\viewkind0
+\deftab560
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\fs28 \cf0 2.2\
+\pard\pardeftab560\slleading20\pardirnatural\partightenfactor0
+
+\f1\fs30 \cf0 \
+=== src/index.html ===\
+(paste)\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f2\fs28 \cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf3 <!doctype\cf4  html\cf3 >\cf2 \
+\cf3 <html\cf4  lang=\cf5 "en"\cf3 >\cf2 \
+  \cf3 <head>\cf2 \
+    \cf6 <!--\cf2 \
+\cf6       HP (Home Page) - HTML Skeleton\cf2 \
+\cf6       Purpose: Structure only. CSS handles visuals. JS handles behavior.\cf2 \
+\
+\cf6       HEAD RULES:\cf2 \
+\cf6       - Keep paths relative to /src because Live Server is serving /src as the site root.\cf2 \
+\cf6       - Avoid favicon.ico 404 by using a data-URI favicon (no file needed).\cf2 \
+\cf6     -->\cf2 \
+ \
+    \cf3 <meta\cf4  charset=\cf5 "UTF-8"\cf4  \cf3 />\cf2 \
+    \cf3 <meta\cf4  name=\cf5 "viewport"\cf4  content=\cf5 "width=device-width, initial-scale=1.0"\cf4  \cf3 />\cf2 \
+\
+    \cf3 <title>\cf2 dUMb shit  I GotTA Do TODay\cf3 </title>\cf2 \
+\
+    \cf6 <!-- No-file favicon (stops console 404 spam) -->\cf2 \
+    \cf3 <link\cf2 \
+\cf4       rel=\cf5 "icon"\cf2 \
+\cf4       href=\cf5 'data:image/svg+xml,\cf7 <\cf5 svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">\cf7 <\cf5 text y="0.9em" font-size="90">
+\f3 \uc0\u9989 
+\f2 \cf7 <\cf5 /text>\cf7 <\cf5 /svg>'\cf2 \
+\cf4     \cf3 />\cf2 \
+\
+    \cf3 <link\cf4  rel=\cf5 "stylesheet"\cf4  href=\cf5 "./css/styles.css"\cf4  \cf3 />\cf2 \
+  \cf3 </head>\cf2 \
+\
+  \cf3 <body>\cf2 \
+    \cf3 <div\cf4  class=\cf5 "app"\cf4  id=\cf5 "app"\cf3 >\cf2 \
+      \cf6 <!-- HEADER -->\cf2 \
+      \cf3 <header\cf4  class=\cf5 "header"\cf4  id=\cf5 "header"\cf3 >\cf2 \
+        \cf3 <h1\cf4  class=\cf5 "title"\cf4  id=\cf5 "title"\cf3 >\cf2 \
+          \cf3 <span\cf4  class=\cf5 "title-line"\cf4  id=\cf5 "titleLine1"\cf3 >\cf2 dUMb sHIT\cf3 </span>\cf2 \
+          \cf3 <span\cf4  class=\cf5 "title-line"\cf4  id=\cf5 "titleLine2"\cf3 >\cf2 I GotTA Do TODay\cf3 </span>\cf2 \
+        \cf3 </h1>\cf2 \
+        \cf3 <div\cf4  class=\cf5 "header-texture"\cf4  aria-hidden=\cf5 "true"\cf3 ></div>\cf2 \
+      \cf3 </header>\cf2 \
+\
+      \cf6 <!-- TABS -->\cf2 \
+      \cf3 <nav\cf4  class=\cf5 "tabs"\cf4  id=\cf5 "tabs"\cf4  aria-label=\cf5 "Task lists"\cf3 >\cf2 \
+        \cf3 <button\cf4  class=\cf5 "tab tab--active"\cf4  type=\cf5 "button"\cf4  data-tab=\cf5 "dueToday"\cf4  aria-current=\cf5 "page"\cf3 >\cf2 DUE TODAY\cf3 </button>\cf2 \
+        \cf3 <button\cf4  class=\cf5 "tab"\cf4  type=\cf5 "button"\cf4  data-tab=\cf5 "soon"\cf3 >\cf2 NEXT UP\cf3 </button>\cf2 \
+        \cf3 <button\cf4  class=\cf5 "tab"\cf4  type=\cf5 "button"\cf4  data-tab=\cf5 "asSoonAsICan"\cf3 >\cf2 WHEN I CAN\cf3 </button>\cf2 \
+        \cf3 <button\cf4  class=\cf5 "tab"\cf4  type=\cf5 "button"\cf4  data-tab=\cf5 "dontForget"\cf3 >\cf2 DON\'92T FORGET\cf3 </button>\cf2 \
+      \cf3 </nav>\cf2 \
+\
+      \cf3 <main\cf4  class=\cf5 "main"\cf4  id=\cf5 "main"\cf3 >\cf2 \
+        \cf6 <!-- TASKS -->\cf2 \
+        \cf3 <section\cf4  class=\cf5 "card card--tasks"\cf4  id=\cf5 "tasksCard"\cf4  aria-labelledby=\cf5 "tasksHeading"\cf3 >\cf2 \
+          \cf3 <h2\cf4  class=\cf5 "card-title"\cf4  id=\cf5 "tasksHeading"\cf3 >\cf2 DUE TODAY:\cf3 </h2>\cf2 \
+\
+          \cf3 <ul\cf4  class=\cf5 "task-list"\cf4  id=\cf5 "taskList"\cf3 ></ul>\cf2 \
+\
+          \cf3 <form\cf4  class=\cf5 "task-add"\cf4  id=\cf5 "taskAddForm"\cf4  autocomplete=\cf5 "off"\cf3 >\cf2 \
+            \cf3 <label\cf4  class=\cf5 "sr-only"\cf4  for=\cf5 "taskInput"\cf3 >\cf2 Add a task\cf3 </label>\cf2 \
+            \cf3 <input\cf2 \
+\cf4               id=\cf5 "taskInput"\cf2 \
+\cf4               class=\cf5 "task-input"\cf2 \
+\cf4               name=\cf5 "taskInput"\cf2 \
+\cf4               type=\cf5 "text"\cf2 \
+\cf4               placeholder=\cf5 "+ ADD MORE SHIT"\cf2 \
+\cf4             \cf3 />\cf2 \
+            \cf3 <button\cf4  class=\cf5 "task-add-btn"\cf4  type=\cf5 "submit"\cf3 >\cf2 ADD\cf3 </button>\cf2 \
+            \cf3 <p\cf4  class=\cf5 "task-error"\cf4  id=\cf5 "taskError"\cf4  role=\cf5 "status"\cf4  aria-live=\cf5 "polite"\cf3 ></p>\cf2 \
+          \cf3 </form>\cf2 \
+        \cf3 </section>\cf2 \
+\
+        \cf6 <!-- TIMER -->\cf2 \
+\cf3 <section\cf4  class=\cf5 "card card--timer"\cf4  id=\cf5 "timerCard"\cf4  aria-labelledby=\cf5 "timerHeading"\cf3 >\cf2 \
+  \cf3 <h2\cf4  class=\cf5 "card-title"\cf4  id=\cf5 "timerHeading"\cf3 >\cf2 TIMER\cf3 </h2>\cf2 \
+\
+  \cf3 <p\cf4  class=\cf5 "rules-callout"\cf4  id=\cf5 "timerHelperText"\cf3 >\cf2 \
+  \uc0\u8594  Choose violence:\cf3 <br\cf4  \cf3 />\cf2 \
+  (pick a tab / pick a task)\cf3 <br\cf4  \cf3 />\cf2 \
+  \uc0\u8594  Set timer\cf3 <br\cf4  \cf3 />\cf2 \
+  \uc0\u8594  Murder tasks\cf3 <br\cf4  \cf3 />\cf2 \
+  \uc0\u8594  
+\f3 \uc0\u9989 
+\f2 \cf3 <br\cf4  \cf3 />\cf2 \
+  \uc0\u8594  Prize!\
+  \cf3 </p>\cf2 \
+\
+  \cf3 <div\cf4  class=\cf5 "field"\cf3 >\cf2 \
+    \cf3 <label\cf4  class=\cf5 "field-label"\cf4  for=\cf5 "focusTabSelect"\cf3 >\cf2 PICK A TAB:\cf3 </label>\cf2 \
+    \cf3 <select\cf4  class=\cf5 "field-select"\cf4  id=\cf5 "focusTabSelect"\cf4  name=\cf5 "focusTabSelect"\cf3 >\cf2 \
+      \cf3 <option\cf4  value=\cf5 "all"\cf3 >\cf2 ALL TABS\cf3 </option>\cf2 \
+      \cf3 <option\cf4  value=\cf5 "dueToday"\cf3 >\cf2 DUE TODAY\cf3 </option>\cf2 \
+      \cf3 <option\cf4  value=\cf5 "soon"\cf3 >\cf2 NEXT UP\cf3 </option>\cf2 \
+      \cf3 <option\cf4  value=\cf5 "asSoonAsICan"\cf3 >\cf2 WHEN I CAN\cf3 </option>\cf2 \
+      \cf3 <option\cf4  value=\cf5 "dontForget"\cf3 >\cf2 DON\'92T FORGET\cf3 </option>\cf2 \
+    \cf3 </select>\cf2 \
+  \cf3 </div>\cf2 \
+\
+  \cf3 <div\cf4  class=\cf5 "field"\cf3 >\cf2 \
+    \cf3 <label\cf4  class=\cf5 "field-label"\cf4  for=\cf5 "focusSelect"\cf3 >\cf2 PICK A TASK:\cf3 </label>\cf2 \
+    \cf3 <select\cf4  class=\cf5 "field-select"\cf4  id=\cf5 "focusSelect"\cf4  name=\cf5 "focusSelect"\cf3 >\cf2 \
+      \cf3 <option\cf4  value=\cf5 ""\cf3 >\cf2 (Pick a task)\cf3 </option>\cf2 \
+    \cf3 </select>\cf2 \
+  \cf3 </div>\cf2 \
+\
+  \cf3 <p\cf4  class=\cf5 "current-task"\cf4  id=\cf5 "currentTaskText"\cf3 >\cf2 \
+    CURRENT: \cf3 <span\cf4  class=\cf5 "current-task__name"\cf3 >\cf2 (none)\cf3 </span>\cf2 \
+  \cf3 </p>\cf2 \
+  \cf3 <p\cf4  class=\cf5 "helper-text helper-text--tiny"\cf3 >\cf2 \
+    To finish it for real: check the box on the left. 
+\f3 \uc0\u9989 
+\f2 \
+  \cf3 </p>\cf2 \
+\
+  \cf3 <div\cf4  class=\cf5 "field"\cf3 >\cf2 \
+    \cf3 <label\cf4  class=\cf5 "field-label"\cf4  for=\cf5 "durationSelect"\cf3 >\cf2 DURATION:\cf3 </label>\cf2 \
+    \cf3 <select\cf4  class=\cf5 "field-select"\cf4  id=\cf5 "durationSelect"\cf4  name=\cf5 "durationSelect"\cf3 >\cf2 \
+      \cf3 <option\cf4  value=\cf5 "300"\cf3 >\cf2 5 min\cf3 </option>\cf2 \
+      \cf3 <option\cf4  value=\cf5 "900"\cf4  selected\cf3 >\cf2 15 min\cf3 </option>\cf2 \
+      \cf3 <option\cf4  value=\cf5 "1800"\cf3 >\cf2 30 min\cf3 </option>\cf2 \
+      \cf3 <option\cf4  value=\cf5 "2700"\cf3 >\cf2 45 min\cf3 </option>\cf2 \
+      \cf3 <option\cf4  value=\cf5 "3600"\cf3 >\cf2 60 min\cf3 </option>\cf2 \
+    \cf3 </select>\cf2 \
+  \cf3 </div>\cf2 \
+\
+  \cf3 <button\cf4  class=\cf5 "linkish"\cf4  id=\cf5 "customTimerBtn"\cf4  type=\cf5 "button"\cf3 >\cf2 + SET A CUSTOM TIMER\cf3 </button>\cf2 \
+  \cf3 <button\cf4  class=\cf5 "linkish"\cf4  id=\cf5 "resetBtn"\cf4  type=\cf5 "button"\cf3 >
+\f3 \cf2 \uc0\u55358 \u56808 
+\f2  RESET EVERYTHING\cf3 </button>\cf2 \
+\
+  \cf3 <div\cf4  class=\cf5 "timer-display"\cf4  id=\cf5 "timerDisplay"\cf4  aria-live=\cf5 "polite"\cf3 >\cf2 15:00\cf3 </div>\cf2 \
+\
+  \cf3 <div\cf4  class=\cf5 "timer-controls"\cf3 >\cf2 \
+    \cf3 <button\cf4  class=\cf5 "btn"\cf4  id=\cf5 "startBtn"\cf4  type=\cf5 "button"\cf3 >\cf2 START\cf3 </button>\cf2 \
+    \cf3 <button\cf4  class=\cf5 "btn"\cf4  id=\cf5 "pauseBtn"\cf4  type=\cf5 "button"\cf3 >\cf2 PAUSE\cf3 </button>\cf2 \
+    \cf3 <button\cf4  class=\cf5 "btn"\cf4  id=\cf5 "stopBtn"\cf4  type=\cf5 "button"\cf3 >\cf2 STOP\cf3 </button>\cf2 \
+  \cf3 </div>\cf2 \
+\cf3 </section>\cf2 \
+\
+        \cf6 <!-- PROGRESS -->\cf2 \
+        \cf3 <section\cf4  class=\cf5 "card card--progress"\cf4  id=\cf5 "progressCard"\cf4  aria-labelledby=\cf5 "progressHeading"\cf3 >\cf2 \
+          \cf3 <h2\cf4  class=\cf5 "card-title"\cf4  id=\cf5 "progressHeading"\cf3 >\cf2 PROGRESS\cf3 </h2>\cf2 \
+          \cf3 <p\cf4  class=\cf5 "progress-text"\cf4  id=\cf5 "progressText"\cf3 >\cf2 0 / 0 TASKS DONE\cf3 </p>\cf2 \
+\
+          \cf3 <details\cf4  class=\cf5 "progress-details"\cf3 >\cf2 \
+            \cf3 <summary\cf4  class=\cf5 "progress-summary"\cf3 >\cf2 SEE BREAKDOWN\cf3 </summary>\cf2 \
+            \cf3 <ul\cf4  class=\cf5 "progress-breakdown"\cf4  id=\cf5 "progressBreakdown"\cf3 ></ul>\cf2 \
+          \cf3 </details>\cf2 \
+\
+          \cf3 <div\cf4  class=\cf5 "progress-ring"\cf4  id=\cf5 "progressRing"\cf4  aria-hidden=\cf5 "true"\cf3 ></div>\cf2 \
+        \cf3 </section>\cf2 \
+\
+        \cf6 <!-- COMPLETED -->\cf2 \
+        \cf3 <section\cf4  class=\cf5 "card card--completed"\cf4  id=\cf5 "completedCard"\cf4  aria-labelledby=\cf5 "completedHeading"\cf3 >\cf2 \
+          \cf3 <h2\cf4  class=\cf5 "card-title"\cf4  id=\cf5 "completedHeading"\cf3 >\cf2 SHIT I DID\cf3 </h2>\cf2 \
+\
+          \cf6 <!-- JS renders one section per tab -->\cf2 \
+          \cf3 <div\cf4  class=\cf5 "completed-groups"\cf4  id=\cf5 "completedGroups"\cf3 ></div>\cf2 \
+        \cf3 </section>\cf2 \
+      \cf3 </main>\cf2 \
+\
+      \cf6 <!-- MUSIC PLAYER -->\cf2 \
+      \cf3 <footer\cf4  class=\cf5 "music"\cf4  id=\cf5 "musicPlayer"\cf4  aria-label=\cf5 "Music player"\cf3 >\cf2 \
+        \cf3 <div\cf4  class=\cf5 "music-title"\cf3 >\cf2 NOW PLAYING:\cf3 </div>\cf2 \
+        \cf3 <div\cf4  class=\cf5 "music-track"\cf4  id=\cf5 "musicTrack"\cf3 >\cf2 GRUNGY TUNES\cf3 </div>\cf2 \
+        \cf3 <div\cf4  class=\cf5 "music-controls"\cf3 >\cf2 \
+          \cf3 <button\cf4  class=\cf5 "btn btn--small"\cf4  type=\cf5 "button"\cf4  aria-label=\cf5 "Previous track"\cf3 >\cf2 \uc0\u9664 \cf3 </button>\cf2 \
+          \cf3 <button\cf4  class=\cf5 "btn btn--small"\cf4  type=\cf5 "button"\cf4  aria-label=\cf5 "Play/Pause"\cf3 >\cf2 \uc0\u9654 \cf3 </button>\cf2 \
+          \cf3 <button\cf4  class=\cf5 "btn btn--small"\cf4  type=\cf5 "button"\cf4  aria-label=\cf5 "Next track"\cf3 >\cf2 \uc0\u9654 \u9654 \cf3 </button>\cf2 \
+        \cf3 </div>\cf2 \
+        \cf3 <div\cf4  class=\cf5 "music-progress"\cf4  aria-hidden=\cf5 "true"\cf3 ></div>\cf2 \
+      \cf3 </footer>\cf2 \
+    \cf3 </div>\cf2 \
+\
+    \cf6 <!-- PRIZE MODAL (unchanged) -->\cf2 \
+    \cf3 <div\cf2 \
+\cf4       class=\cf5 "modal-overlay is-hidden"\cf2 \
+\cf4       id=\cf5 "prizeOverlay"\cf2 \
+\cf4       role=\cf5 "dialog"\cf2 \
+\cf4       aria-modal=\cf5 "true"\cf2 \
+\cf4       aria-labelledby=\cf5 "prizeTitle"\cf2 \
+\cf4     \cf3 >\cf2 \
+      \cf3 <div\cf4  class=\cf5 "modal"\cf4  id=\cf5 "prizeModal"\cf3 >\cf2 \
+        \cf3 <h2\cf4  class=\cf5 "modal-title"\cf4  id=\cf5 "prizeTitle"\cf3 >\cf2 GOOD JOB DUMMY!\cf3 </h2>\cf2 \
+        \cf3 <p\cf4  class=\cf5 "modal-subtitle"\cf4  id=\cf5 "prizeSubtitle"\cf3 >\cf2 YOU GET A PRIZE.\cf3 </p>\cf2 \
+\
+        \cf3 <ul\cf4  class=\cf5 "prize-list"\cf4  id=\cf5 "prizeList"\cf3 >\cf2 \
+          \cf3 <li>\cf2 GO FOR A WALK.\cf3 </li>\cf2 \
+          \cf3 <li>\cf2 TAKE A QUICK NAP.\cf3 </li>\cf2 \
+          \cf3 <li>\cf2 GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.\cf3 </li>\cf2 \
+        \cf3 </ul>\cf2 \
+\
+        \cf3 <button\cf4  class=\cf5 "btn btn--primary"\cf4  id=\cf5 "backToItBtn"\cf4  type=\cf5 "button"\cf3 >\cf2 HELL YAH!\cf3 </button>\cf2 \
+      \cf3 </div>\cf2 \
+    \cf3 </div>\cf2 \
+\
+    \cf3 <script\cf4  src=\cf5 "./js/app.js"\cf4  defer\cf3 ></script>\cf2 \
+  \cf3 </body>\cf2 \
+\cf3 </html>\cf2 \
+\
+\
+\pard\pardeftab560\slleading20\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+\pard\pardeftab560\slleading20\pardirnatural\partightenfactor0
+
+\f1\fs30 \cf0 \
+\
+\
+\
+=== src/css/styles.css ===\
+(paste)\
+\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f2\fs28 \cf6 /* ===== CSS FOUNDATION ===== */\cf2 \
+\cf3 *\cf2  \{ \cf8 box-sizing\cf2 : \cf9 border-box\cf2 ; \}\
+\cf3 html\cf2 , \cf3 body\cf2  \{ \cf8 height\cf2 : \cf3 100\cf8 %\cf2 ; \}\
+\
+\cf6 /* paper texture */\cf2 \
+\cf3 html\cf2 , \cf3 body\cf2  \{ \cf8 min-height\cf2 : \cf3 100\cf8 %\cf2 ; \}\
+\
+\cf3 body\cf2  \{\
+  \cf8 margin\cf2 : \cf3 0\cf2 ;\
+  \cf8 background\cf2 : \cf10 #0b0b0b\cf2 ;\
+  \cf8 color\cf2 : \cf10 #eaeaea\cf2 ;\
+  \cf8 font-family\cf2 : \cf5 "Helvetica Neue"\cf2 , \cf9 Helvetica\cf2 , \cf9 Arial\cf2 , \cf9 sans-serif\cf2 ;\
+  \cf8 position\cf2 : \cf9 relative\cf2 ;\
+\}\
+\
+\
+\cf6 /* grime overlay on top of everything */\cf2 \
+\cf3 body\cf4 ::before\cf2  \{\
+  \cf8 content\cf2 : \cf5 ""\cf2 ;\
+  \cf8 position\cf2 : \cf9 fixed\cf2 ;\
+  \cf8 inset\cf2 : \cf3 0\cf2 ;\
+  \cf8 pointer-events\cf2 : \cf9 none\cf2 ;\
+\
+  \cf8 background-image\cf2 : \cf11 url\cf2 (\cf5 "../assets/textures/grime-overlay.png"\cf2 );\
+  \cf8 background-repeat\cf2 : \cf9 repeat\cf2 ;\
+  \cf8 background-size\cf2 : \cf3 900\cf8 px\cf2  \cf9 auto\cf2 ;\
+\
+  \cf8 opacity\cf2 : \cf3 0.35\cf2 ;              \cf6 /* tweak */\cf2 \
+  \cf8 mix-blend-mode\cf2 : \cf9 multiply\cf2 ;   \cf6 /* keeps it gritty */\cf2 \
+\
+  \cf8 z-index\cf2 : \cf3 0\cf2 ;                 \cf6 /* KEY: behind content */\cf2 \
+\}\
+\
+\cf6 /* Your app content sits above the grime */\cf2 \
+\cf4 .app\cf2  \{\
+  \cf8 position\cf2 : \cf9 relative\cf2 ;\
+  \cf8 z-index\cf2 : \cf3 1\cf2 ;\
+\}\
+\
+\cf4 .app\cf2  \{\
+  \cf8 position\cf2 : \cf9 relative\cf2 ;\
+  \cf8 z-index\cf2 : \cf3 1\cf2 ;\
+  \cf8 max-width\cf2 : \cf3 980\cf8 px\cf2 ;\
+  \cf8 margin\cf2 : \cf3 0\cf2  \cf9 auto\cf2 ;\
+  \cf8 padding\cf2 : \cf3 24\cf8 px\cf2 ;\
+\}\
+\
+\cf6 /* ===== HEADER + TITLE ===== */\cf2 \
+\cf6 /* ===== HEADER + TITLE ===== */\cf2 \
+\cf4 .header\cf2  \{\
+  \cf8 margin-bottom\cf2 : \cf3 32\cf8 px\cf2 ;\
+  \cf8 text-align\cf2 : \cf9 center\cf2 ;\
+\}\
+\
+\cf4 .title\cf2  \{\
+  \cf8 margin\cf2 : \cf3 0\cf2 ;\
+  \cf8 font-family\cf2 : \cf5 "HitMePunk04"\cf2 , \cf5 "Helvetica Neue"\cf2 , \cf9 Helvetica\cf2 , \cf9 Arial\cf2 , \cf9 sans-serif\cf2 ;\
+  \cf8 letter-spacing\cf2 : \cf11 clamp\cf2 (\cf3 1\cf8 px\cf2 , \cf3 0.6\cf8 vw\cf2 , \cf3 5\cf8 px\cf2 );\
+  \cf8 line-height\cf2 : \cf3 0.9\cf2 ;\
+  \cf8 padding\cf2 : \cf3 0\cf2  \cf3 10\cf8 px\cf2 ; \cf6 /* prevents edge-crash on small screens */\cf2 \
+\}\
+\
+\cf4 .title-line\cf2  \{\
+  \cf8 display\cf2 : \cf9 block\cf2 ;\
+\}\
+\
+\cf4 .title-line:first-child\cf2  \{\
+  \cf8 font-size\cf2 : \cf11 clamp\cf2 (\cf3 3.2\cf8 rem\cf2 , \cf3 9\cf8 vw\cf2 , \cf3 13.2\cf8 rem\cf2 );\
+  \cf8 margin-bottom\cf2 : \cf3 6\cf8 px\cf2 ;\
+\}\
+\
+\cf4 .title-line:last-child\cf2  \{\
+  \cf8 font-size\cf2 : \cf11 clamp\cf2 (\cf3 1.6\cf8 rem\cf2 , \cf3 5\cf8 vw\cf2 , \cf3 6.4\cf8 rem\cf2 );\
+  \cf8 opacity\cf2 : \cf3 0.95\cf2 ;\
+\}\
+\
+\cf6 /* ===== TABS ===== */\cf2 \
+\cf4 .tabs\cf2  \{\
+  \cf8 display\cf2 : \cf9 flex\cf2 ;\
+  \cf8 justify-content\cf2 : \cf9 center\cf2 ;\
+  \cf8 gap\cf2 : \cf3 18\cf8 px\cf2 ;\
+\
+  \cf8 margin\cf2 : \cf3 12\cf8 px\cf2  \cf9 auto\cf2  \cf3 28\cf8 px\cf2 ;\
+  \cf8 padding\cf2 : \cf3 12\cf8 px\cf2  \cf3 18\cf8 px\cf2 ;\
+\
+  \cf8 width\cf2 : \cf9 fit-content\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 10\cf8 px\cf2 ;\
+\
+  \cf6 /* strip vibe (not perfectly flat) */\cf2 \
+  \cf8 background\cf2 :\
+    \cf11 linear-gradient\cf2 (\cf3 180\cf8 deg\cf2 , \cf11 rgba\cf2 (\cf3 255\cf2 ,\cf3 255\cf2 ,\cf3 255\cf2 ,\cf3 0.80\cf2 ), \cf11 rgba\cf2 (\cf3 240\cf2 ,\cf3 236\cf2 ,\cf3 222\cf2 ,\cf3 0.92\cf2 ));\
+  \cf8 color\cf2 : \cf10 #111\cf2 ;\
+\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 solid\cf2  \cf11 rgba\cf2 (\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0.14\cf2 );\
+  \cf8 box-shadow\cf2 :\
+    \cf3 0\cf2  \cf3 12\cf8 px\cf2  \cf3 26\cf8 px\cf2  \cf11 rgba\cf2 (\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0.35\cf2 ),\
+    \cf3 0\cf2  \cf3 1\cf8 px\cf2  \cf3 0\cf2  \cf11 rgba\cf2 (\cf3 255\cf2 ,\cf3 255\cf2 ,\cf3 255\cf2 ,\cf3 0.35\cf2 ) \cf9 inset\cf2 ;\
+\}\
+\
+\cf4 .tab\cf2  \{\
+  \cf8 background\cf2 : \cf9 transparent\cf2 ;\
+  \cf8 border\cf2 : \cf9 none\cf2 ;\
+  \cf8 padding\cf2 : \cf3 6\cf8 px\cf2  \cf3 6\cf8 px\cf2 ;\
+  \cf8 font\cf2 : \cf9 inherit\cf2 ;\
+  \cf8 font-weight\cf2 : \cf3 900\cf2 ;\
+  \cf8 letter-spacing\cf2 : \cf3 1.1\cf8 px\cf2 ;\
+  \cf8 text-transform\cf2 : \cf9 uppercase\cf2 ;\
+  \cf8 opacity\cf2 : \cf3 0.7\cf2 ;\
+  \cf8 cursor\cf2 : \cf9 pointer\cf2 ;\
+  \cf8 position\cf2 : \cf9 relative\cf2 ;\
+\}\
+\
+\cf4 .tab--active\cf2  \{\
+  \cf8 opacity\cf2 : \cf3 1\cf2 ;\
+  \cf8 position\cf2 : \cf9 relative\cf2 ;\
+\}\
+\
+\cf4 .tab--active::after\cf2  \{\
+  \cf8 content\cf2 : \cf5 ""\cf2 ;\
+  \cf8 position\cf2 : \cf9 absolute\cf2 ;\
+  \cf8 left\cf2 : \cf3 -8\cf8 px\cf2 ;\
+  \cf8 right\cf2 : \cf3 -8\cf8 px\cf2 ;\
+  \cf8 bottom\cf2 : \cf3 -10\cf8 px\cf2 ;\
+  \cf8 height\cf2 : \cf3 7\cf8 px\cf2 ;\
+\
+  \cf8 background\cf2 : \cf10 #c51616\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 999\cf8 px\cf2 ;\
+\
+  \cf6 /* makes it feel less perfect */\cf2 \
+  \cf8 box-shadow\cf2 : \cf3 0\cf2  \cf3 1\cf8 px\cf2  \cf3 0\cf2  \cf11 rgba\cf2 (\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0.25\cf2 );\
+  \cf8 opacity\cf2 : \cf3 0.95\cf2 ;\
+\}\
+\
+\cf6 /* ===== CARDS ===== */\cf2 \
+\cf4 .card\cf2  \{\
+  \cf8 background\cf2 : \cf10 #111\cf2 ;\
+  \cf8 padding\cf2 : \cf3 16\cf8 px\cf2  \cf3 18\cf8 px\cf2 ;\
+  \cf8 margin-bottom\cf2 : \cf3 20\cf8 px\cf2 ;\
+\}\
+\
+\cf4 .card-title\cf2  \{\
+  \cf8 margin\cf2 : \cf3 0\cf2  \cf3 0\cf2  \cf3 12\cf8 px\cf2 ;\
+  \cf8 font-size\cf2 : \cf3 0.9\cf8 rem\cf2 ;\
+  \cf8 letter-spacing\cf2 : \cf3 0.4\cf8 px\cf2 ;\
+  \cf8 opacity\cf2 : \cf3 0.85\cf2 ;\
+\}\
+\
+\cf6 /* ===== MAIN LAYOUT ===== */\cf2 \
+\cf4 .main\cf2  \{\
+  \cf8 display\cf2 : \cf9 grid\cf2 ;\
+  \cf8 grid-template-columns\cf2 : \cf3 1\cf8 fr\cf2 ;\
+  \cf8 gap\cf2 : \cf3 20\cf8 px\cf2 ;\
+\}\
+\
+\cf6 /* ===== TASKS LIST ===== */\cf2 \
+\cf4 .task-list\cf2  \{\
+  \cf8 list-style\cf2 : \cf9 none\cf2 ;\
+  \cf8 padding\cf2 : \cf3 0\cf2 ;\
+  \cf8 margin\cf2 : \cf3 0\cf2  \cf3 0\cf2  \cf3 12\cf8 px\cf2 ;\
+\}\
+\
+\cf4 .task\cf2  \{\
+  \cf8 padding\cf2 : \cf3 6\cf8 px\cf2  \cf3 8\cf8 px\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 6\cf8 px\cf2 ;\
+\}\
+\
+\cf4 .task-row\cf2  \{\
+  \cf8 display\cf2 : \cf9 flex\cf2 ;\
+  \cf8 align-items\cf2 : \cf9 center\cf2 ;\
+  \cf8 gap\cf2 : \cf3 10\cf8 px\cf2 ;\
+  \cf8 cursor\cf2 : \cf9 pointer\cf2 ;\
+\}\
+\
+\cf4 .task-checkbox\cf2  \{ \cf8 transform\cf2 : \cf11 translateY\cf2 (\cf3 0.5\cf8 px\cf2 ); \}\
+\
+\cf6 /* ===== TIMER CARD (layout) ===== */\cf2 \
+\cf4 .card--timer\cf2  \cf4 .field\cf2  \{\
+  \cf8 display\cf2 : \cf9 flex\cf2 ;\
+  \cf8 align-items\cf2 : \cf9 center\cf2 ;\
+  \cf8 justify-content\cf2 : \cf9 space-between\cf2 ;\
+  \cf8 gap\cf2 : \cf3 12\cf8 px\cf2 ;\
+  \cf8 margin-bottom\cf2 : \cf3 10\cf8 px\cf2 ;\
+\}\
+\
+\cf4 .field-label\cf2  \{\
+  \cf8 font-size\cf2 : \cf3 0.75\cf8 rem\cf2 ;\
+  \cf8 opacity\cf2 : \cf3 0.8\cf2 ;\
+\}\
+\
+\cf4 .field-select\cf2  \{\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 solid\cf2  \cf10 #222\cf2 ;\
+  \cf8 padding\cf2 : \cf3 6\cf8 px\cf2  \cf3 8\cf8 px\cf2 ;\
+  \cf8 min-width\cf2 : \cf3 180\cf8 px\cf2 ;\
+\}\
+\
+\cf6 /* ===== DESKTOP LAYOUT ===== */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 @media\cf2  (\cf8 min-width\cf2 : \cf3 900\cf8 px\cf2 ) \{\
+  \cf4 .main\cf2  \{\
+    \cf8 grid-template-columns\cf2 : \cf3 1.4\cf8 fr\cf2  \cf3 1\cf8 fr\cf2 ;\
+    \cf8 align-items\cf2 : \cf9 start\cf2 ;\
+  \}\
+\
+  \cf4 .card--tasks\cf2  \{ \cf8 grid-column\cf2 : \cf3 1\cf2 ; \}\
+  \cf4 .card--completed\cf2  \{ \cf8 grid-column\cf2 : \cf3 1\cf2 ; \}\
+\
+  \cf4 .card--timer\cf2  \{ \cf8 grid-column\cf2 : \cf3 2\cf2 ; \}\
+  \cf4 .card--progress\cf2  \{ \cf8 grid-column\cf2 : \cf3 2\cf2 ; \}\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* ===== PAPER STYLE ===== */\cf2 \
+\cf4 .card--timer\cf2 ,\
+\cf4 .card--completed\cf2  \{\
+  \cf8 background\cf2 : \cf10 #f3f1e9\cf2 ;\
+  \cf8 color\cf2 : \cf10 #151515\cf2 ;\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 solid\cf2  \cf10 #d6d0c3\cf2 ;\
+\}\
+\
+\cf4 .card--timer\cf2  \cf4 .card-title\cf2 ,\
+\cf4 .card--completed\cf2  \cf4 .card-title\cf2  \{\
+  \cf8 opacity\cf2 : \cf3 1\cf2 ;\
+\}\
+\
+\cf6 /* Fix: dropdown readability on the paper timer card */\cf2 \
+\cf4 .card--timer\cf2  \cf4 .field-select\cf2  \{\
+  \cf8 background\cf2 : \cf10 #ffffff\cf2 ;\
+  \cf8 color\cf2 : \cf10 #151515\cf2 ;\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 solid\cf2  \cf10 #c9c2b4\cf2 ;\
+\}\
+\
+\cf6 /* Completed sections */\cf2 \
+\cf4 .completed-group\cf2  \{ \cf8 margin-top\cf2 : \cf3 12\cf8 px\cf2 ; \}\
+\cf4 .completed-subheading\cf2  \{ \cf8 margin\cf2 : \cf3 10\cf8 px\cf2  \cf3 0\cf2  \cf3 6\cf8 px\cf2 ; \cf8 font-size\cf2 : \cf3 0.85\cf8 rem\cf2 ; \}\
+\cf4 .completed-list\cf2  \{ \cf8 margin\cf2 : \cf3 0\cf2 ; \cf8 padding-left\cf2 : \cf3 18\cf8 px\cf2 ; \}\
+\
+\cf6 /* ===== CURRENT TASK CALLOUT ===== */\cf2 \
+\cf4 .current-task\cf2  \{ \cf8 margin\cf2 : \cf3 10\cf8 px\cf2  \cf3 0\cf2  \cf3 6\cf8 px\cf2 ; \cf8 font-weight\cf2 : \cf3 800\cf2 ; \cf8 letter-spacing\cf2 : \cf3 0.2\cf8 px\cf2 ; \}\
+\cf4 .current-task__name\cf2  \{ \cf8 font-weight\cf2 : \cf3 700\cf2 ; \cf8 text-transform\cf2 : \cf9 none\cf2 ; \}\
+\cf4 .helper-text--tiny\cf2  \{ \cf8 margin-top\cf2 : \cf3 0\cf2 ; \cf8 font-size\cf2 : \cf3 0.85\cf8 rem\cf2 ; \cf8 opacity\cf2 : \cf3 0.85\cf2 ; \}\
+\
+\cf6 /* ===== SELECTED TASK (IN PROGRESS) ===== */\cf2 \
+\cf4 .task--selected\cf2  \{ \cf8 border\cf2 : \cf3 2\cf8 px\cf2  \cf9 solid\cf2  \cf10 #e11\cf2 ; \cf8 border-radius\cf2 : \cf3 10\cf8 px\cf2 ; \cf8 padding\cf2 : \cf3 10\cf8 px\cf2  \cf3 12\cf8 px\cf2 ; \}\
+\cf4 .task--selected\cf2  \cf4 .task-text::before\cf2  \{ \cf8 content\cf2 : \cf5 "\'e2\'96\'b6 "\cf2 ; \cf8 font-weight\cf2 : \cf3 900\cf2 ; \}\
+\
+\cf6 /* =========================\cf2 \
+\cf6    COOL PASS v1 (safe polish)\cf2 \
+\cf6    ========================= */\cf2 \
+\
+\cf6 /* Slightly nicer base spacing */\cf2 \
+\cf4 .card\cf2  \{\
+  \cf8 border-radius\cf2 : \cf3 14\cf8 px\cf2 ;\
+  \cf8 box-shadow\cf2 : \cf3 0\cf2  \cf3 10\cf8 px\cf2  \cf3 30\cf8 px\cf2  \cf11 rgba\cf2 (\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0.35\cf2 );\
+\}\
+\
+\cf6 /* Task rows feel clickable */\cf2 \
+\cf4 .task\cf2  \{\
+  \cf8 transition\cf2 : transform \cf3 0.06\cf8 s\cf2  \cf9 ease\cf2 , \cf7 background\cf2  \cf3 0.2\cf8 s\cf2  \cf9 ease\cf2 ;\
+\}\
+\cf4 .task:hover\cf2  \{\
+  \cf8 background\cf2 : \cf11 rgba\cf2 (\cf3 255\cf2 ,\cf3 255\cf2 ,\cf3 255\cf2 ,\cf3 0.05\cf2 );\
+\}\
+\cf4 .task-row\cf2  \{\
+  \cf8 padding\cf2 : \cf3 6\cf8 px\cf2  \cf3 4\cf8 px\cf2 ;\
+\}\
+\
+\cf6 /* Checkbox is easier to hit */\cf2 \
+\cf4 .task-checkbox\cf2  \{\
+  \cf8 width\cf2 : \cf3 18\cf8 px\cf2 ;\
+  \cf8 height\cf2 : \cf3 18\cf8 px\cf2 ;\
+\}\
+\
+\cf6 /* Selected task = "IN PROGRESS" vibe */\cf2 \
+\cf4 .task--selected\cf2  \{\
+  \cf8 border\cf2 : \cf3 2\cf8 px\cf2  \cf9 solid\cf2  \cf10 #e11\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 12\cf8 px\cf2 ;\
+  \cf8 padding\cf2 : \cf3 10\cf8 px\cf2  \cf3 12\cf8 px\cf2 ;\
+  \cf8 background\cf2 : \cf11 rgba\cf2 (\cf3 225\cf2 , \cf3 17\cf2 , \cf3 17\cf2 , \cf3 0.08\cf2 );\
+  \cf8 position\cf2 : \cf9 relative\cf2 ;\
+\}\
+\
+\cf4 .task--selected::after\cf2  \{\
+  \cf8 content\cf2 : \cf5 "IN PROGRESS"\cf2 ;\
+  \cf8 position\cf2 : \cf9 absolute\cf2 ;\
+  \cf8 top\cf2 : \cf3 -10\cf8 px\cf2 ;\
+  \cf8 right\cf2 : \cf3 10\cf8 px\cf2 ;\
+  \cf8 font-size\cf2 : \cf3 0.7\cf8 rem\cf2 ;\
+  \cf8 letter-spacing\cf2 : \cf3 0.6\cf8 px\cf2 ;\
+  \cf8 padding\cf2 : \cf3 4\cf8 px\cf2  \cf3 8\cf8 px\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 999\cf8 px\cf2 ;\
+  \cf8 background\cf2 : \cf10 #e11\cf2 ;\
+  \cf8 color\cf2 : \cf10 #fff\cf2 ;\
+\}\
+\
+\cf6 /* CURRENT callout looks intentional */\cf2 \
+\cf4 .current-task\cf2  \{\
+  \cf8 margin\cf2 : \cf3 10\cf8 px\cf2  \cf3 0\cf2  \cf3 6\cf8 px\cf2 ;\
+  \cf8 font-weight\cf2 : \cf3 900\cf2 ;\
+  \cf8 letter-spacing\cf2 : \cf3 0.3\cf8 px\cf2 ;\
+  \cf8 display\cf2 : \cf9 inline-flex\cf2 ;\
+  \cf8 align-items\cf2 : \cf9 center\cf2 ;\
+  \cf8 gap\cf2 : \cf3 8\cf8 px\cf2 ;\
+  \cf8 padding\cf2 : \cf3 8\cf8 px\cf2  \cf3 10\cf8 px\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 12\cf8 px\cf2 ;\
+  \cf8 background\cf2 : \cf11 rgba\cf2 (\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0.08\cf2 );\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 dashed\cf2  \cf11 rgba\cf2 (\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0.25\cf2 );\
+\}\
+\
+\cf4 .current-task__name\cf2  \{\
+  \cf8 font-weight\cf2 : \cf3 800\cf2 ;\
+  \cf8 background\cf2 : \cf11 rgba\cf2 (\cf3 225\cf2 , \cf3 17\cf2 , \cf3 17\cf2 , \cf3 0.12\cf2 );\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 solid\cf2  \cf11 rgba\cf2 (\cf3 225\cf2 , \cf3 17\cf2 , \cf3 17\cf2 , \cf3 0.35\cf2 );\
+  \cf8 padding\cf2 : \cf3 3\cf8 px\cf2  \cf3 8\cf8 px\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 999\cf8 px\cf2 ;\
+\}\
+\
+\cf6 /* Helper tiny text reads better on paper */\cf2 \
+\cf4 .card--timer\cf2  \cf4 .helper-text--tiny\cf2  \{\
+  \cf8 opacity\cf2 : \cf3 0.9\cf2 ;\
+\}\
+\
+\cf6 /* Buttons look less default */\cf2 \
+\cf4 .btn\cf2 , \cf4 .task-add-btn\cf2  \{\
+  \cf8 border-radius\cf2 : \cf3 12\cf8 px\cf2 ;\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 solid\cf2  \cf11 rgba\cf2 (\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0\cf2 ,\cf3 0.2\cf2 );\
+  \cf8 padding\cf2 : \cf3 10\cf8 px\cf2  \cf3 14\cf8 px\cf2 ;\
+  \cf8 font-weight\cf2 : \cf3 800\cf2 ;\
+\}\
+\
+\cf4 .card--timer\cf2  \cf4 .btn\cf2 ,\
+\cf4 .card--timer\cf2  \cf4 .task-add-btn\cf2  \{\
+  \cf8 background\cf2 : \cf10 #151515\cf2 ;\
+  \cf8 color\cf2 : \cf10 #fff\cf2 ;\
+\}\
+\
+\cf4 .linkish\cf2  \{\
+  \cf8 background\cf2 : \cf9 transparent\cf2 ;\
+  \cf8 border\cf2 : \cf9 none\cf2 ;\
+  \cf8 text-decoration\cf2 : \cf9 underline\cf2 ;\
+  \cf8 cursor\cf2 : \cf9 pointer\cf2 ;\
+  \cf8 font-weight\cf2 : \cf3 800\cf2 ;\
+\}\
+\
+\cf6 /* Inputs look cleaner */\cf2 \
+\cf4 .task-input\cf2 , \cf4 .field-select\cf2  \{\
+  \cf8 border-radius\cf2 : \cf3 12\cf8 px\cf2 ;\
+\}\
+\
+\cf6 /* =========================\cf2 \
+\cf6    PROGRESS <details> POLISH\cf2 \
+\cf6    ========================= */\cf2 \
+\
+\cf4 .progress-details\cf2  \{\
+  \cf8 margin-top\cf2 : \cf3 10\cf8 px\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 12\cf8 px\cf2 ;\
+  \cf8 background\cf2 : \cf11 rgba\cf2 (\cf3 255\cf2 , \cf3 255\cf2 , \cf3 255\cf2 , \cf3 0.04\cf2 );\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 solid\cf2  \cf11 rgba\cf2 (\cf3 255\cf2 , \cf3 255\cf2 , \cf3 255\cf2 , \cf3 0.08\cf2 );\
+  \cf8 padding\cf2 : \cf3 10\cf8 px\cf2  \cf3 12\cf8 px\cf2 ;\
+\}\
+\
+\cf4 .progress-summary\cf2  \{\
+  \cf8 cursor\cf2 : \cf9 pointer\cf2 ;\
+  \cf8 font-weight\cf2 : \cf3 900\cf2 ;\
+  \cf8 letter-spacing\cf2 : \cf3 0.4\cf8 px\cf2 ;\
+  \cf8 list-style\cf2 : \cf9 none\cf2 ; \cf6 /* removes default triangle in some browsers */\cf2 \
+\}\
+\
+\cf4 .progress-summary::-webkit-details-marker\cf2  \{\
+  \cf8 display\cf2 : \cf9 none\cf2 ; \cf6 /* removes default triangle in Chrome/Safari */\cf2 \
+\}\
+\
+\cf4 .progress-summary::before\cf2  \{\
+  \cf8 content\cf2 : \cf5 "\'e2\'96\'b8 "\cf2 ;\
+  \cf8 display\cf2 : \cf9 inline-block\cf2 ;\
+  \cf8 transform\cf2 : \cf11 translateY\cf2 (\cf3 -1\cf8 px\cf2 );\
+  \cf8 opacity\cf2 : \cf3 0.9\cf2 ;\
+\}\
+\
+\cf4 .progress-details\cf2 [\cf4 open\cf2 ] \cf4 .progress-summary::before\cf2  \{\
+  \cf8 content\cf2 : \cf5 "\'e2\'96\'be "\cf2 ;\
+\}\
+\
+\cf4 .progress-breakdown\cf2  \{\
+  \cf8 margin\cf2 : \cf3 10\cf8 px\cf2  \cf3 0\cf2  \cf3 0\cf2 ;\
+  \cf8 padding-left\cf2 : \cf3 18\cf8 px\cf2 ;\
+  \cf8 line-height\cf2 : \cf3 1.4\cf2 ;\
+\}\
+\
+\cf4 .progress-breakdown\cf2  \cf3 li\cf2  \{\
+  \cf8 margin\cf2 : \cf3 6\cf8 px\cf2  \cf3 0\cf2 ;\
+  \cf8 opacity\cf2 : \cf3 0.92\cf2 ;\
+\}\
+\
+\cf6 /* =========================\cf2 \
+\cf6    TIMER RULES (sass + clarity)\cf2 \
+\cf6    ========================= */\cf2 \
+  \cf4 .rules-callout\cf2  \{\
+  \cf8 margin\cf2 : \cf3 8\cf8 px\cf2  \cf3 0\cf2  \cf3 14\cf8 px\cf2 ;\
+  \cf8 padding\cf2 : \cf3 10\cf8 px\cf2  \cf3 12\cf8 px\cf2 ;\
+  \cf8 border-radius\cf2 : \cf3 14\cf8 px\cf2 ;\
+  \cf8 font-weight\cf2 : \cf3 900\cf2 ;\
+  \cf8 letter-spacing\cf2 : \cf3 0.2\cf8 px\cf2 ;\
+  \cf8 line-height\cf2 : \cf3 1.2\cf2 ;\
+\}\
+\
+\cf4 .card--timer\cf2  \cf4 .rules-callout\cf2  \{\
+  \cf8 background\cf2 : \cf11 rgba\cf2 (\cf3 0\cf2 , \cf3 0\cf2 , \cf3 0\cf2 , \cf3 0.06\cf2 );\
+  \cf8 border\cf2 : \cf3 1\cf8 px\cf2  \cf9 dashed\cf2  \cf11 rgba\cf2 (\cf3 0\cf2 , \cf3 0\cf2 , \cf3 0\cf2 , \cf3 0.25\cf2 );\
+\}\
+\
+\cf4 .card--timer\cf2  \cf4 .rules-callout::before\cf2  \{\
+  \cf8 content\cf2 : \cf5 "\'e2\'9a\'a1 RULES: "\cf2 ;\
+  \cf8 font-weight\cf2 : \cf3 900\cf2 ;\
+\}\
+\
+\
+\cf6 /* ===== FONTS ===== */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 @font-face\cf2  \{\
+  \cf8 font-family\cf2 : \cf5 "HitMePunk04"\cf2 ;\
+  \cf8 src\cf2 : \cf11 url\cf2 (\cf5 "../assets/fonts/Hit-me-punk-04.ttf"\cf2 ) \cf11 format\cf2 (\cf5 "truetype"\cf2 );\
+  \cf8 font-weight\cf2 : \cf3 400\cf2 ;\
+  \cf8 font-style\cf2 : \cf9 normal\cf2 ;\
+  \cf8 font-display\cf2 : \cf9 swap\cf2 ;\
+\}\
+\
+\
+\
+\pard\pardeftab560\slleading20\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+\pard\pardeftab560\slleading20\pardirnatural\partightenfactor0
+
+\f1\fs30 \cf0 \
+\
+\
+\
+=== src/js/app.js ===\
+(paste)\
+\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f2\fs28 \cf6 /* =====================================================\cf2 \
+\cf6    DSIGDT \'97 MVP v3.4 (CLEAN + CELEBRATION)\cf2 \
+\cf6    - Tabs: per-tab tasks\cf2 \
+\cf6    - Add task: goes into active tab\cf2 \
+\cf6    - Checkbox: marks complete (stored per tab)\cf2 \
+\cf6    - Completed card: grouped by tab\cf2 \
+\cf6    - Focus picker:\cf2 \
+\cf6        1) PICK A LIST (ALL or one tab)\cf2 \
+\cf6        2) PICK A TASK\cf2 \
+\cf6    - Click a task row: sets CURRENT task + highlights it\cf2 \
+\cf6    - Timer: minimal START/PAUSE/STOP wiring\cf2 \
+\cf6    - Celebration:\cf2 \
+\cf6        Confetti + prize modal fires ONLY when you finish ALL tasks in a tab\cf2 \
+\cf6        (and can fire again if you add tasks later and re-finish)\cf2 \
+\cf6 ===================================================== */\cf2 \
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 const\cf2  \cf3 STORAGE_KEY\cf2  \cf8 =\cf2  \cf5 "dsigdt_state_v1"\cf2 ;\
+\
+\cf11 const\cf2  \cf3 TAB_ORDER\cf2  \cf8 =\cf2  [\cf5 "dueToday"\cf2 , \cf5 "soon"\cf2 , \cf5 "asSoonAsICan"\cf2 , \cf5 "dontForget"\cf2 ];\
+\
+\cf11 const\cf2  \cf3 TAB_LABELS\cf2  \cf8 =\cf2  \{\
+  dueToday: \cf5 "DUE TODAY"\cf2 ,\
+  soon: \cf5 "NEXT UP"\cf2 ,\
+  asSoonAsICan: \cf5 "WHEN I CAN"\cf2 ,\
+  dontForget: \cf5 "DON\'92T FORGET"\cf2 ,\
+\};\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 // Default seed (only used if no localStorage state exists)\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 let\cf2  \cf3 TASKS_BY_TAB\cf2  \cf8 =\cf2  \{\
+  dueToday: [\cf5 "Email landlord"\cf2 , \cf5 "Finish capstone work"\cf2 , \cf5 "Take meds"\cf2 ],\
+  soon: [\cf5 "Clean kitchen"\cf2 , \cf5 "Grocery run"\cf2 ],\
+  asSoonAsICan: [\cf5 "Organize closet"\cf2 , \cf5 "Call dentist"\cf2 ],\
+  dontForget: [\cf5 "Buy cat food"\cf2 , \cf5 "Pay credit card"\cf2 ],\
+\};\
+\
+\cf11 let\cf2  \cf3 COMPLETED_TASKS\cf2  \cf8 =\cf2  \{\
+  dueToday: [],\
+  soon: [],\
+  asSoonAsICan: [],\
+  dontForget: [],\
+\};\
+\
+\cf11 let\cf2  \cf3 activeTabKey\cf2  \cf8 =\cf2  \cf5 "dueToday"\cf2 ;\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* Focus UI state */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 let\cf2  \cf3 focusScope\cf2  \cf8 =\cf2  \cf5 "dueToday"\cf2 ; \cf6 // "all" or a tabKey\cf2 \
+\cf11 let\cf2  \cf3 selectedFocusValue\cf2  \cf8 =\cf2  \cf5 ""\cf2 ; \cf6 // `$\{tabKey\}::$\{taskText\}`\cf2 \
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* Timer state */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 let\cf2  \cf3 remainingSeconds\cf2  \cf8 =\cf2  \cf3 0\cf2 ;\
+\cf11 let\cf2  \cf3 intervalId\cf2  \cf8 =\cf2  \cf12 null\cf2 ;\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Celebration (confetti + modal)\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\
+\cf6 // Track whether each tab WAS complete last time we checked.\cf2 \
+\cf6 // We only celebrate when it flips from false -> true.\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 let\cf2  \cf3 TAB_COMPLETE_LAST\cf2  \cf8 =\cf2  \{\
+  dueToday: \cf12 false\cf2 ,\
+  soon: \cf12 false\cf2 ,\
+  asSoonAsICan: \cf12 false\cf2 ,\
+  dontForget: \cf12 false\cf2 ,\
+\};\
+\
+\cf11 function\cf2  \cf13 isTabComplete\cf2 (\cf3 tabKey\cf2 ) \{\
+  \cf11 const\cf2  \cf3 total\cf2  \cf8 =\cf2  (\cf3 TASKS_BY_TAB\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  []).\cf9 length\cf2 ;\
+  \cf11 const\cf2  \cf3 done\cf2  \cf8 =\cf2  (\cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  []).\cf9 length\cf2 ;\
+  \cf11 return\cf2  \cf3 total\cf2  \cf8 >\cf2  \cf3 0\cf2  \cf8 &&\cf2  \cf3 done\cf2  \cf8 >=\cf2  \cf3 total\cf2 ;\
+\}\
+\
+\cf11 function\cf2  \cf13 syncTabCompleteLast\cf2 (\cf3 tabKey\cf2 ) \{\
+  \cf3 TAB_COMPLETE_LAST\cf2 [\cf3 tabKey\cf2 ] \cf8 =\cf2  \cf13 isTabComplete\cf2 (\cf3 tabKey\cf2 );\
+\}\
+\
+\cf11 function\cf2  \cf13 initTabCompleteLast\cf2 () \{\
+  \cf3 TAB_ORDER\cf2 .\cf13 forEach\cf2 ((\cf3 k\cf2 ) \cf11 =>\cf2  \{\
+    \cf3 TAB_COMPLETE_LAST\cf2 [\cf3 k\cf2 ] \cf8 =\cf2  \cf13 isTabComplete\cf2 (\cf3 k\cf2 );\
+  \});\
+\}\
+\
+\cf11 function\cf2  \cf13 openPrizeModal\cf2 () \{\
+  \cf11 const\cf2  \cf3 overlay\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "prizeOverlay"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 overlay\cf2 ) \cf11 return\cf2 ;\
+  \cf3 overlay\cf2 .\cf3 classList\cf2 .\cf13 remove\cf2 (\cf5 "is-hidden"\cf2 );\
+\}\
+\
+\cf11 function\cf2  \cf13 closePrizeModal\cf2 () \{\
+  \cf11 const\cf2  \cf3 overlay\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "prizeOverlay"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 overlay\cf2 ) \cf11 return\cf2 ;\
+  \cf3 overlay\cf2 .\cf3 classList\cf2 .\cf13 add\cf2 (\cf5 "is-hidden"\cf2 );\
+\}\
+\
+\cf11 function\cf2  \cf13 wirePrizeModalClose\cf2 () \{\
+  \cf11 const\cf2  \cf3 overlay\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "prizeOverlay"\cf2 );\
+  \cf11 const\cf2  \cf3 btn\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "backToItBtn"\cf2 );\
+\
+  \cf11 if\cf2  (\cf3 btn\cf2 ) \cf3 btn\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , () \cf11 =>\cf2  \cf13 closePrizeModal\cf2 ());\
+\
+  \cf6 // click outside modal closes\cf2 \
+  \cf11 if\cf2  (\cf3 overlay\cf2 ) \{\
+    \cf3 overlay\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , (\cf3 event\cf2 ) \cf11 =>\cf2  \{\
+      \cf11 if\cf2  (\cf3 event\cf2 .\cf11 target\cf2  \cf8 ===\cf2  \cf3 overlay\cf2 ) \cf13 closePrizeModal\cf2 ();\
+    \});\
+  \}\
+\
+  \cf6 // ESC closes\cf2 \
+  \cf3 window\cf2 .\cf13 addEventListener\cf2 (\cf5 "keydown"\cf2 , (\cf3 event\cf2 ) \cf11 =>\cf2  \{\
+    \cf11 if\cf2  (\cf3 event\cf2 .\cf11 key\cf2  \cf8 ===\cf2  \cf5 "Escape"\cf2 ) \cf13 closePrizeModal\cf2 ();\
+  \});\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* JS-only confetti (no libraries) */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 fireConfettiBurst\cf2 () \{\
+  \cf6 // inject keyframes once\cf2 \
+  \cf11 if\cf2  (\cf8 !\cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "confettiStyles"\cf2 )) \{\
+    \cf11 const\cf2  \cf3 style\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "style"\cf2 );\
+    \cf3 style\cf2 .\cf11 id\cf2  \cf8 =\cf2  \cf5 "confettiStyles"\cf2 ;\
+    \cf3 style\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf5 `\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf5       @keyframes confettiFall \{\cf2 \
+\cf5         0% \{ transform: translateY(-10vh) rotate(0deg); opacity: 1; \}\cf2 \
+\cf5         100% \{ transform: translateY(110vh) rotate(720deg); opacity: 0; \}\cf2 \
+\cf5       \}\cf2 \
+\cf5     `\cf2 ;\
+    \cf3 document\cf2 .\cf3 head\cf2 .\cf13 appendChild\cf2 (\cf3 style\cf2 );\
+  \}\
+\
+  \cf11 const\cf2  \cf3 wrap\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "div"\cf2 );\
+  \cf3 wrap\cf2 .\cf3 style\cf2 .\cf11 position\cf2  \cf8 =\cf2  \cf5 "fixed"\cf2 ;\
+  \cf3 wrap\cf2 .\cf3 style\cf2 .\cf11 inset\cf2  \cf8 =\cf2  \cf5 "0"\cf2 ;\
+  \cf3 wrap\cf2 .\cf3 style\cf2 .\cf11 pointerEvents\cf2  \cf8 =\cf2  \cf5 "none"\cf2 ;\
+  \cf3 wrap\cf2 .\cf3 style\cf2 .\cf11 zIndex\cf2  \cf8 =\cf2  \cf5 "9999"\cf2 ;\
+\
+  \cf11 const\cf2  \cf3 colors\cf2  \cf8 =\cf2  [\cf5 "#c51616"\cf2 , \cf5 "#111"\cf2 , \cf5 "#f3f1e9"\cf2 , \cf5 "#eaeaea"\cf2 , \cf5 "#f0ecde"\cf2 ];\
+\
+  \cf11 for\cf2  (\cf11 let\cf2  \cf3 i\cf2  \cf8 =\cf2  \cf3 0\cf2 ; \cf3 i\cf2  \cf8 <\cf2  \cf3 80\cf2 ; \cf3 i\cf8 ++\cf2 ) \{\
+    \cf11 const\cf2  \cf3 bit\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "div"\cf2 );\
+    \cf11 const\cf2  \cf3 size\cf2  \cf8 =\cf2  \cf3 Math\cf2 .\cf13 random\cf2 () \cf8 *\cf2  \cf3 8\cf2  \cf8 +\cf2  \cf3 4\cf2 ;\
+\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 position\cf2  \cf8 =\cf2  \cf5 "absolute"\cf2 ;\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 top\cf2  \cf8 =\cf2  \cf5 "-10vh"\cf2 ;\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 left\cf2  \cf8 =\cf2  \cf3 Math\cf2 .\cf13 random\cf2 () \cf8 *\cf2  \cf3 100\cf2  \cf8 +\cf2  \cf5 "vw"\cf2 ;\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 width\cf2  \cf8 =\cf2  \cf3 size\cf2  \cf8 +\cf2  \cf5 "px"\cf2 ;\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 height\cf2  \cf8 =\cf2  \cf3 size\cf2  \cf8 *\cf2  \cf3 0.6\cf2  \cf8 +\cf2  \cf5 "px"\cf2 ;\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 background\cf2  \cf8 =\cf2  \cf3 colors\cf2 [\cf3 Math\cf2 .\cf13 floor\cf2 (\cf3 Math\cf2 .\cf13 random\cf2 () \cf8 *\cf2  \cf3 colors\cf2 .\cf9 length\cf2 )];\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 borderRadius\cf2  \cf8 =\cf2  \cf5 "2px"\cf2 ;\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 opacity\cf2  \cf8 =\cf2  \cf5 "0.95"\cf2 ;\
+\
+    \cf11 const\cf2  \cf3 duration\cf2  \cf8 =\cf2  \cf3 1.6\cf2  \cf8 +\cf2  \cf3 Math\cf2 .\cf13 random\cf2 () \cf8 *\cf2  \cf3 1.2\cf2 ;\
+    \cf11 const\cf2  \cf3 delay\cf2  \cf8 =\cf2  \cf3 Math\cf2 .\cf13 random\cf2 () \cf8 *\cf2  \cf3 0.15\cf2 ;\
+\
+    \cf3 bit\cf2 .\cf3 style\cf2 .\cf11 animation\cf2  \cf8 =\cf2  \cf5 `confettiFall \cf14 $\{\cf3 duration\cf14 \}\cf5 s linear \cf14 $\{\cf3 delay\cf14 \}\cf5 s forwards`\cf2 ;\
+\
+    \cf3 wrap\cf2 .\cf13 appendChild\cf2 (\cf3 bit\cf2 );\
+  \}\
+\
+  \cf3 document\cf2 .\cf3 body\cf2 .\cf13 appendChild\cf2 (\cf3 wrap\cf2 );\
+\
+  \cf13 setTimeout\cf2 (() \cf11 =>\cf2  \{\
+    \cf3 wrap\cf2 .\cf13 remove\cf2 ();\
+  \}, \cf3 3000\cf2 );\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 celebrateIfTabJustCompleted\cf2 (\cf3 tabKey\cf2 ) \{\
+  \cf11 const\cf2  \cf3 nowComplete\cf2  \cf8 =\cf2  \cf13 isTabComplete\cf2 (\cf3 tabKey\cf2 );\
+  \cf11 const\cf2  \cf3 wasComplete\cf2  \cf8 =\cf2  \cf3 TAB_COMPLETE_LAST\cf2 [\cf3 tabKey\cf2 ];\
+\
+  \cf6 // Only fire on transition: not complete -> complete\cf2 \
+  \cf11 if\cf2  (\cf8 !\cf3 wasComplete\cf2  \cf8 &&\cf2  \cf3 nowComplete\cf2 ) \{\
+    \cf6 // confetti + modal are non-critical \'97 fail gracefully if something goes wrong\cf2 \
+    \cf11 try\cf2  \{\
+      \cf13 fireConfettiBurst\cf2 ();\
+    \} \cf11 catch\cf2  (\cf3 e\cf2 ) \{\
+      \cf6 // no-op\cf2 \
+    \}\
+    \cf13 openPrizeModal\cf2 ();\
+  \}\
+\
+  \cf6 // update last-known state\cf2 \
+  \cf3 TAB_COMPLETE_LAST\cf2 [\cf3 tabKey\cf2 ] \cf8 =\cf2  \cf3 nowComplete\cf2 ;\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Persistence\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 normalizeState\cf2 () \{\
+  \cf3 TAB_ORDER\cf2 .\cf13 forEach\cf2 ((\cf3 k\cf2 ) \cf11 =>\cf2  \{\
+    \cf11 if\cf2  (\cf8 !\cf3 Array\cf2 .\cf13 isArray\cf2 (\cf3 TASKS_BY_TAB\cf2 [\cf3 k\cf2 ])) \cf3 TASKS_BY_TAB\cf2 [\cf3 k\cf2 ] \cf8 =\cf2  [];\
+    \cf11 if\cf2  (\cf8 !\cf3 Array\cf2 .\cf13 isArray\cf2 (\cf3 COMPLETED_TASKS\cf2 [\cf3 k\cf2 ])) \cf3 COMPLETED_TASKS\cf2 [\cf3 k\cf2 ] \cf8 =\cf2  [];\
+  \});\
+\
+  \cf11 if\cf2  (\cf8 !\cf3 TAB_ORDER\cf2 .\cf13 includes\cf2 (\cf3 activeTabKey\cf2 )) \cf3 activeTabKey\cf2  \cf8 =\cf2  \cf3 TAB_ORDER\cf2 [\cf3 0\cf2 ];\
+  \cf11 if\cf2  (\cf3 focusScope\cf2  \cf8 !==\cf2  \cf5 "all"\cf2  \cf8 &&\cf2  \cf8 !\cf3 TAB_ORDER\cf2 .\cf13 includes\cf2 (\cf3 focusScope\cf2 )) \cf3 focusScope\cf2  \cf8 =\cf2  \cf3 activeTabKey\cf2 ;\
+  \cf11 if\cf2  (\cf8 typeof\cf2  \cf3 selectedFocusValue\cf2  \cf8 !==\cf2  \cf5 "string"\cf2 ) \cf3 selectedFocusValue\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+\}\
+\
+\cf11 function\cf2  \cf13 saveState\cf2 () \{\
+  \cf11 const\cf2  \cf3 state\cf2  \cf8 =\cf2  \{\
+    tasksByTab: \cf3 TASKS_BY_TAB\cf2 ,\
+    completedByTab: \cf3 COMPLETED_TASKS\cf2 ,\
+    \cf3 activeTabKey\cf2 ,\
+    \cf3 focusScope\cf2 ,\
+    \cf3 selectedFocusValue\cf2 ,\
+  \};\
+  \cf11 try\cf2  \{\
+    \cf3 localStorage\cf2 .\cf13 setItem\cf2 (\cf3 STORAGE_KEY\cf2 , \cf3 JSON\cf2 .\cf13 stringify\cf2 (\cf3 state\cf2 ));\
+  \} \cf11 catch\cf2  (\cf3 e\cf2 ) \{\
+    \cf6 // localStorage may be unavailable in some environments; keep app usable\cf2 \
+    \cf3 console\cf2 .\cf13 warn\cf2 (\cf5 "Could not save state:"\cf2 , \cf3 e\cf2 );\
+  \}\
+\}\
+\
+\cf11 function\cf2  \cf13 loadState\cf2 () \{\
+  \cf11 const\cf2  \cf3 raw\cf2  \cf8 =\cf2  \cf3 localStorage\cf2 .\cf13 getItem\cf2 (\cf3 STORAGE_KEY\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 raw\cf2 ) \cf11 return\cf2 ;\
+\
+  \cf11 try\cf2  \{\
+    \cf11 const\cf2  \cf3 parsed\cf2  \cf8 =\cf2  \cf3 JSON\cf2 .\cf13 parse\cf2 (\cf3 raw\cf2 );\
+\
+    \cf11 if\cf2  (\cf3 parsed\cf2 .\cf11 tasksByTab\cf2  \cf8 &&\cf2  \cf8 typeof\cf2  \cf3 parsed\cf2 .\cf11 tasksByTab\cf2  \cf8 ===\cf2  \cf5 "object"\cf2 ) \{\
+      \cf3 TASKS_BY_TAB\cf2  \cf8 =\cf2  \cf3 parsed\cf2 .\cf11 tasksByTab\cf2 ;\
+    \}\
+    \cf11 if\cf2  (\cf3 parsed\cf2 .\cf11 completedByTab\cf2  \cf8 &&\cf2  \cf8 typeof\cf2  \cf3 parsed\cf2 .\cf11 completedByTab\cf2  \cf8 ===\cf2  \cf5 "object"\cf2 ) \{\
+      \cf3 COMPLETED_TASKS\cf2  \cf8 =\cf2  \cf3 parsed\cf2 .\cf11 completedByTab\cf2 ;\
+    \}\
+    \cf11 if\cf2  (\cf8 typeof\cf2  \cf3 parsed\cf2 .\cf11 activeTabKey\cf2  \cf8 ===\cf2  \cf5 "string"\cf2  \cf8 &&\cf2  \cf3 TAB_ORDER\cf2 .\cf13 includes\cf2 (\cf3 parsed\cf2 .\cf11 activeTabKey\cf2 )) \{\
+      \cf3 activeTabKey\cf2  \cf8 =\cf2  \cf3 parsed\cf2 .\cf11 activeTabKey\cf2 ;\
+    \}\
+    \cf11 if\cf2  (\cf8 typeof\cf2  \cf3 parsed\cf2 .\cf11 focusScope\cf2  \cf8 ===\cf2  \cf5 "string"\cf2 ) \cf3 focusScope\cf2  \cf8 =\cf2  \cf3 parsed\cf2 .\cf11 focusScope\cf2 ;\
+    \cf11 if\cf2  (\cf8 typeof\cf2  \cf3 parsed\cf2 .\cf11 selectedFocusValue\cf2  \cf8 ===\cf2  \cf5 "string"\cf2 ) \cf3 selectedFocusValue\cf2  \cf8 =\cf2  \cf3 parsed\cf2 .\cf11 selectedFocusValue\cf2 ;\
+\
+    \cf13 normalizeState\cf2 ();\
+    \cf6 // Ensure the baseline for celebration logic reflects the loaded state\cf2 \
+    \cf13 initTabCompleteLast\cf2 ();\
+  \} \cf11 catch\cf2  (\cf3 err\cf2 ) \{\
+    \cf3 console\cf2 .\cf13 warn\cf2 (\cf5 "Saved state corrupted; using defaults."\cf2 , \cf3 err\cf2 );\
+    \cf13 normalizeState\cf2 ();\
+    \cf13 initTabCompleteLast\cf2 ();\
+  \}\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Helpers\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 makeTaskValue\cf2 (\cf3 tabKey\cf2 , \cf3 taskText\cf2 ) \{\
+  \cf11 return\cf2  \cf5 `\cf14 $\{\cf3 tabKey\cf14 \}\cf5 ::\cf14 $\{\cf3 taskText\cf14 \}\cf5 `\cf2 ;\
+\}\
+\
+\cf11 function\cf2  \cf13 parseTaskValue\cf2 (\cf3 value\cf2 ) \{\
+  \cf11 const\cf2  [\cf3 tabKey\cf2 , \cf8 ...\cf3 rest\cf2 ] \cf8 =\cf2  (\cf3 value\cf2  \cf8 ||\cf2  \cf5 ""\cf2 ).\cf13 split\cf2 (\cf5 "::"\cf2 );\
+  \cf11 return\cf2  \{ \cf3 tabKey\cf2 , taskText: \cf3 rest\cf2 .\cf13 join\cf2 (\cf5 "::"\cf2 ) \};\
+\}\
+\
+\cf11 function\cf2  \cf13 getIncompleteTasks\cf2 (\cf3 tabKey\cf2 ) \{\
+  \cf11 const\cf2  \cf3 all\cf2  \cf8 =\cf2  \cf3 TASKS_BY_TAB\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  [];\
+  \cf11 const\cf2  \cf3 done\cf2  \cf8 =\cf2  \cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  [];\
+  \cf11 return\cf2  \cf3 all\cf2 .\cf13 filter\cf2 ((\cf3 t\cf2 ) \cf11 =>\cf2  \cf8 !\cf3 done\cf2 .\cf13 includes\cf2 (\cf3 t\cf2 ));\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    UI sync\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 syncHeadings\cf2 (\cf3 tabKey\cf2 ) \{\
+  \cf11 const\cf2  \cf3 tasksHeading\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "tasksHeading"\cf2 );\
+  \cf11 const\cf2  \cf3 label\cf2  \cf8 =\cf2  \cf3 TAB_LABELS\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  \cf3 tabKey\cf2 ;\
+  \cf11 if\cf2  (\cf3 tasksHeading\cf2 ) \cf3 tasksHeading\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf5 `\cf14 $\{\cf3 label\cf14 \}\cf5 :`\cf2 ;\
+\}\
+\
+\cf11 function\cf2  \cf13 syncActiveTabUI\cf2 (\cf3 tabsNodeList\cf2 , \cf3 tabKey\cf2 ) \{\
+  \cf3 tabsNodeList\cf2 .\cf13 forEach\cf2 ((\cf3 t\cf2 ) \cf11 =>\cf2  \{\
+    \cf11 const\cf2  \cf3 isActive\cf2  \cf8 =\cf2  \cf3 t\cf2 .\cf3 dataset\cf2 .\cf11 tab\cf2  \cf8 ===\cf2  \cf3 tabKey\cf2 ;\
+    \cf3 t\cf2 .\cf3 classList\cf2 .\cf13 toggle\cf2 (\cf5 "tab--active"\cf2 , \cf3 isActive\cf2 );\
+    \cf11 if\cf2  (\cf3 isActive\cf2 ) \cf3 t\cf2 .\cf13 setAttribute\cf2 (\cf5 "aria-current"\cf2 , \cf5 "page"\cf2 );\
+    \cf11 else\cf2  \cf3 t\cf2 .\cf13 removeAttribute\cf2 (\cf5 "aria-current"\cf2 );\
+  \});\
+\}\
+\
+\cf11 function\cf2  \cf13 syncCurrentTaskText\cf2 () \{\
+  \cf11 const\cf2  \cf3 wrap\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "currentTaskText"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 wrap\cf2 ) \cf11 return\cf2 ;\
+\
+  \cf11 const\cf2  \cf3 nameEl\cf2  \cf8 =\cf2  \cf3 wrap\cf2 .\cf13 querySelector\cf2 (\cf5 ".current-task__name"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 nameEl\cf2 ) \cf11 return\cf2 ;\
+\
+  \cf11 if\cf2  (\cf8 !\cf3 selectedFocusValue\cf2 ) \{\
+    \cf3 nameEl\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf5 "(none)"\cf2 ;\
+    \cf11 return\cf2 ;\
+  \}\
+\
+  \cf11 const\cf2  \{ \cf3 taskText\cf2  \} \cf8 =\cf2  \cf13 parseTaskValue\cf2 (\cf3 selectedFocusValue\cf2 );\
+  \cf3 nameEl\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf3 taskText\cf2  \cf8 ||\cf2  \cf5 "(none)"\cf2 ;\
+\}\
+\
+\cf11 function\cf2  \cf13 updateProgress\cf2 () \{\
+  \cf11 const\cf2  \cf3 progressText\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "progressText"\cf2 );\
+  \cf11 const\cf2  \cf3 breakdown\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "progressBreakdown"\cf2 );\
+\
+  \cf11 let\cf2  \cf3 total\cf2  \cf8 =\cf2  \cf3 0\cf2 ;\
+  \cf11 let\cf2  \cf3 done\cf2  \cf8 =\cf2  \cf3 0\cf2 ;\
+\
+  \cf3 TAB_ORDER\cf2 .\cf13 forEach\cf2 ((\cf3 tabKey\cf2 ) \cf11 =>\cf2  \{\
+    \cf3 total\cf2  \cf8 +=\cf2  (\cf3 TASKS_BY_TAB\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  []).\cf9 length\cf2 ;\
+    \cf3 done\cf2  \cf8 +=\cf2  (\cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  []).\cf9 length\cf2 ;\
+  \});\
+\
+  \cf11 if\cf2  (\cf3 progressText\cf2 ) \cf3 progressText\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf5 `\cf14 $\{\cf3 done\cf14 \}\cf5  / \cf14 $\{\cf3 total\cf14 \}\cf5  TASKS DONE`\cf2 ;\
+\
+  \cf11 if\cf2  (\cf3 breakdown\cf2 ) \{\
+    \cf3 breakdown\cf2 .\cf11 innerHTML\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+    \cf3 TAB_ORDER\cf2 .\cf13 forEach\cf2 ((\cf3 tabKey\cf2 ) \cf11 =>\cf2  \{\
+      \cf11 const\cf2  \cf3 t\cf2  \cf8 =\cf2  (\cf3 TASKS_BY_TAB\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  []).\cf9 length\cf2 ;\
+      \cf11 const\cf2  \cf3 d\cf2  \cf8 =\cf2  (\cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  []).\cf9 length\cf2 ;\
+      \cf11 const\cf2  \cf3 li\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "li"\cf2 );\
+      \cf3 li\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf5 `\cf14 $\{\cf3 TAB_LABELS\cf2 [\cf3 tabKey\cf2 ]\cf14 \}\cf5 : \cf14 $\{\cf3 d\cf14 \}\cf5  / \cf14 $\{\cf3 t\cf14 \}\cf5 `\cf2 ;\
+      \cf3 breakdown\cf2 .\cf13 appendChild\cf2 (\cf3 li\cf2 );\
+    \});\
+  \}\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Completed render (grouped)\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 renderCompletedGrouped\cf2 () \{\
+  \cf11 const\cf2  \cf3 groups\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "completedGroups"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 groups\cf2 ) \cf11 return\cf2 ;\
+\
+  \cf3 groups\cf2 .\cf11 innerHTML\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+\
+  \cf3 TAB_ORDER\cf2 .\cf13 forEach\cf2 ((\cf3 tabKey\cf2 ) \cf11 =>\cf2  \{\
+    \cf11 const\cf2  \cf3 done\cf2  \cf8 =\cf2  \cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  [];\
+    \cf11 if\cf2  (\cf3 done\cf2 .\cf9 length\cf2  \cf8 ===\cf2  \cf3 0\cf2 ) \cf11 return\cf2 ;\
+\
+    \cf11 const\cf2  \cf3 section\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "section"\cf2 );\
+    \cf3 section\cf2 .\cf11 className\cf2  \cf8 =\cf2  \cf5 "completed-group"\cf2 ;\
+\
+    \cf11 const\cf2  \cf3 h3\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "h3"\cf2 );\
+    \cf3 h3\cf2 .\cf11 className\cf2  \cf8 =\cf2  \cf5 "completed-subheading"\cf2 ;\
+    \cf3 h3\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf3 TAB_LABELS\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  \cf3 tabKey\cf2 ;\
+\
+    \cf11 const\cf2  \cf3 ul\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "ul"\cf2 );\
+    \cf3 ul\cf2 .\cf11 className\cf2  \cf8 =\cf2  \cf5 "completed-list"\cf2 ;\
+\
+    \cf3 done\cf2 .\cf13 forEach\cf2 ((\cf3 taskText\cf2 ) \cf11 =>\cf2  \{\
+      \cf11 const\cf2  \cf3 li\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "li"\cf2 );\
+      \cf3 li\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf3 taskText\cf2 ;\
+      \cf3 ul\cf2 .\cf13 appendChild\cf2 (\cf3 li\cf2 );\
+    \});\
+\
+    \cf3 section\cf2 .\cf13 appendChild\cf2 (\cf3 h3\cf2 );\
+    \cf3 section\cf2 .\cf13 appendChild\cf2 (\cf3 ul\cf2 );\
+    \cf3 groups\cf2 .\cf13 appendChild\cf2 (\cf3 section\cf2 );\
+  \});\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Focus dropdown builder\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 buildFocusSelect\cf2 (\cf3 valueToSelect\cf2 ) \{\
+  \cf11 const\cf2  \cf3 focusSelect\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "focusSelect"\cf2 );\
+  \cf11 const\cf2  \cf3 focusTabSelect\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "focusTabSelect"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 focusSelect\cf2 ) \cf11 return\cf2 ;\
+\
+  \cf11 const\cf2  \cf3 desired\cf2  \cf8 =\cf2  \cf3 valueToSelect\cf2  \cf8 ??\cf2  \cf3 selectedFocusValue\cf2  \cf8 ??\cf2  \cf3 focusSelect\cf2 .\cf11 value\cf2 ;\
+\
+  \cf11 if\cf2  (\cf3 focusTabSelect\cf2 ) \cf3 focusTabSelect\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf3 focusScope\cf2 ;\
+\
+  \cf3 focusSelect\cf2 .\cf11 innerHTML\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+  \cf11 const\cf2  \cf3 base\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "option"\cf2 );\
+  \cf3 base\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+  \cf3 base\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf5 "(Pick a task)"\cf2 ;\
+  \cf3 focusSelect\cf2 .\cf13 appendChild\cf2 (\cf3 base\cf2 );\
+\
+  \cf11 const\cf2  \cf13 addOption\cf2  \cf8 =\cf2  (\cf3 tabKey\cf2 , \cf3 taskText\cf2 , \cf3 parent\cf2 ) \cf11 =>\cf2  \{\
+    \cf11 const\cf2  \cf3 opt\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "option"\cf2 );\
+    \cf3 opt\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf13 makeTaskValue\cf2 (\cf3 tabKey\cf2 , \cf3 taskText\cf2 );\
+    \cf3 opt\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf3 taskText\cf2 ;\
+    \cf3 parent\cf2 .\cf13 appendChild\cf2 (\cf3 opt\cf2 );\
+  \};\
+\
+  \cf11 if\cf2  (\cf3 focusScope\cf2  \cf8 ===\cf2  \cf5 "all"\cf2 ) \{\
+    \cf3 TAB_ORDER\cf2 .\cf13 forEach\cf2 ((\cf3 tabKey\cf2 ) \cf11 =>\cf2  \{\
+      \cf11 const\cf2  \cf3 tasks\cf2  \cf8 =\cf2  \cf13 getIncompleteTasks\cf2 (\cf3 tabKey\cf2 );\
+      \cf11 if\cf2  (\cf3 tasks\cf2 .\cf9 length\cf2  \cf8 ===\cf2  \cf3 0\cf2 ) \cf11 return\cf2 ;\
+\
+      \cf11 const\cf2  \cf3 og\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "optgroup"\cf2 );\
+      \cf3 og\cf2 .\cf11 label\cf2  \cf8 =\cf2  \cf3 TAB_LABELS\cf2 [\cf3 tabKey\cf2 ] \cf8 ||\cf2  \cf3 tabKey\cf2 ;\
+\
+      \cf3 tasks\cf2 .\cf13 forEach\cf2 ((\cf3 taskText\cf2 ) \cf11 =>\cf2  \cf13 addOption\cf2 (\cf3 tabKey\cf2 , \cf3 taskText\cf2 , \cf3 og\cf2 ));\
+      \cf3 focusSelect\cf2 .\cf13 appendChild\cf2 (\cf3 og\cf2 );\
+    \});\
+  \} \cf11 else\cf2  \{\
+    \cf11 const\cf2  \cf3 tasks\cf2  \cf8 =\cf2  \cf13 getIncompleteTasks\cf2 (\cf3 focusScope\cf2 );\
+    \cf3 tasks\cf2 .\cf13 forEach\cf2 ((\cf3 taskText\cf2 ) \cf11 =>\cf2  \cf13 addOption\cf2 (\cf3 focusScope\cf2 , \cf3 taskText\cf2 , \cf3 focusSelect\cf2 ));\
+  \}\
+\
+  \cf11 const\cf2  \cf3 exists\cf2  \cf8 =\cf2  \cf3 Array\cf2 .\cf13 from\cf2 (\cf3 focusSelect\cf2 .\cf11 options\cf2 ).\cf13 some\cf2 ((\cf3 o\cf2 ) \cf11 =>\cf2  \cf3 o\cf2 .\cf11 value\cf2  \cf8 ===\cf2  \cf3 desired\cf2 );\
+  \cf3 selectedFocusValue\cf2  \cf8 =\cf2  \cf3 exists\cf2  \cf8 ?\cf2  \cf3 desired\cf2  \cf8 :\cf2  \cf5 ""\cf2 ;\
+  \cf3 focusSelect\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf3 selectedFocusValue\cf2 ;\
+\
+  \cf13 syncCurrentTaskText\cf2 ();\
+  \cf13 renderTasks\cf2 (\cf3 activeTabKey\cf2 );\
+  \cf13 saveState\cf2 ();\
+\}\
+\
+\cf11 function\cf2  \cf13 setSelectedFocus\cf2 (\cf3 value\cf2 ) \{\
+  \cf3 selectedFocusValue\cf2  \cf8 =\cf2  \cf3 value\cf2  \cf8 ||\cf2  \cf5 ""\cf2 ;\
+  \cf13 buildFocusSelect\cf2 (\cf3 selectedFocusValue\cf2 );\
+  \cf13 syncCurrentTaskText\cf2 ();\
+  \cf13 renderTasks\cf2 (\cf3 activeTabKey\cf2 );\
+  \cf13 saveState\cf2 ();\
+\}\
+\
+\cf11 function\cf2  \cf13 clearSelectedFocus\cf2 () \{\
+  \cf13 setSelectedFocus\cf2 (\cf5 ""\cf2 );\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Tasks render\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 renderTasks\cf2 (\cf3 tabKey\cf2 ) \{\
+  \cf11 const\cf2  \cf3 taskList\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "taskList"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 taskList\cf2 ) \cf11 return\cf2 ;\
+\
+  \cf3 taskList\cf2 .\cf11 innerHTML\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+\
+  \cf11 const\cf2  \cf3 remaining\cf2  \cf8 =\cf2  \cf13 getIncompleteTasks\cf2 (\cf3 tabKey\cf2 );\
+\
+  \cf3 remaining\cf2 .\cf13 forEach\cf2 ((\cf3 taskText\cf2 ) \cf11 =>\cf2  \{\
+    \cf11 const\cf2  \cf3 value\cf2  \cf8 =\cf2  \cf13 makeTaskValue\cf2 (\cf3 tabKey\cf2 , \cf3 taskText\cf2 );\
+\
+    \cf11 const\cf2  \cf3 li\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 createElement\cf2 (\cf5 "li"\cf2 );\
+    \cf3 li\cf2 .\cf11 className\cf2  \cf8 =\cf2  \cf5 "task"\cf2 ;\
+    \cf11 if\cf2  (\cf3 value\cf2  \cf8 ===\cf2  \cf3 selectedFocusValue\cf2 ) \cf3 li\cf2 .\cf3 classList\cf2 .\cf13 add\cf2 (\cf5 "task--selected"\cf2 );\
+\
+    \cf3 li\cf2 .\cf11 innerHTML\cf2  \cf8 =\cf2  \cf5 `\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf5       <label class="task-row">\cf2 \
+\cf5         <input class="task-checkbox" type="checkbox" />\cf2 \
+\cf5         <span class="task-text"></span>\cf2 \
+\cf5       </label>\cf2 \
+\cf5     `\cf2 ;\
+\
+    \cf3 li\cf2 .\cf13 querySelector\cf2 (\cf5 ".task-text"\cf2 ).\cf11 textContent\cf2  \cf8 =\cf2  \cf3 taskText\cf2 ;\
+    \cf3 taskList\cf2 .\cf13 appendChild\cf2 (\cf3 li\cf2 );\
+\
+    \cf11 const\cf2  \cf3 checkbox\cf2  \cf8 =\cf2  \cf3 li\cf2 .\cf13 querySelector\cf2 (\cf5 ".task-checkbox"\cf2 );\
+\
+    \cf6 // Prevent checkbox click from selecting the row\cf2 \
+    \cf3 checkbox\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , (\cf3 event\cf2 ) \cf11 =>\cf2  \cf3 event\cf2 .\cf13 stopPropagation\cf2 ());\
+\
+    \cf6 // Click row selects CURRENT task\cf2 \
+    \cf3 li\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , () \cf11 =>\cf2  \{\
+      \cf11 const\cf2  \cf3 focusTabSelect\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "focusTabSelect"\cf2 );\
+      \cf11 if\cf2  (\cf3 focusTabSelect\cf2  \cf8 &&\cf2  \cf3 focusScope\cf2  \cf8 !==\cf2  \cf5 "all"\cf2  \cf8 &&\cf2  \cf3 focusScope\cf2  \cf8 !==\cf2  \cf3 tabKey\cf2 ) \{\
+        \cf3 focusScope\cf2  \cf8 =\cf2  \cf5 "all"\cf2 ;\
+        \cf3 focusTabSelect\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf5 "all"\cf2 ;\
+      \}\
+      \cf13 setSelectedFocus\cf2 (\cf3 value\cf2 );\
+    \});\
+\
+    \cf6 // Checkbox completes task\cf2 \
+    \cf3 checkbox\cf2 .\cf13 addEventListener\cf2 (\cf5 "change"\cf2 , (\cf3 event\cf2 ) \cf11 =>\cf2  \{\
+      \cf11 if\cf2  (\cf8 !\cf3 event\cf2 .\cf3 target\cf2 .\cf11 checked\cf2 ) \cf11 return\cf2 ;\
+\
+      \cf11 if\cf2  (\cf8 !\cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ]) \cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ] \cf8 =\cf2  [];\
+      \cf11 if\cf2  (\cf8 !\cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ].\cf13 includes\cf2 (\cf3 taskText\cf2 )) \{\
+        \cf3 COMPLETED_TASKS\cf2 [\cf3 tabKey\cf2 ].\cf13 push\cf2 (\cf3 taskText\cf2 );\
+      \}\
+\
+      \cf11 if\cf2  (\cf3 selectedFocusValue\cf2  \cf8 ===\cf2  \cf3 value\cf2 ) \cf3 selectedFocusValue\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+\
+      \cf13 saveState\cf2 ();\
+      \cf13 syncCurrentTaskText\cf2 ();\
+      \cf13 renderTasks\cf2 (\cf3 tabKey\cf2 );\
+      \cf13 renderCompletedGrouped\cf2 ();\
+      \cf13 buildFocusSelect\cf2 ();\
+      \cf13 updateProgress\cf2 ();\
+\
+      \cf6 // 
+\f3 \uc0\u9989 
+\f2  celebration after UI updates\cf2 \
+      \cf13 celebrateIfTabJustCompleted\cf2 (\cf3 tabKey\cf2 );\
+    \});\
+  \});\
+\}\
+\
+\cf6 /* -------------------------------\cf2 \
+\cf6    Add task\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 wireAddTaskForm\cf2 () \{\
+  \cf11 const\cf2  \cf3 form\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "taskAddForm"\cf2 );\
+  \cf11 const\cf2  \cf3 input\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "taskInput"\cf2 );\
+  \cf11 const\cf2  \cf3 error\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "taskError"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 form\cf2  \cf8 ||\cf2  \cf8 !\cf3 input\cf2 ) \cf11 return\cf2 ;\
+\
+  \cf3 form\cf2 .\cf13 addEventListener\cf2 (\cf5 "submit"\cf2 , (\cf3 event\cf2 ) \cf11 =>\cf2  \{\
+    \cf3 event\cf2 .\cf13 preventDefault\cf2 ();\
+\
+    \cf11 const\cf2  \cf3 raw\cf2  \cf8 =\cf2  \cf3 input\cf2 .\cf3 value\cf2 .\cf13 trim\cf2 ();\
+    \cf11 if\cf2  (\cf8 !\cf3 raw\cf2 ) \{\
+      \cf11 if\cf2  (\cf3 error\cf2 ) \cf3 error\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf5 "Type something first."\cf2 ;\
+      \cf11 return\cf2 ;\
+    \}\
+    \cf11 if\cf2  (\cf3 error\cf2 ) \cf3 error\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+\
+    \cf11 if\cf2  (\cf8 !\cf3 TASKS_BY_TAB\cf2 [\cf3 activeTabKey\cf2 ]) \cf3 TASKS_BY_TAB\cf2 [\cf3 activeTabKey\cf2 ] \cf8 =\cf2  [];\
+\
+    \cf11 if\cf2  (\cf8 !\cf3 TASKS_BY_TAB\cf2 [\cf3 activeTabKey\cf2 ].\cf13 includes\cf2 (\cf3 raw\cf2 )) \{\
+      \cf3 TASKS_BY_TAB\cf2 [\cf3 activeTabKey\cf2 ].\cf13 push\cf2 (\cf3 raw\cf2 );\
+    \}\
+\
+    \cf6 // Adding a task can make a previously-complete tab incomplete again\cf2 \
+    \cf6 // Sync last-known completion so it can be celebrated again once re-finished\cf2 \
+    \cf13 syncTabCompleteLast\cf2 (\cf3 activeTabKey\cf2 );\
+\
+    \cf11 const\cf2  \cf3 focusTabSelect\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "focusTabSelect"\cf2 );\
+    \cf11 if\cf2  (\cf3 focusTabSelect\cf2 ) \{\
+      \cf3 focusScope\cf2  \cf8 =\cf2  \cf3 activeTabKey\cf2 ;\
+      \cf3 focusTabSelect\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf3 activeTabKey\cf2 ;\
+    \}\
+\
+    \cf11 const\cf2  \cf3 newValue\cf2  \cf8 =\cf2  \cf13 makeTaskValue\cf2 (\cf3 activeTabKey\cf2 , \cf3 raw\cf2 );\
+    \cf3 selectedFocusValue\cf2  \cf8 =\cf2  \cf3 newValue\cf2 ;\
+\
+    \cf13 saveState\cf2 ();\
+\
+    \cf13 renderTasks\cf2 (\cf3 activeTabKey\cf2 );\
+    \cf13 renderCompletedGrouped\cf2 ();\
+    \cf13 buildFocusSelect\cf2 (\cf3 newValue\cf2 );\
+    \cf13 syncCurrentTaskText\cf2 ();\
+    \cf13 updateProgress\cf2 ();\
+\
+    \cf3 input\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+    \cf3 input\cf2 .\cf13 focus\cf2 ();\
+  \});\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Focus pickers\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 wireFocusPickers\cf2 () \{\
+  \cf11 const\cf2  \cf3 focusTabSelect\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "focusTabSelect"\cf2 );\
+  \cf11 const\cf2  \cf3 focusSelect\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "focusSelect"\cf2 );\
+\
+  \cf11 if\cf2  (\cf3 focusTabSelect\cf2 ) \{\
+    \cf3 focusTabSelect\cf2 .\cf13 addEventListener\cf2 (\cf5 "change"\cf2 , () \cf11 =>\cf2  \{\
+      \cf3 focusScope\cf2  \cf8 =\cf2  \cf3 focusTabSelect\cf2 .\cf11 value\cf2 ;\
+      \cf13 buildFocusSelect\cf2 ();\
+    \});\
+  \}\
+\
+  \cf11 if\cf2  (\cf3 focusSelect\cf2 ) \{\
+    \cf3 focusSelect\cf2 .\cf13 addEventListener\cf2 (\cf5 "change"\cf2 , () \cf11 =>\cf2  \{\
+      \cf11 const\cf2  \cf3 val\cf2  \cf8 =\cf2  \cf3 focusSelect\cf2 .\cf11 value\cf2  \cf8 ||\cf2  \cf5 ""\cf2 ;\
+      \cf11 if\cf2  (\cf8 !\cf3 val\cf2 ) \{\
+        \cf13 clearSelectedFocus\cf2 ();\
+        \cf11 return\cf2 ;\
+      \}\
+      \cf13 setSelectedFocus\cf2 (\cf3 val\cf2 );\
+    \});\
+  \}\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Reset\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 emptyState\cf2 () \{\
+  \cf11 return\cf2  \{ dueToday: [], soon: [], asSoonAsICan: [], dontForget: [] \};\
+\}\
+\
+\cf11 function\cf2  \cf13 wireResetButton\cf2 (\cf3 tabsNodeList\cf2 ) \{\
+  \cf11 const\cf2  \cf3 resetBtn\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "resetBtn"\cf2 );\
+  \cf11 if\cf2  (\cf8 !\cf3 resetBtn\cf2 ) \cf11 return\cf2 ;\
+\
+  \cf3 resetBtn\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , () \cf11 =>\cf2  \{\
+    \cf11 const\cf2  \cf3 ok\cf2  \cf8 =\cf2  \cf13 confirm\cf2 (\
+      \cf5 "
+\f3 \uc0\u55357 \u56483 
+\f2  YOU REALLY WANNA RE-SET EVERYTHING? 
+\f3 \uc0\u55357 \u56483 
+\f2 \cf10 \\n\cf5 This clears all tasks + completed items."\cf2 \
+    );\
+    \cf11 if\cf2  (\cf8 !\cf3 ok\cf2 ) \cf11 return\cf2 ;\
+\
+    \cf3 TASKS_BY_TAB\cf2  \cf8 =\cf2  \cf13 emptyState\cf2 ();\
+    \cf3 COMPLETED_TASKS\cf2  \cf8 =\cf2  \cf13 emptyState\cf2 ();\
+\
+    \cf3 activeTabKey\cf2  \cf8 =\cf2  \cf5 "dueToday"\cf2 ;\
+    \cf3 focusScope\cf2  \cf8 =\cf2  \cf5 "dueToday"\cf2 ;\
+    \cf3 selectedFocusValue\cf2  \cf8 =\cf2  \cf5 ""\cf2 ;\
+\
+    \cf13 stopInterval\cf2 ();\
+    \cf13 resetTimerToSelectedDuration\cf2 ();\
+\
+    \cf13 saveState\cf2 ();\
+\
+    \cf13 syncActiveTabUI\cf2 (\cf3 tabsNodeList\cf2 , \cf3 activeTabKey\cf2 );\
+    \cf13 syncHeadings\cf2 (\cf3 activeTabKey\cf2 );\
+\
+    \cf13 renderTasks\cf2 (\cf3 activeTabKey\cf2 );\
+    \cf13 renderCompletedGrouped\cf2 ();\
+    \cf13 buildFocusSelect\cf2 ();\
+    \cf13 syncCurrentTaskText\cf2 ();\
+    \cf13 updateProgress\cf2 ();\
+\
+    \cf13 initTabCompleteLast\cf2 ();\
+    \cf13 closePrizeModal\cf2 ();\
+  \});\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Timer (minimal wiring)\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf11 function\cf2  \cf13 formatTime\cf2 (\cf3 seconds\cf2 ) \{\
+  \cf11 const\cf2  \cf3 mm\cf2  \cf8 =\cf2  \cf13 String\cf2 (\cf3 Math\cf2 .\cf13 floor\cf2 (\cf3 seconds\cf2  \cf8 /\cf2  \cf3 60\cf2 )).\cf13 padStart\cf2 (\cf3 2\cf2 , \cf5 "0"\cf2 );\
+  \cf11 const\cf2  \cf3 ss\cf2  \cf8 =\cf2  \cf13 String\cf2 (\cf3 seconds\cf2  \cf8 %\cf2  \cf3 60\cf2 ).\cf13 padStart\cf2 (\cf3 2\cf2 , \cf5 "0"\cf2 );\
+  \cf11 return\cf2  \cf5 `\cf14 $\{\cf3 mm\cf14 \}\cf5 :\cf14 $\{\cf3 ss\cf14 \}\cf5 `\cf2 ;\
+\}\
+\
+\cf11 function\cf2  \cf13 setTimerDisplay\cf2 (\cf3 seconds\cf2 ) \{\
+  \cf11 const\cf2  \cf3 el\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "timerDisplay"\cf2 );\
+  \cf11 if\cf2  (\cf3 el\cf2 ) \cf3 el\cf2 .\cf11 textContent\cf2  \cf8 =\cf2  \cf13 formatTime\cf2 (\cf3 seconds\cf2 );\
+\}\
+\
+\cf11 function\cf2  \cf13 getSelectedDurationSeconds\cf2 () \{\
+  \cf11 const\cf2  \cf3 durationSelect\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "durationSelect"\cf2 );\
+  \cf11 const\cf2  \cf3 n\cf2  \cf8 =\cf2  \cf13 Number\cf2 (\cf3 durationSelect\cf2 ?.\cf11 value\cf2  \cf8 ??\cf2  \cf3 900\cf2 );\
+  \cf11 return\cf2  \cf3 Number\cf2 .\cf13 isFinite\cf2 (\cf3 n\cf2 ) \cf8 ?\cf2  \cf3 n\cf2  \cf8 :\cf2  \cf3 900\cf2 ;\
+\}\
+\
+\cf11 function\cf2  \cf13 resetTimerToSelectedDuration\cf2 () \{\
+  \cf3 remainingSeconds\cf2  \cf8 =\cf2  \cf13 getSelectedDurationSeconds\cf2 ();\
+  \cf13 setTimerDisplay\cf2 (\cf3 remainingSeconds\cf2 );\
+\}\
+\
+\cf11 function\cf2  \cf13 stopInterval\cf2 () \{\
+  \cf11 if\cf2  (\cf3 intervalId\cf2  \cf8 !==\cf2  \cf12 null\cf2 ) \{\
+    \cf13 clearInterval\cf2 (\cf3 intervalId\cf2 );\
+    \cf3 intervalId\cf2  \cf8 =\cf2  \cf12 null\cf2 ;\
+  \}\
+\}\
+\
+\cf11 function\cf2  \cf13 wireTimer\cf2 () \{\
+  \cf11 const\cf2  \cf3 startBtn\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "startBtn"\cf2 );\
+  \cf11 const\cf2  \cf3 pauseBtn\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "pauseBtn"\cf2 );\
+  \cf11 const\cf2  \cf3 stopBtn\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "stopBtn"\cf2 );\
+  \cf11 const\cf2  \cf3 durationSelect\cf2  \cf8 =\cf2  \cf3 document\cf2 .\cf13 getElementById\cf2 (\cf5 "durationSelect"\cf2 );\
+\
+  \cf11 if\cf2  (\cf8 !\cf3 startBtn\cf2  \cf8 ||\cf2  \cf8 !\cf3 pauseBtn\cf2  \cf8 ||\cf2  \cf8 !\cf3 stopBtn\cf2  \cf8 ||\cf2  \cf8 !\cf3 durationSelect\cf2 ) \{\
+    \cf3 console\cf2 .\cf13 warn\cf2 (\cf5 "Timer elements missing. Check IDs in index.html."\cf2 );\
+    \cf11 return\cf2 ;\
+  \}\
+\
+  \cf13 resetTimerToSelectedDuration\cf2 ();\
+\
+  \cf3 durationSelect\cf2 .\cf13 addEventListener\cf2 (\cf5 "change"\cf2 , () \cf11 =>\cf2  \{\
+    \cf11 if\cf2  (\cf3 intervalId\cf2  \cf8 ===\cf2  \cf12 null\cf2 ) \cf13 resetTimerToSelectedDuration\cf2 ();\
+  \});\
+\
+  \cf3 startBtn\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , () \cf11 =>\cf2  \{\
+    \cf11 if\cf2  (\cf8 !\cf3 selectedFocusValue\cf2 ) \{\
+      \cf13 alert\cf2 (\cf5 "Pick a task first. That becomes your CURRENT task."\cf2 );\
+      \cf11 return\cf2 ;\
+    \}\
+\
+    \cf11 if\cf2  (\cf3 intervalId\cf2  \cf8 !==\cf2  \cf12 null\cf2 ) \cf11 return\cf2 ;\
+    \cf11 if\cf2  (\cf3 remainingSeconds\cf2  \cf8 <=\cf2  \cf3 0\cf2 ) \cf13 resetTimerToSelectedDuration\cf2 ();\
+\
+    \cf3 intervalId\cf2  \cf8 =\cf2  \cf13 setInterval\cf2 (() \cf11 =>\cf2  \{\
+      \cf3 remainingSeconds\cf2  \cf8 -=\cf2  \cf3 1\cf2 ;\
+      \cf13 setTimerDisplay\cf2 (\cf3 remainingSeconds\cf2 );\
+\
+      \cf11 if\cf2  (\cf3 remainingSeconds\cf2  \cf8 <=\cf2  \cf3 0\cf2 ) \{\
+        \cf13 stopInterval\cf2 ();\
+        \cf3 remainingSeconds\cf2  \cf8 =\cf2  \cf3 0\cf2 ;\
+        \cf13 setTimerDisplay\cf2 (\cf3 0\cf2 );\
+      \}\
+    \}, \cf3 1000\cf2 );\
+  \});\
+\
+  \cf3 pauseBtn\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , () \cf11 =>\cf2  \cf13 stopInterval\cf2 ());\
+\
+  \cf3 stopBtn\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , () \cf11 =>\cf2  \{\
+    \cf13 stopInterval\cf2 ();\
+    \cf13 resetTimerToSelectedDuration\cf2 ();\
+  \});\
+\}\
+\
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf6 /* -------------------------------\cf2 \
+\cf6    Boot\cf2 \
+\cf6 -------------------------------- */\cf2 \
+\pard\pardeftab560\slleading20\partightenfactor0
+\cf9 document\cf2 .\cf13 addEventListener\cf2 (\cf5 "DOMContentLoaded"\cf2 , () \cf11 =>\cf2  \{\
+  \cf11 const\cf2  \cf3 tabs\cf2  \cf8 =\cf2  \cf9 document\cf2 .\cf13 querySelectorAll\cf2 (\cf5 ".tab"\cf2 );\
+\
+  \cf13 loadState\cf2 ();\
+  \cf13 normalizeState\cf2 ();\
+  \cf13 initTabCompleteLast\cf2 ();\
+\
+  \cf13 wirePrizeModalClose\cf2 ();\
+  \cf13 wireResetButton\cf2 (\cf3 tabs\cf2 );\
+  \cf13 wireAddTaskForm\cf2 ();\
+  \cf13 wireFocusPickers\cf2 ();\
+  \cf13 wireTimer\cf2 ();\
+\
+  \cf6 // Tab click behavior\cf2 \
+  \cf3 tabs\cf2 .\cf13 forEach\cf2 ((\cf3 tab\cf2 ) \cf11 =>\cf2  \{\
+    \cf3 tab\cf2 .\cf13 addEventListener\cf2 (\cf5 "click"\cf2 , () \cf11 =>\cf2  \{\
+      \cf3 activeTabKey\cf2  \cf8 =\cf2  \cf3 tab\cf2 .\cf3 dataset\cf2 .\cf11 tab\cf2 ;\
+\
+      \cf11 const\cf2  \cf3 focusTabSelect\cf2  \cf8 =\cf2  \cf9 document\cf2 .\cf13 getElementById\cf2 (\cf5 "focusTabSelect"\cf2 );\
+      \cf11 if\cf2  (\cf3 focusTabSelect\cf2 ) \{\
+        \cf3 focusScope\cf2  \cf8 =\cf2  \cf3 activeTabKey\cf2 ;\
+        \cf3 focusTabSelect\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf3 activeTabKey\cf2 ;\
+      \}\
+\
+      \cf13 syncActiveTabUI\cf2 (\cf3 tabs\cf2 , \cf3 activeTabKey\cf2 );\
+      \cf13 syncHeadings\cf2 (\cf3 activeTabKey\cf2 );\
+\
+      \cf13 renderTasks\cf2 (\cf3 activeTabKey\cf2 );\
+      \cf13 renderCompletedGrouped\cf2 ();\
+\
+      \cf13 buildFocusSelect\cf2 (\cf3 selectedFocusValue\cf2 );\
+      \cf13 syncCurrentTaskText\cf2 ();\
+\
+      \cf13 updateProgress\cf2 ();\
+      \cf13 saveState\cf2 ();\
+    \});\
+  \});\
+\
+  \cf6 // Initial paint\cf2 \
+  \cf11 const\cf2  \cf3 focusTabSelect\cf2  \cf8 =\cf2  \cf9 document\cf2 .\cf13 getElementById\cf2 (\cf5 "focusTabSelect"\cf2 );\
+  \cf11 if\cf2  (\cf3 focusTabSelect\cf2 ) \cf3 focusTabSelect\cf2 .\cf11 value\cf2  \cf8 =\cf2  \cf3 focusScope\cf2 ;\
+\
+  \cf13 syncActiveTabUI\cf2 (\cf3 tabs\cf2 , \cf3 activeTabKey\cf2 );\
+  \cf13 syncHeadings\cf2 (\cf3 activeTabKey\cf2 );\
+\
+  \cf13 renderTasks\cf2 (\cf3 activeTabKey\cf2 );\
+  \cf13 renderCompletedGrouped\cf2 ();\
+  \cf13 buildFocusSelect\cf2 (\cf3 selectedFocusValue\cf2 );\
+  \cf13 syncCurrentTaskText\cf2 ();\
+  \cf13 updateProgress\cf2 ();\
+\});\
+\pard\pardeftab560\slleading20\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+\pard\pardeftab560\slleading20\pardirnatural\partightenfactor0
+
+\f1\fs30 \cf0 \
+\
+}
