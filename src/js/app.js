@@ -24,7 +24,7 @@ const TAB_LABELS = {
   dueToday: "DUE TODAY",
   soon: "NEXT UP",
   asSoonAsICan: "WHEN I CAN",
-  dontForget: "DON’T FORGET",
+  dontForget: "DONT FORGET",
 };
 
 // Default seed (only used if no localStorage state exists)
@@ -190,23 +190,24 @@ function fireConfettiBurst() {
   wrap.style.zIndex = "9999";
 
   const colors = ["#c51616", "#111", "#f3f1e9", "#eaeaea", "#f0ecde"];
-
-  for (let i = 0; i < 80; i++) {
+  // increased count and larger size range for bigger confetti
+  for (let i = 0; i < 180; i++) {
     const bit = document.createElement("div");
-    const size = Math.random() * 8 + 4;
+    const size = Math.random() * 18 + 8; // bigger pieces
 
     bit.style.position = "absolute";
     bit.style.top = "-10vh";
     bit.style.left = Math.random() * 100 + "vw";
     bit.style.width = size + "px";
-    bit.style.height = size * 0.6 + "px";
+    bit.style.height = Math.max(4, size * (0.5 + Math.random() * 0.4)) + "px";
     bit.style.background = colors[Math.floor(Math.random() * colors.length)];
-    bit.style.borderRadius = "2px";
+    bit.style.borderRadius = Math.random() > 0.6 ? "50%" : "3px";
     bit.style.opacity = "0.95";
 
-    const duration = 1.6 + Math.random() * 1.2;
-    const delay = Math.random() * 0.15;
+    const duration = 2 + Math.random() * 2.2;
+    const delay = Math.random() * 0.35;
 
+    bit.style.transform = `rotate(${Math.random() * 360}deg)`;
     bit.style.animation = `confettiFall ${duration}s linear ${delay}s forwards`;
 
     wrap.appendChild(bit);
@@ -214,10 +215,12 @@ function fireConfettiBurst() {
 
   document.body.appendChild(wrap);
 
+  // keep on screen longer so larger pieces finish animating
   setTimeout(() => {
     wrap.remove();
-  }, 3000);
+  }, 5000);
 }
+/* ...existing code... */
 
 function celebrateIfTabJustCompleted(tabKey) {
   const nowComplete = isTabComplete(tabKey);
@@ -814,7 +817,9 @@ function wireTimer() {
     customHoursInput.addEventListener("change", () => applyCustomTimerStart());
   }
   if (customMinutesInput) {
-    customMinutesInput.addEventListener("change", () => applyCustomTimerStart());
+    customMinutesInput.addEventListener("change", () =>
+      applyCustomTimerStart(),
+    );
   }
 
   startBtn.addEventListener("click", () => startCountdown());
