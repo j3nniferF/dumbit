@@ -930,16 +930,8 @@ body::before {
 }
 
 .music {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 12px;
-  background: var(--paper-dark);
-  border: 1px solid var(--paper-border);
-  border-radius: 12px;
-  padding: 14px 18px;
-  box-shadow: var(--shadow-soft);
-  color: var(--ink);
+  display: none !important;
+  visibility: hidden !important;
 }
 
 .music-title {
@@ -1214,52 +1206,66 @@ section#timerCard {
   box-shadow: var(--shadow-strong);
 }
 
-.modal-title {
-  margin: 0 0 8px;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--accent-red);
+/* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
+
+/* Make the prize modal less dominant on small screens and cap GIF height */
+.modal {
+  /* keep defaults above; add better max-height handling for media */
+  max-width: 560px;
 }
 
-.modal-subtitle {
-  margin: 0 0 12px;
-  font-weight: 800;
-  text-transform: uppercase;
+.modal img.prize-gif {
+  width: 100%;
+  height: auto;
+  max-width: 420px;
+  max-height: 60vh; /* never exceed viewport height */
+  object-fit: contain;
+  display: block;
+  margin: 12px auto 0;
 }
 
-.prize-list {
-  margin: 0 0 16px;
-  padding-left: 22px;
-  line-height: 1.4;
-  font-weight: 700;
+/* Mobile-specific modal shrink + font scaling */
+@media (max-width: 420px) {
+  .modal {
+    max-width: 320px !important;
+    width: calc(100% - 30px) !important;
+    padding: 14px 12px !important;
+    margin: 0 8px;
+  }
+
+  .modal-title {
+    font-size: clamp(1.4rem, 6vw, 2rem) !important;
+    margin-bottom: 8px;
+  }
+
+  .modal {
+    font-size: 0.95rem !important;
+  }
+
+  .modal img.prize-gif {
+    max-width: 260px;
+    max-height: 48vh;
+  }
 }
 
-.btn--primary {
-  background: var(--ink);
-  color: #ffffff;
-  border: 2px solid var(--ink);
-  padding: 10px 18px;
-  font-weight: 900;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
+/* Make main site title larger & punchier (adjustable) */
+.title-line:first-child {
+  font-size: clamp(3.6rem, 10vw, 11.5rem) !important;
+  line-height: 0.92;
 }
 
-.modal--timer .modal-subtitle {
-  font-weight: 800;
-  text-transform: uppercase;
-  margin-bottom: 16px;
+.title-line:last-child {
+  font-size: clamp(1.8rem, 5.2vw, 5rem) !important;
 }
 
-.modal-hint {
-  margin: 0 0 16px;
-  font-weight: 700;
-  text-align: center;
+/* Stronger card title for visibility */
+.card-title {
+  font-size: clamp(1.9rem, 3.6vw, 3.6rem) !important;
 }
 
-.timer-modal-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
+/* Optional: slightly larger tab labels on small screens for legibility */
+@media (max-width: 640px) {
+  .tab {
+    font-size: clamp(1.2rem, 3.8vw, 1.8rem) !important;
+  }
 }

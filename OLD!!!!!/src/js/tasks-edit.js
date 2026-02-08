@@ -6,10 +6,11 @@ const PRIZE_GIF_URL =
   "https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif";
 
 /**
- * Insert the provided GIF into the prize modal.
+ * Insert the provided GIF into the prize modal (deferred load).
  */
 async function showPrizeSuggestion() {
-  console.log("showPrizeSuggestion() running (GIF-only)");
+  console.log("showPrizeSuggestion() running (GIF-only, deferred)");
+
   const prizeModal = document.getElementById("prizeModal");
   if (!prizeModal) return;
 
@@ -17,29 +18,100 @@ async function showPrizeSuggestion() {
   const existing = prizeModal.querySelector(".prize-gif");
   if (existing) existing.remove();
 
+  // create image but DON'T set src yet — avoids fetching until shown
   const img = document.createElement("img");
   img.className = "prize-gif";
-  img.src = PRIZE_GIF_URL;
   img.alt = "Celebration GIF";
+  img.loading = "lazy"; // hint to browser
+  img.decoding = "async";
   img.style.maxWidth = "320px";
   img.style.width = "100%";
   img.style.display = "block";
   img.style.margin = "12px auto 0";
+  // store the URL but don't assign .src until modal is visible
+  img.dataset.src = PRIZE_GIF_URL;
 
-  // insert before the prize list if present, otherwise append
   const prizeList = prizeModal.querySelector("#prizeList");
   if (prizeList) prizeModal.insertBefore(img, prizeList);
   else prizeModal.appendChild(img);
+
+  // If the modal is already visible, trigger the actual load immediately
+  const isVisible = !prizeModal
+    .closest(".modal-overlay")
+    ?.classList?.contains("is-hidden");
+  if (isVisible) {
+    img.src = img.dataset.src;
+  } else {
+    // otherwise, set it when the modal becomes visible (guard against multiple observers)
+    const overlay =
+      document.getElementById("prizeOverlay") ||
+      prizeModal.closest(".modal-overlay");
+    if (overlay) {
+      const onAttr = () => {
+        if (!overlay.classList.contains("is-hidden")) {
+          if (!img.src) img.src = img.dataset.src;
+          mo.disconnect();
+        }
+      };
+      const mo = new MutationObserver(onAttr);
+      mo.observe(overlay, { attributes: true, attributeFilter: ["class"] });
+    }
+  }
 }
 
-// Observe the prize overlay and run when it becomes visible
+/* Insert a short prize chime (WebAudio) and call it when the prize modal appears */
+function playPrizeSound() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    // reuse single AudioContext for subsequent plays
+    const ctx = (window._prizeAudioCtx =
+      window._prizeAudioCtx || new AudioCtx());
+    const now = ctx.currentTime;
+    const gain = ctx.createGain();
+    gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(0, now);
+
+    // small arpeggio/chime
+    const freqs = [880, 1320, 1760];
+    freqs.forEach((f, i) => {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.setValueAtTime(f, now + i * 0.07);
+      o.connect(gain);
+      o.start(now + i * 0.07);
+      o.stop(now + i * 0.07 + 0.16);
+    });
+
+    // simple envelope
+    gain.gain.linearRampToValueAtTime(0.9, now + 0.02);
+    gain.gain.linearRampToValueAtTime(0.0, now + freqs.length * 0.07 + 0.18);
+  } catch (err) {
+    console.warn("Prize sound failed:", err);
+  }
+}
+
+/* Call the chime whenever the prize overlay becomes visible */
 (function observePrizeOverlay() {
   const overlay = document.getElementById("prizeOverlay");
   if (!overlay) return;
 
   const mo = new MutationObserver(() => {
     const isHidden = overlay.classList.contains("is-hidden");
-    if (!isHidden) showPrizeSuggestion();
+    if (!isHidden) {
+      // play sound and show GIF/suggestion
+      try {
+        // resume audio context on user gesture if needed
+        if (
+          window._prizeAudioCtx &&
+          window._prizeAudioCtx.state === "suspended"
+        ) {
+          window._prizeAudioCtx.resume().catch(() => {});
+        }
+      } catch (e) {}
+      playPrizeSound();
+      if (typeof showPrizeSuggestion === "function") showPrizeSuggestion();
+    }
   });
 
   mo.observe(overlay, { attributes: true, attributeFilter: ["class"] });
@@ -48,94 +120,62 @@ async function showPrizeSuggestion() {
 // Expose for manual testing from the console
 window.showPrizeSuggestion = showPrizeSuggestion;
 
-/* DEBUG + ENSURE TITLE (auto-fix invisible/empty header) */
-function ensureAndStyleTitle() {
-  const header = document.getElementById("header");
-  let title = header && header.querySelector(".title");
+/* DEBUG: force title + hide music persistently, with logs */
+function ensureAndForceTitleAndHideMusic() {
+  try {
+    let header = document.getElementById("header");
+    if (!header) {
+      header = document.createElement("header");
+      header.id = "header";
+      header.className = "header";
+      document.body.insertBefore(header, document.body.firstChild);
+      console.info("Created header element");
+    }
 
-  // create header/title if missing
-  if (!header) {
-    console.warn("Header element missing — creating one.");
-    const layout = document.getElementById("layout") || document.body;
-    const h = document.createElement("header");
-    h.id = "header";
-    h.className = "header";
-    layout.insertBefore(h, layout.firstChild);
-  }
+    let title = header.querySelector(".title");
+    if (!title) {
+      title = document.createElement("h1");
+      title.className = "title";
+      title.setAttribute("role", "banner");
+      title.innerHTML =
+        '<span class="title-line">DUMB SHIT</span><span class="title-line">I GOTTA DO TODAY</span>';
+      header.appendChild(title);
+      console.info("Inserted title markup");
+    }
 
-  title = document.getElementById("header").querySelector(".title");
-  if (!title) {
-    const h1 = document.createElement("h1");
-    h1.className = "title";
-    h1.setAttribute("role", "banner");
-    h1.setAttribute("aria-label", "site title");
-    h1.innerHTML =
-      '<span class="title-line">DUMB SHIT</span><span class="title-line">I GOTTA DO TODAY</span>';
-    document.getElementById("header").appendChild(h1);
-    title = h1;
-    console.info("Inserted missing title markup.");
-  }
-
-  // Force inline styles so CSS cascade / specificity issues won't hide it
-  Object.assign(title.style, {
-    display: "block",
-    textAlign: "center",
-    zIndex: "999",
-    color: "#efe7d6",
-    fontFamily:
-      'var(--font-punk), "HitMePunk04", "Bangers", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif',
-    margin: "0.25rem 0 0.75rem",
-  });
-
-  // make sure each line looks like a paper pill
-  title.querySelectorAll(".title-line").forEach((el) => {
-    Object.assign(el.style, {
-      display: "inline-block",
-      padding: "6px 14px",
-      margin: "0 0 8px",
-      background: "rgba(239,231,214,0.95)",
-      color: "#111",
-      borderRadius: "2px",
+    // force visible inline styles (override CSS cascade issues)
+    Object.assign(title.style, {
+      display: "block",
+      textAlign: "center",
+      zIndex: "9999",
+      color: "#efe7d6",
+      margin: "0.25rem 0 0.75rem",
+      fontFamily: 'var(--font-punk), "HitMePunk04", "Bangers", sans-serif',
     });
-  });
-}
-
-// Diagnostic helper to run from the console if still not visible:
-// showTitleDiagnostics()
-function showTitleDiagnostics() {
-  const title = document.querySelector(".title");
-  console.log("title element:", title);
-  if (!title) return;
-  const cs = window.getComputedStyle(title);
-  console.log("computed font-family:", cs.fontFamily);
-  console.log(
-    "display:",
-    cs.display,
-    "visibility:",
-    cs.visibility,
-    "opacity:",
-    cs.opacity,
-  );
-  // check whether local @font-face is loaded
-  if (document.fonts && document.fonts.check) {
-    console.log(
-      'fonts.check("12px HitMePunk04") ->',
-      document.fonts.check('12px "HitMePunk04"'),
-    );
-    document.fonts.ready.then(() => {
-      console.log(
-        "document.fonts.ready resolved; loaded fonts:",
-        document.fonts,
-      );
+    title.querySelectorAll(".title-line").forEach((el) => {
+      Object.assign(el.style, {
+        display: "inline-block",
+        padding: "6px 14px",
+        margin: "0 0 8px",
+        background: "rgba(239,231,214,0.95)",
+        color: "#111",
+      });
     });
-  } else {
-    console.warn("document.fonts API not available in this browser.");
+
+    // hide the in-page music player
+    document.querySelectorAll(".music").forEach((el) => {
+      el.style.display = "none";
+      el.style.visibility = "hidden";
+    });
+    console.info("Ensured title + hid music");
+  } catch (err) {
+    console.warn("ensureAndForceTitleAndHideMusic failed:", err);
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  showPrizeSuggestion();
-  ensureAndStyleTitle();
-  // leave diagnostics available to run manually
-  window.showTitleDiagnostics = showTitleDiagnostics;
+  // only ensure title and hide music on load; don't auto-fetch the GIF
+  ensureAndForceTitleAndHideMusic();
+  // expose helper for debugging
+  window.ensureAndForceTitleAndHideMusic = ensureAndForceTitleAndHideMusic;
 });
