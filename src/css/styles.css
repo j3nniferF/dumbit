@@ -1,3 +1,4 @@
+* {
   /* ===== CSS FOUNDATION ===== */
   box-sizing: border-box;
 }
@@ -267,6 +268,7 @@ body::before {
 .title-line:last-child {
   font-family: var(--font-punk);
   font-size: clamp(1.7rem, 5vw, 6.4rem);
+  text-align: center;
 }
 
 /* ===== TABS ===== */
