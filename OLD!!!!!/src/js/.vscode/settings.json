@@ -1,0 +1,8 @@
+{
+  // workspace-only settings
+  "workbench.colorTheme": "Monokai",
+  "files.exclude": {
+    "node_modules": true,
+    "dist": true
+  }
+}

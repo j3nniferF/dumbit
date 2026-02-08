@@ -1,6 +1,5 @@
-/* ===== CSS FOUNDATION ===== */
-
 * {
+  /* ===== CSS FOUNDATION ===== */
   box-sizing: border-box;
 }
 html,
@@ -134,6 +133,71 @@ body::before {
 
 .header {
   grid-area: header;
+  /* ensure header content is centered without breaking other layout styles */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+}
+
+/* Ensure header/title use the Bangers font and are centered/visible */
+.header {
+  position: relative;
+  z-index: 60 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  pointer-events: auto;
+}
+
+.header .title {
+  /* force the Google font (fallback list included) */
+  font-family:
+    "Bangers",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
+  font-weight: 400;
+  display: block;
+  text-align: center;
+  margin: 0.25rem 0 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  color: #f2efe8; /* tweak to taste so it contrasts with the background */
+  font-size: clamp(34px, 6vw, 96px);
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ensure each title line stacks */
+.title-line {
+  display: block;
+}
+
+/* style the title "paper" look */
+.title-line {
+  display: inline-block;
+  padding: 6px 18px;
+  margin: 0 0 8px;
+  background: rgba(239, 231, 214, 0.95);
+  color: #111 !important;
+  border-radius: 2px;
+}
+
+/* size tuning */
+.title-line:first-child {
+  font-size: clamp(2rem, 6vw, 5rem) !important;
+}
+.title-line:last-child {
+  font-size: clamp(1rem, 2.6vw, 2rem) !important;
 }
 
 .tabs {
@@ -161,20 +225,27 @@ body::before {
 }
 
 .title {
-  margin: 0;
-  font-family: var(--font-title), var(--font-stack);
-  letter-spacing: clamp(1px, 0.6vw, 9px);
-  line-height: 0.9;
-  padding: 0 10px; /* prevents edge-crash on small screens */
-  text-transform: uppercase;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--ink);
+  font-family:
+    "Bangers",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  text-align: center;
+  margin: 0.25rem 0 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  /* responsive sizing */
+  font-size: clamp(28px, 6vw, 64px);
+  /* keep stacking title-line vertically */
+  display: block;
 }
 
 .title-line {
-  display: inline-block;
+  display: block;
   width: fit-content;
   padding: 6px 14px 8px;
   background: #efe7d6;
@@ -1018,7 +1089,7 @@ section#timerCard {
   background-color: var(--paper) !important;
   background-image:
     radial-gradient(rgba(197, 22, 22, 0.06), rgba(0, 0, 0, 0) 35%),
-    url("/src/assets/textures/dirty-paper.png") !important;
+    url("../assets/textures/dirty-paper.png") !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
   background-size: cover !important;
@@ -1029,7 +1100,7 @@ section#timerCard {
 #timerCard,
 section#timerCard {
   background-color: transparent !important;
-  background-image: url("/src/assets/textures/dirty-paper.png") !important;
+  background-image: url("../assets/textures/dirty-paper.png") !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
   background-size: cover !important;
