@@ -8,21 +8,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      SURGE_PROJECT: ./src # change to ./dist if your build outputs to dist
+      SURGE_PROJECT: ./src
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build (if present)
-        run: npm run build --if-present
-
-      - name: Deploy to Surge
-        run: npx surge "$SURGE_PROJECT" "${{ secrets.SURGE_DOMAIN }}" --token "${{ secrets.SURGE_TOKEN }}"
+      - name: Deploy to Surge (no install)
+        run: npx --yes surge "$SURGE_PROJECT" "${{ secrets.SURGE_DOMAIN }}" --token "${{ secrets.SURGE_TOKEN }}"
