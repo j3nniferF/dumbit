@@ -3,8 +3,6 @@ console.log("enhanced-features.js loaded");
 /* =====================================================
    ENHANCED FEATURES MODULE
    - Inline task editing
-   - Clear completed tasks
-   - Data export/import
    - Drag & drop reordering
    - Move tasks between tabs
 ===================================================== */
@@ -98,112 +96,68 @@ function enableInlineEditing() {
 
     // Handle blur (save)
     input.addEventListener("blur", () => {
-      // Small delay to allow other events to process
-      setTimeout(saveEdit, 100);
+      saveEdit();
     });
   });
 }
 
-/* -------------------------------
-   Feature 2: Clear Completed Tasks
-   REMOVED per user request - they want completed tasks to remain visible in "SHIT I DID"
--------------------------------- */
-
-/* -------------------------------
-   Feature 3: Data Export/Import
-   REMOVED per user request - export/import functionality not needed
--------------------------------- */
-
-/* -------------------------------
-   Feature 4 & 5: Drag & Drop
--------------------------------- */
 
 let draggedElement = null;
 let draggedTaskData = null;
 
-/**
- * Enable drag and drop for tasks
- */
 function enableDragAndDrop() {
   const taskList = document.getElementById("taskList");
   if (!taskList) return;
 
   // Make task list a drop zone
+  let draggedItem = null;
+
+  // Dragstart
+  taskList.addEventListener("dragstart", (e) => {
+    const task = e.target.closest(".task");
+    if (!task) return;
+
+    draggedItem = task;
+    task.style.opacity = "0.5";
+  });
+
+  // Dragend
+  taskList.addEventListener("dragend", (e) => {
+    const task = e.target.closest(".task");
+    if (task) {
+      task.style.opacity = "1";
+    }
+    draggedItem = null;
+  });
+
+  // Dragover
   taskList.addEventListener("dragover", (e) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
 
     const afterElement = getDragAfterElement(taskList, e.clientY);
-    const draggable = draggedElement;
-
-    if (draggable && afterElement == null) {
-      taskList.appendChild(draggable);
-    } else if (draggable && afterElement) {
-      taskList.insertBefore(draggable, afterElement);
+    if (afterElement == null) {
+      taskList.appendChild(draggedItem);
+    } else {
+      taskList.insertBefore(draggedItem, afterElement);
     }
   });
 
+  // Drop
   taskList.addEventListener("drop", (e) => {
     e.preventDefault();
-    if (!draggedTaskData) return;
 
-    // Get final position
-    const items = Array.from(taskList.querySelectorAll(".task"));
-    const newOrder = items.map((item) => {
-      const row = item.querySelector(".task-row");
-      return row ? row.dataset.task : null;
-    }).filter(Boolean);
-
-    // Dispatch reorder event
-    const activeTab = document.querySelector(".tab--active")?.dataset?.tab;
-    if (activeTab) {
-      const event = new CustomEvent("tasks:reordered", {
-        detail: {
-          tabKey: activeTab,
-          newOrder,
-        },
-      });
-      document.dispatchEvent(event);
-    }
-
-    // Clean up
-    if (draggedElement) {
-      draggedElement.style.opacity = "1";
-    }
-    draggedElement = null;
-    draggedTaskData = null;
-  });
-
-  // Use event delegation for task items
-  taskList.addEventListener("dragstart", (e) => {
-    const taskItem = e.target.closest(".task");
-    if (!taskItem) return;
-
-    const taskRow = taskItem.querySelector(".task-row");
-    if (!taskRow) return;
-
-    draggedElement = taskItem;
-    draggedTaskData = {
-      tabKey: taskRow.dataset.tab,
-      taskText: taskRow.dataset.task,
-    };
-
-    taskItem.style.opacity = "0.5";
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/html", taskItem.innerHTML);
-  });
-
-  taskList.addEventListener("dragend", (e) => {
-    if (draggedElement) {
-      draggedElement.style.opacity = "1";
-    }
-    draggedElement = null;
-    draggedTaskData = null;
+    // Dispatch event to save new order
+    const event = new CustomEvent("tasks:reordered", {
+      detail: {
+        taskList: Array.from(taskList.children).map((task) => task.dataset.task),
+      },
+    });
+    document.dispatchEvent(event);
   });
 }
 
 /**
- * Helper: Find element that should come after dragged item
+ * Helper: Find element after which to insert dragged item
  */
 function getDragAfterElement(container, y) {
   const draggableElements = [
@@ -226,73 +180,89 @@ function getDragAfterElement(container, y) {
 }
 
 /**
- * Enable dragging tasks to tab buttons to move between tabs
+ * Enable dragging tasks to different tabs
  */
 function enableDragToTabs() {
+  const taskList = document.getElementById("taskList");
   const tabs = document.querySelectorAll(".tab");
-  if (!tabs.length) return;
+  if (!taskList || !tabs.length) return;
 
+  let draggedTask = null;
+
+  // Track dragged task
+  taskList.addEventListener("dragstart", (e) => {
+    const task = e.target.closest(".task");
+    if (task) {
+      draggedTask = {
+        text: task.dataset.task,
+        tab: task.dataset.tab,
+        completed: task.querySelector("input[type='checkbox']")?.checked || false,
+      };
+    }
+  });
+
+  taskList.addEventListener("dragend", () => {
+    draggedTask = null;
+    tabs.forEach((tab) => {
+      tab.style.backgroundColor = "";
+    });
+  });
+
+  // Tab hover effects
   tabs.forEach((tab) => {
     tab.addEventListener("dragover", (e) => {
       e.preventDefault();
-      e.dataTransfer.dropEffect = "move";
-      tab.style.background = "rgba(197, 22, 22, 0.2)";
+      if (draggedTask && tab.dataset.tab !== draggedTask.tab) {
+        tab.style.backgroundColor = "#c51616";
+      }
     });
 
     tab.addEventListener("dragleave", () => {
-      tab.style.background = "";
+      tab.style.backgroundColor = "";
     });
 
     tab.addEventListener("drop", (e) => {
       e.preventDefault();
-      tab.style.background = "";
+      tab.style.backgroundColor = "";
 
-      if (!draggedTaskData) return;
+      if (!draggedTask) return;
 
       const targetTab = tab.dataset.tab;
-      const sourceTab = draggedTaskData.tabKey;
+      if (targetTab === draggedTask.tab) return;
 
-      // Don't do anything if dropping on same tab
-      if (targetTab === sourceTab) return;
-
-      // Dispatch move event
-      const event = new CustomEvent("tasks:movedToTab", {
+      // Dispatch event to move task
+      const event = new CustomEvent("task:movedToTab", {
         detail: {
-          sourceTab,
-          targetTab,
-          taskText: draggedTaskData.taskText,
+          text: draggedTask.text,
+          fromTab: draggedTask.tab,
+          toTab: targetTab,
+          completed: draggedTask.completed,
         },
       });
       document.dispatchEvent(event);
-
-      draggedElement = null;
-      draggedTaskData = null;
     });
   });
 }
 
 /**
- * Make tasks draggable by adding draggable attribute
+ * Make tasks draggable (called after rendering)
  */
 function makeTasksDraggable() {
-  // Use MutationObserver to watch for task list changes
   const taskList = document.getElementById("taskList");
   if (!taskList) return;
 
+  // Observer to make new tasks draggable
   const observer = new MutationObserver(() => {
     const tasks = taskList.querySelectorAll(".task");
     tasks.forEach((task) => {
-      if (!task.hasAttribute("draggable")) {
+      if (!task.getAttribute("draggable")) {
         task.setAttribute("draggable", "true");
         task.style.cursor = "move";
       }
     });
   });
 
-  observer.observe(taskList, {
-    childList: true,
-    subtree: false,
-  });
+  observer.observe(taskList, { childList: true, subtree: true });
 
   // Initial application
   const tasks = taskList.querySelectorAll(".task");
