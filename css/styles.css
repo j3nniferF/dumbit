@@ -5,6 +5,9 @@
 html,
 body {
   height: 100%;
+  /* Add dark textured background to eliminate white space */
+  background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover fixed;
+  margin: 0;
 }
 .app {
   position: relative;
@@ -561,7 +564,7 @@ body::before {
 
 .completed-groups--tabs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns for horizontal row */
   gap: 16px;
   margin-bottom: 12px;
 }
@@ -823,7 +826,7 @@ body::before {
 }
 
 .completed-groups--tabs {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns for horizontal row */
 }
 
 .field-label {
