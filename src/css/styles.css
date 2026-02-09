@@ -635,41 +635,28 @@ body::before {
   justify-content: center;
 }
 
-/* Updated "SHIT I DID" tabs to mirror main task tabs */
 .completed-groups--tabs {
   display: grid;
-  /* Mobile: 2x2 grid */
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
   margin-bottom: 12px;
 }
-
+/* fix */
 .completed-groups--tabs .completed-group {
-  background: var(--paper);
-  border: none;
+  background: #fff;
+  opacity: 0.9;
+  border: 1px dashed rgba(0, 0, 0, 0.2);
   border-radius: 12px;
-  padding: 12px 14px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.completed-groups--tabs .completed-group:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  padding: 8px 10px;
 }
 
 .completed-groups--tabs .completed-subheading {
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 1.5rem;
+  letter-spacing: 1px;
+  font-size: 1.35rem;
   cursor: pointer;
   list-style: none;
-  text-align: center;
-  font-family: var(--font-wrong), var(--font-stack);
-  color: var(--ink);
-  padding: 8px 4px;
-  position: relative;
 }
 
 .completed-groups--tabs .completed-subheading::-webkit-details-marker {
@@ -681,29 +668,10 @@ body::before {
   display: inline-block;
   transform: translateY(-1px);
   opacity: 0.9;
-  font-size: 1.2rem;
 }
 
 .completed-groups--tabs .completed-group[open] .completed-subheading::before {
   content: "▾ ";
-}
-
-.completed-groups--tabs .completed-group[open] .completed-subheading {
-  border-bottom: 2px solid var(--accent-red);
-  margin-bottom: 10px;
-}
-
-/* Desktop: wide across in a single row */
-@media (min-width: 768px) {
-  .completed-groups--tabs {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  
-  .completed-groups--tabs .completed-subheading {
-    font-size: 1.6rem;
-    letter-spacing: 3px;
-  }
 }
 
 .field-input {
@@ -1140,49 +1108,8 @@ section#timerCard {
   padding: 20px 22px !important;
 }
 
-/* Add fun animations for completed tasks */
-.completed-groups--tabs .completed-list li {
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Add subtle pulse animation to modal button (only on hover to reduce battery/GPU usage) */
-.modal .btn--primary:hover {
-  animation: subtlePulse 1.5s ease-in-out 3;
-}
-
-@keyframes subtlePulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-/* Respect user motion preferences for accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .completed-groups--tabs .completed-list li {
-    animation: none;
-  }
-  
-  .modal .btn--primary:hover {
-    animation: none;
-  }
-  
-  .completed-groups--tabs .completed-group {
-    transition: none;
-  }
+.completed-groups--tabs {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .field-label {
@@ -1278,37 +1205,6 @@ section#timerCard {
   width: calc(100% - 40px);
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-strong);
-  font-family: var(--font-wrong), var(--font-stack);
-  font-size: 1.25rem;
-  line-height: 1.6;
-}
-
-.modal-title {
-  font-family: var(--font-punk), var(--font-stack);
-  font-size: clamp(2rem, 5vw, 3rem);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin: 0 0 12px 0;
-  text-align: center;
-  color: var(--accent-red);
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
-}
-
-.modal-subtitle {
-  font-family: var(--font-wrong), var(--font-stack);
-  font-size: 1.35rem;
-  text-align: center;
-  margin: 0 0 16px 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.modal li {
-  font-family: var(--font-wrong), var(--font-stack);
-  font-size: 1.2rem;
-  line-height: 1.8;
-  margin: 10px 0;
-  letter-spacing: 0.5px;
 }
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
