@@ -35,6 +35,7 @@ body {
   /* ===== FONTS (keep your vibe; change body font for readability) */
   --font-anarchy: "Anarchy"; /* title / big decorative */
   --font-punk: "HitMePunk04"; /* tabs & headings (your vibe) */
+  --font-punk2: "Punk2"; /* prize modal subtitle */
   --font-song: "Song"; /* existing body fallback */
   --font-wrong: "Wrong"; /* label/display fallback */
   --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -174,17 +175,26 @@ body::before {
   display: inline-block;
   padding: 6px 18px;
   margin: 0 0 8px;
-  background: rgba(239, 231, 214, 0.95);
+  /* Background removed for pop effect */
+  background: transparent;
   color: #111 !important;
   border-radius: 2px;
+  /* Add punk effects to make it pop */
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.8),
+    -1px -1px 0 rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(197, 22, 22, 0.4);
+  /* Add outline/stroke effect */
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
-/* size tuning */
+/* size tuning - make it BIGGER */
 .title-line:first-child {
-  font-size: clamp(2rem, 6vw, 5rem) !important;
+  font-size: clamp(3rem, 9vw, 7rem) !important;
 }
 .title-line:last-child {
-  font-size: clamp(1rem, 2.6vw, 2rem) !important;
+  font-size: clamp(1.5rem, 4vw, 3.5rem) !important;
 }
 
 .tabs {
@@ -235,18 +245,25 @@ body::before {
   display: block;
   width: fit-content;
   padding: 6px 14px 8px;
-  background: #efe7d6;
-  /* box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.35),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.4); */
+  /* Remove background for pop effect */
+  background: transparent;
   margin-bottom: 8px;
+  /* Add punk grunge effects */
+  text-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.85),
+    -2px -2px 0 rgba(255, 255, 255, 0.25),
+    0 0 30px rgba(197, 22, 22, 0.5),
+    0 6px 15px rgba(0, 0, 0, 0.6);
+  /* Stronger outline effect */
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.4);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
 }
 
-/* DSIGDT */
+/* DSIGDT - Make it BIGGER and more punk */
 .title-line:first-child {
   font-family: var(--font-anarchy);
-  /* responsive, big but not insane — change the numbers if you want it larger/smaller */
-  font-size: clamp(3rem, 8.5vw, 9rem);
+  /* BIGGER responsive sizing for maximum pop */
+  font-size: clamp(4rem, 11vw, 12rem);
   margin-bottom: 10px;
   line-height: 0.95; /* tight but readable */
   text-align: center;
@@ -254,7 +271,8 @@ body::before {
 
 .title-line:last-child {
   font-family: var(--font-punk);
-  font-size: clamp(1.7rem, 5vw, 6.4rem);
+  /* BIGGER sizing for subtitle */
+  font-size: clamp(2.5rem, 7vw, 8rem);
   text-align: center;
 }
 
@@ -309,6 +327,23 @@ body::before {
     letter-spacing: 2px;
     padding: 8px 10px;
     font-size: clamp(1.2rem, 3.8vw, 1.6rem);
+  }
+  
+  /* Make card titles bigger on mobile */
+  .card--tasks .card-title,
+  .card--timer .card-title,
+  .card--completed .card-title {
+    font-size: clamp(2rem, 5vw, 2.8rem) !important;
+  }
+  
+  /* Make SHIT I DID bigger on mobile */
+  .card-title--big {
+    font-size: clamp(2.8rem, 8vw, 4rem);
+  }
+  
+  /* Make timer display bigger on mobile */
+  .timer-display {
+    font-size: clamp(5.5rem, 12vw, 7rem) !important;
   }
 }
 
@@ -385,6 +420,12 @@ body::before {
   background-blend-mode: multiply !important;
   position: relative;
   transition: all 0.3s ease;
+  /* Add sass and love with enhanced borders and shadows */
+  border: 3px solid rgba(197, 22, 22, 0.15) !important;
+  box-shadow:
+    0 16px 35px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Pulsing border when timer is running */
@@ -423,8 +464,14 @@ body::before {
 
 /* Optional helper for experimenting with a really large card title */
 .card-title--big {
+  /* Mirror tabs styling - same font and letter-spacing */
+  font-family: var(--font-ui);
   font-size: clamp(2.2rem, 6vw, 7.6rem);
-  letter-spacing: 2px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.15),
+    -1px -1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* ===== MAIN LAYOUT ===== */
@@ -705,6 +752,8 @@ body::before {
 /* Responsive adjustment for very small screens */
 @media (max-width: 420px) {
   .completed-groups--tabs {
+    /* Stack vertically on mobile - 1 column instead of 4 */
+    grid-template-columns: 1fr;
     gap: 8px; /* Reduce gap on small screens */
   }
 }
@@ -1040,6 +1089,16 @@ body::before {
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Punk2";
+  src:
+    url("../assets/fonts/punk2/hit-me-punk-07.woff2") format("woff2"),
+    url("../assets/fonts/punk2/punk2.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Modal overlay (ensure visible above app) */
 .modal-overlay {
   position: fixed;
@@ -1088,34 +1147,67 @@ body::before {
 /* ===== PRIZE MODAL TWEAKS (overrides and fixes) ===== */
 #prizeModal {
   /* tighter modal so it never gets huge */
-  max-width: 380px;
-  width: min(92%, 380px);
-  padding: 16px 18px;
+  max-width: 420px;
+  width: min(94%, 420px);
+  padding: 20px 22px;
   box-sizing: border-box;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  /* Add punk/grunge styling - torn paper effect with strong border */
+  border: 3px solid rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+  /* Add torn edge effect with filter */
+  position: relative;
 }
 
-/* Title: force full-width centering, improve contrast & smoothing */
+#prizeModal::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border: 2px dashed rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Title: BIGGER and better centered with punk effects */
 #prizeModal .modal-title {
   display: block;
   width: 100%;
   font-family: "Anarchy", var(--font-stack);
-  font-size: clamp(1.9rem, 4.5vw, 2.6rem); /* responsive but smaller */
-  margin: 4px 0 6px;
+  /* MUCH BIGGER title */
+  font-size: clamp(2.8rem, 7vw, 4.2rem);
+  margin: 8px 0 10px;
   line-height: 1;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   color: var(--ink);
   text-align: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Add punk text effects */
   text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.6),
-    0 3px 10px rgba(0, 0, 0, 0.12);
+    3px 3px 0 rgba(0, 0, 0, 0.7),
+    -1px -1px 0 rgba(255, 255, 255, 0.4),
+    0 0 20px rgba(197, 22, 22, 0.3);
   font-weight: 700;
+  -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.3);
+}
+
+/* Subtitle: Use Punk2 font with cool styling */
+#prizeModal .modal-subtitle {
+  font-family: var(--font-punk2);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  letter-spacing: 1.5px;
+  margin: 8px 0;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.5),
+    -1px -1px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* GIF: smaller and constrained to avoid dominating modal */
@@ -1148,9 +1240,24 @@ body::before {
 }
 
 /* make sure title scales nicely on phones */
+/* make sure modal looks great on mobile */
 @media (max-width: 420px) {
+  #prizeModal {
+    max-width: 96%;
+    width: 96%;
+    padding: 16px 18px;
+  }
+  
+  #prizeModal .modal-title {
+    font-size: clamp(2.2rem, 9vw, 3rem);
+  }
+  
+  #prizeModal .modal-subtitle {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+  
   #prizeModal .modal-title-line1 {
-    font-size: clamp(1.6rem, 9vw, 2.4rem);
+    font-size: clamp(1.8rem, 9vw, 2.6rem);
   }
   #prizeModal .modal-title-line2 {
     font-size: clamp(1.2rem, 6.5vw, 1.6rem);
@@ -1289,164 +1396,6 @@ body::before {
   padding: 2px 4px;
   border-radius: 6px;
   cursor: text;
-}
-
-/* ===== FONTS ===== */
-@font-face {
-  font-family: "HitMePunk04";
-  src:
-    url("../assets/fonts/punk/punk.woff2") format("woff2"),
-    url("../assets/fonts/punk/punk.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Anarchy";
-  src:
-    url("../assets/fonts/anarchy/anarchy.woff2") format("woff2"),
-    url("../assets/fonts/anarchy/anarchy.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Song";
-  src:
-    url("../assets/fonts/song/song.woff2") format("woff2"),
-    url("../assets/fonts/song/song.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Wrong";
-  src:
-    url("../assets/fonts/wrong/wrong.woff2") format("woff2"),
-    url("../assets/fonts/wrong/wrong.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Modal overlay (ensure visible above app) */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10001; /* above confetti (9999) */
-  background: rgba(10, 10, 10, 0.65);
-}
-
-.modal-overlay.is-hidden {
-  display: none;
-}
-
-.modal {
-  background: var(--paper);
-  color: var(--ink);
-  padding: 22px 24px;
-  border-radius: 12px;
-  max-width: 460px;
-  width: calc(100% - 40px);
-  border: 2px solid var(--ink);
-  box-shadow: var(--shadow-strong);
-  animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes modalPop {
-  0% {
-    transform: scale(0.5) rotate(-5deg);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.05) rotate(2deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-/* === USER: PRIZE MODAL OVERRIDES START === */
-/* (custom prize modal styles begin here) */
-
-/* ===== PRIZE MODAL TWEAKS (overrides and fixes) ===== */
-#prizeModal {
-  /* tighter modal so it never gets huge */
-  max-width: 380px;
-  width: min(92%, 380px);
-  padding: 16px 18px;
-  box-sizing: border-box;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-/* Title: force full-width centering, improve contrast & smoothing */
-#prizeModal .modal-title {
-  display: block;
-  width: 100%;
-  font-family: "Anarchy", var(--font-stack);
-  font-size: clamp(1.9rem, 4.5vw, 2.6rem); /* responsive but smaller */
-  margin: 4px 0 6px;
-  line-height: 1;
-  letter-spacing: 1.5px;
-  color: var(--ink);
-  text-align: center;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.6),
-    0 3px 10px rgba(0, 0, 0, 0.12);
-  font-weight: 700;
-}
-
-/* GIF: smaller and constrained to avoid dominating modal */
-.modal img.prize-gif {
-  max-width: 220px;
-  width: 70%;
-  height: auto;
-  max-height: 30vh;
-  margin: 6px auto;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-}
-
-/* List: more readable spacing and increased letter spacing */
-#prizeModal .prize-list {
-  gap: 18px;
-  padding: 0;
-  margin: 8px 0 10px;
-}
-#prizeModal .prize-list li {
-  font-family: "HitMePunk04", var(--font-stack);
-  font-size: clamp(0.98rem, 2vw, 1.12rem);
-  line-height: 1.9;
-  letter-spacing: 1.4px;
-  margin: 0;
-  padding: 6px 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* make sure title scales nicely on phones */
-@media (max-width: 420px) {
-  #prizeModal .modal-title-line1 {
-    font-size: clamp(1.6rem, 9vw, 2.4rem);
-  }
-  #prizeModal .modal-title-line2 {
-    font-size: clamp(1.2rem, 6.5vw, 1.6rem);
-  }
 }
 
 /* test */
