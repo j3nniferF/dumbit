@@ -22,4 +22,6 @@ Core features
 
 📖 See [QUICKSTART.md](QUICKSTART.md) for detailed usage instructions  
 📚 See [FEATURES.md](FEATURES.md) for technical documentation  
-🌐 See [DEPLOYMENT.md](DEPLOYMENT.md) for deployment info and live link
+🌐 See [DEPLOYMENT.md](DEPLOYMENT.md) for deployment info and live link  
+🚀 See [QUICK_DEPLOY.md](QUICK_DEPLOY.md) for how to push changes and see them live  
+📋 See [PUSH_AND_DEPLOY.md](PUSH_AND_DEPLOY.md) for comprehensive deployment guide
