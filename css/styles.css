@@ -613,7 +613,6 @@ body::before {
   display: grid;
   gap: 16px;
 }
-/* fix */
 
 .timer-block__title {
   margin: 0 0 8px;
