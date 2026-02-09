@@ -921,7 +921,7 @@ document.addEventListener("DOMContentLoaded", () => {
   syncCurrentTaskText();
   updateProgress();
 
-  // Listen for inline edits from tasks-edit.js
+  // Listen for inline edits from tasks-edit.js or enhanced-features.js
   document.addEventListener("task:edited", (e) => {
     const { tabKey, originalText, newText, row } = e.detail || {};
 
@@ -954,5 +954,72 @@ document.addEventListener("DOMContentLoaded", () => {
     buildFocusSelect(selectedFocusValue);
     syncCurrentTaskText();
     updateProgress();
+  });
+
+  // Listen for task reorder event
+  document.addEventListener("tasks:reordered", (e) => {
+    const { tabKey, newOrder } = e.detail || {};
+    if (!tabKey || !Array.isArray(newOrder)) return;
+
+    // Update the tasks order
+    TASKS_BY_TAB[tabKey] = newOrder;
+
+    // Persist and refresh UI
+    saveState();
+    renderTasks(activeTabKey);
+  });
+
+  // Listen for task moved to different tab event
+  document.addEventListener("tasks:movedToTab", (e) => {
+    const { sourceTab, targetTab, taskText } = e.detail || {};
+    if (!sourceTab || !targetTab || !taskText) return;
+
+    // Remove from source tab
+    const sourceIdx = (TASKS_BY_TAB[sourceTab] || []).indexOf(taskText);
+    if (sourceIdx > -1) {
+      TASKS_BY_TAB[sourceTab].splice(sourceIdx, 1);
+    }
+
+    // Check if task was completed in source tab
+    const wasCompleted = (COMPLETED_TASKS[sourceTab] || []).includes(taskText);
+    if (wasCompleted) {
+      // Remove from source completed
+      const completedIdx = COMPLETED_TASKS[sourceTab].indexOf(taskText);
+      if (completedIdx > -1) {
+        COMPLETED_TASKS[sourceTab].splice(completedIdx, 1);
+      }
+    }
+
+    // Add to target tab
+    if (!Array.isArray(TASKS_BY_TAB[targetTab])) {
+      TASKS_BY_TAB[targetTab] = [];
+    }
+    if (!TASKS_BY_TAB[targetTab].includes(taskText)) {
+      TASKS_BY_TAB[targetTab].push(taskText);
+    }
+
+    // If it was completed, add to target completed
+    if (wasCompleted) {
+      if (!Array.isArray(COMPLETED_TASKS[targetTab])) {
+        COMPLETED_TASKS[targetTab] = [];
+      }
+      if (!COMPLETED_TASKS[targetTab].includes(taskText)) {
+        COMPLETED_TASKS[targetTab].push(taskText);
+      }
+    }
+
+    // Update completion tracking
+    syncTabCompleteLast(sourceTab);
+    syncTabCompleteLast(targetTab);
+
+    // Persist and refresh UI
+    saveState();
+    renderTasks(activeTabKey);
+    renderCompletedGrouped();
+    buildFocusSelect(selectedFocusValue);
+    updateProgress();
+
+    // Show notification
+    alert(`✅ Moved "${taskText}" from ${TAB_LABELS[sourceTab]} to ${TAB_LABELS[targetTab]}`);
   });
 });

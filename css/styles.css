@@ -5,25 +5,10 @@
 html,
 body {
   height: 100%;
-}
-
-/*GRIME
-body {
-  min-height: 100%;
-} */
-
-/* body {
+  /* Add dark textured background to eliminate white space */
+  background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover fixed;
   margin: 0;
-  background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover
-    fixed;
-  color: #eaeaea;
-  font-family: var(--font-body), var(--font-stack);
-  font-size: var(--size-body);
-  position: relative;
 }
-  =================== */
-
-/* SAVE-SPOT: TODO: resume-here */
 .app {
   position: relative;
   z-index: 1;
@@ -56,6 +41,7 @@ body {
   /* choose a readable UI body font that won't kill the vibe */
   --font-body: var(--font-song), var(--font-stack);
   --font-label: var(--font-punk); /* preserve tab/title look */
+  --font-ui: var(--font-wrong), var(--font-stack); /* unified UI elements */
 
   /* ===== SIZING TOKENS (one place to tune scale) */
   --small-ui: 1.05rem; /* tiny helpers (timer / completed) */
@@ -291,7 +277,7 @@ body::before {
   border: none;
   padding: 10px 14px; /* slightly tighter than before */
   font: inherit;
-  font-family: var(--font-wrong), var(--font-stack); /* keep the vibe */
+  font-family: var(--font-ui); /* keep the vibe */
   letter-spacing: 5px; /* reduce spacing so "Due Today" / "Next Up" fit nicer */
   text-transform: uppercase;
   opacity: 0.5;
@@ -300,6 +286,12 @@ body::before {
   font-size: var(--size-tab);
   color: var(--ink);
   white-space: normal; /* allow wrapping inside a tab if needed */
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  opacity: 0.75;
+  transform: translateY(-1px);
 }
 
 .tab + .tab::before {
@@ -352,9 +344,6 @@ body::before {
   margin: 0 auto 18px;
   border-radius: 14px;
   border: 1px solid var(--paper-border);
-  /* box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.3),
-    0 2px 0 rgba(255, 255, 255, 0.25) inset; */
   position: relative;
   font-size: var(--size-card-body);
   font-family: var(--font-body), var(--font-stack);
@@ -372,7 +361,7 @@ body::before {
   color: var(--ink);
 }
 
-/* Override: remove white border and unify textured cards (place near end, ~line 997) */
+/* Override: remove white border and unify textured cards */
 .card--tasks,
 .card--timer,
 .card--completed {
@@ -393,22 +382,44 @@ body::before {
     radial-gradient(rgba(197, 22, 22, 0.06), rgba(0, 0, 0, 0) 35%),
     url("../assets/textures/dirty-paper.png") !important;
   background-blend-mode: multiply !important;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-/* Single rule to control the three card titles together — tweak here to affect all */
+/* Pulsing border when timer is running */
+.card--timer.timer--running {
+  animation: timerPulse 2s ease-in-out infinite;
+  box-shadow: 
+    0 0 0 3px rgba(197, 22, 22, 0.3),
+    0 16px 30px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(197, 22, 22, 0.2) !important;
+}
+
+@keyframes timerPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 0 3px rgba(197, 22, 22, 0.3),
+      0 16px 30px rgba(0, 0, 0, 0.35),
+      0 0 20px rgba(197, 22, 22, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 0 5px rgba(197, 22, 22, 0.5),
+      0 18px 35px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(197, 22, 22, 0.4);
+  }
+}
+
+/* Single rule to control the three card titles together */
 .card--tasks .card-title,
 .card--timer .card-title,
 .card--completed .card-title {
-  font-size: clamp(
-    1.6rem,
-    3vw,
-    2.4rem
-  ) !important; /* tweak once to affect all */
+  font-size: clamp(1.6rem, 3vw, 2.4rem) !important;
   letter-spacing: 2px;
   font-family: var(--font-label), var(--font-stack);
 }
 
-/* Optional helper for experimenting with a really large card title (toggle class in HTML) */
+/* Optional helper for experimenting with a really large card title */
 .card-title--big {
   font-size: clamp(2.2rem, 6vw, 7.6rem);
   letter-spacing: 2px;
@@ -419,38 +430,8 @@ body::before {
   display: contents;
 }
 
-/* ===== PHASE 1: MOCKUP LAYOUT + CARDS ===== */
-/* keep the stronger radial accent for timer, softer for others */
-/* ...existing code... */
-
-.card--tasks,
-.card--timer,
-.card--completed {
-  background-color: var(--paper);
-  background-image: url("../assets/textures/dirty-paper.png");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  /* box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.3),
-    0 2px 0 rgba(255, 255, 255, 0.25) inset; */
-  max-width: 440px;
-  padding: 14px 16px;
-}
-
-.card--timer {
-  background-image:
-    radial-gradient(rgba(197, 22, 22, 0.06), rgba(0, 0, 0, 0) 35%),
-    url("../assets/textures/dirty-paper.png");
-  background-blend-mode: overlay;
-  background-position: center top;
-  background-size: cover;
-}
-
-/* ...existing code... */
-
 .task-text {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   font-size: 2rem;
   line-height: 1.3;
   color: var(--ink);
@@ -467,7 +448,7 @@ body::before {
 /* fix background */
 
 .task-input {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   border: 1px solid var(--paper-border);
   background: #fff;
   padding: 10px 12px;
@@ -476,7 +457,7 @@ body::before {
 }
 
 .task-add-btn {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   background: var(--accent-red);
   color: #fff;
   border: 1px solid var(--accent-red-dark);
@@ -492,24 +473,43 @@ body::before {
   transition:
     transform var(--ease-quick),
     box-shadow var(--ease-quick);
+  cursor: pointer;
 }
+
+.task-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(197, 22, 22, 0.2);
+}
+
 .task-add-btn:active {
   transform: translateY(1px);
   box-shadow: 0 3px 8px rgba(197, 22, 22, 0.1);
 }
 
-/* .btn,
-.task-add-btn {
-  font-family: var(--font-wrong);
-  border-radius: 17px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 10px 14px;
-  letter-spacing: 0.64px;
-} */
-
 .btn {
   background: var(--ink);
   color: #ffffff;
+  font-family: var(--font-ui);
+  border: none;
+  padding: 12px 24px;
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn--small {
@@ -517,10 +517,40 @@ body::before {
   font-weight: 800;
 }
 
-.linkish {
-  font-family: var(--font-wrong);
-  display: flex;
+/* Primary button for prize modal */
+.btn--primary {
+  background: var(--accent-red);
+  color: #fff;
+  border: 2px solid var(--accent-red-dark);
+  padding: 16px 32px;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  box-shadow: 
+    0 6px 16px rgba(197, 22, 22, 0.3),
+    0 0 20px rgba(197, 22, 22, 0.2);
+  animation: fadeSlideIn 0.5s ease-out 0.8s backwards;
+  margin-top: 12px;
+}
 
+.btn--primary:hover {
+  background: var(--accent-red-dark);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 10px 24px rgba(197, 22, 22, 0.4),
+    0 0 30px rgba(197, 22, 22, 0.3);
+}
+
+.btn--primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 
+    0 4px 10px rgba(197, 22, 22, 0.3),
+    0 0 15px rgba(197, 22, 22, 0.2);
+}
+
+.linkish {
+  font-family: var(--font-ui);
+  display: flex;
   justify-content: center;
   font-size: clamp(1rem, 1.5vw, 2rem);
   background: transparent;
@@ -528,18 +558,13 @@ body::before {
   text-decoration: underline;
   cursor: pointer;
   color: inherit;
+  transition: all 0.2s ease;
 }
-/* .current-task {
-  margin: 10px 0 6px;
-  letter-spacing: 0.3px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.08);
-  border: 1px dashed rgba(0, 0, 0, 0.25);
-} */
+
+.linkish:hover {
+  opacity: 0.7;
+  transform: translateY(-1px);
+}
 
 .current-task.is-hidden {
   display: none;
@@ -593,14 +618,43 @@ body::before {
   letter-spacing: 1px;
   text-align: center;
   margin: 12px 0 8px;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.12);
+  text-shadow: 
+    1px 1px 0 rgba(0, 0, 0, 0.12),
+    0 0 10px rgba(197, 22, 22, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Breathing animation when timer is running */
+.timer-display.timer--running {
+  animation: timerBreath 1.5s ease-in-out infinite;
+  text-shadow: 
+    1px 1px 0 rgba(0, 0, 0, 0.12),
+    0 0 20px rgba(197, 22, 22, 0.6),
+    0 0 30px rgba(197, 22, 22, 0.4);
+}
+
+@keyframes timerBreath {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow: 
+      1px 1px 0 rgba(0, 0, 0, 0.12),
+      0 0 15px rgba(197, 22, 22, 0.5),
+      0 0 25px rgba(197, 22, 22, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    text-shadow: 
+      1px 1px 0 rgba(0, 0, 0, 0.12),
+      0 0 25px rgba(197, 22, 22, 0.8),
+      0 0 40px rgba(197, 22, 22, 0.5);
+  }
 }
 
 /* ensure tiny helper labels are readable (uses your --small-ui token) */
 .card--timer .field-label,
 .card--timer .helper-text--tiny,
 .card--timer .rules-callout {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   text-transform: uppercase;
   font-size: 2.01rem; /* bump label size */
   line-height: 1.3;
@@ -637,10 +691,18 @@ body::before {
 
 .completed-groups--tabs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns for horizontal row */
   gap: 16px;
   margin-bottom: 12px;
 }
+
+/* Responsive adjustment for very small screens */
+@media (max-width: 420px) {
+  .completed-groups--tabs {
+    gap: 8px; /* Reduce gap on small screens */
+  }
+}
+
 /* fix */
 .completed-groups--tabs .completed-group {
   background: #fff;
@@ -689,55 +751,52 @@ body::before {
   display: grid;
   gap: 16px;
 }
-/* 
-.timer-block {
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px dashed rgba(0, 0, 0, 0.2);
-  border-radius: 14px;
-  padding: 10px 12px;
-} */
 
 .timer-block__title {
-  margin: 0 0 5px;
+  margin: 0 0 8px;
   text-align: center;
   font-weight: 900;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  font-size: 1.6rem;
-  font-family: var(--font-wrong);
+  font-size: clamp(1.4rem, 2.8vw, 1.8rem); /* More consistent sizing */
+  font-family: var(--font-ui);
+  color: var(--accent-red);
 }
 
 .timer-block__hint {
-  margin: 0 0 22px;
+  margin: 0 0 16px;
   text-align: center;
   text-transform: uppercase;
-  font-size: 1rem;
-  font-family: var(--font-wrong);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem); /* Smaller, clearer hint text */
+  font-family: var(--font-ui);
+  opacity: 0.85;
+  font-style: italic;
 }
 
-/* margin: 0 0 10px;
-  text-align: center;
-  font-size: 1rem;
-  font-family: var(--font-wrong);
-} */
-
 .timer-block__sub {
-  margin: 10px 0 6px;
+  margin: 14px 0 8px;
   font-weight: 900;
   text-transform: uppercase;
   text-align: center;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   font-family: var(--font-label), var(--font-stack);
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  color: var(--accent-red);
 }
 
 .timer-block__footer {
-  margin: 13px 0 0;
+  margin: 16px 0 0;
   text-align: center;
   font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-size: 1.5rem;
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
   font-family: var(--font-label), var(--font-stack);
+  color: var(--accent-red);
+  padding: 10px;
+  background: rgba(197, 22, 22, 0.08);
+  border-radius: 8px;
+  border: 1px dashed rgba(197, 22, 22, 0.3);
 }
 
 .reset-global {
@@ -751,69 +810,8 @@ body::before {
   gap: 10px;
 }
 
-/* .current-task--hero {
-  margin: 10px 0 8px;
-  justify-content: center;
-  font-size: 1.45rem;
-  width: 100%;
-  text-align: center;
-  position: relative;
-  border: 2px solid var(--accent-red);
-  background: rgba(197, 22, 22, 0.12);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
-} */
-
-/* .current-task--hero::after {
-  content: "IN PROGRESS";
-  position: absolute;
-  right: 10px;
-  top: -12px;
-  font-size: 0.7rem;
-  letter-spacing: 0.6px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: var(--accent-red);
-  color: #fff;
-} */
-
-.card-title--big {
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
-  letter-spacing: 1.6px;
-}
-
-.card--timer .card-title {
-  font-family: var(--font-label), var(--font-stack);
-  font-size: 3.6rem; /*TESTED FOR FINDING TIMER*/
-  letter-spacing: 2px;
-  text-align: center;
-}
-
-.completed-tabs {
-  margin-bottom: 12px;
-}
-
-.completed-tabs__title {
-  margin: 0 0 8px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.timer-add-label {
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.completed-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
+/* Completed stats and progress tracking */
 .completed-stat {
-  font-family: var(--font-punk2);
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.6px;
@@ -823,7 +821,7 @@ body::before {
 }
 
 .completed-stat--center {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   text-align: center;
   width: 100%;
   letter-spacing: 1px;
@@ -835,31 +833,9 @@ body::before {
   margin-right: 8px;
 }
 
-.progress-ring {
-  --progress: 0;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--accent-red) calc(var(--progress) * 1%),
-    rgba(0, 0, 0, 0.12) 0
-  );
-  position: relative;
-  border: 2px solid rgba(0, 0, 0, 0.15);
-}
-
-.progress-ring::after {
-  content: "";
-  position: absolute;
-  inset: 14px;
-  border-radius: 50%;
-  background: var(--paper);
-  border: 1px solid var(--paper-border);
-}
-
+/* Completed groups */
 .completed-groups {
-  font-family: var(--font-wrong); /* swap if you want */
-
+  font-family: var(--font-ui);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
@@ -867,107 +843,30 @@ body::before {
 }
 
 .completed-subheading {
-  font-size: 1.35rem; /* bump label size */
-
-  font-family: var(--font-punk2); /* swap if you want */
+  font-size: 1.35rem;
   margin: 0 0 6px;
   font-weight: 900;
   letter-spacing: 0.4px;
 }
 
 .completed-list {
-  font-size: 1.15rem; /* bump label size */
-  font-family: var(--font-wrong); /* swap if you want */
+  font-size: 1.15rem;
+  font-family: var(--font-ui);
   margin: 0;
   padding-left: 18px;
   color: var(--ink-soft);
 }
 
-.progress-details {
-  margin: 8px 0 10px;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px dashed rgba(0, 0, 0, 0.2);
-  padding: 10px 12px;
-  border-radius: 12px;
-}
-
-.progress-summary {
-  cursor: pointer;
-  font-weight: 900;
-  letter-spacing: 0.4px;
-  list-style: none;
-  color: var(--ink);
-}
-
-.progress-summary::-webkit-details-marker {
-  display: none;
-}
-
-.progress-summary::before {
-  font-family: var(--font-wrong); /* swap if you want */
-
-  content: "▸ ";
-  display: inline-block;
-  transform: translateY(-1px);
-  opacity: 0.9;
-}
-
-.progress-details[open] .progress-summary::before {
-  content: "▾ ";
-}
-
-.progress-breakdown {
-  font-family: var(--font-wrong); /* swap if you want */
-
-  margin: 10px 0 0;
-  padding-left: 18px;
-  line-height: 1.4;
-  color: var(--ink-soft);
-}
-
-.progress-breakdown li {
-  margin: 6px 0;
-  opacity: 0.92;
-}
-
+/* Hide music player */
 .music {
   display: none !important;
   visibility: hidden !important;
 }
 
-.music-title {
-  font-weight: 900;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--accent-red-dark);
-}
-
-.music-track {
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.music-controls {
-  display: flex;
-  gap: 10px;
-}
-
-.music .btn--small {
-  padding: 6px 10px;
-}
-
 /* ===== DESKTOP LAYOUT ===== */
 @media (min-width: 1200px) {
   .app {
-    max-width: 1400px; /* allow more horizontal room when available */
-  }
-
-  .layout {
-    grid-template-areas: "tasks timer completed";
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
-    justify-items: stretch; /* let cards fill their grid cells */
-    align-items: start;
+    max-width: 1400px;
   }
 
   .layout {
@@ -1000,6 +899,7 @@ body::before {
     transform 0.06s ease,
     background 0.2s ease;
 }
+
 .task:hover {
   background: rgba(0, 0, 0, 0.05);
 }
@@ -1056,66 +956,17 @@ body::before {
   margin-bottom: 10px;
 }
 
-/* Dirty-paper texture for cards — place after existing .card rules (~line 984) */
-.card,
-.card--tasks,
-.card--timer,
-.card--completed {
-  background-color: var(--paper);
-  background-image: url("../assets/textures/dirty-paper.png");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  /* box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.3),
-    0 2px 0 rgba(255, 255, 255, 0.25) inset; */
-  max-width: none !important;
-  width: 100%;
-  padding: 18px 20px !important;
-}
-
-/* stronger radial accent + texture for timer card */
-.card--timer,
-.card--timer.card,
-#timerCard,
-section#timerCard {
-  background-color: var(--paper) !important;
-  background-image:
-    radial-gradient(rgba(197, 22, 22, 0.06), rgba(0, 0, 0, 0) 35%),
-    url("../assets/textures/dirty-paper.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: cover !important;
-  background-blend-mode: overlay !important;
-}
-
-.card--timer,
-#timerCard,
-section#timerCard {
-  background-color: transparent !important;
-  background-image: url("../assets/textures/dirty-paper.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: cover !important;
-  /* use multiply so the paper shows with darker contrast */
-  background-blend-mode: multiply !important;
-  /* box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.35),
-    inset 0 2px 0 rgba(255, 255, 255, 0.12); */
-}
-
 .card--completed {
   padding: 20px 22px !important;
 }
 
 .completed-groups--tabs {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns for horizontal row */
 }
 
 .field-label {
-  font-size: 1.05rem;
-  line-height: 1.3;
   font-size: var(--size-body);
+  line-height: 1.3;
 }
 
 .field-select {
@@ -1205,6 +1056,231 @@ section#timerCard {
   width: calc(100% - 40px);
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-strong);
+  animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes modalPop {
+  0% {
+    transform: scale(0.5) rotate(-5deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Prize modal - make it more FUN! */
+#prizeModal {
+  background: 
+    linear-gradient(135deg, #fdf5e6 0%, #fff9e6 50%, #fdf5e6 100%),
+    linear-gradient(45deg, rgba(197, 22, 22, 0.03) 0%, transparent 100%);
+  border: 3px solid var(--accent-red);
+  box-shadow: 
+    0 20px 60px rgba(197, 22, 22, 0.3),
+    0 0 0 6px rgba(197, 22, 22, 0.1),
+    inset 0 0 100px rgba(255, 215, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  animation: modalPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Add celebratory pattern behind prize modal content */
+#prizeModal::before {
+  content: "🎉🎊✨🏆⭐🎉🎊✨🏆⭐";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 3rem;
+  text-align: center;
+  opacity: 0.08;
+  letter-spacing: 30px;
+  line-height: 4rem;
+  z-index: 0;
+  animation: floatEmoji 4s ease-in-out infinite;
+  word-wrap: break-word;
+  padding: 20px;
+}
+
+/* Sparkles floating around */
+#prizeModal::after {
+  content: "✨";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  animation: sparkle 2s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(180deg) scale(1.2);
+  }
+}
+
+@keyframes floatEmoji {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px); 
+    opacity: 0.08;
+  }
+  25% {
+    transform: translateY(-15px) translateX(10px);
+    opacity: 0.12;
+  }
+  50% { 
+    transform: translateY(-10px) translateX(-10px); 
+    opacity: 0.1;
+  }
+  75% {
+    transform: translateY(-5px) translateX(5px);
+    opacity: 0.09;
+  }
+}
+
+/* Make prize modal content pop above background */
+#prizeModal > * {
+  position: relative;
+  z-index: 1;
+}
+
+.modal-title {
+  font-family: var(--font-punk), var(--font-stack);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  text-align: center;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-red);
+  text-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(255, 215, 0, 0.3);
+  animation: titleBounce 0.8s ease-out;
+  position: relative;
+}
+
+/* Sparkle effect on title */
+.modal-title::before,
+.modal-title::after {
+  content: "✨";
+  position: absolute;
+  font-size: 1.5rem;
+  animation: titleSparkle 2s ease-in-out infinite;
+}
+
+.modal-title::before {
+  left: -10px;
+  top: 0;
+}
+
+.modal-title::after {
+  right: -10px;
+  top: 0;
+  animation-delay: 1s;
+}
+
+@keyframes titleSparkle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+@keyframes titleBounce {
+  0% { 
+    transform: scale(0.5) translateY(-30px); 
+    opacity: 0;
+  }
+  50% { 
+    transform: scale(1.1) translateY(5px); 
+  }
+  70% {
+    transform: scale(0.95) translateY(-5px);
+  }
+  100% { 
+    transform: scale(1) translateY(0); 
+    opacity: 1;
+  }
+}
+
+.modal-subtitle {
+  font-family: var(--font-ui);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  text-align: center;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: fadeSlideIn 0.5s ease-out 0.2s backwards;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Prize list items - make them more exciting */
+#prizeModal li {
+  font-family: var(--font-ui);
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  margin: 8px 0;
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.4;
+  opacity: 0;
+  animation: listItemSlideIn 0.5s ease-out forwards;
+}
+
+/* Stagger animation for list items */
+#prizeModal li:nth-child(1) { animation-delay: 0.3s; }
+#prizeModal li:nth-child(2) { animation-delay: 0.4s; }
+#prizeModal li:nth-child(3) { animation-delay: 0.5s; }
+#prizeModal li:nth-child(4) { animation-delay: 0.6s; }
+#prizeModal li:nth-child(5) { animation-delay: 0.7s; }
+
+@keyframes listItemSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+#prizeModal li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent-red);
+  font-weight: bold;
+  animation: arrowPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(4px); opacity: 0.7; }
 }
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
@@ -1218,25 +1294,31 @@ section#timerCard {
 .modal img.prize-gif {
   width: 100%;
   height: auto;
-  max-width: 420px;
-  max-height: 60vh; /* never exceed viewport height */
+  max-width: 380px; /* Reduced from 420px for better mobile fit */
+  max-height: 50vh; /* Reduced from 60vh to prevent modal overflow */
   object-fit: contain;
   display: block;
   margin: 12px auto 0;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Mobile-specific modal shrink + font scaling */
 @media (max-width: 420px) {
   .modal {
-    max-width: 320px !important;
-    width: calc(100% - 30px) !important;
-    padding: 14px 12px !important;
+    max-width: 340px !important; /* Increased from 320px for better readability */
+    width: calc(100% - 24px) !important; /* Better margins */
+    padding: 16px 14px !important;
     margin: 0 8px;
   }
 
   .modal-title {
-    font-size: clamp(1.4rem, 6vw, 2rem) !important;
-    margin-bottom: 8px;
+    font-size: clamp(1.6rem, 7vw, 2.2rem) !important; /* Larger on mobile */
+    margin-bottom: 10px;
+  }
+
+  .modal-subtitle {
+    font-size: clamp(1rem, 2.8vw, 1.3rem) !important;
   }
 
   .modal {
@@ -1244,29 +1326,131 @@ section#timerCard {
   }
 
   .modal img.prize-gif {
-    max-width: 260px;
-    max-height: 48vh;
+    max-width: 280px;
+    max-height: 40vh; /* Smaller on mobile to prevent overflow */
+  }
+
+  #prizeModal li {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    margin: 6px 0;
   }
 }
 
 /* Make main site title larger & punchier (adjustable) */
 .title-line:first-child {
-  font-size: clamp(3.6rem, 10vw, 11.5rem) !important;
+  font-size: clamp(4rem, 11vw, 13rem) !important; /* INCREASED from 3.6rem to 4rem min */
   line-height: 0.92;
 }
 
 .title-line:last-child {
-  font-size: clamp(1.8rem, 5.2vw, 5rem) !important;
+  font-size: clamp(2rem, 5.8vw, 6rem) !important; /* INCREASED from 1.8rem to 2rem min */
 }
 
 /* Stronger card title for visibility */
 .card-title {
-  font-size: clamp(1.9rem, 3.6vw, 3.6rem) !important;
+  font-size: clamp(2.2rem, 4vw, 4.2rem) !important; /* INCREASED from 1.9rem to 2.2rem min */
 }
 
 /* Optional: slightly larger tab labels on small screens for legibility */
 @media (max-width: 640px) {
   .tab {
     font-size: clamp(1.2rem, 3.8vw, 1.8rem) !important;
+  }
+}
+
+/* ===== ENHANCED FEATURES STYLES ===== */
+
+/* Inline editing input */
+.task-edit-input {
+  width: 100%;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 4px 8px;
+  border: 2px solid var(--accent-red, #c51616);
+  border-radius: 4px;
+  background: #fff;
+  outline: none;
+}
+
+.task-edit-input:focus {
+  border-color: var(--accent-red-dark, #9f1010);
+  box-shadow: 0 0 0 3px rgba(197, 22, 22, 0.1);
+}
+
+/* Data export/import buttons - REMOVED per user request */
+
+/* Drag and drop feedback */
+.task[draggable="true"] {
+  cursor: move;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.task.dragging {
+  opacity: 0.5;
+}
+
+.task:active {
+  cursor: grabbing;
+}
+
+/* Tab drop zone highlighting */
+.tab.drag-over {
+  background: rgba(197, 22, 22, 0.2) !important;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Visual hint for draggable tasks */
+.task::before {
+  content: "⋮⋮";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 1.2em;
+  line-height: 0.8;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.task:hover::before {
+  opacity: 0.5;
+}
+
+/* Adjust task row padding to make room for drag handle */
+.task-row {
+  position: relative;
+  padding-left: 24px;
+}
+
+/* Double-click hint */
+.task-text {
+  cursor: text;
+  user-select: text;
+}
+
+.task-text:hover {
+  background: rgba(197, 22, 22, 0.05);
+  border-radius: 3px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .task-text {
+    font-size: 1.8rem; /* Slightly smaller on mobile */
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+  }
+  
+  .btn--primary {
+    padding: 14px 28px;
+    font-size: clamp(1.1rem, 2.3vw, 1.4rem);
   }
 }
