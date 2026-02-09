@@ -1166,7 +1166,7 @@ body::before {
   z-index: 1;
 }
 
-// ...existing code...
+/* ...existing code... */
 .modal-title {
   /* editable tokens you can change at runtime (via devtools or JS) */
   --modal-title-font: var(--font-punk), var(--font-stack);
