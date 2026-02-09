@@ -106,176 +106,13 @@ function enableInlineEditing() {
 
 /* -------------------------------
    Feature 2: Clear Completed Tasks
+   REMOVED per user request - they want completed tasks to remain visible in "SHIT I DID"
 -------------------------------- */
-
-/**
- * Add "Clear Completed" button and functionality
- */
-function addClearCompletedButton() {
-  const tasksCard = document.getElementById("tasksCard");
-  if (!tasksCard) return;
-
-  // Check if button already exists
-  if (document.getElementById("clearCompletedBtn")) return;
-
-  // Create button
-  const btn = document.createElement("button");
-  btn.id = "clearCompletedBtn";
-  btn.className = "btn btn--secondary clear-completed-btn";
-  btn.type = "button";
-  btn.textContent = "CLEAR COMPLETED";
-  btn.style.marginTop = "12px";
-  btn.style.width = "100%";
-
-  // Add click handler
-  btn.addEventListener("click", () => {
-    // Get current active tab from the app
-    const activeTab = document.querySelector(".tab--active")?.dataset?.tab || "dueToday";
-    
-    // Dispatch event to app.js to clear completed tasks
-    const event = new CustomEvent("tasks:clearCompleted", {
-      detail: { tabKey: activeTab },
-    });
-    document.dispatchEvent(event);
-  });
-
-  // Insert after the task add form
-  const form = document.getElementById("taskAddForm");
-  if (form && form.parentNode) {
-    form.parentNode.insertBefore(btn, form.nextSibling);
-  }
-}
 
 /* -------------------------------
    Feature 3: Data Export/Import
+   REMOVED per user request - export/import functionality not needed
 -------------------------------- */
-
-/**
- * Export tasks data as JSON file
- */
-function exportData() {
-  try {
-    // Get data from localStorage
-    const STORAGE_KEY = "dsigdt_state_v1";
-    const data = localStorage.getItem(STORAGE_KEY);
-    
-    if (!data) {
-      alert("No data to export!");
-      return;
-    }
-
-    // Create blob and download
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `dumbit-tasks-${new Date().toISOString().split("T")[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    alert("✅ Tasks exported successfully!");
-  } catch (err) {
-    console.error("Export failed:", err);
-    alert("❌ Export failed: " + err.message);
-  }
-}
-
-/**
- * Import tasks data from JSON file
- */
-function importData(file) {
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const content = e.target.result;
-      const parsed = JSON.parse(content);
-
-      // Validate structure
-      if (!parsed.tasksByTab || !parsed.completedByTab) {
-        throw new Error("Invalid data format");
-      }
-
-      // Confirm overwrite
-      const ok = confirm(
-        "⚠️ IMPORT DATA? ⚠️\n\nThis will REPLACE all current tasks!\n\nClick OK to proceed."
-      );
-      if (!ok) return;
-
-      // Save to localStorage
-      const STORAGE_KEY = "dsigdt_state_v1";
-      localStorage.setItem(STORAGE_KEY, content);
-
-      // Reload page to apply changes
-      alert("✅ Data imported successfully! Reloading...");
-      window.location.reload();
-    } catch (err) {
-      console.error("Import failed:", err);
-      alert("❌ Import failed: " + err.message);
-    }
-  };
-  reader.readAsText(file);
-}
-
-/**
- * Add export/import buttons to UI
- */
-function addDataButtons() {
-  const completedCard = document.getElementById("completedCard");
-  if (!completedCard) return;
-
-  // Check if buttons already exist
-  if (document.getElementById("exportBtn")) return;
-
-  // Create container
-  const container = document.createElement("div");
-  container.className = "data-buttons";
-  container.style.marginTop = "16px";
-  container.style.display = "flex";
-  container.style.gap = "8px";
-  container.style.flexWrap = "wrap";
-
-  // Export button
-  const exportBtn = document.createElement("button");
-  exportBtn.id = "exportBtn";
-  exportBtn.className = "btn btn--small";
-  exportBtn.type = "button";
-  exportBtn.textContent = "💾 EXPORT DATA";
-  exportBtn.addEventListener("click", exportData);
-
-  // Import button
-  const importBtn = document.createElement("button");
-  importBtn.id = "importBtn";
-  importBtn.className = "btn btn--small";
-  importBtn.type = "button";
-  importBtn.textContent = "📥 IMPORT DATA";
-
-  // Hidden file input
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = ".json";
-  fileInput.style.display = "none";
-  fileInput.addEventListener("change", (e) => {
-    if (e.target.files && e.target.files[0]) {
-      importData(e.target.files[0]);
-    }
-  });
-
-  importBtn.addEventListener("click", () => fileInput.click());
-
-  container.appendChild(exportBtn);
-  container.appendChild(importBtn);
-  container.appendChild(fileInput);
-
-  // Insert before reset button
-  const resetBtn = document.getElementById("resetBtn");
-  if (resetBtn && resetBtn.parentNode) {
-    resetBtn.parentNode.insertBefore(container, resetBtn);
-  }
-}
 
 /* -------------------------------
    Feature 4 & 5: Drag & Drop
@@ -475,8 +312,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Wait a bit for the main app to initialize
   setTimeout(() => {
     enableInlineEditing();
-    addClearCompletedButton();
-    addDataButtons();
+    // addClearCompletedButton(); // REMOVED - user wants to keep completed tasks visible
+    // addDataButtons(); // REMOVED - user doesn't want export/import
     enableDragAndDrop();
     enableDragToTabs();
     makeTasksDraggable();
@@ -487,11 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Expose functions for debugging
 window.enhancedFeatures = {
-  exportData,
-  importData,
   enableInlineEditing,
-  addClearCompletedButton,
-  addDataButtons,
   enableDragAndDrop,
   enableDragToTabs,
   makeTasksDraggable,

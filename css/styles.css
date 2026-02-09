@@ -6,24 +6,6 @@ html,
 body {
   height: 100%;
 }
-
-/*GRIME
-body {
-  min-height: 100%;
-} */
-
-/* body {
-  margin: 0;
-  background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover
-    fixed;
-  color: #eaeaea;
-  font-family: var(--font-body), var(--font-stack);
-  font-size: var(--size-body);
-  position: relative;
-}
-  =================== */
-
-/* SAVE-SPOT: TODO: resume-here */
 .app {
   position: relative;
   z-index: 1;
@@ -352,9 +334,6 @@ body::before {
   margin: 0 auto 18px;
   border-radius: 14px;
   border: 1px solid var(--paper-border);
-  /* box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.3),
-    0 2px 0 rgba(255, 255, 255, 0.25) inset; */
   position: relative;
   font-size: var(--size-card-body);
   font-family: var(--font-body), var(--font-stack);
@@ -372,7 +351,7 @@ body::before {
   color: var(--ink);
 }
 
-/* Override: remove white border and unify textured cards (place near end, ~line 997) */
+/* Override: remove white border and unify textured cards */
 .card--tasks,
 .card--timer,
 .card--completed {
@@ -395,20 +374,16 @@ body::before {
   background-blend-mode: multiply !important;
 }
 
-/* Single rule to control the three card titles together — tweak here to affect all */
+/* Single rule to control the three card titles together */
 .card--tasks .card-title,
 .card--timer .card-title,
 .card--completed .card-title {
-  font-size: clamp(
-    1.6rem,
-    3vw,
-    2.4rem
-  ) !important; /* tweak once to affect all */
+  font-size: clamp(1.6rem, 3vw, 2.4rem) !important;
   letter-spacing: 2px;
   font-family: var(--font-label), var(--font-stack);
 }
 
-/* Optional helper for experimenting with a really large card title (toggle class in HTML) */
+/* Optional helper for experimenting with a really large card title */
 .card-title--big {
   font-size: clamp(2.2rem, 6vw, 7.6rem);
   letter-spacing: 2px;
@@ -418,36 +393,6 @@ body::before {
 .main {
   display: contents;
 }
-
-/* ===== PHASE 1: MOCKUP LAYOUT + CARDS ===== */
-/* keep the stronger radial accent for timer, softer for others */
-/* ...existing code... */
-
-.card--tasks,
-.card--timer,
-.card--completed {
-  background-color: var(--paper);
-  background-image: url("../assets/textures/dirty-paper.png");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  /* box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.3),
-    0 2px 0 rgba(255, 255, 255, 0.25) inset; */
-  max-width: 440px;
-  padding: 14px 16px;
-}
-
-.card--timer {
-  background-image:
-    radial-gradient(rgba(197, 22, 22, 0.06), rgba(0, 0, 0, 0) 35%),
-    url("../assets/textures/dirty-paper.png");
-  background-blend-mode: overlay;
-  background-position: center top;
-  background-size: cover;
-}
-
-/* ...existing code... */
 
 .task-text {
   font-family: var(--font-wrong);
@@ -498,15 +443,6 @@ body::before {
   box-shadow: 0 3px 8px rgba(197, 22, 22, 0.1);
 }
 
-/* .btn,
-.task-add-btn {
-  font-family: var(--font-wrong);
-  border-radius: 17px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 10px 14px;
-  letter-spacing: 0.64px;
-} */
-
 .btn {
   background: var(--ink);
   color: #ffffff;
@@ -520,7 +456,6 @@ body::before {
 .linkish {
   font-family: var(--font-wrong);
   display: flex;
-
   justify-content: center;
   font-size: clamp(1rem, 1.5vw, 2rem);
   background: transparent;
@@ -529,17 +464,6 @@ body::before {
   cursor: pointer;
   color: inherit;
 }
-/* .current-task {
-  margin: 10px 0 6px;
-  letter-spacing: 0.3px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.08);
-  border: 1px dashed rgba(0, 0, 0, 0.25);
-} */
 
 .current-task.is-hidden {
   display: none;
@@ -689,55 +613,53 @@ body::before {
   display: grid;
   gap: 16px;
 }
-/* 
-.timer-block {
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px dashed rgba(0, 0, 0, 0.2);
-  border-radius: 14px;
-  padding: 10px 12px;
-} */
+/* fix */
 
 .timer-block__title {
-  margin: 0 0 5px;
+  margin: 0 0 8px;
   text-align: center;
   font-weight: 900;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  font-size: 1.6rem;
+  font-size: clamp(1.4rem, 2.8vw, 1.8rem); /* More consistent sizing */
   font-family: var(--font-wrong);
+  color: var(--accent-red);
 }
 
 .timer-block__hint {
-  margin: 0 0 22px;
+  margin: 0 0 16px;
   text-align: center;
   text-transform: uppercase;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem); /* Smaller, clearer hint text */
   font-family: var(--font-wrong);
+  opacity: 0.85;
+  font-style: italic;
 }
 
-/* margin: 0 0 10px;
-  text-align: center;
-  font-size: 1rem;
-  font-family: var(--font-wrong);
-} */
-
 .timer-block__sub {
-  margin: 10px 0 6px;
+  margin: 14px 0 8px;
   font-weight: 900;
   text-transform: uppercase;
   text-align: center;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   font-family: var(--font-label), var(--font-stack);
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  color: var(--accent-red);
 }
 
 .timer-block__footer {
-  margin: 13px 0 0;
+  margin: 16px 0 0;
   text-align: center;
   font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-size: 1.5rem;
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
   font-family: var(--font-label), var(--font-stack);
+  color: var(--accent-red);
+  padding: 10px;
+  background: rgba(197, 22, 22, 0.08);
+  border-radius: 8px;
+  border: 1px dashed rgba(197, 22, 22, 0.3);
 }
 
 .reset-global {
@@ -776,44 +698,14 @@ body::before {
   color: #fff;
 } */
 
-.card-title--big {
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
-  letter-spacing: 1.6px;
+.reset-global {
+  margin: 10px 0 0;
+  display: block;
+  margin-left: auto;
 }
 
-.card--timer .card-title {
-  font-family: var(--font-label), var(--font-stack);
-  font-size: 3.6rem; /*TESTED FOR FINDING TIMER*/
-  letter-spacing: 2px;
-  text-align: center;
-}
-
-.completed-tabs {
-  margin-bottom: 12px;
-}
-
-.completed-tabs__title {
-  margin: 0 0 8px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.timer-add-label {
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.completed-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
+/* Completed stats and progress tracking */
 .completed-stat {
-  font-family: var(--font-punk2);
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.6px;
@@ -835,31 +727,9 @@ body::before {
   margin-right: 8px;
 }
 
-.progress-ring {
-  --progress: 0;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--accent-red) calc(var(--progress) * 1%),
-    rgba(0, 0, 0, 0.12) 0
-  );
-  position: relative;
-  border: 2px solid rgba(0, 0, 0, 0.15);
-}
-
-.progress-ring::after {
-  content: "";
-  position: absolute;
-  inset: 14px;
-  border-radius: 50%;
-  background: var(--paper);
-  border: 1px solid var(--paper-border);
-}
-
+/* Completed groups */
 .completed-groups {
-  font-family: var(--font-wrong); /* swap if you want */
-
+  font-family: var(--font-wrong);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
@@ -867,107 +737,30 @@ body::before {
 }
 
 .completed-subheading {
-  font-size: 1.35rem; /* bump label size */
-
-  font-family: var(--font-punk2); /* swap if you want */
+  font-size: 1.35rem;
   margin: 0 0 6px;
   font-weight: 900;
   letter-spacing: 0.4px;
 }
 
 .completed-list {
-  font-size: 1.15rem; /* bump label size */
-  font-family: var(--font-wrong); /* swap if you want */
+  font-size: 1.15rem;
+  font-family: var(--font-wrong);
   margin: 0;
   padding-left: 18px;
   color: var(--ink-soft);
 }
 
-.progress-details {
-  margin: 8px 0 10px;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px dashed rgba(0, 0, 0, 0.2);
-  padding: 10px 12px;
-  border-radius: 12px;
-}
-
-.progress-summary {
-  cursor: pointer;
-  font-weight: 900;
-  letter-spacing: 0.4px;
-  list-style: none;
-  color: var(--ink);
-}
-
-.progress-summary::-webkit-details-marker {
-  display: none;
-}
-
-.progress-summary::before {
-  font-family: var(--font-wrong); /* swap if you want */
-
-  content: "▸ ";
-  display: inline-block;
-  transform: translateY(-1px);
-  opacity: 0.9;
-}
-
-.progress-details[open] .progress-summary::before {
-  content: "▾ ";
-}
-
-.progress-breakdown {
-  font-family: var(--font-wrong); /* swap if you want */
-
-  margin: 10px 0 0;
-  padding-left: 18px;
-  line-height: 1.4;
-  color: var(--ink-soft);
-}
-
-.progress-breakdown li {
-  margin: 6px 0;
-  opacity: 0.92;
-}
-
+/* Hide music player */
 .music {
   display: none !important;
   visibility: hidden !important;
 }
 
-.music-title {
-  font-weight: 900;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--accent-red-dark);
-}
-
-.music-track {
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.music-controls {
-  display: flex;
-  gap: 10px;
-}
-
-.music .btn--small {
-  padding: 6px 10px;
-}
-
 /* ===== DESKTOP LAYOUT ===== */
 @media (min-width: 1200px) {
   .app {
-    max-width: 1400px; /* allow more horizontal room when available */
-  }
-
-  .layout {
-    grid-template-areas: "tasks timer completed";
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
-    justify-items: stretch; /* let cards fill their grid cells */
-    align-items: start;
+    max-width: 1400px;
   }
 
   .layout {
@@ -1000,6 +793,7 @@ body::before {
     transform 0.06s ease,
     background 0.2s ease;
 }
+
 .task:hover {
   background: rgba(0, 0, 0, 0.05);
 }
@@ -1056,54 +850,6 @@ body::before {
   margin-bottom: 10px;
 }
 
-/* Dirty-paper texture for cards — place after existing .card rules (~line 984) */
-.card,
-.card--tasks,
-.card--timer,
-.card--completed {
-  background-color: var(--paper);
-  background-image: url("../assets/textures/dirty-paper.png");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  /* box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.3),
-    0 2px 0 rgba(255, 255, 255, 0.25) inset; */
-  max-width: none !important;
-  width: 100%;
-  padding: 18px 20px !important;
-}
-
-/* stronger radial accent + texture for timer card */
-.card--timer,
-.card--timer.card,
-#timerCard,
-section#timerCard {
-  background-color: var(--paper) !important;
-  background-image:
-    radial-gradient(rgba(197, 22, 22, 0.06), rgba(0, 0, 0, 0) 35%),
-    url("../assets/textures/dirty-paper.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: cover !important;
-  background-blend-mode: overlay !important;
-}
-
-.card--timer,
-#timerCard,
-section#timerCard {
-  background-color: transparent !important;
-  background-image: url("../assets/textures/dirty-paper.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: cover !important;
-  /* use multiply so the paper shows with darker contrast */
-  background-blend-mode: multiply !important;
-  /* box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.35),
-    inset 0 2px 0 rgba(255, 255, 255, 0.12); */
-}
-
 .card--completed {
   padding: 20px 22px !important;
 }
@@ -1113,9 +859,8 @@ section#timerCard {
 }
 
 .field-label {
-  font-size: 1.05rem;
-  line-height: 1.3;
   font-size: var(--size-body);
+  line-height: 1.3;
 }
 
 .field-select {
@@ -1205,6 +950,105 @@ section#timerCard {
   width: calc(100% - 40px);
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-strong);
+  animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes modalPop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Prize modal - make it more FUN! */
+#prizeModal {
+  background: linear-gradient(135deg, #f9f8f6 0%, #fdf5e6 100%);
+  border: 3px solid var(--accent-red);
+  box-shadow: 
+    0 20px 60px rgba(197, 22, 22, 0.3),
+    0 0 0 6px rgba(197, 22, 22, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add celebratory pattern behind prize modal content */
+#prizeModal::before {
+  content: "🎉🎊✨🏆⭐";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  font-size: 2rem;
+  text-align: center;
+  opacity: 0.15;
+  letter-spacing: 20px;
+  z-index: 0;
+  animation: floatEmoji 3s ease-in-out infinite;
+}
+
+@keyframes floatEmoji {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Make prize modal content pop above background */
+#prizeModal > * {
+  position: relative;
+  z-index: 1;
+}
+
+.modal-title {
+  font-family: var(--font-punk), var(--font-stack);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  text-align: center;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-red);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  animation: titleBounce 0.6s ease-out;
+}
+
+@keyframes titleBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.modal-subtitle {
+  font-family: var(--font-wrong), var(--font-stack);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  text-align: center;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Prize list items - make them more exciting */
+#prizeModal li {
+  font-family: var(--font-wrong), var(--font-stack);
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  margin: 8px 0;
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.4;
+}
+
+#prizeModal li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent-red);
+  font-weight: bold;
+  animation: arrowPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(4px); opacity: 0.7; }
 }
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
@@ -1218,25 +1062,31 @@ section#timerCard {
 .modal img.prize-gif {
   width: 100%;
   height: auto;
-  max-width: 420px;
-  max-height: 60vh; /* never exceed viewport height */
+  max-width: 380px; /* Reduced from 420px for better mobile fit */
+  max-height: 50vh; /* Reduced from 60vh to prevent modal overflow */
   object-fit: contain;
   display: block;
   margin: 12px auto 0;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Mobile-specific modal shrink + font scaling */
 @media (max-width: 420px) {
   .modal {
-    max-width: 320px !important;
-    width: calc(100% - 30px) !important;
-    padding: 14px 12px !important;
+    max-width: 340px !important; /* Increased from 320px for better readability */
+    width: calc(100% - 24px) !important; /* Better margins */
+    padding: 16px 14px !important;
     margin: 0 8px;
   }
 
   .modal-title {
-    font-size: clamp(1.4rem, 6vw, 2rem) !important;
-    margin-bottom: 8px;
+    font-size: clamp(1.6rem, 7vw, 2.2rem) !important; /* Larger on mobile */
+    margin-bottom: 10px;
+  }
+
+  .modal-subtitle {
+    font-size: clamp(1rem, 2.8vw, 1.3rem) !important;
   }
 
   .modal {
@@ -1244,24 +1094,29 @@ section#timerCard {
   }
 
   .modal img.prize-gif {
-    max-width: 260px;
-    max-height: 48vh;
+    max-width: 280px;
+    max-height: 40vh; /* Smaller on mobile to prevent overflow */
+  }
+
+  #prizeModal li {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    margin: 6px 0;
   }
 }
 
 /* Make main site title larger & punchier (adjustable) */
 .title-line:first-child {
-  font-size: clamp(3.6rem, 10vw, 11.5rem) !important;
+  font-size: clamp(4rem, 11vw, 13rem) !important; /* INCREASED from 3.6rem to 4rem min */
   line-height: 0.92;
 }
 
 .title-line:last-child {
-  font-size: clamp(1.8rem, 5.2vw, 5rem) !important;
+  font-size: clamp(2rem, 5.8vw, 6rem) !important; /* INCREASED from 1.8rem to 2rem min */
 }
 
 /* Stronger card title for visibility */
 .card-title {
-  font-size: clamp(1.9rem, 3.6vw, 3.6rem) !important;
+  font-size: clamp(2.2rem, 4vw, 4.2rem) !important; /* INCREASED from 1.9rem to 2.2rem min */
 }
 
 /* Optional: slightly larger tab labels on small screens for legibility */
@@ -1290,35 +1145,7 @@ section#timerCard {
   box-shadow: 0 0 0 3px rgba(197, 22, 22, 0.1);
 }
 
-/* Clear completed button */
-.clear-completed-btn {
-  margin-top: 12px !important;
-  width: 100%;
-  background: var(--accent-red, #c51616);
-  color: #fff;
-  font-size: 0.9rem;
-  padding: 8px 16px;
-  transition: all 0.2s ease;
-}
-
-.clear-completed-btn:hover {
-  background: var(--accent-red-dark, #9f1010);
-  transform: translateY(-1px);
-}
-
-/* Data export/import buttons */
-.data-buttons {
-  margin-top: 16px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.data-buttons .btn {
-  flex: 1;
-  min-width: 140px;
-}
+/* Data export/import buttons - REMOVED per user request */
 
 /* Drag and drop feedback */
 .task[draggable="true"] {
@@ -1381,14 +1208,7 @@ section#timerCard {
 
 /* Mobile adjustments */
 @media (max-width: 640px) {
-  .data-buttons .btn {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-    min-width: 120px;
-  }
-
-  .clear-completed-btn {
-    font-size: 0.85rem;
-    padding: 8px 12px;
+  .task-text {
+    font-size: 1.8rem; /* Slightly smaller on mobile */
   }
 }
