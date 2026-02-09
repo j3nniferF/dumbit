@@ -776,7 +776,6 @@ body::before {
   font-size: clamp(0.9rem, 1.8vw, 1.1rem); /* Smaller, clearer hint text */
   font-family: var(--font-ui);
   opacity: 0.85;
-  font-style: italic;
 }
 
 .timer-block__sub {
@@ -1083,464 +1082,372 @@ body::before {
   }
 }
 
-/* Prize modal - make it more FUN! */
+/* === USER: PRIZE MODAL OVERRIDES START === */
+/* (custom prize modal styles begin here) */
+
+/* ===== PRIZE MODAL TWEAKS (overrides and fixes) ===== */
 #prizeModal {
-  background:
-    linear-gradient(135deg, #fdf5e6 0%, #fff9e6 50%, #fdf5e6 100%),
-    linear-gradient(45deg, rgba(197, 22, 22, 0.03) 0%, transparent 100%);
-  border: 3px solid var(--accent-red);
-  box-shadow:
-    0 20px 60px rgba(197, 22, 22, 0.3),
-    0 0 0 6px rgba(197, 22, 22, 0.1),
-    inset 0 0 100px rgba(255, 215, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  animation: modalPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* Add celebratory pattern behind prize modal content */
-#prizeModal::before {
-  content: "🎉🎊✨🏆⭐🎉🎊✨🏆⭐";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 3rem;
+  /* tighter modal so it never gets huge */
+  max-width: 380px;
+  width: min(92%, 380px);
+  padding: 16px 18px;
+  box-sizing: border-box;
   text-align: center;
-  opacity: 0.08;
-  letter-spacing: 30px;
-  line-height: 4rem;
-  z-index: 0;
-  animation: floatEmoji 4s ease-in-out infinite;
-  word-wrap: break-word;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Sparkles floating around */
-#prizeModal::after {
-  content: "✨";
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 2rem;
-  animation: sparkle 2s ease-in-out infinite;
-  z-index: 0;
-}
-
-@keyframes sparkle {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: rotate(0deg) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: rotate(180deg) scale(1.2);
-  }
-}
-
-@keyframes floatEmoji {
-  0%,
-  100% {
-    transform: translateY(0px) translateX(0px);
-    opacity: 0.08;
-  }
-  25% {
-    transform: translateY(-15px) translateX(10px);
-    opacity: 0.12;
-  }
-  50% {
-    transform: translateY(-10px) translateX(-10px);
-    opacity: 0.1;
-  }
-  75% {
-    transform: translateY(-5px) translateX(5px);
-    opacity: 0.09;
-  }
-}
-
-/* Make prize modal content pop above background */
-#prizeModal > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* ...existing code... */
-.modal-title {
-  /* editable tokens you can change at runtime (via devtools or JS) */
-  --modal-title-font: var(--font-punk), var(--font-stack);
-  --modal-title-size: clamp(2rem, 6vw, 3.5rem); /* change this value to scale */
-  --modal-title-weight: 700;
-  --modal-title-letter-spacing: 2px;
-  --modal-title-color: var(--accent-red);
-
-  font-family: var(--modal-title-font);
-  font-size: var(--modal-title-size);
-  font-weight: var(--modal-title-weight);
-  letter-spacing: var(--modal-title-letter-spacing);
-  color: var(--modal-title-color);
-  text-align: center;
-  margin: 0 0 12px;
-  text-transform: uppercase;
-  text-shadow:
-    2px 2px 0 rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(255, 215, 0, 0.3);
-  animation: titleBounce 0.8s ease-out;
-  position: relative;
-}
-
-/* Optional presets you can toggle on the .modal-title element */
-.modal-title--large {
-  --modal-title-size: clamp(2.8rem, 8vw, 5rem);
-  --modal-title-weight: 900;
-}
-
-.modal-title--serif {
-  --modal-title-font: "Georgia", "Times New Roman", serif;
-  --modal-title-letter-spacing: 1px;
-}
-
-.modal-title--tight {
-  --modal-title-letter-spacing: 1px;
-}
-
-/* Mobile tweak (keeps behavior consistent with your existing mobile rules) */
-@media (max-width: 420px) {
-  .modal-title {
-    --modal-title-size: clamp(1.6rem, 7vw, 2.2rem);
-  }
-}
-
-/* OG MODAL TITLE 2.9 1.45
- .modal-title {
-  font-family: var(--font-punk), var(--font-stack);
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  text-align: center;
-  margin: 0 0 12px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent-red);
-  text-shadow: 
-    2px 2px 0 rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(255, 215, 0, 0.3);
-  animation: titleBounce 0.8s ease-out;
-  position: relative;
-} */
-
-/* Sparkle effect on title */
-.modal-title::before,
-.modal-title::after {
-  content: "✨";
-  position: absolute;
-  font-size: 1.5rem;
-  animation: titleSparkle 2s ease-in-out infinite;
-}
-
-.modal-title::before {
-  left: -10px;
-  top: 0;
-}
-
-.modal-title::after {
-  right: -10px;
-  top: 0;
-  animation-delay: 1s;
-}
-
-@keyframes titleSparkle {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(0.8) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2) rotate(180deg);
-  }
-}
-
-@keyframes titleBounce {
-  0% {
-    transform: scale(0.5) translateY(-30px);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.1) translateY(5px);
-  }
-  70% {
-    transform: scale(0.95) translateY(-5px);
-  }
-  100% {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-}
-
-.modal-subtitle {
-  font-family: var(--font-ui);
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  text-align: center;
-  margin: 0 0 16px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  animation: fadeSlideIn 0.5s ease-out 0.2s backwards;
-}
-
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Prize list items - make them more exciting */
-#prizeModal li {
-  font-family: var(--font-ui);
-  font-size: clamp(1rem, 2.2vw, 1.3rem);
-  margin: 8px 0;
-  padding-left: 24px;
-  position: relative;
-  line-height: 1.4;
-  opacity: 0;
-  animation: listItemSlideIn 0.5s ease-out forwards;
-}
-
-/* Stagger animation for list items */
-#prizeModal li:nth-child(1) {
-  animation-delay: 0.3s;
-}
-#prizeModal li:nth-child(2) {
-  animation-delay: 0.4s;
-}
-#prizeModal li:nth-child(3) {
-  animation-delay: 0.5s;
-}
-#prizeModal li:nth-child(4) {
-  animation-delay: 0.6s;
-}
-#prizeModal li:nth-child(5) {
-  animation-delay: 0.7s;
-}
-
-@keyframes listItemSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-#prizeModal li::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  color: var(--accent-red);
-  font-weight: bold;
-  animation: arrowPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes arrowPulse {
-  0%,
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(4px);
-    opacity: 0.7;
-  }
-}
-
-/* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
-
-/* Make the prize modal less dominant on small screens and cap GIF height */
-.modal {
-  /* keep defaults above; add better max-height handling for media */
-  max-width: 560px;
-}
-
-.modal img.prize-gif {
-  width: 100%;
-  height: auto;
-  max-width: 380px; /* Reduced from 420px for better mobile fit */
-  max-height: 50vh; /* Reduced from 60vh to prevent modal overflow */
-  object-fit: contain;
+/* Title: force full-width centering, improve contrast & smoothing */
+#prizeModal .modal-title {
   display: block;
-  margin: 12px auto 0;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Mobile-specific modal shrink + font scaling */
-@media (max-width: 420px) {
-  .modal {
-    max-width: 340px !important; /* Increased from 320px for better readability */
-    width: calc(100% - 24px) !important; /* Better margins */
-    padding: 16px 14px !important;
-    margin: 0 8px;
-  }
-
-  .modal-title {
-    font-size: clamp(1.6rem, 7vw, 2.2rem) !important; /* Larger on mobile */
-    margin-bottom: 10px;
-  }
-
-  .modal-subtitle {
-    font-size: clamp(1rem, 2.8vw, 1.3rem) !important;
-  }
-
-  .modal {
-    font-size: 0.95rem !important;
-  }
-
-  .modal img.prize-gif {
-    max-width: 280px;
-    max-height: 40vh; /* Smaller on mobile to prevent overflow */
-  }
-
-  #prizeModal li {
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
-    margin: 6px 0;
-  }
-}
-
-/* Make main site title larger & punchier (adjustable) */
-.title-line:first-child {
-  font-size: clamp(
-    4rem,
-    11vw,
-    13rem
-  ) !important; /* INCREASED from 3.6rem to 4rem min */
-  line-height: 0.92;
-}
-
-.title-line:last-child {
-  font-size: clamp(
-    2rem,
-    5.8vw,
-    6rem
-  ) !important; /* INCREASED from 1.8rem to 2rem min */
-}
-
-/* Stronger card title for visibility */
-.card-title {
-  font-size: clamp(
-    2.2rem,
-    4vw,
-    4.2rem
-  ) !important; /* INCREASED from 1.9rem to 2.2rem min */
-}
-
-/* Optional: slightly larger tab labels on small screens for legibility */
-@media (max-width: 640px) {
-  .tab {
-    font-size: clamp(1.2rem, 3.8vw, 1.8rem) !important;
-  }
-}
-
-/* ===== ENHANCED FEATURES STYLES ===== */
-
-/* Inline editing input */
-.task-edit-input {
   width: 100%;
-  font-size: inherit;
-  font-family: inherit;
-  padding: 4px 8px;
-  border: 2px solid var(--accent-red, #c51616);
-  border-radius: 4px;
-  background: #fff;
-  outline: none;
+  font-family: "Anarchy", var(--font-stack);
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem); /* responsive but smaller */
+  margin: 4px 0 6px;
+  line-height: 1;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6),
+    0 3px 10px rgba(0, 0, 0, 0.12);
+  font-weight: 700;
 }
 
-.task-edit-input:focus {
-  border-color: var(--accent-red-dark, #9f1010);
-  box-shadow: 0 0 0 3px rgba(197, 22, 22, 0.1);
+/* GIF: smaller and constrained to avoid dominating modal */
+.modal img.prize-gif {
+  max-width: 220px;
+  width: 70%;
+  height: auto;
+  max-height: 30vh;
+  margin: 6px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 }
 
-/* Data export/import buttons - REMOVED per user request */
+/* List: more readable spacing and increased letter spacing */
+#prizeModal .prize-list {
+  gap: 18px;
+  padding: 0;
+  margin: 8px 0 10px;
+}
+#prizeModal .prize-list li {
+  font-family: "HitMePunk04", var(--font-stack);
+  font-size: clamp(0.98rem, 2vw, 1.12rem);
+  line-height: 1.9;
+  letter-spacing: 1.4px;
+  margin: 0;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
 
-/* Drag and drop feedback */
-.task[draggable="true"] {
-  cursor: move;
+/* make sure title scales nicely on phones */
+@media (max-width: 420px) {
+  #prizeModal .modal-title-line1 {
+    font-size: clamp(1.6rem, 9vw, 2.4rem);
+  }
+  #prizeModal .modal-title-line2 {
+    font-size: clamp(1.2rem, 6.5vw, 1.6rem);
+  }
+}
+
+/* (custom prize modal styles end here) */
+/* === USER: PRIZE MODAL OVERRIDES END === */
+
+/* ===== DESKTOP LAYOUT ===== */
+@media (min-width: 1200px) {
+  .app {
+    max-width: 1400px;
+  }
+
+  .layout {
+    grid-template-areas:
+      "header header"
+      "tabs tabs"
+      "tasks timer"
+      "completed completed"
+      "music music";
+    grid-template-columns: 1.4fr 1fr;
+    align-items: start;
+  }
+
+  .card--timer .timer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ===== TASKS LIST ===== */
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.task {
+  padding: 6px 8px;
+  border-radius: 6px;
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+    transform 0.06s ease,
+    background 0.2s ease;
 }
 
-.task.dragging {
-  opacity: 0.5;
+.task:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.task:active {
-  cursor: grabbing;
-}
-
-/* Tab drop zone highlighting */
-.tab.drag-over {
-  background: rgba(197, 22, 22, 0.2) !important;
-  transform: scale(1.05);
-  transition: all 0.2s ease;
-}
-
-/* Visual hint for draggable tasks */
-.task::before {
-  content: "⋮⋮";
-  position: absolute;
-  left: 4px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(0, 0, 0, 0.2);
-  font-size: 1.2em;
-  line-height: 0.8;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.task:hover::before {
-  opacity: 0.5;
-}
-
-/* Adjust task row padding to make room for drag handle */
 .task-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px 2px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.task-checkbox {
+  transform: translateY(0.5px);
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-red);
+}
+
+.task-row:last-child {
+  border-bottom: none;
+}
+
+.task--selected {
+  border: 2px solid var(--accent-red);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(197, 22, 22, 0.12);
   position: relative;
-  padding-left: 24px;
 }
 
-/* Double-click hint */
-.task-text {
-  cursor: text;
-  user-select: text;
+.task--selected::after {
+  content: "IN PROGRESS";
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  font-size: 0.9rem;
+  letter-spacing: 0.7px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--accent-red);
+  color: #fff;
 }
 
-.task-text:hover {
-  background: rgba(197, 22, 22, 0.05);
-  border-radius: 3px;
+/* ===== TIMER CARD (layout) ===== */
+.card--timer .field {
+  font-size: 1.05rem;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.card--completed {
+  padding: 20px 22px !important;
+}
+
+.completed-groups--tabs {
+  grid-template-columns: repeat(
+    4,
+    1fr
+  ); /* Fixed 4 columns for horizontal row */
+}
+
+.field-label {
+  font-size: var(--size-body);
+  line-height: 1.3;
+}
+
+.field-select {
+  border: 1px solid var(--paper-border);
+  padding: 6px 8px;
+  min-width: 180px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--ink);
+}
+
+/* Inline task editing visuals */
+.task-row.editing {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+}
+
+.task-text[contenteditable="true"] {
+  outline: 2px dashed rgba(197, 22, 22, 0.35);
   padding: 2px 4px;
-  margin: -2px -4px;
+  border-radius: 6px;
+  cursor: text;
 }
 
-/* Mobile adjustments */
-@media (max-width: 640px) {
-  .task-text {
-    font-size: 1.8rem; /* Slightly smaller on mobile */
-  }
+/* ===== FONTS ===== */
+@font-face {
+  font-family: "HitMePunk04";
+  src:
+    url("../assets/fonts/punk/punk.woff2") format("woff2"),
+    url("../assets/fonts/punk/punk.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-  .btn {
-    padding: 10px 20px;
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
-  }
+@font-face {
+  font-family: "Anarchy";
+  src:
+    url("../assets/fonts/anarchy/anarchy.woff2") format("woff2"),
+    url("../assets/fonts/anarchy/anarchy.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-  .btn--primary {
-    padding: 14px 28px;
-    font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+@font-face {
+  font-family: "Song";
+  src:
+    url("../assets/fonts/song/song.woff2") format("woff2"),
+    url("../assets/fonts/song/song.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Wrong";
+  src:
+    url("../assets/fonts/wrong/wrong.woff2") format("woff2"),
+    url("../assets/fonts/wrong/wrong.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Modal overlay (ensure visible above app) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001; /* above confetti (9999) */
+  background: rgba(10, 10, 10, 0.65);
+}
+
+.modal-overlay.is-hidden {
+  display: none;
+}
+
+.modal {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 22px 24px;
+  border-radius: 12px;
+  max-width: 460px;
+  width: calc(100% - 40px);
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow-strong);
+  animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes modalPop {
+  0% {
+    transform: scale(0.5) rotate(-5deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
   }
 }
+
+/* === USER: PRIZE MODAL OVERRIDES START === */
+/* (custom prize modal styles begin here) */
+
+/* ===== PRIZE MODAL TWEAKS (overrides and fixes) ===== */
+#prizeModal {
+  /* tighter modal so it never gets huge */
+  max-width: 380px;
+  width: min(92%, 380px);
+  padding: 16px 18px;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Title: force full-width centering, improve contrast & smoothing */
+#prizeModal .modal-title {
+  display: block;
+  width: 100%;
+  font-family: "Anarchy", var(--font-stack);
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem); /* responsive but smaller */
+  margin: 4px 0 6px;
+  line-height: 1;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6),
+    0 3px 10px rgba(0, 0, 0, 0.12);
+  font-weight: 700;
+}
+
+/* GIF: smaller and constrained to avoid dominating modal */
+.modal img.prize-gif {
+  max-width: 220px;
+  width: 70%;
+  height: auto;
+  max-height: 30vh;
+  margin: 6px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+
+/* List: more readable spacing and increased letter spacing */
+#prizeModal .prize-list {
+  gap: 18px;
+  padding: 0;
+  margin: 8px 0 10px;
+}
+#prizeModal .prize-list li {
+  font-family: "HitMePunk04", var(--font-stack);
+  font-size: clamp(0.98rem, 2vw, 1.12rem);
+  line-height: 1.9;
+  letter-spacing: 1.4px;
+  margin: 0;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* make sure title scales nicely on phones */
+@media (max-width: 420px) {
+  #prizeModal .modal-title-line1 {
+    font-size: clamp(1.6rem, 9vw, 2.4rem);
+  }
+  #prizeModal .modal-title-line2 {
+    font-size: clamp(1.2rem, 6.5vw, 1.6rem);
+  }
+}
+
+/* (custom prize modal styles end here) */
+/* === USER: PRIZE MODAL OVERRIDES END === */
