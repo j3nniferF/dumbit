@@ -1156,9 +1156,9 @@ section#timerCard {
   }
 }
 
-/* Add subtle pulse animation to modal button */
-.modal .btn--primary {
-  animation: subtlePulse 2s ease-in-out infinite;
+/* Add subtle pulse animation to modal button (only on hover to reduce battery/GPU usage) */
+.modal .btn--primary:hover {
+  animation: subtlePulse 1.5s ease-in-out 3;
 }
 
 @keyframes subtlePulse {
@@ -1167,6 +1167,21 @@ section#timerCard {
   }
   50% {
     transform: scale(1.05);
+  }
+}
+
+/* Respect user motion preferences for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .completed-groups--tabs .completed-list li {
+    animation: none;
+  }
+  
+  .modal .btn--primary:hover {
+    animation: none;
+  }
+  
+  .completed-groups--tabs .completed-group {
+    transition: none;
   }
 }
 
