@@ -276,6 +276,59 @@ function makeTasksDraggable() {
    Initialize All Features
 -------------------------------- */
 
+/**
+ * Add visual feedback when timer is running
+ */
+function enableTimerAnimations() {
+  const timerCard = document.querySelector(".card--timer");
+  const timerDisplay = document.getElementById("timerDisplay");
+  const startBtn = document.getElementById("startBtn");
+  const pauseBtn = document.getElementById("pauseBtn");
+  const stopBtn = document.getElementById("stopBtn");
+
+  if (!timerCard || !timerDisplay || !startBtn) return;
+
+  // Add running class when timer starts
+  startBtn.addEventListener("click", () => {
+    timerCard.classList.add("timer--running");
+    timerDisplay.classList.add("timer--running");
+  });
+
+  // Remove running class when paused
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", () => {
+      timerCard.classList.remove("timer--running");
+      timerDisplay.classList.remove("timer--running");
+    });
+  }
+
+  // Remove running class when stopped
+  if (stopBtn) {
+    stopBtn.addEventListener("click", () => {
+      timerCard.classList.remove("timer--running");
+      timerDisplay.classList.remove("timer--running");
+    });
+  }
+
+  // Listen for timer completion (when modal opens)
+  const timerOverlay = document.getElementById("timerOverlay");
+  if (timerOverlay) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === "class") {
+          const isHidden = timerOverlay.classList.contains("is-hidden");
+          if (!isHidden) {
+            // Timer completed - remove running state
+            timerCard.classList.remove("timer--running");
+            timerDisplay.classList.remove("timer--running");
+          }
+        }
+      });
+    });
+    observer.observe(timerOverlay, { attributes: true });
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Initializing enhanced features...");
 
@@ -287,6 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
     enableDragAndDrop();
     enableDragToTabs();
     makeTasksDraggable();
+    enableTimerAnimations();
 
     console.log("✅ Enhanced features initialized");
   }, 100);
@@ -298,4 +352,5 @@ window.enhancedFeatures = {
   enableDragAndDrop,
   enableDragToTabs,
   makeTasksDraggable,
+  enableTimerAnimations,
 };
