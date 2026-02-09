@@ -673,37 +673,6 @@ body::before {
   gap: 10px;
 }
 
-/* .current-task--hero {
-  margin: 10px 0 8px;
-  justify-content: center;
-  font-size: 1.45rem;
-  width: 100%;
-  text-align: center;
-  position: relative;
-  border: 2px solid var(--accent-red);
-  background: rgba(197, 22, 22, 0.12);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
-} */
-
-/* .current-task--hero::after {
-  content: "IN PROGRESS";
-  position: absolute;
-  right: 10px;
-  top: -12px;
-  font-size: 0.7rem;
-  letter-spacing: 0.6px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: var(--accent-red);
-  color: #fff;
-} */
-
-.reset-global {
-  margin: 10px 0 0;
-  display: block;
-  margin-left: auto;
-}
-
 /* Completed stats and progress tracking */
 .completed-stat {
   margin: 0;
