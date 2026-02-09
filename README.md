@@ -2,6 +2,13 @@
 
 A punk rock, grunge-style todo app to help you manage your tasks with attitude!
 
+## 🆘 NEW TO GIT? START HERE!
+
+**Feeling lost?** Check these guides:
+- **[HOW_TO_USE_GIT.md](HOW_TO_USE_GIT.md)** - Complete beginner's guide
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Copy/paste commands
+- **[VISUAL_GUIDE.md](VISUAL_GUIDE.md)** - Visual diagrams & analogies
+
 ## ✨ Features
 
 - Add tasks to different tabs (DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET)
