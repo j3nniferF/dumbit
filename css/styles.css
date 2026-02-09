@@ -1270,3 +1270,125 @@ section#timerCard {
     font-size: clamp(1.2rem, 3.8vw, 1.8rem) !important;
   }
 }
+
+/* ===== ENHANCED FEATURES STYLES ===== */
+
+/* Inline editing input */
+.task-edit-input {
+  width: 100%;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 4px 8px;
+  border: 2px solid var(--accent-red, #c51616);
+  border-radius: 4px;
+  background: #fff;
+  outline: none;
+}
+
+.task-edit-input:focus {
+  border-color: var(--accent-red-dark, #9f1010);
+  box-shadow: 0 0 0 3px rgba(197, 22, 22, 0.1);
+}
+
+/* Clear completed button */
+.clear-completed-btn {
+  margin-top: 12px !important;
+  width: 100%;
+  background: var(--accent-red, #c51616);
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.clear-completed-btn:hover {
+  background: var(--accent-red-dark, #9f1010);
+  transform: translateY(-1px);
+}
+
+/* Data export/import buttons */
+.data-buttons {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.data-buttons .btn {
+  flex: 1;
+  min-width: 140px;
+}
+
+/* Drag and drop feedback */
+.task[draggable="true"] {
+  cursor: move;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.task.dragging {
+  opacity: 0.5;
+}
+
+.task:active {
+  cursor: grabbing;
+}
+
+/* Tab drop zone highlighting */
+.tab.drag-over {
+  background: rgba(197, 22, 22, 0.2) !important;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Visual hint for draggable tasks */
+.task::before {
+  content: "⋮⋮";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 1.2em;
+  line-height: 0.8;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.task:hover::before {
+  opacity: 0.5;
+}
+
+/* Adjust task row padding to make room for drag handle */
+.task-row {
+  position: relative;
+  padding-left: 24px;
+}
+
+/* Double-click hint */
+.task-text {
+  cursor: text;
+  user-select: text;
+}
+
+.task-text:hover {
+  background: rgba(197, 22, 22, 0.05);
+  border-radius: 3px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .data-buttons .btn {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    min-width: 120px;
+  }
+
+  .clear-completed-btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+}
