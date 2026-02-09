@@ -6,7 +6,8 @@ html,
 body {
   height: 100%;
   /* Add dark textured background to eliminate white space */
-  background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover fixed;
+  background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover
+    fixed;
   margin: 0;
 }
 .app {
@@ -389,21 +390,22 @@ body::before {
 /* Pulsing border when timer is running */
 .card--timer.timer--running {
   animation: timerPulse 2s ease-in-out infinite;
-  box-shadow: 
+  box-shadow:
     0 0 0 3px rgba(197, 22, 22, 0.3),
     0 16px 30px rgba(0, 0, 0, 0.35),
     0 0 20px rgba(197, 22, 22, 0.2) !important;
 }
 
 @keyframes timerPulse {
-  0%, 100% {
-    box-shadow: 
+  0%,
+  100% {
+    box-shadow:
       0 0 0 3px rgba(197, 22, 22, 0.3),
       0 16px 30px rgba(0, 0, 0, 0.35),
       0 0 20px rgba(197, 22, 22, 0.2);
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 0 5px rgba(197, 22, 22, 0.5),
       0 18px 35px rgba(0, 0, 0, 0.4),
       0 0 30px rgba(197, 22, 22, 0.4);
@@ -526,7 +528,7 @@ body::before {
   font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   font-weight: 900;
   letter-spacing: 2px;
-  box-shadow: 
+  box-shadow:
     0 6px 16px rgba(197, 22, 22, 0.3),
     0 0 20px rgba(197, 22, 22, 0.2);
   animation: fadeSlideIn 0.5s ease-out 0.8s backwards;
@@ -536,14 +538,14 @@ body::before {
 .btn--primary:hover {
   background: var(--accent-red-dark);
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 
+  box-shadow:
     0 10px 24px rgba(197, 22, 22, 0.4),
     0 0 30px rgba(197, 22, 22, 0.3);
 }
 
 .btn--primary:active {
   transform: translateY(0) scale(0.98);
-  box-shadow: 
+  box-shadow:
     0 4px 10px rgba(197, 22, 22, 0.3),
     0 0 15px rgba(197, 22, 22, 0.2);
 }
@@ -618,7 +620,7 @@ body::before {
   letter-spacing: 1px;
   text-align: center;
   margin: 12px 0 8px;
-  text-shadow: 
+  text-shadow:
     1px 1px 0 rgba(0, 0, 0, 0.12),
     0 0 10px rgba(197, 22, 22, 0.3);
   transition: all 0.3s ease;
@@ -627,23 +629,24 @@ body::before {
 /* Breathing animation when timer is running */
 .timer-display.timer--running {
   animation: timerBreath 1.5s ease-in-out infinite;
-  text-shadow: 
+  text-shadow:
     1px 1px 0 rgba(0, 0, 0, 0.12),
     0 0 20px rgba(197, 22, 22, 0.6),
     0 0 30px rgba(197, 22, 22, 0.4);
 }
 
 @keyframes timerBreath {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
-    text-shadow: 
+    text-shadow:
       1px 1px 0 rgba(0, 0, 0, 0.12),
       0 0 15px rgba(197, 22, 22, 0.5),
       0 0 25px rgba(197, 22, 22, 0.3);
   }
   50% {
     transform: scale(1.02);
-    text-shadow: 
+    text-shadow:
       1px 1px 0 rgba(0, 0, 0, 0.12),
       0 0 25px rgba(197, 22, 22, 0.8),
       0 0 40px rgba(197, 22, 22, 0.5);
@@ -691,7 +694,10 @@ body::before {
 
 .completed-groups--tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns for horizontal row */
+  grid-template-columns: repeat(
+    4,
+    1fr
+  ); /* Fixed 4 columns for horizontal row */
   gap: 16px;
   margin-bottom: 12px;
 }
@@ -770,7 +776,6 @@ body::before {
   font-size: clamp(0.9rem, 1.8vw, 1.1rem); /* Smaller, clearer hint text */
   font-family: var(--font-ui);
   opacity: 0.85;
-  font-style: italic;
 }
 
 .timer-block__sub {
@@ -961,7 +966,10 @@ body::before {
 }
 
 .completed-groups--tabs {
-  grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns for horizontal row */
+  grid-template-columns: repeat(
+    4,
+    1fr
+  ); /* Fixed 4 columns for horizontal row */
 }
 
 .field-label {
@@ -1076,11 +1084,11 @@ body::before {
 
 /* Prize modal - make it more FUN! */
 #prizeModal {
-  background: 
+  background:
     linear-gradient(135deg, #fdf5e6 0%, #fff9e6 50%, #fdf5e6 100%),
     linear-gradient(45deg, rgba(197, 22, 22, 0.03) 0%, transparent 100%);
   border: 3px solid var(--accent-red);
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(197, 22, 22, 0.3),
     0 0 0 6px rgba(197, 22, 22, 0.1),
     inset 0 0 100px rgba(255, 215, 0, 0.1);
@@ -1120,7 +1128,8 @@ body::before {
 }
 
 @keyframes sparkle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
     transform: rotate(0deg) scale(1);
   }
@@ -1131,16 +1140,17 @@ body::before {
 }
 
 @keyframes floatEmoji {
-  0%, 100% { 
-    transform: translateY(0px) translateX(0px); 
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
     opacity: 0.08;
   }
   25% {
     transform: translateY(-15px) translateX(10px);
     opacity: 0.12;
   }
-  50% { 
-    transform: translateY(-10px) translateX(-10px); 
+  50% {
+    transform: translateY(-10px) translateX(-10px);
     opacity: 0.1;
   }
   75% {
@@ -1163,7 +1173,7 @@ body::before {
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--accent-red);
-  text-shadow: 
+  text-shadow:
     2px 2px 0 rgba(0, 0, 0, 0.1),
     0 0 20px rgba(255, 215, 0, 0.3);
   animation: titleBounce 0.8s ease-out;
@@ -1191,7 +1201,8 @@ body::before {
 }
 
 @keyframes titleSparkle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.4;
     transform: scale(0.8) rotate(0deg);
   }
@@ -1202,18 +1213,18 @@ body::before {
 }
 
 @keyframes titleBounce {
-  0% { 
-    transform: scale(0.5) translateY(-30px); 
+  0% {
+    transform: scale(0.5) translateY(-30px);
     opacity: 0;
   }
-  50% { 
-    transform: scale(1.1) translateY(5px); 
+  50% {
+    transform: scale(1.1) translateY(5px);
   }
   70% {
     transform: scale(0.95) translateY(-5px);
   }
-  100% { 
-    transform: scale(1) translateY(0); 
+  100% {
+    transform: scale(1) translateY(0);
     opacity: 1;
   }
 }
@@ -1252,11 +1263,21 @@ body::before {
 }
 
 /* Stagger animation for list items */
-#prizeModal li:nth-child(1) { animation-delay: 0.3s; }
-#prizeModal li:nth-child(2) { animation-delay: 0.4s; }
-#prizeModal li:nth-child(3) { animation-delay: 0.5s; }
-#prizeModal li:nth-child(4) { animation-delay: 0.6s; }
-#prizeModal li:nth-child(5) { animation-delay: 0.7s; }
+#prizeModal li:nth-child(1) {
+  animation-delay: 0.3s;
+}
+#prizeModal li:nth-child(2) {
+  animation-delay: 0.4s;
+}
+#prizeModal li:nth-child(3) {
+  animation-delay: 0.5s;
+}
+#prizeModal li:nth-child(4) {
+  animation-delay: 0.6s;
+}
+#prizeModal li:nth-child(5) {
+  animation-delay: 0.7s;
+}
 
 @keyframes listItemSlideIn {
   from {
@@ -1279,8 +1300,15 @@ body::before {
 }
 
 @keyframes arrowPulse {
-  0%, 100% { transform: translateX(0); opacity: 1; }
-  50% { transform: translateX(4px); opacity: 0.7; }
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(4px);
+    opacity: 0.7;
+  }
 }
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
@@ -1338,17 +1366,29 @@ body::before {
 
 /* Make main site title larger & punchier (adjustable) */
 .title-line:first-child {
-  font-size: clamp(4rem, 11vw, 13rem) !important; /* INCREASED from 3.6rem to 4rem min */
+  font-size: clamp(
+    4rem,
+    11vw,
+    13rem
+  ) !important; /* INCREASED from 3.6rem to 4rem min */
   line-height: 0.92;
 }
 
 .title-line:last-child {
-  font-size: clamp(2rem, 5.8vw, 6rem) !important; /* INCREASED from 1.8rem to 2rem min */
+  font-size: clamp(
+    2rem,
+    5.8vw,
+    6rem
+  ) !important; /* INCREASED from 1.8rem to 2rem min */
 }
 
 /* Stronger card title for visibility */
 .card-title {
-  font-size: clamp(2.2rem, 4vw, 4.2rem) !important; /* INCREASED from 1.9rem to 2.2rem min */
+  font-size: clamp(
+    2.2rem,
+    4vw,
+    4.2rem
+  ) !important; /* INCREASED from 1.9rem to 2.2rem min */
 }
 
 /* Optional: slightly larger tab labels on small screens for legibility */
@@ -1382,7 +1422,9 @@ body::before {
 /* Drag and drop feedback */
 .task[draggable="true"] {
   cursor: move;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .task.dragging {
@@ -1443,12 +1485,12 @@ body::before {
   .task-text {
     font-size: 1.8rem; /* Slightly smaller on mobile */
   }
-  
+
   .btn {
     padding: 10px 20px;
     font-size: clamp(0.95rem, 2vw, 1.1rem);
   }
-  
+
   .btn--primary {
     padding: 14px 28px;
     font-size: clamp(1.1rem, 2.3vw, 1.4rem);
