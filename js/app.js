@@ -956,40 +956,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
   });
 
-  // Listen for clear completed tasks event
-  document.addEventListener("tasks:clearCompleted", (e) => {
-    const { tabKey } = e.detail || {};
-    if (!tabKey) return;
-
-    const completedCount = (COMPLETED_TASKS[tabKey] || []).length;
-    if (completedCount === 0) {
-      alert("No completed tasks to clear in this tab!");
-      return;
-    }
-
-    const ok = confirm(
-      `Clear ${completedCount} completed task(s) from ${TAB_LABELS[tabKey]}?`
-    );
-    if (!ok) return;
-
-    // Remove completed tasks from the tasks array
-    const completed = COMPLETED_TASKS[tabKey] || [];
-    TASKS_BY_TAB[tabKey] = (TASKS_BY_TAB[tabKey] || []).filter(
-      (task) => !completed.includes(task)
-    );
-
-    // Clear the completed list
-    COMPLETED_TASKS[tabKey] = [];
-
-    // Persist and refresh UI
-    saveState();
-    renderTasks(activeTabKey);
-    renderCompletedGrouped();
-    buildFocusSelect(selectedFocusValue);
-    updateProgress();
-    initTabCompleteLast();
-  });
-
   // Listen for task reorder event
   document.addEventListener("tasks:reordered", (e) => {
     const { tabKey, newOrder } = e.detail || {};
