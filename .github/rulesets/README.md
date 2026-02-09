@@ -17,7 +17,7 @@ The `main-branch-protection.json` file defines protection rules for the main bra
 
 3. **Required Linear History**
    - Enforces a linear commit history
-   - Requires merge commits or rebase to maintain clean history
+   - Prevents merge commits; only allows rebase-and-merge or squash-and-merge strategies
 
 4. **Required Status Checks**
    - Requires the following GitHub Actions workflows to pass before merging:
