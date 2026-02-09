@@ -568,6 +568,14 @@ body::before {
   gap: 16px;
   margin-bottom: 12px;
 }
+
+/* Responsive adjustment for very small screens */
+@media (max-width: 420px) {
+  .completed-groups--tabs {
+    gap: 8px; /* Reduce gap on small screens */
+  }
+}
+
 /* fix */
 .completed-groups--tabs .completed-group {
   background: #fff;
