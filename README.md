@@ -9,3 +9,14 @@ Core features
 - Four tabbed task lists (Due Today / Next Up / When I Can / Don’t Forget).
 - Persist tasks in localStorage so items remain after closing the browser.
 - Simple timer hook (duration select) and a selectable "current task" area (placeholders to expand).
+
+## 🆕 Enhanced Features (NEW!)
+
+- **✏️ Inline Task Editing** - Double-click any task to edit it without deleting
+- **🗑️ Clear Completed Tasks** - One-click button to remove all completed tasks per tab
+- **💾 Data Export/Import** - Backup your tasks to JSON file and restore them later
+- **🔄 Drag & Drop Reordering** - Rearrange tasks within a tab by dragging
+- **🚚 Move Between Tabs** - Drag tasks to different tabs to reorganize
+
+📖 See [QUICKSTART.md](QUICKSTART.md) for detailed usage instructions  
+📚 See [FEATURES.md](FEATURES.md) for technical documentation
