@@ -1040,6 +1040,17 @@ body::before {
   font-display: swap;
 }
 
+/* load a local punk2 font (place punk2.woff2 / punk2.woff in ./css/fonts or ./fonts) */
+@font-face {
+  font-family: "Punk2";
+  src:
+    url("./fonts/punk2.woff2") format("woff2"),
+    url("./fonts/punk2.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Modal overlay (ensure visible above app) */
 .modal-overlay {
   position: fixed;
@@ -1065,6 +1076,27 @@ body::before {
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-strong);
   animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Responsive modal and gif */
+.modal {
+  width: min(540px, 96%);
+  max-width: 540px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.modal-overlay {
+  padding: 12px; /* keeps modal inset on small screens */
+}
+
+.prize-gif {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 18px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 @keyframes modalPop {
@@ -1145,6 +1177,14 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+}
+
+/* apply Punk2 to the prize subtitle text */
+#prizeSubtitle {
+  font-family: "Punk2", "Bangers", cursive, sans-serif;
+  text-align: center;
+  letter-spacing: 0.02em;
+  font-size: 1rem;
 }
 
 /* make sure title scales nicely on phones */
@@ -1332,6 +1372,17 @@ body::before {
   font-display: swap;
 }
 
+/* load a local punk2 font (place punk2.woff2 / punk2.woff in ./css/fonts or ./fonts) */
+@font-face {
+  font-family: "Punk2";
+  src:
+    url("./fonts/punk2.woff2") format("woff2"),
+    url("./fonts/punk2.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Modal overlay (ensure visible above app) */
 .modal-overlay {
   position: fixed;
@@ -1357,6 +1408,27 @@ body::before {
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-strong);
   animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Responsive modal and gif */
+.modal {
+  width: min(540px, 96%);
+  max-width: 540px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.modal-overlay {
+  padding: 12px; /* keeps modal inset on small screens */
+}
+
+.prize-gif {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 18px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 @keyframes modalPop {
@@ -1439,6 +1511,14 @@ body::before {
   gap: 10px;
 }
 
+/* apply Punk2 to the prize subtitle text */
+#prizeSubtitle {
+  font-family: "Punk2", "Bangers", cursive, sans-serif;
+  text-align: center;
+  letter-spacing: 0.02em;
+  font-size: 1rem;
+}
+
 /* make sure title scales nicely on phones */
 @media (max-width: 420px) {
   #prizeModal .modal-title-line1 {
@@ -1448,8 +1528,6 @@ body::before {
     font-size: clamp(1.2rem, 6.5vw, 1.6rem);
   }
 }
-
-/* test */
 
 /* (custom prize modal styles end here) */
 /* === USER: PRIZE MODAL OVERRIDES END === */
