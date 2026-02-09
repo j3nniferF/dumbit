@@ -101,17 +101,15 @@ function enableInlineEditing() {
   });
 }
 
-/* -------------------------------
-   Feature 2 & 3: Drag & Drop
--------------------------------- */
 
-/**
- * Enable drag-and-drop reordering within a tab
- */
+let draggedElement = null;
+let draggedTaskData = null;
+
 function enableDragAndDrop() {
   const taskList = document.getElementById("taskList");
   if (!taskList) return;
 
+  // Make task list a drop zone
   let draggedItem = null;
 
   // Dragstart
@@ -284,6 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Wait a bit for the main app to initialize
   setTimeout(() => {
     enableInlineEditing();
+    // addClearCompletedButton(); // REMOVED - user wants to keep completed tasks visible
+    // addDataButtons(); // REMOVED - user doesn't want export/import
     enableDragAndDrop();
     enableDragToTabs();
     makeTasksDraggable();
