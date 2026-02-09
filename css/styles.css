@@ -41,6 +41,7 @@ body {
   /* choose a readable UI body font that won't kill the vibe */
   --font-body: var(--font-song), var(--font-stack);
   --font-label: var(--font-punk); /* preserve tab/title look */
+  --font-ui: var(--font-wrong), var(--font-stack); /* unified UI elements */
 
   /* ===== SIZING TOKENS (one place to tune scale) */
   --small-ui: 1.05rem; /* tiny helpers (timer / completed) */
@@ -276,7 +277,7 @@ body::before {
   border: none;
   padding: 10px 14px; /* slightly tighter than before */
   font: inherit;
-  font-family: var(--font-wrong), var(--font-stack); /* keep the vibe */
+  font-family: var(--font-ui); /* keep the vibe */
   letter-spacing: 5px; /* reduce spacing so "Due Today" / "Next Up" fit nicer */
   text-transform: uppercase;
   opacity: 0.5;
@@ -285,6 +286,12 @@ body::before {
   font-size: var(--size-tab);
   color: var(--ink);
   white-space: normal; /* allow wrapping inside a tab if needed */
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  opacity: 0.75;
+  transform: translateY(-1px);
 }
 
 .tab + .tab::before {
@@ -375,6 +382,32 @@ body::before {
     radial-gradient(rgba(197, 22, 22, 0.06), rgba(0, 0, 0, 0) 35%),
     url("../assets/textures/dirty-paper.png") !important;
   background-blend-mode: multiply !important;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Pulsing border when timer is running */
+.card--timer.timer--running {
+  animation: timerPulse 2s ease-in-out infinite;
+  box-shadow: 
+    0 0 0 3px rgba(197, 22, 22, 0.3),
+    0 16px 30px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(197, 22, 22, 0.2) !important;
+}
+
+@keyframes timerPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 0 3px rgba(197, 22, 22, 0.3),
+      0 16px 30px rgba(0, 0, 0, 0.35),
+      0 0 20px rgba(197, 22, 22, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 0 5px rgba(197, 22, 22, 0.5),
+      0 18px 35px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(197, 22, 22, 0.4);
+  }
 }
 
 /* Single rule to control the three card titles together */
@@ -398,7 +431,7 @@ body::before {
 }
 
 .task-text {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   font-size: 2rem;
   line-height: 1.3;
   color: var(--ink);
@@ -415,7 +448,7 @@ body::before {
 /* fix background */
 
 .task-input {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   border: 1px solid var(--paper-border);
   background: #fff;
   padding: 10px 12px;
@@ -424,7 +457,7 @@ body::before {
 }
 
 .task-add-btn {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   background: var(--accent-red);
   color: #fff;
   border: 1px solid var(--accent-red-dark);
@@ -440,7 +473,14 @@ body::before {
   transition:
     transform var(--ease-quick),
     box-shadow var(--ease-quick);
+  cursor: pointer;
 }
+
+.task-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(197, 22, 22, 0.2);
+}
+
 .task-add-btn:active {
   transform: translateY(1px);
   box-shadow: 0 3px 8px rgba(197, 22, 22, 0.1);
@@ -449,6 +489,27 @@ body::before {
 .btn {
   background: var(--ink);
   color: #ffffff;
+  font-family: var(--font-ui);
+  border: none;
+  padding: 12px 24px;
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn--small {
@@ -456,8 +517,39 @@ body::before {
   font-weight: 800;
 }
 
+/* Primary button for prize modal */
+.btn--primary {
+  background: var(--accent-red);
+  color: #fff;
+  border: 2px solid var(--accent-red-dark);
+  padding: 16px 32px;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  box-shadow: 
+    0 6px 16px rgba(197, 22, 22, 0.3),
+    0 0 20px rgba(197, 22, 22, 0.2);
+  animation: fadeSlideIn 0.5s ease-out 0.8s backwards;
+  margin-top: 12px;
+}
+
+.btn--primary:hover {
+  background: var(--accent-red-dark);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 10px 24px rgba(197, 22, 22, 0.4),
+    0 0 30px rgba(197, 22, 22, 0.3);
+}
+
+.btn--primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 
+    0 4px 10px rgba(197, 22, 22, 0.3),
+    0 0 15px rgba(197, 22, 22, 0.2);
+}
+
 .linkish {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   display: flex;
   justify-content: center;
   font-size: clamp(1rem, 1.5vw, 2rem);
@@ -466,6 +558,12 @@ body::before {
   text-decoration: underline;
   cursor: pointer;
   color: inherit;
+  transition: all 0.2s ease;
+}
+
+.linkish:hover {
+  opacity: 0.7;
+  transform: translateY(-1px);
 }
 
 .current-task.is-hidden {
@@ -520,14 +618,43 @@ body::before {
   letter-spacing: 1px;
   text-align: center;
   margin: 12px 0 8px;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.12);
+  text-shadow: 
+    1px 1px 0 rgba(0, 0, 0, 0.12),
+    0 0 10px rgba(197, 22, 22, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Breathing animation when timer is running */
+.timer-display.timer--running {
+  animation: timerBreath 1.5s ease-in-out infinite;
+  text-shadow: 
+    1px 1px 0 rgba(0, 0, 0, 0.12),
+    0 0 20px rgba(197, 22, 22, 0.6),
+    0 0 30px rgba(197, 22, 22, 0.4);
+}
+
+@keyframes timerBreath {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow: 
+      1px 1px 0 rgba(0, 0, 0, 0.12),
+      0 0 15px rgba(197, 22, 22, 0.5),
+      0 0 25px rgba(197, 22, 22, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    text-shadow: 
+      1px 1px 0 rgba(0, 0, 0, 0.12),
+      0 0 25px rgba(197, 22, 22, 0.8),
+      0 0 40px rgba(197, 22, 22, 0.5);
+  }
 }
 
 /* ensure tiny helper labels are readable (uses your --small-ui token) */
 .card--timer .field-label,
 .card--timer .helper-text--tiny,
 .card--timer .rules-callout {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   text-transform: uppercase;
   font-size: 2.01rem; /* bump label size */
   line-height: 1.3;
@@ -632,7 +759,7 @@ body::before {
   letter-spacing: 1.5px;
   text-transform: uppercase;
   font-size: clamp(1.4rem, 2.8vw, 1.8rem); /* More consistent sizing */
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   color: var(--accent-red);
 }
 
@@ -641,7 +768,7 @@ body::before {
   text-align: center;
   text-transform: uppercase;
   font-size: clamp(0.9rem, 1.8vw, 1.1rem); /* Smaller, clearer hint text */
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   opacity: 0.85;
   font-style: italic;
 }
@@ -694,7 +821,7 @@ body::before {
 }
 
 .completed-stat--center {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   text-align: center;
   width: 100%;
   letter-spacing: 1px;
@@ -708,7 +835,7 @@ body::before {
 
 /* Completed groups */
 .completed-groups {
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
@@ -724,7 +851,7 @@ body::before {
 
 .completed-list {
   font-size: 1.15rem;
-  font-family: var(--font-wrong);
+  font-family: var(--font-ui);
   margin: 0;
   padding-left: 18px;
   color: var(--ink-soft);
@@ -934,44 +1061,92 @@ body::before {
 
 @keyframes modalPop {
   0% {
-    transform: scale(0.8);
+    transform: scale(0.5) rotate(-5deg);
     opacity: 0;
   }
+  60% {
+    transform: scale(1.05) rotate(2deg);
+    opacity: 1;
+  }
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
     opacity: 1;
   }
 }
 
 /* Prize modal - make it more FUN! */
 #prizeModal {
-  background: linear-gradient(135deg, #f9f8f6 0%, #fdf5e6 100%);
+  background: 
+    linear-gradient(135deg, #fdf5e6 0%, #fff9e6 50%, #fdf5e6 100%),
+    linear-gradient(45deg, rgba(197, 22, 22, 0.03) 0%, transparent 100%);
   border: 3px solid var(--accent-red);
   box-shadow: 
     0 20px 60px rgba(197, 22, 22, 0.3),
-    0 0 0 6px rgba(197, 22, 22, 0.1);
+    0 0 0 6px rgba(197, 22, 22, 0.1),
+    inset 0 0 100px rgba(255, 215, 0, 0.1);
   position: relative;
   overflow: hidden;
+  animation: modalPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 /* Add celebratory pattern behind prize modal content */
 #prizeModal::before {
-  content: "🎉🎊✨🏆⭐";
+  content: "🎉🎊✨🏆⭐🎉🎊✨🏆⭐";
   position: absolute;
-  top: -10px;
+  top: 0;
   left: 0;
   right: 0;
-  font-size: 2rem;
+  bottom: 0;
+  font-size: 3rem;
   text-align: center;
-  opacity: 0.15;
-  letter-spacing: 20px;
+  opacity: 0.08;
+  letter-spacing: 30px;
+  line-height: 4rem;
   z-index: 0;
-  animation: floatEmoji 3s ease-in-out infinite;
+  animation: floatEmoji 4s ease-in-out infinite;
+  word-wrap: break-word;
+  padding: 20px;
+}
+
+/* Sparkles floating around */
+#prizeModal::after {
+  content: "✨";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  animation: sparkle 2s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(180deg) scale(1.2);
+  }
 }
 
 @keyframes floatEmoji {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px); 
+    opacity: 0.08;
+  }
+  25% {
+    transform: translateY(-15px) translateX(10px);
+    opacity: 0.12;
+  }
+  50% { 
+    transform: translateY(-10px) translateX(-10px); 
+    opacity: 0.1;
+  }
+  75% {
+    transform: translateY(-5px) translateX(5px);
+    opacity: 0.09;
+  }
 }
 
 /* Make prize modal content pop above background */
@@ -988,32 +1163,110 @@ body::before {
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--accent-red);
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
-  animation: titleBounce 0.6s ease-out;
+  text-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(255, 215, 0, 0.3);
+  animation: titleBounce 0.8s ease-out;
+  position: relative;
+}
+
+/* Sparkle effect on title */
+.modal-title::before,
+.modal-title::after {
+  content: "✨";
+  position: absolute;
+  font-size: 1.5rem;
+  animation: titleSparkle 2s ease-in-out infinite;
+}
+
+.modal-title::before {
+  left: -10px;
+  top: 0;
+}
+
+.modal-title::after {
+  right: -10px;
+  top: 0;
+  animation-delay: 1s;
+}
+
+@keyframes titleSparkle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
 }
 
 @keyframes titleBounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0% { 
+    transform: scale(0.5) translateY(-30px); 
+    opacity: 0;
+  }
+  50% { 
+    transform: scale(1.1) translateY(5px); 
+  }
+  70% {
+    transform: scale(0.95) translateY(-5px);
+  }
+  100% { 
+    transform: scale(1) translateY(0); 
+    opacity: 1;
+  }
 }
 
 .modal-subtitle {
-  font-family: var(--font-wrong), var(--font-stack);
+  font-family: var(--font-ui);
   font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   text-align: center;
   margin: 0 0 16px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  animation: fadeSlideIn 0.5s ease-out 0.2s backwards;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Prize list items - make them more exciting */
 #prizeModal li {
-  font-family: var(--font-wrong), var(--font-stack);
+  font-family: var(--font-ui);
   font-size: clamp(1rem, 2.2vw, 1.3rem);
   margin: 8px 0;
   padding-left: 24px;
   position: relative;
   line-height: 1.4;
+  opacity: 0;
+  animation: listItemSlideIn 0.5s ease-out forwards;
+}
+
+/* Stagger animation for list items */
+#prizeModal li:nth-child(1) { animation-delay: 0.3s; }
+#prizeModal li:nth-child(2) { animation-delay: 0.4s; }
+#prizeModal li:nth-child(3) { animation-delay: 0.5s; }
+#prizeModal li:nth-child(4) { animation-delay: 0.6s; }
+#prizeModal li:nth-child(5) { animation-delay: 0.7s; }
+
+@keyframes listItemSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 #prizeModal li::before {
@@ -1189,5 +1442,15 @@ body::before {
 @media (max-width: 640px) {
   .task-text {
     font-size: 1.8rem; /* Slightly smaller on mobile */
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+  }
+  
+  .btn--primary {
+    padding: 14px 28px;
+    font-size: clamp(1.1rem, 2.3vw, 1.4rem);
   }
 }
