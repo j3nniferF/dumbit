@@ -766,6 +766,11 @@ function getSelectedDurationSeconds() {
 function resetTimerToSelectedDuration() {
   remainingSeconds = getSelectedDurationSeconds();
   setTimerDisplay(remainingSeconds);
+  
+  // Update progress bar if available
+  if (window.adhdFeatures && window.adhdFeatures.updateTimerProgressBar) {
+    window.adhdFeatures.updateTimerProgressBar(remainingSeconds, remainingSeconds);
+  }
 }
 
 function playTimerDing() {
@@ -818,9 +823,16 @@ function startCountdown() {
   if (intervalId !== null) return;
   if (remainingSeconds <= 0) resetTimerToSelectedDuration();
 
+  const totalSeconds = remainingSeconds; // Store initial value
+
   intervalId = setInterval(() => {
     remainingSeconds -= 1;
     setTimerDisplay(remainingSeconds);
+    
+    // Update progress bar
+    if (window.adhdFeatures && window.adhdFeatures.updateTimerProgressBar) {
+      window.adhdFeatures.updateTimerProgressBar(remainingSeconds, totalSeconds);
+    }
 
     if (remainingSeconds <= 0) {
       stopInterval();
