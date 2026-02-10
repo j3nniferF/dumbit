@@ -9,6 +9,58 @@ body {
   background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover
     fixed;
   margin: 0;
+  overflow-x: hidden;
+  /* Multi-layered background for depth */
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(197, 22, 22, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(17, 17, 17, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(197, 22, 22, 0.02) 0%, transparent 50%),
+    #0b0b0b url("../assets/textures/dirty-paper.png") center/cover fixed;
+  position: relative;
+}
+
+/* Animated background pattern */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 100px,
+      rgba(197, 22, 22, 0.01) 100px,
+      rgba(197, 22, 22, 0.01) 102px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 100px,
+      rgba(17, 17, 17, 0.015) 100px,
+      rgba(17, 17, 17, 0.015) 102px
+    );
+  z-index: 0;
+  animation: backgroundShift 60s ease-in-out infinite;
+}
+
+@keyframes backgroundShift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translate(-20px, -20px) scale(1.02);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(0, -40px) scale(1);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate(20px, -20px) scale(1.02);
+    opacity: 0.5;
+  }
 }
 .app {
   position: relative;
@@ -102,6 +154,45 @@ body::before {
   background-image: url("../assets/textures/grime-overlay.png");
   mix-blend-mode: burn; /* keeps it gritty */
   z-index: 0; /* KEY: behind content */
+  animation: grimeShift 40s ease-in-out infinite;
+}
+
+@keyframes grimeShift {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03) translate(-10px, -10px);
+  }
+}
+
+/* Floating decorative elements */
+.app::before {
+  content: "";
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  top: -200px;
+  right: -200px;
+  background: radial-gradient(circle, rgba(197, 22, 22, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  animation: float1 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-50px, 100px) scale(1.1);
+  }
+  66% {
+    transform: translate(50px, 50px) scale(0.9);
+  }
 }
 
 /* ===== LAYOUT GRID ===== */
@@ -410,6 +501,28 @@ body::before {
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35) !important;
   max-width: 440px !important;
   padding: 14px 16px !important;
+  transform-style: preserve-3d;
+  transition: all 0.3s ease;
+}
+
+/* Parallax hover effect on cards */
+.card--tasks:hover,
+.card--timer:hover,
+.card--completed:hover {
+  transform: translateY(-4px) translateZ(20px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(197, 22, 22, 0.1) !important;
+}
+
+/* Add subtle paper texture animation */
+@keyframes paperTexture {
+  0%, 100% {
+    background-position: center top;
+  }
+  50% {
+    background-position: center calc(top + 2px);
+  }
 }
 
 /* stronger accent for the timer card: layered radial + texture */
@@ -1170,10 +1283,49 @@ body::before {
 #prizeModal::before {
   content: "";
   position: absolute;
-  inset: -3px;
-  border: 2px dashed rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  pointer-events: none;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  animation: sparkle 2s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(180deg) scale(1.2);
+  }
+}
+
+@keyframes floatEmoji {
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.08;
+  }
+  25% {
+    transform: translateY(-15px) translateX(10px);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translateY(-10px) translateX(-10px);
+    opacity: 0.1;
+  }
+  75% {
+    transform: translateY(-5px) translateX(5px);
+    opacity: 0.09;
+  }
+}
+
+/* Make prize modal content pop above background */
+#prizeModal > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Title: BIGGER and better centered with punk effects */
@@ -1186,17 +1338,12 @@ body::before {
   margin: 8px 0 10px;
   line-height: 1;
   letter-spacing: 2px;
-  color: var(--ink);
-  text-align: center;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* Add punk text effects */
+  color: var(--accent-red);
   text-shadow:
-    3px 3px 0 rgba(0, 0, 0, 0.7),
-    -1px -1px 0 rgba(255, 255, 255, 0.4),
-    0 0 20px rgba(197, 22, 22, 0.3);
-  font-weight: 700;
-  -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.3);
+    2px 2px 0 rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(255, 215, 0, 0.3);
+  animation: titleBounce 0.8s ease-out;
+  position: relative;
 }
 
 /* Subtitle: Use Punk2 font with cool styling */
@@ -1227,6 +1374,33 @@ body::before {
   padding: 0;
   margin: 8px 0 10px;
 }
+
+@keyframes titleSparkle {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+@keyframes titleBounce {
+  0% {
+    transform: scale(0.5) translateY(-30px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) translateY(5px);
+  }
+  70% {
+    transform: scale(0.95) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
 #prizeModal .prize-list li {
   font-family: "HitMePunk04", var(--font-stack);
   font-size: clamp(0.98rem, 2vw, 1.12rem);
@@ -1255,6 +1429,41 @@ body::before {
   #prizeModal .modal-subtitle {
     font-size: clamp(1rem, 4vw, 1.4rem);
   }
+}
+
+/* Prize list items - make them more exciting */
+#prizeModal li {
+  font-family: var(--font-ui);
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  margin: 8px 0;
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.4;
+  opacity: 0;
+  animation: listItemSlideIn 0.5s ease-out forwards;
+}
+
+/* Stagger animation for list items */
+#prizeModal li:nth-child(1) {
+  animation-delay: 0.3s;
+}
+#prizeModal li:nth-child(2) {
+  animation-delay: 0.4s;
+}
+#prizeModal li:nth-child(3) {
+  animation-delay: 0.5s;
+}
+#prizeModal li:nth-child(4) {
+  animation-delay: 0.6s;
+}
+#prizeModal li:nth-child(5) {
+  animation-delay: 0.7s;
+}
+
+@keyframes listItemSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
   
   #prizeModal .modal-title-line1 {
     font-size: clamp(1.8rem, 9vw, 2.6rem);
@@ -1264,8 +1473,28 @@ body::before {
   }
 }
 
-/* (custom prize modal styles end here) */
-/* === USER: PRIZE MODAL OVERRIDES END === */
+#prizeModal li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent-red);
+  font-weight: bold;
+  animation: arrowPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(4px);
+    opacity: 0.7;
+  }
+}
+
+/* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
 
 /* ===== DESKTOP LAYOUT ===== */
 @media (min-width: 1200px) {
@@ -1289,23 +1518,31 @@ body::before {
   }
 }
 
-/* ===== TASKS LIST ===== */
-.task-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 12px;
+/* Make main site title larger & punchier (adjustable) */
+.title-line:first-child {
+  font-size: clamp(
+    4rem,
+    11vw,
+    13rem
+  ) !important; /* INCREASED from 3.6rem to 4rem min */
+  line-height: 0.92;
 }
 
-.task {
-  padding: 6px 8px;
-  border-radius: 6px;
-  transition:
-    transform 0.06s ease,
-    background 0.2s ease;
+.title-line:last-child {
+  font-size: clamp(
+    2rem,
+    5.8vw,
+    6rem
+  ) !important; /* INCREASED from 1.8rem to 2rem min */
 }
 
-.task:hover {
-  background: rgba(0, 0, 0, 0.05);
+/* Stronger card title for visibility */
+.card-title {
+  font-size: clamp(
+    2.2rem,
+    4vw,
+    4.2rem
+  ) !important; /* INCREASED from 1.9rem to 2.2rem min */
 }
 
 .task-row {
@@ -1328,12 +1565,14 @@ body::before {
   border-bottom: none;
 }
 
-.task--selected {
-  border: 2px solid var(--accent-red);
-  border-radius: 12px;
-  padding: 10px 12px;
-  background: rgba(197, 22, 22, 0.12);
-  position: relative;
+/* Data export/import buttons - REMOVED per user request */
+
+/* Drag and drop feedback */
+.task[draggable="true"] {
+  cursor: move;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .task--selected::after {
@@ -1385,10 +1624,41 @@ body::before {
   color: var(--ink);
 }
 
-/* Inline task editing visuals */
-.task-row.editing {
-  background: rgba(0, 0, 0, 0.04);
-  border-radius: 8px;
+/* Task delete button */
+.task-delete-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--accent-red);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  opacity: 0;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.task:hover .task-delete-btn {
+  opacity: 0.6;
+}
+
+.task-delete-btn:hover {
+  opacity: 1 !important;
+  background: rgba(197, 22, 22, 0.1);
+  transform: scale(1.2);
+}
+
+.task-delete-btn:active {
+  background: rgba(197, 22, 22, 0.2);
+  transform: scale(1.1);
+}
+
+/* Double-click hint */
+.task-text {
+  cursor: text;
+  user-select: text;
+  flex: 1;
 }
 
 .task-text[contenteditable="true"] {
@@ -1398,7 +1668,252 @@ body::before {
   cursor: text;
 }
 
-/* test */
+/* Enhanced title styling with glow effect */
+.title {
+  animation: titleGlow 3s ease-in-out infinite;
+}
 
-/* (custom prize modal styles end here) */
-/* === USER: PRIZE MODAL OVERRIDES END === */
+@keyframes titleGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(242, 239, 232, 0.3),
+                 0 0 20px rgba(242, 239, 232, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(242, 239, 232, 0.5),
+                 0 0 30px rgba(242, 239, 232, 0.3),
+                 0 0 40px rgba(242, 239, 232, 0.2);
+  }
+}
+
+/* Enhanced card shadows for depth */
+.card {
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 8px 15px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 
+    0 8px 12px rgba(0, 0, 0, 0.12),
+    0 12px 20px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Tab hover effects enhancement */
+.tab {
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tab--active {
+  animation: tabPulse 2s ease-in-out infinite;
+}
+
+@keyframes tabPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Button hover enhancements */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Add pulse effect to active timer */
+.card--timer.timer--running {
+  animation: cardPulse 2s ease-in-out infinite;
+}
+
+@keyframes cardPulse {
+  0%, 100% {
+    box-shadow: 
+      0 4px 6px rgba(0, 0, 0, 0.1),
+      0 8px 15px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(197, 22, 22, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 8px 12px rgba(0, 0, 0, 0.12),
+      0 12px 20px rgba(0, 0, 0, 0.1),
+      0 0 0 2px rgba(197, 22, 22, 0.3),
+      0 0 20px rgba(197, 22, 22, 0.2);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .task-text {
+    font-size: 1.8rem; /* Slightly smaller on mobile */
+  }
+
+  .btn {
+    padding: 10px 20px;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+  }
+
+  .btn--primary {
+    padding: 14px 28px;
+    font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+  }
+  
+  .task-delete-btn {
+    opacity: 0.6; /* Make delete button visible on mobile */
+  }
+}
+
+/* Decorative corner elements */
+.layout::before,
+.layout::after {
+  content: "";
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layout::before {
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, var(--accent-red) 0%, transparent 70%);
+  animation: cornerPulse1 8s ease-in-out infinite;
+}
+
+.layout::after {
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(-45deg, var(--ink) 0%, transparent 70%);
+  animation: cornerPulse2 10s ease-in-out infinite;
+}
+
+@keyframes cornerPulse1 {
+  0%, 100% {
+    opacity: 0.03;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.06;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes cornerPulse2 {
+  0%, 100% {
+    opacity: 0.03;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.05;
+    transform: scale(1.15);
+  }
+}
+
+/* Vignette effect for depth */
+.app {
+  position: relative;
+}
+
+.app::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  z-index: 9999;
+}
+
+/* ===== ADHD/ACCESSIBILITY FEATURES ===== */
+
+/* Focus Mode - Hide completed tasks and reduce visual clutter */
+body.focus-mode .card--completed {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+body.focus-mode .completed-groups {
+  display: none;
+}
+
+body.focus-mode .tab:not(.tab--active) {
+  opacity: 0.2;
+}
+
+/* Reduce Motion - Disable animations for users who prefer less movement */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Progress bar pulse animation */
+@keyframes pulseRed {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+  }
+}
+
+/* Visual feedback for keyboard focus */
+*:focus-visible {
+  outline: 3px solid #c51616;
+  outline-offset: 2px;
+}
+
+/* High contrast mode helpers */
+body.high-contrast {
+  --paper: #ffffff;
+  --ink: #000000;
+  --accent-red: #cc0000;
+}
+
+body.high-contrast .card {
+  border: 2px solid #000 !important;
+}
+
+/* Priority indicators */
+.task[data-priority="high"] {
+  border-left: 4px solid #ff3333;
+  background: rgba(255, 51, 51, 0.05);
+}
+
+.task[data-priority="medium"] {
+  border-left: 4px solid #ff9933;
+  background: rgba(255, 153, 51, 0.05);
+}
+
+.task[data-priority="low"] {
+  border-left: 4px solid #3399ff;
+  background: rgba(51, 153, 255, 0.05);
+}

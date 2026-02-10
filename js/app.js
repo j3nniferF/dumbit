@@ -532,6 +532,7 @@ function renderTasks(tabKey) {
       <label class="task-row">
         <input class="task-checkbox" type="checkbox" />
         <span class="task-text"></span>
+        <button class="task-delete-btn" type="button" aria-label="Delete task" title="Delete this task">×</button>
       </label>
     `;
 
@@ -547,9 +548,19 @@ function renderTasks(tabKey) {
     taskList.appendChild(li);
 
     const checkbox = li.querySelector(".task-checkbox");
+    const deleteBtn = li.querySelector(".task-delete-btn");
 
     // Prevent checkbox click from selecting the row
     checkbox.addEventListener("click", (event) => event.stopPropagation());
+
+    // Delete button handler
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        deleteTask(tabKey, taskText);
+      });
+    }
 
     // Click row selects CURRENT task
     li.addEventListener("click", () => {
@@ -567,6 +578,29 @@ function renderTasks(tabKey) {
       completeTask(tabKey, taskText);
     });
   });
+}
+
+function deleteTask(tabKey, taskText) {
+  if (!TASKS_BY_TAB[tabKey]) return;
+  
+  const idx = TASKS_BY_TAB[tabKey].indexOf(taskText);
+  if (idx > -1) {
+    TASKS_BY_TAB[tabKey].splice(idx, 1);
+  }
+
+  // If this was the selected task, clear selection
+  const value = makeTaskValue(tabKey, taskText);
+  if (selectedFocusValue === value) {
+    selectedFocusValue = "";
+  }
+
+  saveState();
+  syncCurrentTaskText();
+  renderTasks(activeTabKey);
+  renderCompletedGrouped();
+  buildFocusSelect();
+  updateProgress();
+  syncTabCompleteLast(tabKey);
 }
 
 function completeTask(tabKey, taskText) {
@@ -732,6 +766,54 @@ function getSelectedDurationSeconds() {
 function resetTimerToSelectedDuration() {
   remainingSeconds = getSelectedDurationSeconds();
   setTimerDisplay(remainingSeconds);
+  
+  // Update progress bar if available
+  if (window.adhdFeatures && window.adhdFeatures.updateTimerProgressBar) {
+    window.adhdFeatures.updateTimerProgressBar(remainingSeconds, remainingSeconds);
+  }
+}
+
+function playTimerDing() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    
+    // Create or reuse audio context
+    const ctx = window._timerAudioCtx = window._timerAudioCtx || new AudioCtx();
+    
+    // Resume if suspended (required for user interaction)
+    if (ctx.state === 'suspended') {
+      ctx.resume().catch((err) => {
+        console.warn("Could not resume audio context:", err);
+      });
+    }
+    
+    const now = ctx.currentTime;
+    const gain = ctx.createGain();
+    gain.connect(ctx.destination);
+    
+    // Create a pleasant "ding" sound with multiple tones
+    const frequencies = [800, 1000, 1200];
+    
+    frequencies.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + i * 0.1);
+      osc.connect(gain);
+      
+      // Fade in/out envelope
+      gain.gain.setValueAtTime(0, now + i * 0.1);
+      gain.gain.linearRampToValueAtTime(0.3, now + i * 0.1 + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.4);
+      
+      osc.start(now + i * 0.1);
+      osc.stop(now + i * 0.1 + 0.4);
+    });
+    
+    console.log("Timer ding played!");
+  } catch (err) {
+    console.warn("Timer ding sound failed:", err);
+  }
 }
 
 function startCountdown() {
@@ -743,14 +825,22 @@ function startCountdown() {
   if (intervalId !== null) return;
   if (remainingSeconds <= 0) resetTimerToSelectedDuration();
 
+  const totalSeconds = remainingSeconds; // Store initial value
+
   intervalId = setInterval(() => {
     remainingSeconds -= 1;
     setTimerDisplay(remainingSeconds);
+    
+    // Update progress bar
+    if (window.adhdFeatures && window.adhdFeatures.updateTimerProgressBar) {
+      window.adhdFeatures.updateTimerProgressBar(remainingSeconds, totalSeconds);
+    }
 
     if (remainingSeconds <= 0) {
       stopInterval();
       remainingSeconds = 0;
       setTimerDisplay(0);
+      playTimerDing(); // Play sound when timer completes
       const { taskText } = parseTaskValue(selectedFocusValue);
       openTimerModal(taskText);
     }
