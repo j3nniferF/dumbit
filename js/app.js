@@ -1020,6 +1020,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
 
     // Show notification
-    alert(`✅ Moved "${taskText}" from ${TAB_LABELS[sourceTab]} to ${TAB_LABELS[targetTab]}`);
+    alert(
+      `✅ Moved "${taskText}" from ${TAB_LABELS[sourceTab]} to ${TAB_LABELS[targetTab]}`,
+    );
   });
 });
