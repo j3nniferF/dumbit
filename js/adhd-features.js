@@ -426,7 +426,7 @@ function addStreakCounter() {
 
   streakDiv.innerHTML = `
     <div style="font-size: 2rem; margin-bottom: 4px;">🔥</div>
-    <div style="font-size: 1.5rem; font-weight: bold; color: #c51616;">${streak} Day Streak!</div>
+    <div class="streak-number" style="font-size: 1.5rem; font-weight: bold; color: #c51616;">${streak} Day Streak!</div>
     <div style="font-size: 0.85rem; opacity: 0.8; margin-top: 4px;">Keep it going!</div>
   `;
 
@@ -544,14 +544,17 @@ document.addEventListener("DOMContentLoaded", () => {
 // Listen for task completions to show encouragement
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("change", (e) => {
-    if (e.target.matches(".task-checkbox") && e.target.checked) {
+    // Only trigger for task checkboxes
+    if (e.target.matches(".task-checkbox") && 
+        e.target.type === "checkbox" && 
+        e.target.checked) {
       if (adhdPreferences.soundEnabled) {
         showEncouragement();
         updateStreak();
         const streakDiv = document.getElementById("streakCounter");
         if (streakDiv) {
           const streak = getStreak();
-          const streakText = streakDiv.querySelector("div:nth-child(2)");
+          const streakText = streakDiv.querySelector(".streak-number");
           if (streakText) {
             streakText.textContent = `${streak} Day Streak!`;
           }

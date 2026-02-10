@@ -1784,8 +1784,6 @@ body::before {
   }
 }
 
-/* Add scanline effect for retro feel - removed to avoid animation conflict */
-
 /* Vignette effect for depth */
 .app {
   position: relative;
