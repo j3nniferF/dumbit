@@ -1467,10 +1467,41 @@ body::before {
   padding-left: 24px;
 }
 
+/* Task delete button */
+.task-delete-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--accent-red);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  opacity: 0;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.task:hover .task-delete-btn {
+  opacity: 0.6;
+}
+
+.task-delete-btn:hover {
+  opacity: 1 !important;
+  background: rgba(197, 22, 22, 0.1);
+  transform: scale(1.2);
+}
+
+.task-delete-btn:active {
+  background: rgba(197, 22, 22, 0.2);
+  transform: scale(1.1);
+}
+
 /* Double-click hint */
 .task-text {
   cursor: text;
   user-select: text;
+  flex: 1;
 }
 
 .task-text:hover {
@@ -1478,6 +1509,100 @@ body::before {
   border-radius: 3px;
   padding: 2px 4px;
   margin: -2px -4px;
+}
+
+/* Enhanced title styling with glow effect */
+.title {
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(242, 239, 232, 0.3),
+                 0 0 20px rgba(242, 239, 232, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(242, 239, 232, 0.5),
+                 0 0 30px rgba(242, 239, 232, 0.3),
+                 0 0 40px rgba(242, 239, 232, 0.2);
+  }
+}
+
+/* Enhanced card shadows for depth */
+.card {
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 8px 15px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 
+    0 8px 12px rgba(0, 0, 0, 0.12),
+    0 12px 20px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Tab hover effects enhancement */
+.tab {
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tab--active {
+  animation: tabPulse 2s ease-in-out infinite;
+}
+
+@keyframes tabPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Button hover enhancements */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Add pulse effect to active timer */
+.card--timer.timer--running {
+  animation: cardPulse 2s ease-in-out infinite;
+}
+
+@keyframes cardPulse {
+  0%, 100% {
+    box-shadow: 
+      0 4px 6px rgba(0, 0, 0, 0.1),
+      0 8px 15px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(197, 22, 22, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 8px 12px rgba(0, 0, 0, 0.12),
+      0 12px 20px rgba(0, 0, 0, 0.1),
+      0 0 0 2px rgba(197, 22, 22, 0.3),
+      0 0 20px rgba(197, 22, 22, 0.2);
+  }
 }
 
 /* Mobile adjustments */
@@ -1494,5 +1619,9 @@ body::before {
   .btn--primary {
     padding: 14px 28px;
     font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+  }
+  
+  .task-delete-btn {
+    opacity: 0.6; /* Make delete button visible on mobile */
   }
 }
