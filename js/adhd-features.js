@@ -352,8 +352,10 @@ function addAccessibilityMenu() {
     { id: "progressToggle", label: "📊 Progress Bar", pref: "showProgressBar", fn: () => {
       adhdPreferences.showProgressBar = !adhdPreferences.showProgressBar;
       saveAdhdPreferences();
-      document.getElementById("timerProgressContainer").style.display = 
-        adhdPreferences.showProgressBar ? "block" : "none";
+      const progressContainer = document.getElementById("timerProgressContainer");
+      if (progressContainer) {
+        progressContainer.style.display = adhdPreferences.showProgressBar ? "block" : "none";
+      }
     }},
   ];
 
@@ -535,12 +537,12 @@ function initAdhdFeatures() {
 
 // Initialize on DOM ready
 document.addEventListener("DOMContentLoaded", () => {
+  // Delay to ensure main app and other modules are initialized
   setTimeout(initAdhdFeatures, 200);
 });
 
 // Listen for task completions to show encouragement
 document.addEventListener("DOMContentLoaded", () => {
-  const originalCheckboxHandler = document.body.addEventListener;
   document.body.addEventListener("change", (e) => {
     if (e.target.matches(".task-checkbox") && e.target.checked) {
       if (adhdPreferences.soundEnabled) {
@@ -549,7 +551,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const streakDiv = document.getElementById("streakCounter");
         if (streakDiv) {
           const streak = getStreak();
-          streakDiv.querySelector("div:nth-child(2)").textContent = `${streak} Day Streak!`;
+          const streakText = streakDiv.querySelector("div:nth-child(2)");
+          if (streakText) {
+            streakText.textContent = `${streak} Day Streak!`;
+          }
         }
       }
     }

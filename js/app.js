@@ -783,7 +783,9 @@ function playTimerDing() {
     
     // Resume if suspended (required for user interaction)
     if (ctx.state === 'suspended') {
-      ctx.resume().catch(() => {});
+      ctx.resume().catch((err) => {
+        console.warn("Could not resume audio context:", err);
+      });
     }
     
     const now = ctx.currentTime;

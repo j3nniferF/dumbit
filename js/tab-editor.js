@@ -378,6 +378,7 @@ function initTabEditor() {
 
 // Initialize on DOM ready
 document.addEventListener("DOMContentLoaded", () => {
+  // Small delay to ensure main app is initialized first
   setTimeout(initTabEditor, 150);
 });
 
