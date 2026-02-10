@@ -9,58 +9,6 @@ body {
   background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover
     fixed;
   margin: 0;
-  overflow-x: hidden;
-  /* Multi-layered background for depth */
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(197, 22, 22, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(17, 17, 17, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(197, 22, 22, 0.02) 0%, transparent 50%),
-    #0b0b0b url("../assets/textures/dirty-paper.png") center/cover fixed;
-  position: relative;
-}
-
-/* Animated background pattern */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image: 
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 100px,
-      rgba(197, 22, 22, 0.01) 100px,
-      rgba(197, 22, 22, 0.01) 102px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 100px,
-      rgba(17, 17, 17, 0.015) 100px,
-      rgba(17, 17, 17, 0.015) 102px
-    );
-  z-index: 0;
-  animation: backgroundShift 60s ease-in-out infinite;
-}
-
-@keyframes backgroundShift {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.3;
-  }
-  25% {
-    transform: translate(-20px, -20px) scale(1.02);
-    opacity: 0.5;
-  }
-  50% {
-    transform: translate(0, -40px) scale(1);
-    opacity: 0.3;
-  }
-  75% {
-    transform: translate(20px, -20px) scale(1.02);
-    opacity: 0.5;
-  }
 }
 .app {
   position: relative;
@@ -154,45 +102,6 @@ body::before {
   background-image: url("../assets/textures/grime-overlay.png");
   mix-blend-mode: burn; /* keeps it gritty */
   z-index: 0; /* KEY: behind content */
-  animation: grimeShift 40s ease-in-out infinite;
-}
-
-@keyframes grimeShift {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1) translate(0, 0);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.03) translate(-10px, -10px);
-  }
-}
-
-/* Floating decorative elements */
-.app::before {
-  content: "";
-  position: fixed;
-  width: 400px;
-  height: 400px;
-  top: -200px;
-  right: -200px;
-  background: radial-gradient(circle, rgba(197, 22, 22, 0.08) 0%, transparent 70%);
-  border-radius: 50%;
-  z-index: 0;
-  animation: float1 20s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes float1 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(-50px, 100px) scale(1.1);
-  }
-  66% {
-    transform: translate(50px, 50px) scale(0.9);
-  }
 }
 
 /* ===== LAYOUT GRID ===== */
@@ -501,28 +410,6 @@ body::before {
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35) !important;
   max-width: 440px !important;
   padding: 14px 16px !important;
-  transform-style: preserve-3d;
-  transition: all 0.3s ease;
-}
-
-/* Parallax hover effect on cards */
-.card--tasks:hover,
-.card--timer:hover,
-.card--completed:hover {
-  transform: translateY(-4px) translateZ(20px);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(197, 22, 22, 0.1) !important;
-}
-
-/* Add subtle paper texture animation */
-@keyframes paperTexture {
-  0%, 100% {
-    background-position: center top;
-  }
-  50% {
-    background-position: center calc(top + 2px);
-  }
 }
 
 /* stronger accent for the timer card: layered radial + texture */
@@ -1624,41 +1511,10 @@ body::before {
   color: var(--ink);
 }
 
-/* Task delete button */
-.task-delete-btn {
-  margin-left: auto;
-  background: transparent;
-  border: none;
-  color: var(--accent-red);
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 4px 8px;
-  opacity: 0;
-  transition: all 0.2s ease;
-  border-radius: 4px;
-}
-
-.task:hover .task-delete-btn {
-  opacity: 0.6;
-}
-
-.task-delete-btn:hover {
-  opacity: 1 !important;
-  background: rgba(197, 22, 22, 0.1);
-  transform: scale(1.2);
-}
-
-.task-delete-btn:active {
-  background: rgba(197, 22, 22, 0.2);
-  transform: scale(1.1);
-}
-
 /* Double-click hint */
 .task-text {
   cursor: text;
   user-select: text;
-  flex: 1;
 }
 
 .task-text[contenteditable="true"] {
@@ -1666,100 +1522,6 @@ body::before {
   padding: 2px 4px;
   border-radius: 6px;
   cursor: text;
-}
-
-/* Enhanced title styling with glow effect */
-.title {
-  animation: titleGlow 3s ease-in-out infinite;
-}
-
-@keyframes titleGlow {
-  0%, 100% {
-    text-shadow: 0 0 10px rgba(242, 239, 232, 0.3),
-                 0 0 20px rgba(242, 239, 232, 0.2);
-  }
-  50% {
-    text-shadow: 0 0 20px rgba(242, 239, 232, 0.5),
-                 0 0 30px rgba(242, 239, 232, 0.3),
-                 0 0 40px rgba(242, 239, 232, 0.2);
-  }
-}
-
-/* Enhanced card shadows for depth */
-.card {
-  box-shadow: 
-    0 4px 6px rgba(0, 0, 0, 0.1),
-    0 8px 15px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  box-shadow: 
-    0 8px 12px rgba(0, 0, 0, 0.12),
-    0 12px 20px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-}
-
-/* Tab hover effects enhancement */
-.tab {
-  transition: all 0.3s ease;
-}
-
-.tab:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.tab--active {
-  animation: tabPulse 2s ease-in-out infinite;
-}
-
-@keyframes tabPulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.85;
-  }
-}
-
-/* Button hover enhancements */
-.btn {
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.btn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Add pulse effect to active timer */
-.card--timer.timer--running {
-  animation: cardPulse 2s ease-in-out infinite;
-}
-
-@keyframes cardPulse {
-  0%, 100% {
-    box-shadow: 
-      0 4px 6px rgba(0, 0, 0, 0.1),
-      0 8px 15px rgba(0, 0, 0, 0.08),
-      0 0 0 1px rgba(197, 22, 22, 0.1);
-  }
-  50% {
-    box-shadow: 
-      0 8px 12px rgba(0, 0, 0, 0.12),
-      0 12px 20px rgba(0, 0, 0, 0.1),
-      0 0 0 2px rgba(197, 22, 22, 0.3),
-      0 0 20px rgba(197, 22, 22, 0.2);
-  }
 }
 
 /* Mobile adjustments */
@@ -1777,143 +1539,4 @@ body::before {
     padding: 14px 28px;
     font-size: clamp(1.1rem, 2.3vw, 1.4rem);
   }
-  
-  .task-delete-btn {
-    opacity: 0.6; /* Make delete button visible on mobile */
-  }
-}
-
-/* Decorative corner elements */
-.layout::before,
-.layout::after {
-  content: "";
-  position: fixed;
-  width: 200px;
-  height: 200px;
-  opacity: 0.03;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.layout::before {
-  top: 0;
-  left: 0;
-  background: linear-gradient(135deg, var(--accent-red) 0%, transparent 70%);
-  animation: cornerPulse1 8s ease-in-out infinite;
-}
-
-.layout::after {
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(-45deg, var(--ink) 0%, transparent 70%);
-  animation: cornerPulse2 10s ease-in-out infinite;
-}
-
-@keyframes cornerPulse1 {
-  0%, 100% {
-    opacity: 0.03;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.06;
-    transform: scale(1.2);
-  }
-}
-
-@keyframes cornerPulse2 {
-  0%, 100% {
-    opacity: 0.03;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.05;
-    transform: scale(1.15);
-  }
-}
-
-/* Vignette effect for depth */
-.app {
-  position: relative;
-}
-
-.app::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
-  z-index: 9999;
-}
-
-/* ===== ADHD/ACCESSIBILITY FEATURES ===== */
-
-/* Focus Mode - Hide completed tasks and reduce visual clutter */
-body.focus-mode .card--completed {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-body.focus-mode .completed-groups {
-  display: none;
-}
-
-body.focus-mode .tab:not(.tab--active) {
-  opacity: 0.2;
-}
-
-/* Reduce Motion - Disable animations for users who prefer less movement */
-body.reduce-motion *,
-body.reduce-motion *::before,
-body.reduce-motion *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-}
-
-/* Progress bar pulse animation */
-@keyframes pulseRed {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-  }
-}
-
-/* Visual feedback for keyboard focus */
-*:focus-visible {
-  outline: 3px solid #c51616;
-  outline-offset: 2px;
-}
-
-/* High contrast mode helpers */
-body.high-contrast {
-  --paper: #ffffff;
-  --ink: #000000;
-  --accent-red: #cc0000;
-}
-
-body.high-contrast .card {
-  border: 2px solid #000 !important;
-}
-
-/* Priority indicators */
-.task[data-priority="high"] {
-  border-left: 4px solid #ff3333;
-  background: rgba(255, 51, 51, 0.05);
-}
-
-.task[data-priority="medium"] {
-  border-left: 4px solid #ff9933;
-  background: rgba(255, 153, 51, 0.05);
-}
-
-.task[data-priority="low"] {
-  border-left: 4px solid #3399ff;
-  background: rgba(51, 153, 255, 0.05);
 }
