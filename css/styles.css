@@ -5,6 +5,9 @@
 html,
 body {
   height: 100%;
+  /* Add dark textured background to eliminate white space */
+  background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover
+    fixed;
   margin: 0;
   overflow-x: hidden;
   /* Multi-layered background for depth */
@@ -84,6 +87,7 @@ body::after {
   /* ===== FONTS (keep your vibe; change body font for readability) */
   --font-anarchy: "Anarchy"; /* title / big decorative */
   --font-punk: "HitMePunk04"; /* tabs & headings (your vibe) */
+  --font-punk2: "Punk2"; /* prize modal subtitle */
   --font-song: "Song"; /* existing body fallback */
   --font-wrong: "Wrong"; /* label/display fallback */
   --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -262,17 +266,26 @@ body::before {
   display: inline-block;
   padding: 6px 18px;
   margin: 0 0 8px;
-  background: rgba(239, 231, 214, 0.95);
+  /* Background removed for pop effect */
+  background: transparent;
   color: #111 !important;
   border-radius: 2px;
+  /* Add punk effects to make it pop */
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.8),
+    -1px -1px 0 rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(197, 22, 22, 0.4);
+  /* Add outline/stroke effect */
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
-/* size tuning */
+/* size tuning - make it BIGGER */
 .title-line:first-child {
-  font-size: clamp(2rem, 6vw, 5rem) !important;
+  font-size: clamp(3rem, 9vw, 7rem) !important;
 }
 .title-line:last-child {
-  font-size: clamp(1rem, 2.6vw, 2rem) !important;
+  font-size: clamp(1.5rem, 4vw, 3.5rem) !important;
 }
 
 .tabs {
@@ -323,18 +336,25 @@ body::before {
   display: block;
   width: fit-content;
   padding: 6px 14px 8px;
-  background: #efe7d6;
-  /* box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.35),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.4); */
+  /* Remove background for pop effect */
+  background: transparent;
   margin-bottom: 8px;
+  /* Add punk grunge effects */
+  text-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.85),
+    -2px -2px 0 rgba(255, 255, 255, 0.25),
+    0 0 30px rgba(197, 22, 22, 0.5),
+    0 6px 15px rgba(0, 0, 0, 0.6);
+  /* Stronger outline effect */
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.4);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
 }
 
-/* DSIGDT */
+/* DSIGDT - Make it BIGGER and more punk */
 .title-line:first-child {
   font-family: var(--font-anarchy);
-  /* responsive, big but not insane — change the numbers if you want it larger/smaller */
-  font-size: clamp(3rem, 8.5vw, 9rem);
+  /* BIGGER responsive sizing for maximum pop */
+  font-size: clamp(4rem, 11vw, 12rem);
   margin-bottom: 10px;
   line-height: 0.95; /* tight but readable */
   text-align: center;
@@ -342,7 +362,8 @@ body::before {
 
 .title-line:last-child {
   font-family: var(--font-punk);
-  font-size: clamp(1.7rem, 5vw, 6.4rem);
+  /* BIGGER sizing for subtitle */
+  font-size: clamp(2.5rem, 7vw, 8rem);
   text-align: center;
 }
 
@@ -397,6 +418,23 @@ body::before {
     letter-spacing: 2px;
     padding: 8px 10px;
     font-size: clamp(1.2rem, 3.8vw, 1.6rem);
+  }
+  
+  /* Make card titles bigger on mobile */
+  .card--tasks .card-title,
+  .card--timer .card-title,
+  .card--completed .card-title {
+    font-size: clamp(2rem, 5vw, 2.8rem) !important;
+  }
+  
+  /* Make SHIT I DID bigger on mobile */
+  .card-title--big {
+    font-size: clamp(2.8rem, 8vw, 4rem);
+  }
+  
+  /* Make timer display bigger on mobile */
+  .timer-display {
+    font-size: clamp(5.5rem, 12vw, 7rem) !important;
   }
 }
 
@@ -495,6 +533,12 @@ body::before {
   background-blend-mode: multiply !important;
   position: relative;
   transition: all 0.3s ease;
+  /* Add sass and love with enhanced borders and shadows */
+  border: 3px solid rgba(197, 22, 22, 0.15) !important;
+  box-shadow:
+    0 16px 35px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Pulsing border when timer is running */
@@ -533,8 +577,14 @@ body::before {
 
 /* Optional helper for experimenting with a really large card title */
 .card-title--big {
+  /* Mirror tabs styling - same font and letter-spacing */
+  font-family: var(--font-ui);
   font-size: clamp(2.2rem, 6vw, 7.6rem);
-  letter-spacing: 2px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.15),
+    -1px -1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* ===== MAIN LAYOUT ===== */
@@ -815,6 +865,8 @@ body::before {
 /* Responsive adjustment for very small screens */
 @media (max-width: 420px) {
   .completed-groups--tabs {
+    /* Stack vertically on mobile - 1 column instead of 4 */
+    grid-template-columns: 1fr;
     gap: 8px; /* Reduce gap on small screens */
   }
 }
@@ -1150,6 +1202,16 @@ body::before {
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Punk2";
+  src:
+    url("../assets/fonts/punk2/hit-me-punk-07.woff2") format("woff2"),
+    url("../assets/fonts/punk2/punk2.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Modal overlay (ensure visible above app) */
 .modal-overlay {
   position: fixed;
@@ -1192,43 +1254,34 @@ body::before {
   }
 }
 
-/* Prize modal - make it more FUN! */
+/* === USER: PRIZE MODAL OVERRIDES START === */
+/* (custom prize modal styles begin here) */
+
+/* ===== PRIZE MODAL TWEAKS (overrides and fixes) ===== */
 #prizeModal {
-  background:
-    linear-gradient(135deg, #fdf5e6 0%, #fff9e6 50%, #fdf5e6 100%),
-    linear-gradient(45deg, rgba(197, 22, 22, 0.03) 0%, transparent 100%);
-  border: 3px solid var(--accent-red);
-  box-shadow:
-    0 20px 60px rgba(197, 22, 22, 0.3),
-    0 0 0 6px rgba(197, 22, 22, 0.1),
-    inset 0 0 100px rgba(255, 215, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  animation: modalPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* Add celebratory pattern behind prize modal content */
-#prizeModal::before {
-  content: "🎉🎊✨🏆⭐🎉🎊✨🏆⭐";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 3rem;
+  /* tighter modal so it never gets huge */
+  max-width: 420px;
+  width: min(94%, 420px);
+  padding: 20px 22px;
+  box-sizing: border-box;
   text-align: center;
-  opacity: 0.08;
-  letter-spacing: 30px;
-  line-height: 4rem;
-  z-index: 0;
-  animation: floatEmoji 4s ease-in-out infinite;
-  word-wrap: break-word;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  /* Add punk/grunge styling - torn paper effect with strong border */
+  border: 3px solid rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+  /* Add torn edge effect with filter */
+  position: relative;
 }
 
-/* Sparkles floating around */
-#prizeModal::after {
-  content: "✨";
+#prizeModal::before {
+  content: "";
   position: absolute;
   top: 10px;
   right: 10px;
@@ -1275,12 +1328,15 @@ body::before {
   z-index: 1;
 }
 
-.modal-title {
-  font-family: var(--font-punk), var(--font-stack);
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  text-align: center;
-  margin: 0 0 12px;
-  text-transform: uppercase;
+/* Title: BIGGER and better centered with punk effects */
+#prizeModal .modal-title {
+  display: block;
+  width: 100%;
+  font-family: "Anarchy", var(--font-stack);
+  /* MUCH BIGGER title */
+  font-size: clamp(2.8rem, 7vw, 4.2rem);
+  margin: 8px 0 10px;
+  line-height: 1;
   letter-spacing: 2px;
   color: var(--accent-red);
   text-shadow:
@@ -1290,24 +1346,33 @@ body::before {
   position: relative;
 }
 
-/* Sparkle effect on title */
-.modal-title::before,
-.modal-title::after {
-  content: "✨";
-  position: absolute;
-  font-size: 1.5rem;
-  animation: titleSparkle 2s ease-in-out infinite;
+/* Subtitle: Use Punk2 font with cool styling */
+#prizeModal .modal-subtitle {
+  font-family: var(--font-punk2);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  letter-spacing: 1.5px;
+  margin: 8px 0;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.5),
+    -1px -1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.modal-title::before {
-  left: -10px;
-  top: 0;
+/* GIF: smaller and constrained to avoid dominating modal */
+.modal img.prize-gif {
+  max-width: 220px;
+  width: 70%;
+  height: auto;
+  max-height: 30vh;
+  margin: 6px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 }
 
-.modal-title::after {
-  right: -10px;
-  top: 0;
-  animation-delay: 1s;
+/* List: more readable spacing and increased letter spacing */
+#prizeModal .prize-list {
+  gap: 18px;
+  padding: 0;
+  margin: 8px 0 10px;
 }
 
 @keyframes titleSparkle {
@@ -1336,27 +1401,33 @@ body::before {
   100% {
     transform: scale(1) translateY(0);
     opacity: 1;
-  }
+#prizeModal .prize-list li {
+  font-family: "HitMePunk04", var(--font-stack);
+  font-size: clamp(0.98rem, 2vw, 1.12rem);
+  line-height: 1.9;
+  letter-spacing: 1.4px;
+  margin: 0;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.modal-subtitle {
-  font-family: var(--font-ui);
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  text-align: center;
-  margin: 0 0 16px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  animation: fadeSlideIn 0.5s ease-out 0.2s backwards;
-}
-
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+/* make sure title scales nicely on phones */
+/* make sure modal looks great on mobile */
+@media (max-width: 420px) {
+  #prizeModal {
+    max-width: 96%;
+    width: 96%;
+    padding: 16px 18px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  #prizeModal .modal-title {
+    font-size: clamp(2.2rem, 9vw, 3rem);
+  }
+  
+  #prizeModal .modal-subtitle {
+    font-size: clamp(1rem, 4vw, 1.4rem);
   }
 }
 
@@ -1393,10 +1464,12 @@ body::before {
   from {
     opacity: 0;
     transform: translateX(-20px);
+  
+  #prizeModal .modal-title-line1 {
+    font-size: clamp(1.8rem, 9vw, 2.6rem);
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+  #prizeModal .modal-title-line2 {
+    font-size: clamp(1.2rem, 6.5vw, 1.6rem);
   }
 }
 
@@ -1423,54 +1496,25 @@ body::before {
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
 
-/* Make the prize modal less dominant on small screens and cap GIF height */
-.modal {
-  /* keep defaults above; add better max-height handling for media */
-  max-width: 560px;
-}
-
-.modal img.prize-gif {
-  width: 100%;
-  height: auto;
-  max-width: 380px; /* Reduced from 420px for better mobile fit */
-  max-height: 50vh; /* Reduced from 60vh to prevent modal overflow */
-  object-fit: contain;
-  display: block;
-  margin: 12px auto 0;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Mobile-specific modal shrink + font scaling */
-@media (max-width: 420px) {
-  .modal {
-    max-width: 340px !important; /* Increased from 320px for better readability */
-    width: calc(100% - 24px) !important; /* Better margins */
-    padding: 16px 14px !important;
-    margin: 0 8px;
+/* ===== DESKTOP LAYOUT ===== */
+@media (min-width: 1200px) {
+  .app {
+    max-width: 1400px;
   }
 
-  .modal-title {
-    font-size: clamp(1.6rem, 7vw, 2.2rem) !important; /* Larger on mobile */
-    margin-bottom: 10px;
+  .layout {
+    grid-template-areas:
+      "header header"
+      "tabs tabs"
+      "tasks timer"
+      "completed completed"
+      "music music";
+    grid-template-columns: 1.4fr 1fr;
+    align-items: start;
   }
 
-  .modal-subtitle {
-    font-size: clamp(1rem, 2.8vw, 1.3rem) !important;
-  }
-
-  .modal {
-    font-size: 0.95rem !important;
-  }
-
-  .modal img.prize-gif {
-    max-width: 280px;
-    max-height: 40vh; /* Smaller on mobile to prevent overflow */
-  }
-
-  #prizeModal li {
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
-    margin: 6px 0;
+  .card--timer .timer-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -1501,30 +1545,24 @@ body::before {
   ) !important; /* INCREASED from 1.9rem to 2.2rem min */
 }
 
-/* Optional: slightly larger tab labels on small screens for legibility */
-@media (max-width: 640px) {
-  .tab {
-    font-size: clamp(1.2rem, 3.8vw, 1.8rem) !important;
-  }
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px 2px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* ===== ENHANCED FEATURES STYLES ===== */
-
-/* Inline editing input */
-.task-edit-input {
-  width: 100%;
-  font-size: inherit;
-  font-family: inherit;
-  padding: 4px 8px;
-  border: 2px solid var(--accent-red, #c51616);
-  border-radius: 4px;
-  background: #fff;
-  outline: none;
+.task-checkbox {
+  transform: translateY(0.5px);
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-red);
 }
 
-.task-edit-input:focus {
-  border-color: var(--accent-red-dark, #9f1010);
-  box-shadow: 0 0 0 3px rgba(197, 22, 22, 0.1);
+.task-row:last-child {
+  border-bottom: none;
 }
 
 /* Data export/import buttons - REMOVED per user request */
@@ -1537,44 +1575,53 @@ body::before {
     transform 0.2s ease;
 }
 
-.task.dragging {
-  opacity: 0.5;
-}
-
-.task:active {
-  cursor: grabbing;
-}
-
-/* Tab drop zone highlighting */
-.tab.drag-over {
-  background: rgba(197, 22, 22, 0.2) !important;
-  transform: scale(1.05);
-  transition: all 0.2s ease;
-}
-
-/* Visual hint for draggable tasks */
-.task::before {
-  content: "⋮⋮";
+.task--selected::after {
+  content: "IN PROGRESS";
   position: absolute;
-  left: 4px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(0, 0, 0, 0.2);
-  font-size: 1.2em;
-  line-height: 0.8;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  top: -10px;
+  right: 10px;
+  font-size: 0.9rem;
+  letter-spacing: 0.7px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--accent-red);
+  color: #fff;
 }
 
-.task:hover::before {
-  opacity: 0.5;
+/* ===== TIMER CARD (layout) ===== */
+.card--timer .field {
+  font-size: 1.05rem;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
-/* Adjust task row padding to make room for drag handle */
-.task-row {
-  position: relative;
-  padding-left: 24px;
+.card--completed {
+  padding: 20px 22px !important;
+}
+
+.completed-groups--tabs {
+  grid-template-columns: repeat(
+    4,
+    1fr
+  ); /* Fixed 4 columns for horizontal row */
+}
+
+.field-label {
+  font-size: var(--size-body);
+  line-height: 1.3;
+}
+
+.field-select {
+  border: 1px solid var(--paper-border);
+  padding: 6px 8px;
+  min-width: 180px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--ink);
 }
 
 /* Task delete button */
@@ -1614,11 +1661,11 @@ body::before {
   flex: 1;
 }
 
-.task-text:hover {
-  background: rgba(197, 22, 22, 0.05);
-  border-radius: 3px;
+.task-text[contenteditable="true"] {
+  outline: 2px dashed rgba(197, 22, 22, 0.35);
   padding: 2px 4px;
-  margin: -2px -4px;
+  border-radius: 6px;
+  cursor: text;
 }
 
 /* Enhanced title styling with glow effect */

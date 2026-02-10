@@ -218,7 +218,7 @@
         </main>
 
         <!-- MUSIC PLAYER -->
-        <footer class="music" id="musicPlayer" aria-label="Music player">
+        <!-- <footer class="music" id="musicPlayer" aria-label="Music player">
           <div class="music-title">NOW PLAYING:</div>
           <div class="music-track" id="musicTrack">GRUNGY TUNES</div>
           <div class="music-controls">
@@ -247,7 +247,7 @@
           <div class="music-progress" aria-hidden="true"></div>
         </footer>
       </div>
-    </div>
+    </div> -->
 
     <!-- PRIZE MODAL (unchanged) -->
     <div
@@ -258,22 +258,29 @@
       aria-labelledby="prizeTitle"
     >
       <div class="modal" id="prizeModal">
-        <h2 class="modal-title" id="prizeTitle">GOOD JOB DUMMY!</h2>
+        <h2 class="modal-title" id="prizeTitle">
+          <span class="modal-title-line1">GOOD JOB</span>
+          <span class="modal-title-line2">DUMMY!</span>
+        </h2>
         <p class="modal-subtitle" id="prizeSubtitle">
           YOU GET TO PICK A PRIZE...
         </p>
+
+        <!-- added gif (replace src with your actual file path) -->
+        <img class="prize-gif" src="https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif";" alt="Cute cat"/>
 
         <ul class="prize-list" id="prizeList">
           <li>GO FOR A WALK.</li>
           <li>TAKE A QUICK NAP.</li>
           <li>GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.</li>
           <li>THEN GET BACK TO WORK!</li>
-          <li>OR YOU CAN STARE AT THIS CUTE CAT!</li>
         </ul>
 
-        <button class="btn btn--primary" id="backToItBtn" type="button">
-          HELL YAH!
-        </button>
+        <div class="prize-actions">
+          <button class="btn btn--primary" id="backToItBtn" type="button">
+            NOW GET BACK TO WORK!
+          </button>
+        </div>
       </div>
     </div>
 
@@ -296,9 +303,9 @@
           <button class="btn btn--primary" id="timerDoneBtn" type="button">
             YES, DONE
           </button>
-          <button class="btn" id="timerAddTimeBtn" type="button">
+          <!-- <button class="btn" id="timerAddTimeBtn" type="button">
             ADD 5 MIN
-          </button>
+          </button> -->
           <button class="btn" id="timerNotDoneBtn" type="button">
             NOT YET
           </button>
