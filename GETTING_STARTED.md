@@ -126,11 +126,62 @@ A: They're not needed. The `main` branch is all you need!
 
 ---
 
+## 🧹 Optional: Clean Up Old Branches
+
+You currently have **15+ branches** on GitHub! Most are old and not needed.
+
+### Branches to KEEP:
+- ✅ `main` - Your main branch (keep!)
+- ✅ `gh-pages` - GitHub Pages deployment (keep!)
+
+### Branches you can DELETE (after merging this cleanup PR):
+All the `copilot/*` branches from previous work:
+- copilot/cleanup-repository-structure (this one, delete after merging)
+- copilot/debug-broken-functionality
+- copilot/fix-divergent-branches
+- copilot/fix-upload-artifact-version
+- copilot/improve-page-title
+- copilot/improve-page-title-again
+- copilot/improve-page-title-design
+- copilot/sub-pr-16-again
+- copilot/sub-pr-16-another-one
+- copilot/update-page-to-current-state
+- copilot/update-shit-tabs-layout
+- copilot/update-task-editability
+- revert-32-copilot/update-task-editability
+- backup-gh-pages
+
+### How to Delete Branches (EASY WAY):
+
+**On GitHub.com** (recommended for beginners):
+1. Go to: https://github.com/j3nniferF/dumbit/branches
+2. Find each old branch
+3. Click the trash can icon 🗑️ next to it
+4. Confirm deletion
+
+That's it! Much easier than using commands.
+
+**OR Using Terminal** (if you prefer):
+```bash
+# After merging this PR, delete remote branches:
+git push origin --delete copilot/cleanup-repository-structure
+git push origin --delete copilot/debug-broken-functionality
+# ... (repeat for each branch)
+
+# Then clean up local copies:
+git fetch --prune
+```
+
+**Note:** Don't stress about this! Old branches don't hurt anything. Clean them up when you're ready.
+
+---
+
 ## 🎯 Your Next Steps
 
 1. **Merge this PR** to apply all the cleanup
-2. **Start making changes** to your code
-3. **Have fun** building your todo app! 
+2. **Optionally clean up old branches** (see above)
+3. **Start making changes** to your code
+4. **Have fun** building your todo app! 
 
 **Remember:** This is YOUR project. Experiment, break things, fix them, and learn! 🌟
 
