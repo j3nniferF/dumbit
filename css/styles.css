@@ -1411,57 +1411,68 @@ body::before {
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
 
-/* ===== DESKTOP LAYOUT ===== */
-@media (min-width: 1200px) {
-  .app {
-    max-width: 1400px;
-  }
-
-  .layout {
-    grid-template-areas:
-      "header header"
-      "tabs tabs"
-      "tasks timer"
-      "completed completed"
-      "music music";
-    grid-template-columns: 1.4fr 1fr;
-    align-items: start;
-  }
-
-  .card--timer .timer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+/* VISUAL TUNES: bigger, tighter title + stronger card headings */
+/* Tighten title padding and increase scale (desktop + mobile) */
+.title-line {
+  padding: 4px 8px !important;
+  -webkit-text-stroke: 0.8px rgba(0, 0, 0, 0.35) !important;
 }
 
-/* Ensure the main site title is always centered and wraps nicely on all viewports */
-.header .title {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center; /* center inline content */
-  margin: 0 auto;
-  width: 100%;
-  max-width: 1100px; /* prevent extreme wide lines on very large screens */
-  box-sizing: border-box;
-  padding-inline: 8px; /* small horizontal breathing room */
+.title-line:first-child {
+  font-size: clamp(5rem, 13vw, 14rem) !important;
+  line-height: 0.88;
+  margin-bottom: 4px !important;
 }
 
-.header .title .title-line {
-  display: block; /* ensure stacking and full-width centering */
-  width: 100%;
-  text-align: center;
-  white-space: normal; /* allow wrapping */
-  word-break: break-word;
-  hyphens: auto;
-  padding-inline: 4px;
+.title-line:last-child {
+  font-size: clamp(2.2rem, 5.5vw, 4.2rem) !important;
+  line-height: 0.95;
+  margin-top: -4px !important;
 }
 
 @media (max-width: 420px) {
-  .header .title {
-    padding-inline: 12px; /* more breathing room on small screens */
+  .title-line:first-child {
+    font-size: clamp(4.5rem, 22vw, 9rem) !important;
+    line-height: 0.86;
+    margin-bottom: 6px !important;
   }
-  .header .title .title-line {
-    padding-inline: 6px;
+  .title-line:last-child {
+    font-size: clamp(1.9rem, 7vw, 2.8rem) !important;
+    line-height: 0.95;
+    margin-top: -6px !important;
   }
+}
+
+/* Make card titles more prominent */
+.card-title {
+  font-size: clamp(2.4rem, 4.2vw, 4.2rem) !important;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+}
+.card-title--big {
+  font-size: clamp(3rem, 7vw, 8rem) !important;
+}
+
+/* Center timer grid content and make timer display feel centered */
+.card--timer .timer-grid {
+  justify-items: center;
+  align-items: center;
+}
+.card--timer .timer-block {
+  width: 100%;
+  max-width: 420px; /* keeps blocks consistent */
+  box-sizing: border-box;
+}
+.card--timer .timer-display {
+  margin: 10px auto 8px !important;
+  text-align: center;
+}
+.card--timer .timer-controls {
+  justify-content: center !important;
+}
+
+/* Slightly reduce tab bar height to remove excess white space */
+.tabs {
+  padding: 6px 10px !important;
+  margin: 10px auto 18px !important;
 }
