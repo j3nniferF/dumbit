@@ -1,50 +1,56 @@
 # DUMB SHIT I GOTTA DO TODAY 💥
 
-A punk rock, grunge-style todo app to help you manage your tasks with attitude!
+A punk rock, grunge-style todo app to track your tasks with attitude!
 
-## 🆘 NEW TO GIT? START HERE!
+## 🌐 Live Site
 
-**Feeling lost?** Check these guides:
-- **[HOW_TO_USE_GIT.md](HOW_TO_USE_GIT.md)** - Complete beginner's guide
-- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Copy/paste commands
-- **[VISUAL_GUIDE.md](VISUAL_GUIDE.md)** - Visual diagrams & analogies
+**https://j3nniferF.github.io/dumbit/**
 
 ## ✨ Features
 
 - Add tasks to different tabs (DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET)
 - Check off completed tasks
 - Timer with START/PAUSE/STOP
-- Prize modal when you complete all tasks in a tab
-- Inline editing (double-click a task to edit it)
-- Drag & drop reordering
-- Move tasks between tabs
-- Grunge/punk aesthetic with custom fonts and textures
+- Prize modal when you complete all tasks
+- Double-click to edit tasks
+- Drag & drop to reorder
+- Grunge/punk aesthetic
 
-## 🌐 Live Site
-
-https://j3nniferF.github.io/dumbit/
-
-## 💻 Run Locally
-
-```bash
-cd dumbit
-python3 -m http.server 8000
-```
-
-Then visit `http://localhost:8000` in your browser.
-
-## 📁 Project Structure
+## 📁 Project Files
 
 ```
 dumbit/
-├── index.html          # Main HTML file
-├── css/
-│   └── styles.css      # All styles
+├── index.html          # Main page
+├── css/styles.css      # All styles
 ├── js/
-│   ├── app.js          # Main app logic
-│   ├── tasks-edit.js   # Task editing features
-│   └── enhanced-features.js  # Extra features
-└── assets/
-    ├── fonts/          # Custom punk fonts
-    └── textures/       # Background textures
+│   ├── app.js          # Main logic
+│   ├── tasks-edit.js   # Editing features
+│   └── enhanced-features.js
+└── assets/             # Fonts & textures
 ```
+
+## 🚀 Making Changes
+
+1. **Edit your files** in VS Code or any editor
+2. **Save** your changes (Ctrl+S or Cmd+S)
+3. **Commit & push** to see them live:
+
+```bash
+git add .
+git commit -m "describe your changes"
+git push origin main
+```
+
+4. **Wait 1-2 minutes** then refresh your live site!
+
+## 💻 Test Locally
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open: `http://localhost:8000`
+
+---
+
+**Need help?** This is a learning project - experiment and have fun! 🎸
