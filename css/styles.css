@@ -758,18 +758,26 @@ body::before {
 
 .completed-groups--tabs {
   display: grid;
-  /* show completed groups one-per-row */
-  grid-template-columns: 1fr; /* single column so items appear one-by-one */
+  /* show completed groups side by side on wider screens */
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 12px;
 }
 
 /* Responsive adjustment for very small screens */
+@media (max-width: 768px) {
+  .completed-groups--tabs {
+    /* Stack in 2 columns on medium screens */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
 @media (max-width: 420px) {
   .completed-groups--tabs {
-    /* Stack vertically on mobile - 1 column instead of 4 */
+    /* Stack vertically on mobile - 1 column */
     grid-template-columns: 1fr;
-    gap: 8px; /* Reduce gap on small screens */
+    gap: 8px;
   }
 }
 
@@ -915,10 +923,6 @@ body::before {
 @media (min-width: 768px) {
   .completed-groups {
     grid-template-columns: repeat(4, 1fr);
-    direction: rtl; /* mirror tab order on wide screens */
-  }
-  .completed-group {
-    direction: ltr; /* keep text readable */
   }
 }
 
@@ -1042,8 +1046,7 @@ body::before {
 
 .completed-groups--tabs {
   display: grid;
-  /* show completed groups one-per-row */
-  grid-template-columns: 1fr; /* single column so items appear one-by-one */
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 12px;
 }
@@ -1111,6 +1114,16 @@ body::before {
   src:
     url("../assets/fonts/wrong/wrong.woff2") format("woff2"),
     url("../assets/fonts/wrong/wrong.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Punk2";
+  src:
+    url("../assets/fonts/punk2/hit-me-punk-07.woff2") format("woff2"),
+    url("../assets/fonts/punk2/punk2.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -1345,6 +1358,8 @@ body::before {
 #prizeModal .modal-title-line2 {
   color: #0a0a0a;
   font-size: clamp(2.4rem, 6vw, 3rem);
+  display: block;
+  text-align: center;
 }
 
 #prizeSubtitle {
@@ -1357,12 +1372,7 @@ body::before {
 }
 
 .prize-arrows {
-  text-align: center;
-  font-family: var(--font-anarchy);
-  color: var(--accent-red);
-  letter-spacing: 6px;
-  margin: 0 0 6px;
-  font-size: 1.2rem;
+  display: none;
 }
 
 .prize-note {
@@ -1381,7 +1391,8 @@ body::before {
   font-family: "Punk2", "Bangers", cursive, sans-serif;
   text-align: center;
   letter-spacing: 0.02em;
-  font-size: 1rem;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: var(--accent-red);
 }
 
 /* make sure title scales nicely on phones */
@@ -1407,11 +1418,12 @@ body::before {
   font-family: var(--font-ui);
   font-size: clamp(1rem, 2.2vw, 1.3rem);
   margin: 8px 0;
-  padding-left: 24px;
+  padding-left: 0;
   position: relative;
   line-height: 1.4;
   opacity: 0;
   animation: listItemSlideIn 0.5s ease-out forwards;
+  text-align: center;
 }
 
 /* Stagger animation for list items */
@@ -1443,25 +1455,9 @@ body::before {
 }
 
 #prizeModal li::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  color: var(--accent-red);
-  font-weight: bold;
-  animation: arrowPulse 1.5s ease-in-out infinite;
+  content: none;
 }
 
-@keyframes arrowPulse {
-  0%,
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(4px);
-    opacity: 0.7;
-  }
-}
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
 
@@ -1621,7 +1617,7 @@ body::before {
 .floating-timer {
   position: fixed;
   right: 22px;
-  bottom: 22px;
+  top: 22px;
   width: 92px;
   height: 92px;
   border-radius: 50%;
@@ -1720,7 +1716,7 @@ body::before {
   .floating-timer {
     width: 78px;
     height: 78px;
-    bottom: 14px;
+    top: 14px;
     right: 14px;
   }
   .floating-timer__label {
@@ -1888,4 +1884,107 @@ body::before {
   .modal--timer-popup .timer-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* ===== FLOATING TIMER COUNTDOWN WIDGET ===== */
+.floating-countdown {
+  position: fixed;
+  top: 22px;
+  right: 130px;
+  z-index: var(--z-top);
+  background: #0d0d0d url("../assets/textures/dirty-paper.png");
+  background-blend-mode: multiply;
+  border: 4px solid #0a0a0a;
+  border-radius: 16px;
+  padding: 12px 18px;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.5);
+  cursor: grab;
+  user-select: none;
+  min-width: 180px;
+  text-align: center;
+  display: none;
+}
+
+.floating-countdown.is-visible {
+  display: block;
+}
+
+.floating-countdown.is-dragging {
+  cursor: grabbing;
+  opacity: 0.9;
+}
+
+.floating-countdown__task {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: #f6f3ea;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.floating-countdown__time {
+  font-family: var(--font-anarchy);
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  color: var(--accent-red);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.2), 0 0 20px rgba(197,22,22,0.5);
+  animation: flashTimer 1s steps(2, end) infinite;
+}
+
+@media (max-width: 640px) {
+  .floating-countdown {
+    top: 14px;
+    right: 100px;
+    padding: 8px 12px;
+    min-width: 140px;
+  }
+  .floating-countdown__time {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+}
+
+/* ===== TIMER DONE MODAL IMPROVEMENTS ===== */
+.modal--timer-done {
+  background: #0d0d0d url("../assets/textures/dirty-paper.png");
+  background-blend-mode: multiply;
+  color: #f3f1e9;
+  border: 5px solid #0a0a0a;
+  text-align: center;
+}
+
+.modal--timer-done .modal-title {
+  font-family: var(--font-anarchy);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  color: var(--accent-red);
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+.modal--timer-done .modal-subtitle {
+  font-family: var(--font-ui);
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  letter-spacing: 1px;
+  color: #f6f3ea;
+}
+
+.modal--timer-done .modal-hint {
+  font-family: var(--font-ui);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  color: rgba(246,243,234,0.7);
+  margin: 8px 0 16px;
+}
+
+.timer-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
 }

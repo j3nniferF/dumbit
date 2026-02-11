@@ -32,7 +32,9 @@ async function showPrizeSuggestion() {
   img.dataset.src = PRIZE_GIF_URL;
 
   const prizeList = prizeModal.querySelector("#prizeList");
-  if (prizeList) prizeModal.insertBefore(img, prizeList);
+  const prizeNote = prizeModal.querySelector(".prize-note");
+  if (prizeNote) prizeModal.insertBefore(img, prizeNote);
+  else if (prizeList) prizeList.insertAdjacentElement("afterend", img);
   else prizeModal.appendChild(img);
 
   // If the modal is already visible, trigger the actual load immediately
@@ -152,7 +154,7 @@ function ensureAndForceTitleAndHideMusic() {
         display: "inline-block",
         padding: "6px 14px",
         margin: "0 0 8px",
-        background: "rgba(239,231,214,0.95)",
+        background: "transparent",
         color: "#111",
       });
     });
