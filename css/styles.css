@@ -1476,3 +1476,59 @@ body::before {
   padding: 6px 10px !important;
   margin: 10px auto 18px !important;
 }
+
+/* Center and tighten timer headings + controls */
+.timer-block__title {
+  text-align: center;
+  font-size: clamp(1rem, 2.2vw, 1.45rem) !important;
+  margin: 0 0 8px;
+  color: var(--accent-red);
+}
+
+.card--timer .timer-selects,
+.card--timer .timer-grid {
+  display: grid;
+  justify-items: center;
+  align-items: start;
+}
+
+.card--timer .field-select {
+  display: block;
+  margin: 6px auto 10px;
+  max-width: 360px;
+  width: 88%;
+}
+
+.custom-timer__controls {
+  justify-content: center !important;
+  gap: 8px;
+}
+.custom-timer__controls .field-input {
+  width: 96px;
+  max-width: 40%;
+  min-width: 64px;
+  text-align: center;
+}
+
+/* Make card titles larger and more visible */
+.card--tasks .card-title,
+.card--timer .card-title,
+.card--completed .card-title {
+  font-size: clamp(2.6rem, 5vw, 5rem) !important;
+  letter-spacing: 1.8px;
+  text-align: center;
+}
+
+/* Ensure subtitle line is centered and tighter */
+.title-line:last-child {
+  display: block;
+  width: 100%;
+  text-align: center !important;
+  margin-top: -6px !important;
+}
+
+/* Slightly reduce top padding near header to tighten layout */
+.header {
+  margin-bottom: 6px !important;
+  padding-top: 6px;
+}
