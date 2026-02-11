@@ -1430,7 +1430,7 @@ body::before {
     5.8vw,
     6rem
   ) !important; /* INCREASED from 1.8rem to 2rem min */
-} */
+/*
 
 /* Stronger card title for visibility */
 .card-title {
