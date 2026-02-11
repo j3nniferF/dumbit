@@ -306,6 +306,21 @@ body::before {
   opacity: 0.35;
 }
 
+.tab--timer {
+  background: rgba(197, 22, 22, 0.1);
+  border-radius: 8px;
+  margin-left: auto; /* Push to the right */
+}
+
+.tab--timer:hover {
+  background: rgba(197, 22, 22, 0.2);
+  opacity: 1;
+}
+
+.tab--timer::before {
+  display: none; /* No separator before timer button */
+}
+
 @media (max-width: 420px) {
   .tab {
     letter-spacing: 1.6px;

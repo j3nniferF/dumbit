@@ -11,6 +11,8 @@ console.log("enhanced-features.js loaded");
    Feature 1: Inline Task Editing
 -------------------------------- */
 
+let isEditingTask = false;
+
 /**
  * Enable double-click to edit task text inline
  */
@@ -25,6 +27,13 @@ function enableInlineEditing() {
 
     const taskRow = e.target.closest(".task-row");
     if (!taskRow) return;
+
+    // Prevent the task selection from happening
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Set editing flag
+    isEditingTask = true;
 
     const tabKey = taskRow.dataset.tab;
     const originalText = taskRow.dataset.task;
@@ -63,6 +72,7 @@ function enableInlineEditing() {
       // Restore original if empty or unchanged
       if (!newText || newText === originalText) {
         taskText.textContent = originalContent;
+        isEditingTask = false;
         return;
       }
 
@@ -76,11 +86,13 @@ function enableInlineEditing() {
         },
       });
       document.dispatchEvent(event);
+      isEditingTask = false;
     };
 
     // Cancel function
     const cancelEdit = () => {
       taskText.textContent = originalContent;
+      isEditingTask = false;
     };
 
     // Handle Enter key (save)
@@ -353,4 +365,5 @@ window.enhancedFeatures = {
   enableDragToTabs,
   makeTasksDraggable,
   enableTimerAnimations,
+  isEditingTask: () => isEditingTask,
 };

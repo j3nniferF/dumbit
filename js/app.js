@@ -109,6 +109,11 @@ function closeTimerPopup() {
 function wireTimerPopup() {
   const overlay = document.getElementById("timerPopupOverlay");
   const closeBtn = document.getElementById("closeTimerPopup");
+  const openBtn = document.getElementById("openTimerBtn");
+  
+  if (openBtn) {
+    openBtn.addEventListener("click", () => openTimerPopup());
+  }
   
   if (closeBtn) {
     closeBtn.addEventListener("click", () => closeTimerPopup());
@@ -539,10 +544,8 @@ function setSelectedFocus(value) {
   renderTasks(activeTabKey);
   saveState();
   
-  // Open timer popup when task is selected
-  if (selectedFocusValue) {
-    openTimerPopup();
-  }
+  // Don't auto-open timer popup - let users manually open it
+  // This allows double-click editing to work without interference
 }
 
 function clearSelectedFocus() {
@@ -926,6 +929,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Tab click behavior
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
+      // Skip if this is the timer button
+      if (tab.id === "openTimerBtn") return;
+      
       activeTabKey = tab.dataset.tab;
 
       const focusTabSelect = document.getElementById("focusTabSelect");
