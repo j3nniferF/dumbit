@@ -61,10 +61,19 @@
           <button class="tab" type="button" data-tab="dontForget">
             DON'T FORGET
           </button>
-          <button class="tab tab--timer" type="button" id="openTimerBtn" title="Open Timer">
-            ⏱️ TIMER
-          </button>
         </nav>
+
+        <button
+          class="floating-timer"
+          type="button"
+          id="openTimerBtn"
+          title="Open Timer"
+          aria-label="Open timer"
+        >
+          <span class="floating-timer__icon" aria-hidden="true">🕒</span>
+          <span class="floating-timer__label">TIMER</span>
+          <span class="timer-bubble is-hidden" id="timerBubble">15:00</span>
+        </button>
 
         <main class="main" id="main">
           <!-- TASKS -->
@@ -172,7 +181,9 @@
         </p>
 
         <!-- added gif (replace src with your actual file path) -->
+        <div class="prize-arrows" aria-hidden="true">⇢ ⇢ ⇢</div>
         <img class="prize-gif" src="https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif" alt="Cute cat"/>
+        <p class="prize-note">or you can stare at this cute dumb cat</p>
 
         <ul class="prize-list" id="prizeList">
           <li>GO FOR A WALK.</li>
@@ -280,9 +291,14 @@
           <button class="btn" id="stopBtn" type="button">STOP</button>
         </div>
 
-        <button class="btn btn--close" id="closeTimerPopup" type="button">
-          CLOSE
-        </button>
+        <div class="timer-footer-actions">
+          <button class="btn btn--ghost" id="floatTimerBtn" type="button">
+            KEEP FLOATING
+          </button>
+          <button class="btn btn--close" id="closeTimerPopup" type="button">
+            CLOSE
+          </button>
+        </div>
       </div>
     </div>
 
@@ -298,7 +314,7 @@
         <h2 class="modal-title" id="timerModalTitle">TIME'S UP</h2>
         <p class="modal-subtitle" id="timerModalTask">DONE WITH THIS TASK?</p>
         <p class="modal-hint" id="timerModalHint">
-          Need more time? Add 5 minutes.
+          Need more time? Add 5 minutes or pick a new task + timer.
         </p>
 
         <div class="timer-modal-actions">
@@ -307,6 +323,9 @@
           </button>
           <button class="btn" id="timerNotDoneBtn" type="button">
             NOT YET
+          </button>
+          <button class="btn btn--ghost" id="timerNewTaskBtn" type="button">
+            PICK NEW TASK + TIMER
           </button>
         </div>
       </div>
