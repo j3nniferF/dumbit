@@ -52,6 +52,7 @@ let selectedFocusValue = ""; // `${tabKey}::${taskText}`
 /* Timer state */
 let remainingSeconds = 0;
 let intervalId = null;
+let floatingPinned = false;
 
 /* -------------------------------
    Celebration (confetti + modal)
@@ -98,12 +99,21 @@ function openTimerPopup() {
   const overlay = document.getElementById("timerPopupOverlay");
   if (!overlay) return;
   overlay.classList.remove("is-hidden");
+  floatingPinned = false;
+  syncTimerBubble(true);
 }
 
-function closeTimerPopup() {
+function isTimerPopupOpen() {
+  const overlay = document.getElementById("timerPopupOverlay");
+  return overlay && !overlay.classList.contains("is-hidden");
+}
+
+function closeTimerPopup({ keepFloating = false } = {}) {
   const overlay = document.getElementById("timerPopupOverlay");
   if (!overlay) return;
   overlay.classList.add("is-hidden");
+  floatingPinned = keepFloating || floatingPinned;
+  syncTimerBubble();
 }
 
 let timerPopupWired = false;
@@ -115,18 +125,26 @@ function wireTimerPopup() {
   const overlay = document.getElementById("timerPopupOverlay");
   const closeBtn = document.getElementById("closeTimerPopup");
   const openBtn = document.getElementById("openTimerBtn");
+  const floatBtn = document.getElementById("floatTimerBtn");
   
   if (openBtn) {
     openBtn.addEventListener("click", () => openTimerPopup());
   }
   
   if (closeBtn) {
-    closeBtn.addEventListener("click", () => closeTimerPopup());
+    closeBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
   }
+
+   if (floatBtn) {
+     floatBtn.addEventListener("click", () => {
+       floatingPinned = true;
+       closeTimerPopup({ keepFloating: true });
+     });
+   }
   
   if (overlay) {
     overlay.addEventListener("click", (event) => {
-      if (event.target === overlay) closeTimerPopup();
+      if (event.target === overlay) closeTimerPopup({ keepFloating: false });
     });
   }
   
@@ -158,6 +176,7 @@ function wireTimerModal() {
   const addTimeBtn = document.getElementById("timerAddTimeBtn");
   const addTimeSelect = document.getElementById("timerAddSelect");
   const notDoneBtn = document.getElementById("timerNotDoneBtn");
+  const newTaskBtn = document.getElementById("timerNewTaskBtn");
 
   if (doneBtn) {
     doneBtn.addEventListener("click", () => {
@@ -171,6 +190,13 @@ function wireTimerModal() {
 
   if (notDoneBtn) {
     notDoneBtn.addEventListener("click", () => closeTimerModal());
+  }
+
+  if (newTaskBtn) {
+    newTaskBtn.addEventListener("click", () => {
+      closeTimerModal();
+      openTimerPopup();
+    });
   }
 
   if (addTimeBtn) {
@@ -197,7 +223,14 @@ function wirePrizeModalClose() {
   const overlay = document.getElementById("prizeOverlay");
   const btn = document.getElementById("backToItBtn");
 
-  if (btn) btn.addEventListener("click", () => closePrizeModal());
+  if (btn)
+    btn.addEventListener("click", () => {
+      closePrizeModal();
+      const completedCard = document.getElementById("completedCard");
+      if (completedCard) {
+        completedCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
 
   // click outside modal closes
   if (overlay) {
@@ -548,6 +581,7 @@ function setSelectedFocus(value) {
   syncCurrentTaskText();
   renderTasks(activeTabKey);
   saveState();
+  syncTimerBubble();
   
   // Don't auto-open timer popup - let users manually open it
   // This allows double-click editing to work without interference
@@ -573,6 +607,8 @@ function renderTasks(tabKey) {
 
     const li = document.createElement("li");
     li.className = "task";
+    li.dataset.tab = tabKey;
+    li.dataset.task = taskText;
     if (value === selectedFocusValue) li.classList.add("task--selected");
 
     li.innerHTML = `
@@ -590,7 +626,10 @@ function renderTasks(tabKey) {
     }
     // -------------------------------------------------------------------------------
 
-    li.querySelector(".task-text").textContent = taskText;
+    const textEl = li.querySelector(".task-text");
+    textEl.textContent = taskText;
+    textEl.setAttribute("tabindex", "0");
+    textEl.setAttribute("role", "textbox");
     taskList.appendChild(li);
 
     const checkbox = li.querySelector(".task-checkbox");
@@ -765,9 +804,29 @@ function formatTime(seconds) {
   return `${mm}:${ss}`;
 }
 
+function syncTimerBubble(forceHide = false) {
+  const bubble = document.getElementById("timerBubble");
+  const floatBtn = document.getElementById("openTimerBtn");
+  if (!bubble || !floatBtn) return;
+
+  const displaySeconds =
+    remainingSeconds > 0 ? remainingSeconds : getSelectedDurationSeconds();
+
+  bubble.textContent = formatTime(Math.max(0, displaySeconds));
+
+  const shouldShow =
+    !forceHide &&
+    selectedFocusValue &&
+    (floatingPinned || intervalId !== null);
+
+  bubble.classList.toggle("is-hidden", !shouldShow);
+  floatBtn.classList.toggle("is-running", intervalId !== null);
+}
+
 function setTimerDisplay(seconds) {
   const el = document.getElementById("timerDisplay");
   if (el) el.textContent = formatTime(seconds);
+  syncTimerBubble();
 }
 
 function getSelectedDurationSeconds() {
@@ -779,6 +838,31 @@ function getSelectedDurationSeconds() {
 function resetTimerToSelectedDuration() {
   remainingSeconds = getSelectedDurationSeconds();
   setTimerDisplay(remainingSeconds);
+  syncTimerBubble();
+}
+
+function playTimerBell() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = (window._timerAudioCtx =
+      window._timerAudioCtx || new AudioCtx());
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(440, now + 0.7);
+    gain.gain.setValueAtTime(0.0, now);
+    gain.gain.linearRampToValueAtTime(0.4, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.9);
+  } catch (e) {
+    console.warn("Timer bell failed", e);
+  }
 }
 
 function startCountdown() {
@@ -800,8 +884,12 @@ function startCountdown() {
       setTimerDisplay(0);
       const { taskText } = parseTaskValue(selectedFocusValue);
       openTimerModal(taskText);
+      playTimerBell();
+      fireConfettiBurst();
+      openPrizeModal();
     }
   }, 1000);
+  syncTimerBubble();
 }
 
 function addTimeMinutes(minutes) {
@@ -834,6 +922,7 @@ function stopInterval() {
     clearInterval(intervalId);
     intervalId = null;
   }
+  syncTimerBubble();
 }
 
 function wireTimer() {
@@ -878,10 +967,14 @@ function wireTimer() {
 
   startBtn.addEventListener("click", () => startCountdown());
 
-  pauseBtn.addEventListener("click", () => stopInterval());
+  pauseBtn.addEventListener("click", () => {
+    floatingPinned = true;
+    stopInterval();
+  });
 
   stopBtn.addEventListener("click", () => {
     stopInterval();
+    floatingPinned = false;
     resetTimerToSelectedDuration();
   });
 }
@@ -971,6 +1064,7 @@ document.addEventListener("DOMContentLoaded", () => {
   buildFocusSelect(selectedFocusValue);
   syncCurrentTaskText();
   updateProgress();
+  syncTimerBubble();
 
   // Listen for inline edits from tasks-edit.js or enhanced-features.js
   document.addEventListener("task:edited", (e) => {

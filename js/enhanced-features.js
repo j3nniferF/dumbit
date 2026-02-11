@@ -159,9 +159,14 @@ function enableDragAndDrop() {
     e.preventDefault();
 
     // Dispatch event to save new order
+    const tasks = Array.from(taskList.children);
+    const tabKey =
+      tasks.find((task) => task.dataset.tab)?.dataset.tab ||
+      document.querySelector(".tab--active")?.dataset.tab;
     const event = new CustomEvent("tasks:reordered", {
       detail: {
-        taskList: Array.from(taskList.children).map((task) => task.dataset.task),
+        tabKey,
+        newOrder: tasks.map((task) => task.dataset.task).filter(Boolean),
       },
     });
     document.dispatchEvent(event);
@@ -245,9 +250,9 @@ function enableDragToTabs() {
       // Dispatch event to move task
       const event = new CustomEvent("task:movedToTab", {
         detail: {
-          text: draggedTask.text,
-          fromTab: draggedTask.tab,
-          toTab: targetTab,
+          taskText: draggedTask.text,
+          sourceTab: draggedTask.tab,
+          targetTab,
           completed: draggedTask.completed,
         },
       });
