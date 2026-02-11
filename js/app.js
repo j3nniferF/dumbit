@@ -94,6 +94,39 @@ function closePrizeModal() {
   overlay.classList.add("is-hidden");
 }
 
+function openTimerPopup() {
+  const overlay = document.getElementById("timerPopupOverlay");
+  if (!overlay) return;
+  overlay.classList.remove("is-hidden");
+}
+
+function closeTimerPopup() {
+  const overlay = document.getElementById("timerPopupOverlay");
+  if (!overlay) return;
+  overlay.classList.add("is-hidden");
+}
+
+function wireTimerPopup() {
+  const overlay = document.getElementById("timerPopupOverlay");
+  const closeBtn = document.getElementById("closeTimerPopup");
+  
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => closeTimerPopup());
+  }
+  
+  if (overlay) {
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) closeTimerPopup();
+    });
+  }
+  
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !overlay.classList.contains("is-hidden")) {
+      closeTimerPopup();
+    }
+  });
+}
+
 function openTimerModal(taskName) {
   const overlay = document.getElementById("timerOverlay");
   const taskText = document.getElementById("timerModalTask");
@@ -505,6 +538,11 @@ function setSelectedFocus(value) {
   syncCurrentTaskText();
   renderTasks(activeTabKey);
   saveState();
+  
+  // Open timer popup when task is selected
+  if (selectedFocusValue) {
+    openTimerPopup();
+  }
 }
 
 function clearSelectedFocus() {
@@ -852,6 +890,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   wirePrizeModalClose();
   wireTimerModal();
+  wireTimerPopup();
   wireResetButton(tabs);
   wireAddTaskForm();
   wireFocusPickers();

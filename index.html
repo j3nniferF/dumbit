@@ -93,101 +93,7 @@
             </form>
           </section>
 
-          <!-- TIMER -->
-          <section
-            class="card card--timer"
-            id="timerCard"
-            aria-labelledby="timerHeading"
-          >
-            <h2 class="card-title" id="timerHeading">TIMER</h2>
 
-            <div class="timer-grid">
-              <div class="timer-block">
-                <p class="timer-block__title">CHOOSE VIOLENCE:</p>
-                <p class="timer-block__hint">(PICK A TAB / PICK A TASK)</p>
-
-                <div class="timer-selects">
-                  <select
-                    class="field-select"
-                    id="focusTabSelect"
-                    name="focusTabSelect"
-                  >
-                    <option value="all">ALL TABS</option>
-                    <option value="dueToday">DUE TODAY</option>
-                    <option value="soon">NEXT UP</option>
-                    <option value="asSoonAsICan">WHEN I CAN</option>
-                    <option value="dontForget">DON'T FORGET</option>
-                  </select>
-
-                  <select
-                    class="field-select"
-                    id="focusSelect"
-                    name="focusSelect"
-                  >
-                    <option value="">(Pick a task)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="timer-block">
-                <p class="timer-block__title">→ SET YOUR TIME:</p>
-
-                <select
-                  class="field-select"
-                  id="durationSelect"
-                  name="durationSelect"
-                >
-                  <option value="300">5 min</option>
-                  <option value="900" selected>15 min</option>
-                  <option value="1800">30 min</option>
-                  <option value="2700">45 min</option>
-                  <option value="3600">60 min</option>
-                </select>
-
-                <p class="timer-block__sub">CUSTOM:</p>
-                <div class="custom-timer__controls">
-                  <input
-                    class="field-input"
-                    id="customHoursInput"
-                    name="customHoursInput"
-                    type="number"
-                    min="0"
-                    max="8"
-                    placeholder="hrs"
-                    inputmode="numeric"
-                  />
-                  <input
-                    class="field-input"
-                    id="customMinutesInput"
-                    name="customMinutesInput"
-                    type="number"
-                    min="0"
-                    max="59"
-                    placeholder="mins"
-                    inputmode="numeric"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- <p class="current-task current-task--hero" id="currentTaskText">
-              TAB:
-              <span class="current-task__tab">(none)</span>
-              <span class="current-task__divider">|</span>
-              TASK:
-              <span class="current-task__task">(none)</span>
-            </p> -->
-            <p class="timer-block__footer">→ MURDER TASKS! ✅ GET A PRIZE!</p>
-            <div class="timer-display" id="timerDisplay" aria-live="polite">
-              15:00
-            </div>
-
-            <div class="timer-controls">
-              <button class="btn" id="startBtn" type="button">START</button>
-              <button class="btn" id="pauseBtn" type="button">PAUSE</button>
-              <button class="btn" id="stopBtn" type="button">STOP</button>
-            </div>
-          </section>
 
           <!-- COMPLETED -->
           <section
@@ -280,6 +186,103 @@
       </div>
     </div>
 
+    <!-- TIMER POPUP MODAL -->
+    <div
+      class="modal-overlay is-hidden"
+      id="timerPopupOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="timerPopupTitle"
+    >
+      <div class="modal modal--timer-popup" id="timerPopupModal">
+        <h2 class="modal-title" id="timerPopupTitle">TIMER</h2>
+
+        <div class="timer-grid">
+          <div class="timer-block">
+            <p class="timer-block__title">CHOOSE VIOLENCE:</p>
+            <p class="timer-block__hint">(PICK A TAB / PICK A TASK)</p>
+
+            <div class="timer-selects">
+              <select
+                class="field-select"
+                id="focusTabSelect"
+                name="focusTabSelect"
+              >
+                <option value="all">ALL TABS</option>
+                <option value="dueToday">DUE TODAY</option>
+                <option value="soon">NEXT UP</option>
+                <option value="asSoonAsICan">WHEN I CAN</option>
+                <option value="dontForget">DON'T FORGET</option>
+              </select>
+
+              <select
+                class="field-select"
+                id="focusSelect"
+                name="focusSelect"
+              >
+                <option value="">(Pick a task)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="timer-block">
+            <p class="timer-block__title">→ SET YOUR TIME:</p>
+
+            <select
+              class="field-select"
+              id="durationSelect"
+              name="durationSelect"
+            >
+              <option value="300">5 min</option>
+              <option value="900" selected>15 min</option>
+              <option value="1800">30 min</option>
+              <option value="2700">45 min</option>
+              <option value="3600">60 min</option>
+            </select>
+
+            <p class="timer-block__sub">CUSTOM:</p>
+            <div class="custom-timer__controls">
+              <input
+                class="field-input"
+                id="customHoursInput"
+                name="customHoursInput"
+                type="number"
+                min="0"
+                max="8"
+                placeholder="hrs"
+                inputmode="numeric"
+              />
+              <input
+                class="field-input"
+                id="customMinutesInput"
+                name="customMinutesInput"
+                type="number"
+                min="0"
+                max="59"
+                placeholder="mins"
+                inputmode="numeric"
+              />
+            </div>
+          </div>
+        </div>
+
+        <p class="timer-block__footer">→ MURDER TASKS! ✅ GET A PRIZE!</p>
+        <div class="timer-display" id="timerDisplay" aria-live="polite">
+          15:00
+        </div>
+
+        <div class="timer-controls">
+          <button class="btn" id="startBtn" type="button">START</button>
+          <button class="btn" id="pauseBtn" type="button">PAUSE</button>
+          <button class="btn" id="stopBtn" type="button">STOP</button>
+        </div>
+
+        <button class="btn btn--close" id="closeTimerPopup" type="button">
+          CLOSE
+        </button>
+      </div>
+    </div>
+
     <!-- TIMER DONE MODAL -->
     <div
       class="modal-overlay is-hidden"
@@ -288,7 +291,7 @@
       aria-modal="true"
       aria-labelledby="timerModalTitle"
     >
-      <div class="modal modal--timer" id="timerModal">
+      <div class="modal modal--timer-done" id="timerModal">
         <h2 class="modal-title" id="timerModalTitle">TIME'S UP</h2>
         <p class="modal-subtitle" id="timerModalTask">DONE WITH THIS TASK?</p>
         <p class="modal-hint" id="timerModalHint">
@@ -299,9 +302,6 @@
           <button class="btn btn--primary" id="timerDoneBtn" type="button">
             YES, DONE
           </button>
-          <!-- <button class="btn" id="timerAddTimeBtn" type="button">
-            ADD 5 MIN
-          </button> -->
           <button class="btn" id="timerNotDoneBtn" type="button">
             NOT YET
           </button>
