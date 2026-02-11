@@ -11,6 +11,8 @@ console.log("enhanced-features.js loaded");
    Feature 1: Inline Task Editing
 -------------------------------- */
 
+let isEditingTask = false;
+
 /**
  * Enable double-click to edit task text inline
  */
@@ -25,6 +27,13 @@ function enableInlineEditing() {
 
     const taskRow = e.target.closest(".task-row");
     if (!taskRow) return;
+
+    // Prevent the task selection from happening
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Set editing flag
+    isEditingTask = true;
 
     const tabKey = taskRow.dataset.tab;
     const originalText = taskRow.dataset.task;
@@ -63,6 +72,7 @@ function enableInlineEditing() {
       // Restore original if empty or unchanged
       if (!newText || newText === originalText) {
         taskText.textContent = originalContent;
+        isEditingTask = false;
         return;
       }
 
@@ -76,11 +86,13 @@ function enableInlineEditing() {
         },
       });
       document.dispatchEvent(event);
+      isEditingTask = false;
     };
 
     // Cancel function
     const cancelEdit = () => {
       taskText.textContent = originalContent;
+      isEditingTask = false;
     };
 
     // Handle Enter key (save)
@@ -147,9 +159,14 @@ function enableDragAndDrop() {
     e.preventDefault();
 
     // Dispatch event to save new order
+    const tasks = Array.from(taskList.children);
+    const tabKey =
+      tasks.find((task) => task.dataset.tab)?.dataset.tab ||
+      document.querySelector(".tab--active")?.dataset.tab;
     const event = new CustomEvent("tasks:reordered", {
       detail: {
-        taskList: Array.from(taskList.children).map((task) => task.dataset.task),
+        tabKey,
+        newOrder: tasks.map((task) => task.dataset.task).filter(Boolean),
       },
     });
     document.dispatchEvent(event);
@@ -233,9 +250,9 @@ function enableDragToTabs() {
       // Dispatch event to move task
       const event = new CustomEvent("task:movedToTab", {
         detail: {
-          text: draggedTask.text,
-          fromTab: draggedTask.tab,
-          toTab: targetTab,
+          taskText: draggedTask.text,
+          sourceTab: draggedTask.tab,
+          targetTab,
           completed: draggedTask.completed,
         },
       });
@@ -353,4 +370,5 @@ window.enhancedFeatures = {
   enableDragToTabs,
   makeTasksDraggable,
   enableTimerAnimations,
+  isEditingTask: () => isEditingTask,
 };

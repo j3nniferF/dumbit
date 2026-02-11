@@ -132,15 +132,10 @@ function ensureAndForceTitleAndHideMusic() {
       console.info("Created header element");
     }
 
-    let title = header.querySelector(".title");
+    const title = header.querySelector(".title");
     if (!title) {
-      title = document.createElement("h1");
-      title.className = "title";
-      title.setAttribute("role", "banner");
-      title.innerHTML =
-        '<span class="title-line">DUMB SHIT</span><span class="title-line">I GOTTA DO TODAY</span>';
-      header.appendChild(title);
-      console.info("Inserted title markup");
+      console.info("Title element missing; skipping title enforcement.");
+      return;
     }
 
     // force visible inline styles (override CSS cascade issues)

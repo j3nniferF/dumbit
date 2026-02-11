@@ -1,22 +1,20 @@
+# OS files
 .DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Dependencies
 node_modules/
 dist/
 
-# Documentation files (keeping only README.md)
-ANSWER.md
-BRANCH_MERGE_SUMMARY.md
-DEPLOYMENT.md
-DEPLOYMENT_WORKFLOW.md
-FEATURES.md
-HOW_TO_MERGE.md
-IMPLEMENTATION_SUMMARY.md
-LIVE_LINK.md
-MERGE_CHECKLIST.md
-MERGE_NOW.md
-NEXT_STEPS.md
-PUSH_AND_DEPLOY.md
-QUICKSTART.md
-QUICK_DEPLOY.md
-VISUAL_GUIDE.md
-WHAT_HAPPENED.md
-DEMO.html
+# Live Server cache
+127.0.0.1:*/
+.vscode-server-insiders/
+
+# Temporary files
+*.tmp
+*.bak
+*~
