@@ -328,19 +328,19 @@ body::before {
     padding: 8px 10px;
     font-size: clamp(1.2rem, 3.8vw, 1.6rem);
   }
-  
+
   /* Make card titles bigger on mobile */
   .card--tasks .card-title,
   .card--timer .card-title,
   .card--completed .card-title {
     font-size: clamp(2rem, 5vw, 2.8rem) !important;
   }
-  
+
   /* Make SHIT I DID bigger on mobile */
   .card-title--big {
     font-size: clamp(2.8rem, 8vw, 4rem);
   }
-  
+
   /* Make timer display bigger on mobile */
   .timer-display {
     font-size: clamp(5.5rem, 12vw, 7rem) !important;
@@ -846,9 +846,9 @@ body::before {
   text-transform: uppercase;
   font-size: clamp(1.3rem, 2.6vw, 1.7rem);
   font-family: var(--font-label), var(--font-stack);
-  color: var(--accent-red);
+  color: #0a0909;
   padding: 10px;
-  background: rgba(197, 22, 22, 0.08);
+  /* background: rgba(197, 22, 22, 0.08); */
   border-radius: 8px;
   border: 1px dashed rgba(197, 22, 22, 0.3);
 }
@@ -1089,16 +1089,6 @@ body::before {
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Punk2";
-  src:
-    url("../assets/fonts/punk2/hit-me-punk-07.woff2") format("woff2"),
-    url("../assets/fonts/punk2/punk2.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* Modal overlay (ensure visible above app) */
 .modal-overlay {
   position: fixed;
@@ -1124,6 +1114,27 @@ body::before {
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-strong);
   animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Responsive modal and gif */
+.modal {
+  width: min(540px, 96%);
+  max-width: 540px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.modal-overlay {
+  padding: 12px; /* keeps modal inset on small screens */
+}
+
+.prize-gif {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 18px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 @keyframes modalPop {
@@ -1288,6 +1299,9 @@ body::before {
   100% {
     transform: scale(1) translateY(0);
     opacity: 1;
+  }
+}
+
 #prizeModal .prize-list li {
   font-family: "HitMePunk04", var(--font-stack);
   font-size: clamp(0.98rem, 2vw, 1.12rem);
@@ -1300,6 +1314,14 @@ body::before {
   gap: 10px;
 }
 
+/* apply Punk2 to the prize subtitle text */
+#prizeSubtitle {
+  font-family: "Punk2", "Bangers", cursive, sans-serif;
+  text-align: center;
+  letter-spacing: 0.02em;
+  font-size: 1rem;
+}
+
 /* make sure title scales nicely on phones */
 /* make sure modal looks great on mobile */
 @media (max-width: 420px) {
@@ -1308,11 +1330,11 @@ body::before {
     width: 96%;
     padding: 16px 18px;
   }
-  
+
   #prizeModal .modal-title {
     font-size: clamp(2.2rem, 9vw, 3rem);
   }
-  
+
   #prizeModal .modal-subtitle {
     font-size: clamp(1rem, 4vw, 1.4rem);
   }
@@ -1351,12 +1373,10 @@ body::before {
   from {
     opacity: 0;
     transform: translateX(-20px);
-  
-  #prizeModal .modal-title-line1 {
-    font-size: clamp(1.8rem, 9vw, 2.6rem);
   }
-  #prizeModal .modal-title-line2 {
-    font-size: clamp(1.2rem, 6.5vw, 1.6rem);
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -1524,19 +1544,160 @@ body::before {
   cursor: text;
 }
 
-/* Mobile adjustments */
-@media (max-width: 640px) {
-  .task-text {
-    font-size: 1.8rem; /* Slightly smaller on mobile */
-  }
+/* ===== FONTS ===== */
+@font-face {
+  font-family: "HitMePunk04";
+  src:
+    url("../assets/fonts/punk/punk.woff2") format("woff2"),
+    url("../assets/fonts/punk/punk.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-  .btn {
-    padding: 10px 20px;
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
-  }
+@font-face {
+  font-family: "Anarchy";
+  src:
+    url("../assets/fonts/anarchy/anarchy.woff2") format("woff2"),
+    url("../assets/fonts/anarchy/anarchy.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-  .btn--primary {
-    padding: 14px 28px;
-    font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+@font-face {
+  font-family: "Song";
+  src:
+    url("../assets/fonts/song/song.woff2") format("woff2"),
+    url("../assets/fonts/song/song.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Wrong";
+  src:
+    url("../assets/fonts/wrong/wrong.woff2") format("woff2"),
+    url("../assets/fonts/wrong/wrong.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Modal overlay (ensure visible above app) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001; /* above confetti (9999) */
+  background: rgba(10, 10, 10, 0.65);
+}
+
+.modal-overlay.is-hidden {
+  display: none;
+}
+
+.modal {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 22px 24px;
+  border-radius: 12px;
+  max-width: 460px;
+  width: calc(100% - 40px);
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow-strong);
+  animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes modalPop {
+  0% {
+    transform: scale(0.5) rotate(-5deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* === USER: PRIZE MODAL OVERRIDES START === */
+/* (custom prize modal styles begin here) */
+
+/* ===== PRIZE MODAL TWEAKS (overrides and fixes) ===== */
+#prizeModal {
+  /* tighter modal so it never gets huge */
+  max-width: 380px;
+  width: min(92%, 380px);
+  padding: 16px 18px;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Title: force full-width centering, improve contrast & smoothing */
+#prizeModal .modal-title {
+  display: block;
+  width: 100%;
+  font-family: "Anarchy", var(--font-stack);
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem); /* responsive but smaller */
+  margin: 4px 0 6px;
+  line-height: 1;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6),
+    0 3px 10px rgba(0, 0, 0, 0.12);
+  font-weight: 700;
+}
+
+/* GIF: smaller and constrained to avoid dominating modal */
+.modal img.prize-gif {
+  max-width: 220px;
+  width: 70%;
+  height: auto;
+  max-height: 30vh;
+  margin: 6px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+
+/* List: more readable spacing and increased letter spacing */
+#prizeModal .prize-list {
+  gap: 18px;
+  padding: 0;
+  margin: 8px 0 10px;
+}
+#prizeModal .prize-list li {
+  font-family: "HitMePunk04", var(--font-stack);
+  font-size: clamp(0.98rem, 2vw, 1.12rem);
+  line-height: 1.9;
+  letter-spacing: 1.4px;
+  margin: 0;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* make sure title scales nicely on phones */
+@media (max-width: 420px) {
+  #prizeModal .modal-title-line1 {
+    font-size: clamp(1.6rem, 9vw, 2.4rem);
+  }
+  #prizeModal .modal-title-line2 {
+    font-size: clamp(1.2rem, 6.5vw, 1.6rem);
   }
 }
