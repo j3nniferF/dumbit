@@ -807,6 +807,9 @@ function formatTime(seconds) {
 function syncTimerBubble(forceHide = false) {
   const bubble = document.getElementById("timerBubble");
   const floatBtn = document.getElementById("openTimerBtn");
+  const floatingCountdown = document.getElementById("floatingCountdown");
+  const floatingTime = document.getElementById("floatingCountdownTime");
+  const floatingTask = document.getElementById("floatingCountdownTask");
   if (!bubble || !floatBtn) return;
 
   const displaySeconds =
@@ -821,6 +824,19 @@ function syncTimerBubble(forceHide = false) {
 
   bubble.classList.toggle("is-hidden", !shouldShow);
   floatBtn.classList.toggle("is-running", intervalId !== null);
+
+  // Update floating countdown widget
+  if (floatingCountdown && floatingTime) {
+    const isRunning = intervalId !== null && selectedFocusValue;
+    floatingCountdown.classList.toggle("is-visible", !!isRunning);
+    if (isRunning) {
+      floatingTime.textContent = formatTime(Math.max(0, displaySeconds));
+      if (floatingTask) {
+        const { tabKey, taskText } = parseTaskValue(selectedFocusValue);
+        floatingTask.textContent = `${TAB_LABELS[tabKey] || tabKey}: ${taskText}`;
+      }
+    }
+  }
 }
 
 function setTimerDisplay(seconds) {
@@ -874,6 +890,12 @@ function startCountdown() {
   if (intervalId !== null) return;
   if (remainingSeconds <= 0) resetTimerToSelectedDuration();
 
+  // Auto-close timer popup when starting
+  if (isTimerPopupOpen()) {
+    floatingPinned = true;
+    closeTimerPopup({ keepFloating: true });
+  }
+
   intervalId = setInterval(() => {
     remainingSeconds -= 1;
     setTimerDisplay(remainingSeconds);
@@ -883,10 +905,10 @@ function startCountdown() {
       remainingSeconds = 0;
       setTimerDisplay(0);
       const { taskText } = parseTaskValue(selectedFocusValue);
-      openTimerModal(taskText);
       playTimerBell();
       fireConfettiBurst();
-      openPrizeModal();
+      // Show timer done modal first (prize comes after if task is completed)
+      openTimerModal(taskText);
     }
   }, 1000);
   syncTimerBubble();
@@ -980,6 +1002,80 @@ function wireTimer() {
 }
 
 /* -------------------------------
+   Draggable floating countdown
+-------------------------------- */
+function wireFloatingCountdown() {
+  const el = document.getElementById("floatingCountdown");
+  if (!el) return;
+
+  let isDragging = false;
+  let startX, startY, startLeft, startTop;
+
+  el.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    el.classList.add("is-dragging");
+    const rect = el.getBoundingClientRect();
+    startX = e.clientX;
+    startY = e.clientY;
+    startLeft = rect.left;
+    startTop = rect.top;
+    e.preventDefault();
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    el.style.left = (startLeft + dx) + "px";
+    el.style.top = (startTop + dy) + "px";
+    el.style.right = "auto";
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isDragging) {
+      isDragging = false;
+      el.classList.remove("is-dragging");
+    }
+  });
+
+  // Touch support
+  el.addEventListener("touchstart", (e) => {
+    isDragging = true;
+    el.classList.add("is-dragging");
+    const rect = el.getBoundingClientRect();
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    startLeft = rect.left;
+    startTop = rect.top;
+  }, { passive: true });
+
+  document.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - startX;
+    const dy = touch.clientY - startY;
+    el.style.left = (startLeft + dx) + "px";
+    el.style.top = (startTop + dy) + "px";
+    el.style.right = "auto";
+  }, { passive: true });
+
+  document.addEventListener("touchend", () => {
+    if (isDragging) {
+      isDragging = false;
+      el.classList.remove("is-dragging");
+    }
+  });
+
+  // Click on countdown opens timer popup
+  el.addEventListener("click", (e) => {
+    if (Math.abs(e.clientX - startX) < 5 && Math.abs(e.clientY - startY) < 5) {
+      openTimerPopup();
+    }
+  });
+}
+
+/* -------------------------------
    Boot
 -------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
@@ -992,6 +1088,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wirePrizeModalClose();
   wireTimerModal();
   wireTimerPopup();
+  wireFloatingCountdown();
   wireResetButton(tabs);
   wireAddTaskForm();
   wireFocusPickers();
