@@ -106,7 +106,12 @@ function closeTimerPopup() {
   overlay.classList.add("is-hidden");
 }
 
+let timerPopupWired = false;
+
 function wireTimerPopup() {
+  if (timerPopupWired) return; // Prevent multiple wirings
+  timerPopupWired = true;
+  
   const overlay = document.getElementById("timerPopupOverlay");
   const closeBtn = document.getElementById("closeTimerPopup");
   const openBtn = document.getElementById("openTimerBtn");
@@ -126,7 +131,7 @@ function wireTimerPopup() {
   }
   
   window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !overlay.classList.contains("is-hidden")) {
+    if (event.key === "Escape" && overlay && !overlay.classList.contains("is-hidden")) {
       closeTimerPopup();
     }
   });

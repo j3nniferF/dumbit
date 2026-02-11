@@ -902,11 +902,11 @@ body::before {
   margin-right: 8px;
 }
 
-/* Completed groups */
+/* Completed groups - mobile first: vertical stack */
 .completed-groups {
   font-family: var(--font-ui);
   display: grid;
-  grid-template-columns: 1fr; /* Mobile: vertical stack */
+  grid-template-columns: 1fr;
   gap: 16px;
   margin-top: 10px;
 }
