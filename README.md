@@ -2,13 +2,6 @@
 
 A punk rock, grunge-style todo app to help you manage your tasks with attitude!
 
-## 🆘 NEW TO GIT? START HERE!
-
-**Feeling lost?** Check these guides:
-- **[HOW_TO_USE_GIT.md](HOW_TO_USE_GIT.md)** - Complete beginner's guide
-- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Copy/paste commands
-- **[VISUAL_GUIDE.md](VISUAL_GUIDE.md)** - Visual diagrams & analogies
-
 ## ✨ Features
 
 - Add tasks to different tabs (DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET)
@@ -32,6 +25,20 @@ python3 -m http.server 8000
 ```
 
 Then visit `http://localhost:8000` in your browser.
+
+## 🚀 Deploy
+
+- Pushing to `main` automatically deploys to GitHub Pages via `.github/workflows/deploy-pages.yml`.
+- Keep most work on `main` (you can make a temporary branch if you want to try something risky).
+
+## 🔁 Quick Git Workflow
+
+```bash
+git status                # see what changed
+git add .                 # stage updates
+git commit -m "message"   # save a snapshot
+git push origin main      # publish changes (triggers deploy)
+```
 
 ## 📁 Project Structure
 
