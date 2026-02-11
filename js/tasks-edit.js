@@ -134,12 +134,6 @@ function ensureAndForceTitleAndHideMusic() {
       console.info("Created header element");
     }
 
-    const title = header.querySelector(".title");
-    if (!title) {
-      console.info("Title element missing; skipping title enforcement.");
-      return;
-    }
-
     // force visible inline styles (override CSS cascade issues)
     Object.assign(title.style, {
       display: "block",
