@@ -6,9 +6,26 @@ Hey! Your repo has been cleaned up and simplified. Here's what you need to know:
 
 1. **CLEANUP-SUMMARY.md** ← Read this first! Explains what I did
 2. **HOW-TO-USE.md** ← Your everyday guide for making changes
-3. **README.md** ← Quick project overview
+3. **HOW-TO-CHANGE-DEFAULT-BRANCH.md** ← How to set `main` as the default branch
+4. **README.md** ← Quick project overview
 
 ## 🎯 What You Need to Do Right Now:
+
+### Step 0: Change Default Branch to Main (Recommended)
+Currently, your default branch is `gh-pages`, but it should be `main`.
+
+**Why?** Most modern repositories use `main` as the default branch, and your deployment is already configured for `main`.
+
+**How to change:**
+See **HOW-TO-CHANGE-DEFAULT-BRANCH.md** for detailed step-by-step instructions.
+
+**Quick steps:**
+1. Go to https://github.com/j3nniferF/dumbit/settings
+2. Click "Branches" in the left sidebar
+3. In "Default branch", click the switch button
+4. Select `main` and click "Update"
+
+This is a one-time setup that makes your repo easier to work with!
 
 ### Step 1: Merge This Branch to Main
 This branch (`copilot/test-code-on-gh-pages`) has all the cleanup changes.
