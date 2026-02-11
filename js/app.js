@@ -1,10 +1,5 @@
-console.log("App loaded — feature/test-inline-edit");
-
-
-// hello
-
-
-
+ feature/test-inline-edit");
+// Or use a debug flag if needed
 
 /* =====================================================
    DSIGDT — MVP v3.4 (CLEAN + CELEBRATION)
