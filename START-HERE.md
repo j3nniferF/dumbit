@@ -11,7 +11,7 @@ Hey! Your repo has been cleaned up and simplified. Here's what you need to know:
 
 ## 🎯 What You Need to Do Right Now:
 
-### Step 0: Change Default Branch to Main (Recommended)
+### Change Default Branch to Main
 Currently, your default branch is `gh-pages`, but it should be `main`.
 
 **Why?** Most modern repositories use `main` as the default branch, and your deployment is already configured for `main`.
@@ -27,37 +27,21 @@ See **HOW-TO-CHANGE-DEFAULT-BRANCH.md** for detailed step-by-step instructions.
 
 This is a one-time setup that makes your repo easier to work with!
 
-### Step 1: Merge This Branch to Main
-This branch (`copilot/test-code-on-gh-pages`) has all the cleanup changes.
+### Then: Merge This PR
+After changing the default branch, merge this pull request to add the documentation to `main`.
 
 **On GitHub.com:**
-1. Go to: https://github.com/j3nniferF/dumbit
-2. Look for the yellow banner at the top
-3. Click **"Compare & pull request"**
-4. Click **"Create pull request"**
-5. Click **"Merge pull request"**
-6. Click **"Confirm merge"**
-7. Click **"Delete branch"** when it asks
+1. Go to the pull request page
+2. Click **"Merge pull request"**
+3. Click **"Confirm merge"**
+4. Click **"Delete branch"** when it asks
 
-**Done!** Your main branch now has the cleaned-up code! ✅
+**Done!** ✅
 
-### Step 2: Clean Up Old Branches (Optional)
-You have 16 old branches that you don't need anymore.
+### Optional: Clean Up Remaining Branches
+If you want to keep things extra tidy, you can delete any remaining old `copilot/*` branches and `gh-pages` (once `main` is the default).
 
-**To delete them:**
-1. Go to: https://github.com/j3nniferF/dumbit/branches
-2. Find old branches like:
-   - `copilot/cleanup-redundant-files`
-   - `copilot/update-page-to-current-state`
-   - All the other `copilot/*` branches
-   - `backup-gh-pages`
-   - `gh-pages` (if you're using `main` now)
-3. Click the trash icon 🗑️ next to each one
-4. Keep only `main`
-
-**Note:** This is optional! Old branches don't hurt anything - they're just clutter.
-
-### Step 3: Start Working!
+### Start Working!
 From now on:
 - Just work on the `main` branch
 - Make changes
