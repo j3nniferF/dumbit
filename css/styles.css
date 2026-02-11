@@ -268,12 +268,12 @@ body::before {
 .tabs {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 16px auto 30px;
-  padding: 12px 20px; /* less bulky so tabs read as one group */
-  width: min(100%, 980px);
-  border-radius: 80px;
-  background: var(--paper);
+  gap: 10px;
+  margin: 12px auto 22px;
+  padding: 8px 12px; /* compact the tab bar */
+  width: min(100%, 920px);
+  border-radius: 48px;
+  background: rgba(242, 239, 231, 0.95); /* softer paper surface */
   color: var(--ink);
   position: relative;
   flex-wrap: wrap; /* allow multiple rows if needed */
@@ -282,10 +282,10 @@ body::before {
 .tab {
   background: transparent;
   border: none;
-  padding: 10px 14px; /* slightly tighter than before */
+  padding: 8px 10px; /* tighter so tabs don't create large white bars */
   font: inherit;
   font-family: var(--font-ui); /* keep the vibe */
-  letter-spacing: 5px; /* reduce spacing so "Due Today" / "Next Up" fit nicer */
+  letter-spacing: 3px; /* gentler spacing */
   text-transform: uppercase;
   opacity: 0.5;
   cursor: pointer;
@@ -312,9 +312,9 @@ body::before {
 
 @media (max-width: 420px) {
   .tab {
-    letter-spacing: 2px;
-    padding: 8px 10px;
-    font-size: clamp(1.2rem, 3.8vw, 1.6rem);
+    letter-spacing: 1.6px;
+    padding: 6px 8px;
+    font-size: clamp(1.1rem, 4.2vw, 1.5rem);
   }
 
   /* Make card titles bigger on mobile */
@@ -332,6 +332,27 @@ body::before {
   /* Make timer display bigger on mobile */
   .timer-display {
     font-size: clamp(5.5rem, 12vw, 7rem) !important;
+  }
+}
+
+/* Mobile: make title bigger and tighter */
+@media (max-width: 420px) {
+  .title-line:first-child {
+    font-size: clamp(4.2rem, 14vw, 9rem) !important;
+    line-height: 0.9;
+    margin-bottom: 6px;
+  }
+  .title-line:last-child {
+    font-size: clamp(1.6rem, 6.5vw, 2.6rem) !important;
+    line-height: 0.95;
+    margin-top: -6px; /* bring lines closer */
+  }
+  /* Reduce the tabs' visual bulk on small screens */
+  .tabs {
+    padding: 6px 8px;
+    gap: 8px;
+    border-radius: 32px;
+    margin-bottom: 18px;
   }
 }
 
@@ -499,9 +520,9 @@ body::before {
   color: #fff;
   border: 1px solid var(--accent-red-dark);
 
-  /* bigger hit area & text */
-  padding: 14px 20px;
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  /* slightly smaller hit area to be less dominant */
+  padding: 10px 14px;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
   letter-spacing: 1px;
   text-transform: uppercase;
 
@@ -1412,476 +1433,35 @@ body::before {
   }
 }
 
-/* Make main site title larger & punchier (adjustable) */
-.title-line:first-child {
-  color: white !important;
-  font-size: clamp(
-    4rem,
-    11vw,
-    13rem
-  ) !important; /* INCREASED from 3.6rem to 4rem min */
-  line-height: 0.92;
-}
-
-.title-line:last-child {
-  color: white !important;
-  font-size: clamp(
-    2rem,
-    5.8vw,
-    6rem
-  ) !important; /* INCREASED from 1.8rem to 2rem min */
-}
-
-/* Stronger card title for visibility */
-.card-title {
-  font-size: clamp(
-    2.2rem,
-    4vw,
-    4.2rem
-  ) !important; /* INCREASED from 1.9rem to 2.2rem min */
-}
-
-.task-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  padding: 8px 2px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.task-checkbox {
-  transform: translateY(0.5px);
-  width: 18px;
-  height: 18px;
-  accent-color: var(--accent-red);
-}
-
-.task-row:last-child {
-  border-bottom: none;
-}
-
-/* Data export/import buttons - REMOVED per user request */
-
-/* Drag and drop feedback */
-.task[draggable="true"] {
-  cursor: move;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
-
-.task--selected::after {
-  content: "IN PROGRESS";
-  position: absolute;
-  top: -10px;
-  right: 10px;
-  font-size: 0.9rem;
-  letter-spacing: 0.7px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: var(--accent-red);
-  color: #fff;
-}
-
-/* ===== TIMER CARD (layout) ===== */
-.card--timer .field {
-  font-size: 1.05rem;
-  line-height: 1.3;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.card--completed {
-  padding: 20px 22px !important;
-}
-
-.completed-groups--tabs {
-  display: grid;
-  /* show completed groups one-per-row */
-  grid-template-columns: 1fr; /* single column so items appear one-by-one */
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.field-label {
-  font-size: var(--size-body);
-  line-height: 1.3;
-}
-
-.field-select {
-  border: 1px solid var(--paper-border);
-  padding: 6px 8px;
-  min-width: 180px;
-  border-radius: 12px;
-  background: #ffffff;
-  color: var(--ink);
-}
-
-/* Double-click hint */
-.task-text {
-  cursor: text;
-  user-select: text;
-}
-
-.task-text[contenteditable="true"] {
-  outline: 2px dashed rgba(197, 22, 22, 0.35);
-  padding: 2px 4px;
-  border-radius: 6px;
-  cursor: text;
-}
-
-/* ===== FONTS ===== */
-@font-face {
-  font-family: "HitMePunk04";
-  src:
-    url("../assets/fonts/punk/punk.woff2") format("woff2"),
-    url("../assets/fonts/punk/punk.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Anarchy";
-  src:
-    url("../assets/fonts/anarchy/anarchy.woff2") format("woff2"),
-    url("../assets/fonts/anarchy/anarchy.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Song";
-  src:
-    url("../assets/fonts/song/song.woff2") format("woff2"),
-    url("../assets/fonts/song/song.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Wrong";
-  src:
-    url("../assets/fonts/wrong/wrong.woff2") format("woff2"),
-    url("../assets/fonts/wrong/wrong.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Modal overlay (ensure visible above app) */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10001; /* above confetti (9999) */
-  background: rgba(10, 10, 10, 0.65);
-}
-
-.modal-overlay.is-hidden {
-  display: none;
-}
-
-.modal {
-  background: var(--paper);
-  color: var(--ink);
-  padding: 22px 24px;
-  border-radius: 12px;
-  max-width: 460px;
-  width: calc(100% - 40px);
-  border: 2px solid var(--ink);
-  box-shadow: var(--shadow-strong);
-  animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* Responsive modal and gif */
-.modal {
-  width: min(540px, 96%);
-  max-width: 540px;
-  box-sizing: border-box;
-  padding: 20px;
-}
-
-.modal-overlay {
-  padding: 12px; /* keeps modal inset on small screens */
-}
-
-.prize-gif {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto 18px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-@keyframes modalPop {
-  0% {
-    transform: scale(0.5) rotate(-5deg);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.05) rotate(2deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-/* === USER: PRIZE MODAL OVERRIDES START === */
-/* (custom prize modal styles begin here) */
-
-/* ===== PRIZE MODAL TWEAKS (overrides and fixes) ===== */
-#prizeModal {
-  /* tighter modal so it never gets huge */
-  max-width: 420px;
-  width: min(94%, 420px);
-  padding: 20px 22px;
-  box-sizing: border-box;
-  text-align: center;
+/* Ensure the main site title is always centered and wraps nicely on all viewports */
+.header .title {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 14px;
-  /* Add punk/grunge styling - torn paper effect with strong border */
-  border: 3px solid rgba(0, 0, 0, 0.7);
-  border-radius: 4px;
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.5),
-    inset 0 2px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
-  /* Add torn edge effect with filter */
-  position: relative;
-}
-
-#prizeModal::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 2rem;
-  animation: sparkle 2s ease-in-out infinite;
-  z-index: 0;
-}
-
-@keyframes sparkle {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: rotate(0deg) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: rotate(180deg) scale(1.2);
-  }
-}
-
-@keyframes floatEmoji {
-  0%,
-  100% {
-    transform: translateY(0px) translateX(0px);
-    opacity: 0.08;
-  }
-  25% {
-    transform: translateY(-15px) translateX(10px);
-    opacity: 0.12;
-  }
-  50% {
-    transform: translateY(-10px) translateX(-10px);
-    opacity: 0.1;
-  }
-  75% {
-    transform: translateY(-5px) translateX(5px);
-    opacity: 0.09;
-  }
-}
-
-/* Make prize modal content pop above background */
-#prizeModal > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Title: BIGGER and better centered with punk effects */
-#prizeModal .modal-title {
-  display: block;
+  text-align: center; /* center inline content */
+  margin: 0 auto;
   width: 100%;
-  font-family: "Anarchy", var(--font-stack);
-  /* MUCH BIGGER title */
-  font-size: clamp(2.8rem, 7vw, 4.2rem);
-  margin: 8px 0 10px;
-  line-height: 1;
-  letter-spacing: 2px;
-  color: var(--accent-red);
-  text-shadow:
-    2px 2px 0 rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(255, 215, 0, 0.3);
-  animation: titleBounce 0.8s ease-out;
-  position: relative;
+  max-width: 1100px; /* prevent extreme wide lines on very large screens */
+  box-sizing: border-box;
+  padding-inline: 8px; /* small horizontal breathing room */
 }
 
-/* Subtitle: Use Punk2 font with cool styling */
-#prizeModal .modal-subtitle {
-  font-family: var(--font-punk2);
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
-  letter-spacing: 1.5px;
-  margin: 8px 0;
-  text-shadow:
-    2px 2px 0 rgba(0, 0, 0, 0.5),
-    -1px -1px 0 rgba(255, 255, 255, 0.3);
-}
-
-/* GIF: smaller and constrained to avoid dominating modal */
-.modal img.prize-gif {
-  max-width: 220px;
-  width: 70%;
-  height: auto;
-  max-height: 30vh;
-  margin: 6px auto;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-}
-
-/* List: more readable spacing and increased letter spacing */
-#prizeModal .prize-list {
-  gap: 18px;
-  padding: 0;
-  margin: 8px 0 10px;
-}
-
-@keyframes titleSparkle {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(0.8) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2) rotate(180deg);
-  }
-}
-
-@keyframes titleBounce {
-  0% {
-    transform: scale(0.5) translateY(-30px);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.1) translateY(5px);
-  }
-  70% {
-    transform: scale(0.95) translateY(-5px);
-  }
-  100% {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-}
-
-#prizeModal .prize-list li {
-  font-family: "HitMePunk04", var(--font-stack);
-  font-size: clamp(0.98rem, 2vw, 1.12rem);
-  line-height: 1.9;
-  letter-spacing: 1.4px;
-  margin: 0;
-  padding: 6px 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* apply Punk2 to the prize subtitle text */
-#prizeSubtitle {
-  font-family: "Punk2", "Bangers", cursive, sans-serif;
+.header .title .title-line {
+  display: block; /* ensure stacking and full-width centering */
+  width: 100%;
   text-align: center;
-  letter-spacing: 0.02em;
-  font-size: 1rem;
+  white-space: normal; /* allow wrapping */
+  word-break: break-word;
+  hyphens: auto;
+  padding-inline: 4px;
 }
 
-/* make sure title scales nicely on phones */
 @media (max-width: 420px) {
-  #prizeModal {
-    max-width: 96%;
-    width: 96%;
-    padding: 16px 18px;
+  .header .title {
+    padding-inline: 12px; /* more breathing room on small screens */
   }
-
-  #prizeModal .modal-title {
-    font-size: clamp(2.2rem, 9vw, 3rem);
-  }
-
-  #prizeModal .modal-subtitle {
-    font-size: clamp(1rem, 4vw, 1.4rem);
-  }
-}
-
-/* Prize list items - make them more exciting */
-#prizeModal li {
-  font-family: var(--font-ui);
-  font-size: clamp(1rem, 2.2vw, 1.3rem);
-  margin: 8px 0;
-  padding-left: 24px;
-  position: relative;
-  line-height: 1.4;
-  opacity: 0;
-  animation: listItemSlideIn 0.5s ease-out forwards;
-}
-
-/* Stagger animation for list items */
-#prizeModal li:nth-child(1) {
-  animation-delay: 0.3s;
-}
-#prizeModal li:nth-child(2) {
-  animation-delay: 0.4s;
-}
-#prizeModal li:nth-child(3) {
-  animation-delay: 0.5s;
-}
-#prizeModal li:nth-child(4) {
-  animation-delay: 0.6s;
-}
-#prizeModal li:nth-child(5) {
-  animation-delay: 0.7s;
-}
-
-@keyframes listItemSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-#prizeModal li::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  color: var(--accent-red);
-  font-weight: bold;
-  animation: arrowPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes arrowPulse {
-  0%,
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(4px);
-    opacity: 0.7;
+  .header .title .title-line {
+    padding-inline: 6px;
   }
 }
