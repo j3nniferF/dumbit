@@ -1422,7 +1422,7 @@ body::before {
   ) !important; /* INCREASED from 3.6rem to 4rem min */
   line-height: 0.92;
 }
-/* 
+
 .title-line:last-child {
   color: white !important;
   font-size: clamp(
@@ -1430,7 +1430,7 @@ body::before {
     5.8vw,
     6rem
   ) !important; /* INCREASED from 1.8rem to 2rem min */
-/*
+}
 
 /* Stronger card title for visibility */
 .card-title {
