@@ -1458,17 +1458,6 @@ body::before {
   content: none;
 }
 
-@keyframes arrowPulse {
-  0%,
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(4px);
-    opacity: 0.7;
-  }
-}
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
 
@@ -1998,9 +1987,4 @@ body::before {
   gap: 10px;
   justify-content: center;
   margin-top: 12px;
-}
-
-/* Remove arrowPulse animation reference */
-@keyframes arrowPulse {
-  0%, 100% { opacity: 0; }
 }

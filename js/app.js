@@ -1009,10 +1009,12 @@ function wireFloatingCountdown() {
   if (!el) return;
 
   let isDragging = false;
-  let startX, startY, startLeft, startTop;
+  let didDrag = false;
+  let startX = 0, startY = 0, startLeft = 0, startTop = 0;
 
   el.addEventListener("mousedown", (e) => {
     isDragging = true;
+    didDrag = false;
     el.classList.add("is-dragging");
     const rect = el.getBoundingClientRect();
     startX = e.clientX;
@@ -1024,6 +1026,7 @@ function wireFloatingCountdown() {
 
   document.addEventListener("mousemove", (e) => {
     if (!isDragging) return;
+    didDrag = true;
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
     el.style.left = (startLeft + dx) + "px";
@@ -1041,6 +1044,7 @@ function wireFloatingCountdown() {
   // Touch support
   el.addEventListener("touchstart", (e) => {
     isDragging = true;
+    didDrag = false;
     el.classList.add("is-dragging");
     const rect = el.getBoundingClientRect();
     const touch = e.touches[0];
@@ -1052,6 +1056,7 @@ function wireFloatingCountdown() {
 
   document.addEventListener("touchmove", (e) => {
     if (!isDragging) return;
+    didDrag = true;
     const touch = e.touches[0];
     const dx = touch.clientX - startX;
     const dy = touch.clientY - startY;
@@ -1067,9 +1072,9 @@ function wireFloatingCountdown() {
     }
   });
 
-  // Click on countdown opens timer popup
-  el.addEventListener("click", (e) => {
-    if (Math.abs(e.clientX - startX) < 5 && Math.abs(e.clientY - startY) < 5) {
+  // Click on countdown opens timer popup (only if not dragged)
+  el.addEventListener("click", () => {
+    if (!didDrag) {
       openTimerPopup();
     }
   });
