@@ -1,3 +1,20 @@
+# OS files
 .DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Dependencies
 node_modules/
 dist/
+
+# Live Server cache
+127.0.0.1:*/
+.vscode-server-insiders/
+
+# Temporary files
+*.tmp
+*.bak
+*~
