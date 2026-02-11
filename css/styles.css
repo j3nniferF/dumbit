@@ -328,19 +328,19 @@ body::before {
     padding: 8px 10px;
     font-size: clamp(1.2rem, 3.8vw, 1.6rem);
   }
-  
+
   /* Make card titles bigger on mobile */
   .card--tasks .card-title,
   .card--timer .card-title,
   .card--completed .card-title {
     font-size: clamp(2rem, 5vw, 2.8rem) !important;
   }
-  
+
   /* Make SHIT I DID bigger on mobile */
   .card-title--big {
     font-size: clamp(2.8rem, 8vw, 4rem);
   }
-  
+
   /* Make timer display bigger on mobile */
   .timer-display {
     font-size: clamp(5.5rem, 12vw, 7rem) !important;
@@ -1299,6 +1299,9 @@ body::before {
   100% {
     transform: scale(1) translateY(0);
     opacity: 1;
+  }
+}
+
 #prizeModal .prize-list li {
   font-family: "HitMePunk04", var(--font-stack);
   font-size: clamp(0.98rem, 2vw, 1.12rem);
@@ -1327,11 +1330,11 @@ body::before {
     width: 96%;
     padding: 16px 18px;
   }
-  
+
   #prizeModal .modal-title {
     font-size: clamp(2.2rem, 9vw, 3rem);
   }
-  
+
   #prizeModal .modal-subtitle {
     font-size: clamp(1rem, 4vw, 1.4rem);
   }
@@ -1370,12 +1373,10 @@ body::before {
   from {
     opacity: 0;
     transform: translateX(-20px);
-  
-  #prizeModal .modal-title-line1 {
-    font-size: clamp(1.8rem, 9vw, 2.6rem);
   }
-  #prizeModal .modal-title-line2 {
-    font-size: clamp(1.2rem, 6.5vw, 1.6rem);
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -1700,8 +1701,3 @@ body::before {
     font-size: clamp(1.2rem, 6.5vw, 1.6rem);
   }
 }
-
-/* test */
-
-/* (custom prize modal styles end here) */
-/* === USER: PRIZE MODAL OVERRIDES END === */
