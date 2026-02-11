@@ -177,15 +177,15 @@ body::before {
   margin: 0 0 8px;
   /* Background removed for pop effect */
   background: transparent;
-  color: rgba(197, 22, 22, 0.5) !important;
+  color: #111 !important;
   border-radius: 2px;
   /* Add punk effects to make it pop */
   text-shadow:
-    0px 2px 0 rgb(56 50 50 / 80%),
-    3px 3px 0 rgba(255, 255, 255, 0.3),
+    3px 3px 0 rgba(0, 0, 0, 0.8),
+    -1px -1px 0 rgba(255, 255, 255, 0.3),
     0 0 20px rgba(197, 22, 22, 0.4);
   /* Add outline/stroke effect */
-  -webkit-text-stroke: 1px #0b0b0b;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
@@ -194,7 +194,7 @@ body::before {
   font-size: clamp(3rem, 9vw, 7rem) !important;
 }
 .title-line:last-child {
-  font-size: clamp(1.5rem, 4vw, 0.5rem) !important;
+  font-size: clamp(1.5rem, 4vw, 3.5rem) !important;
 }
 
 .tabs {
@@ -245,13 +245,25 @@ body::before {
   display: block;
   width: fit-content;
   padding: 6px 14px 8px;
+  /* Remove background for pop effect */
+  background: transparent;
   margin-bottom: 8px;
+  /* Add punk grunge effects */
+  text-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.85),
+    -2px -2px 0 rgba(255, 255, 255, 0.25),
+    0 0 30px rgba(197, 22, 22, 0.5),
+    0 6px 15px rgba(0, 0, 0, 0.6);
+  /* Stronger outline effect */
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.4);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
 }
 
 /* DSIGDT - Make it BIGGER and more punk */
 .title-line:first-child {
   font-family: var(--font-anarchy);
-  font-size: clamp(43rem, 11vw, 12rem);
+  /* BIGGER responsive sizing for maximum pop */
+  font-size: clamp(4rem, 11vw, 12rem);
   margin-bottom: 10px;
   line-height: 0.95; /* tight but readable */
   text-align: center;
@@ -410,10 +422,10 @@ body::before {
   transition: all 0.3s ease;
   /* Add sass and love with enhanced borders and shadows */
   border: 3px solid rgba(197, 22, 22, 0.15) !important;
-  /* box-shadow:
+  box-shadow:
     0 16px 35px rgba(0, 0, 0, 0.4),
     inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 0 0 1px rgba(0, 0, 0, 0.1) !important; */
+    0 0 0 1px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Pulsing border when timer is running */
@@ -457,9 +469,9 @@ body::before {
   font-size: clamp(2.2rem, 6vw, 7.6rem);
   letter-spacing: 5px;
   text-transform: uppercase;
-  /* text-shadow:
+  text-shadow:
     1px 1px 0 rgba(0, 0, 0, 0.15),
-    -1px -1px 0 rgba(255, 255, 255, 0.2); */
+    -1px -1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* ===== MAIN LAYOUT ===== */
@@ -834,7 +846,7 @@ body::before {
   text-transform: uppercase;
   font-size: clamp(1.3rem, 2.6vw, 1.7rem);
   font-family: var(--font-label), var(--font-stack);
-  color: #0b0b0b;
+  color: var(--accent-red);
   padding: 10px;
   background: rgba(197, 22, 22, 0.08);
   border-radius: 8px;
@@ -1517,7 +1529,6 @@ body::before {
   border-radius: 12px;
   background: #ffffff;
   color: var(--ink);
-  align-items: center;
 }
 
 /* Double-click hint */

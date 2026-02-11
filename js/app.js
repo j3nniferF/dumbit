@@ -1,4 +1,5 @@
-console.log("App loaded — feature/test-inline-edit");
+// feature/test-inline-edit
+// Or use a debug flag if needed
 
 /* =====================================================
    DSIGDT — MVP v3.4 (CLEAN + CELEBRATION)
@@ -1020,6 +1021,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
 
     // Show notification
-    alert(`✅ Moved "${taskText}" from ${TAB_LABELS[sourceTab]} to ${TAB_LABELS[targetTab]}`);
+    alert(
+      `✅ Moved "${taskText}" from ${TAB_LABELS[sourceTab]} to ${TAB_LABELS[targetTab]}`,
+    );
   });
 });
