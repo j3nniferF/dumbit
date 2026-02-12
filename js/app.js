@@ -46,7 +46,12 @@ const DEFAULT_TASKS_PG = {
 };
 
 // Default seed (only used if no localStorage state exists)
-let TASKS_BY_TAB = { ...DEFAULT_TASKS_PUNK };
+let TASKS_BY_TAB = {
+  dueToday: [...DEFAULT_TASKS_PUNK.dueToday],
+  soon: [...DEFAULT_TASKS_PUNK.soon],
+  asSoonAsICan: [...DEFAULT_TASKS_PUNK.asSoonAsICan],
+  dontForget: [...DEFAULT_TASKS_PUNK.dontForget],
+};
 
 let COMPLETED_TASKS = {
   dueToday: [],
@@ -148,6 +153,9 @@ function openTimerPopup() {
   overlay.classList.remove("is-hidden");
   floatingPinned = false;
   syncTimerBubble(true);
+  // Make timer icon faint while popup is open
+  const timerBtn = document.getElementById("openTimerBtn");
+  if (timerBtn) timerBtn.classList.add("timer--faint");
 }
 
 function isTimerPopupOpen() {
@@ -161,6 +169,9 @@ function closeTimerPopup({ keepFloating = false } = {}) {
   overlay.classList.add("is-hidden");
   floatingPinned = keepFloating || floatingPinned;
   syncTimerBubble();
+  // Restore timer icon visibility
+  const timerBtn = document.getElementById("openTimerBtn");
+  if (timerBtn) timerBtn.classList.remove("timer--faint");
 }
 
 let timerPopupWired = false;
@@ -173,30 +184,29 @@ function wireTimerPopup() {
   const closeBtn = document.getElementById("closeTimerPopup");
   const closeXBtn = document.getElementById("closeTimerX");
   const openBtn = document.getElementById("openTimerBtn");
-  const floatBtn = document.getElementById("floatTimerBtn");
   
   if (openBtn) {
     openBtn.addEventListener("click", () => openTimerPopup());
   }
   
   if (closeBtn) {
-    closeBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
+    closeBtn.addEventListener("click", (e) => { e.preventDefault(); closeTimerPopup({ keepFloating: false }); });
   }
 
   if (closeXBtn) {
-    closeXBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
+    closeXBtn.addEventListener("click", (e) => { e.preventDefault(); closeTimerPopup({ keepFloating: false }); });
   }
-
-   if (floatBtn) {
-     floatBtn.addEventListener("click", () => {
-       floatingPinned = true;
-       closeTimerPopup({ keepFloating: true });
-     });
-   }
   
   if (overlay) {
     overlay.addEventListener("click", (event) => {
       if (event.target === overlay) closeTimerPopup({ keepFloating: false });
+    });
+    // Also handle touchend for mobile close
+    overlay.addEventListener("touchend", (event) => {
+      if (event.target === overlay) {
+        event.preventDefault();
+        closeTimerPopup({ keepFloating: false });
+      }
     });
   }
   
@@ -241,7 +251,10 @@ function wireTimerModal() {
   }
 
   if (notDoneBtn) {
-    notDoneBtn.addEventListener("click", () => closeTimerModal());
+    notDoneBtn.addEventListener("click", () => {
+      closeTimerModal();
+      addTimeMinutes(5);
+    });
   }
 
   if (newTaskBtn) {
@@ -590,7 +603,26 @@ function renderCompletedGrouped() {
 
     done.forEach((taskText) => {
       const li = document.createElement("li");
-      li.textContent = taskText;
+      li.style.display = "flex";
+      li.style.alignItems = "center";
+      li.style.justifyContent = "space-between";
+
+      const textSpan = document.createElement("span");
+      textSpan.textContent = taskText;
+      li.appendChild(textSpan);
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "task-delete";
+      deleteBtn.type = "button";
+      deleteBtn.title = "Remove task";
+      deleteBtn.setAttribute("aria-label", "Remove task");
+      deleteBtn.textContent = "✕";
+      deleteBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        deleteTask(tabKey, taskText);
+      });
+      li.appendChild(deleteBtn);
+
       ul.appendChild(li);
     });
 
@@ -955,6 +987,8 @@ function syncTimerBubble(forceHide = false) {
 
   bubble.classList.toggle("is-hidden", !shouldShow);
   floatBtn.classList.toggle("is-running", intervalId !== null);
+  // Hide timer icon entirely when timer is running (floating countdown is visible instead)
+  floatBtn.classList.toggle("timer--hidden", isRunning);
 }
 
 function setTimerDisplay(seconds) {
@@ -1193,10 +1227,9 @@ function stopInterval() {
 function wireTimer() {
   const startBtn = document.getElementById("startBtn");
   const pauseBtn = document.getElementById("pauseBtn");
-  const stopBtn = document.getElementById("stopBtn");
   const resetTimerBtn = document.getElementById("resetTimerBtn");
 
-  if (!startBtn || !pauseBtn || !stopBtn) {
+  if (!startBtn || !pauseBtn) {
     console.warn("Timer elements missing. Check IDs in index.html.");
     return;
   }
@@ -1209,12 +1242,6 @@ function wireTimer() {
   pauseBtn.addEventListener("click", () => {
     floatingPinned = true;
     stopInterval();
-  });
-
-  stopBtn.addEventListener("click", () => {
-    stopInterval();
-    floatingPinned = false;
-    resetTimerToSelectedDuration();
   });
 
   if (resetTimerBtn) {

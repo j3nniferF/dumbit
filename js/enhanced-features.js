@@ -345,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     // enableInlineEditing(); // REMOVED - inline editing disabled for now
     enableDragAndDrop();
-    enableDragToTabs();
+    // enableDragToTabs(); // REMOVED - cross-tab drag disabled per user request
     makeTasksDraggable();
     enableTimerAnimations();
 
