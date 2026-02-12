@@ -1628,12 +1628,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const fromIdx = tasks.indexOf(fromTask);
     const toIdx = tasks.indexOf(toTask);
     
-    if (fromIdx === -1 || toIdx === -1) return;
+    if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return;
     
-    // Remove from old position and insert at new position
+    // Remove from old position
     tasks.splice(fromIdx, 1);
-    const newToIdx = tasks.indexOf(toTask);
-    tasks.splice(newToIdx, 0, fromTask);
+    
+    // Calculate new insertion index after removal
+    // If we moved item down, toIdx decreases by 1
+    const insertIdx = fromIdx < toIdx ? toIdx - 1 : toIdx;
+    tasks.splice(insertIdx, 0, fromTask);
     
     saveState();
     renderTasks(tabKey);
