@@ -85,6 +85,11 @@
           <button class="floating-countdown__pause" id="floatingCountdownPause" type="button" title="Pause timer" aria-label="Pause timer">❚❚</button>
         </div>
 
+        <!-- Sound toggle button -->
+        <button class="sound-toggle" id="soundToggle" type="button" title="Toggle sound effects" aria-label="Toggle sound effects">
+          🔊
+        </button>
+
         <!-- HOW TO GUIDE -->
         <section class="card card--howto" id="howtoCard">
           <details class="howto-details">
@@ -240,36 +245,30 @@
       <div class="modal" id="prizeModal">
         <button class="modal-close-x" id="closePrizeX" type="button" title="Close" aria-label="Close">✕</button>
         
-        <div class="prize-content">
-          <div class="prize-left">
-            <h2 class="modal-title" id="prizeTitle">
-              <span class="modal-title-line1" id="prizeLine1">GOOD JOB</span>
-              <span class="modal-title-line2" id="prizeLine2">DUMMY!</span>
-            </h2>
-            
-            <p class="prize-roast" id="prizeRoast"></p>
-            
-            <p class="modal-subtitle" id="prizeSubtitle">
-              PICK A PRIZE
-            </p>
+        <h2 class="modal-title" id="prizeTitle">
+          <span class="modal-title-line1" id="prizeLine1">GOOD JOB</span>
+          <span class="modal-title-line2" id="prizeLine2">DUMMY!</span>
+        </h2>
+        
+        <p class="prize-roast" id="prizeRoast"></p>
+        
+        <p class="modal-subtitle" id="prizeSubtitle">
+          PICK A PRIZE
+        </p>
 
-            <ul class="prize-list" id="prizeList">
-              <li>GO FOR A WALK.</li>
-              <li>TAKE A QUICK NAP.</li>
-              <li>GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.</li>
-            </ul>
-          </div>
-          
-          <div class="prize-right">
-            <p class="prize-note" id="prizeNote">or you can stare at this cute dumb cat</p>
-            <img class="prize-gif" src="https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif" alt="Cute cat"/>
-            
-            <div class="prize-actions">
-              <button class="btn btn--primary" id="backToItBtn" type="button">
-                NOW GET BACK TO WORK!
-              </button>
-            </div>
-          </div>
+        <ul class="prize-list" id="prizeList">
+          <li>GO FOR A WALK.</li>
+          <li>TAKE A QUICK NAP.</li>
+          <li>GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.</li>
+        </ul>
+
+        <img class="prize-gif" src="https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif" alt="Cute cat"/>
+        <p class="prize-note" id="prizeNote">or you can stare at this cute dumb cat</p>
+
+        <div class="prize-actions">
+          <button class="btn btn--primary" id="backToItBtn" type="button">
+            NOW GET BACK TO WORK!
+          </button>
         </div>
       </div>
     </div>
@@ -381,5 +380,6 @@
     <script src="./js/app.js" defer></script>
     <script src="./js/tasks-edit.js" defer></script>
     <script src="./js/enhanced-features.js" defer></script>
+    <script src="./js/interactive-features.js" defer></script>
   </body>
 </html>

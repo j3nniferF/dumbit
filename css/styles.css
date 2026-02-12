@@ -2308,12 +2308,18 @@ body::before {
 }
 
 .pg-switch input:checked + .pg-switch__slider {
-  background: #2563eb;
-  border-color: #1d4ed8;
+  background: #c51616;
+  border-color: #9f1010;
 }
 
 .pg-switch input:checked + .pg-switch__slider::after {
   transform: translateX(24px);
+}
+
+/* PG mode switch stays blue */
+.pg-mode .pg-switch input:checked + .pg-switch__slider {
+  background: #2563eb;
+  border-color: #1d4ed8;
 }
 
 .pg-switch__label {
@@ -2837,45 +2843,45 @@ body.pg-mode {
   }
 }
 
-/* ===== PRIZE MODAL SIDE-BY-SIDE LAYOUT ===== */
-.prize-content {
-  display: flex;
-  gap: 24px;
-  width: 100%;
-  align-items: flex-start;
+/* ===== PRIZE MODAL TIGHTER SPACING ===== */
+#prizeModal {
+  gap: 8px;
+  padding: 16px 20px;
 }
 
-.prize-left {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+#prizeModal .modal-title {
+  margin: 4px 0 8px;
 }
 
-.prize-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+#prizeModal .prize-roast {
+  margin: 4px 0;
+  padding: 8px 12px;
 }
 
-.prize-right .prize-note {
-  order: -1;
-  margin-top: 0;
+#prizeModal .modal-subtitle {
+  margin: 4px 0;
 }
 
-.prize-right .prize-gif {
-  max-width: 100%;
-  width: 100%;
+#prizeModal .prize-list {
+  margin: 8px 0;
+  gap: 8px;
+}
+
+#prizeModal .prize-gif {
+  max-width: 280px;
+  width: 80%;
   height: auto;
-  max-height: 350px;
-  object-fit: contain;
-  margin: 0;
+  max-height: 240px;
+  margin: 8px auto;
+  display: block;
 }
 
-.prize-right .prize-actions {
-  width: 100%;
+#prizeModal .prize-note {
+  margin: 4px 0 8px;
+}
+
+#prizeModal .prize-actions {
+  margin-top: 8px;
 }
 
 /* Make close X more visible */
@@ -2906,15 +2912,16 @@ body.pg-mode {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-/* Mobile: Stack vertically */
+/* Mobile: Even tighter */
 @media (max-width: 768px) {
-  .prize-content {
-    flex-direction: column;
-    gap: 16px;
+  #prizeModal {
+    padding: 12px 16px;
+    gap: 6px;
   }
   
-  .prize-right .prize-gif {
-    max-height: 250px;
+  #prizeModal .prize-gif {
+    max-width: 220px;
+    max-height: 180px;
   }
 }
 
@@ -3028,5 +3035,108 @@ body.pg-mode {
   .howto-content {
     grid-template-columns: 1fr;
     gap: 10px;
+  }
+}
+
+/* ===== TASK SHAKE ANIMATION ===== */
+@keyframes punkShake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  10% { transform: translateX(-8px) rotate(-3deg); }
+  20% { transform: translateX(8px) rotate(3deg); }
+  30% { transform: translateX(-8px) rotate(-3deg); }
+  40% { transform: translateX(8px) rotate(3deg); }
+  50% { transform: translateX(-6px) rotate(-2deg); }
+  60% { transform: translateX(6px) rotate(2deg); }
+  70% { transform: translateX(-4px) rotate(-1deg); }
+  80% { transform: translateX(4px) rotate(1deg); }
+  90% { transform: translateX(-2px) rotate(-0.5deg); }
+}
+
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(-4px) scale(1.02); }
+  50% { transform: translateY(-2px) scale(1.01); }
+  75% { transform: translateY(-1px) scale(1.005); }
+}
+
+.task-row.completing {
+  animation: punkShake 0.5s ease-in-out;
+}
+
+.pg-mode .task-row.completing {
+  animation: gentleBounce 0.6s ease-in-out;
+}
+
+/* Task row drag states */
+.task-row {
+  transition: all 0.2s ease;
+  cursor: move;
+}
+
+.task-row.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.task-row.drag-over {
+  border-top: 3px solid var(--accent-red);
+  margin-top: 8px;
+}
+
+.pg-mode .task-row.drag-over {
+  border-top-color: #2563eb;
+}
+
+.task-row:active {
+  cursor: grabbing;
+}
+
+/* ===== SOUND TOGGLE BUTTON ===== */
+.sound-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  border: 2px solid #fff;
+  color: #fff;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sound-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.sound-toggle.muted {
+  background: #666;
+  opacity: 0.6;
+}
+
+.pg-mode .sound-toggle {
+  background: #2563eb;
+  border-color: #1d4ed8;
+}
+
+.pg-mode .sound-toggle.muted {
+  background: #94a3b8;
+}
+
+@media (max-width: 640px) {
+  .sound-toggle {
+    bottom: 80px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
   }
 }

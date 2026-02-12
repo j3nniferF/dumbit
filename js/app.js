@@ -216,6 +216,9 @@ function openTimerModal(taskName) {
 
   taskText.textContent = `DONE WITH "${taskName || "THIS TASK"}"?`;
   overlay.classList.remove("is-hidden");
+  
+  // Dispatch event for sound effect
+  document.dispatchEvent(new CustomEvent("timer:complete"));
 }
 
 function closeTimerModal() {
@@ -771,6 +774,9 @@ function renderTasks(tabKey) {
       });
     }
   });
+  
+  // Dispatch event to notify interactive features
+  document.dispatchEvent(new CustomEvent("tasks:updated"));
 }
 
 function completeTask(tabKey, taskText) {
@@ -1611,4 +1617,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // Restore saved preference (always call setPgMode to set toggle state)
   const savedPg = localStorage.getItem(PG_STORAGE_KEY);
   setPgMode(savedPg === "1");
+  
+  // ===== TASK REORDERING (for drag & drop) =====
+  document.addEventListener("task:reorder", (event) => {
+    const { tabKey, fromTask, toTask } = event.detail;
+    
+    const tasks = TASKS_BY_TAB[tabKey];
+    if (!tasks) return;
+    
+    const fromIdx = tasks.indexOf(fromTask);
+    const toIdx = tasks.indexOf(toTask);
+    
+    if (fromIdx === -1 || toIdx === -1) return;
+    
+    // Remove from old position and insert at new position
+    tasks.splice(fromIdx, 1);
+    const newToIdx = tasks.indexOf(toTask);
+    tasks.splice(newToIdx, 0, fromTask);
+    
+    saveState();
+    renderTasks(tabKey);
+    buildFocusSelect();
+  });
 });
