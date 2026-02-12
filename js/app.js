@@ -177,17 +177,11 @@ function wireTimerPopup() {
   timerPopupWired = true;
   
   const overlay = document.getElementById("timerPopupOverlay");
-  const closeBtn = document.getElementById("closeTimerPopup");
   const closeXBtn = document.getElementById("closeTimerX");
   const openBtn = document.getElementById("openTimerBtn");
   
   if (openBtn) {
     openBtn.addEventListener("click", () => openTimerPopup());
-  }
-  
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => closeTimerPopup());
-    closeBtn.addEventListener("touchend", (e) => { e.preventDefault(); closeTimerPopup(); });
   }
 
   if (closeXBtn) {
@@ -234,7 +228,6 @@ function wireTimerModal() {
   const overlay = document.getElementById("timerOverlay");
   const doneBtn = document.getElementById("timerDoneBtn");
   const notDoneBtn = document.getElementById("timerNotDoneBtn");
-  const newTaskBtn = document.getElementById("timerNewTaskBtn");
 
   if (doneBtn) {
     doneBtn.addEventListener("click", () => {
@@ -256,13 +249,6 @@ function wireTimerModal() {
     notDoneBtn.addEventListener("click", () => {
       closeTimerModal();
       addTimeMinutes(5);
-    });
-  }
-
-  if (newTaskBtn) {
-    newTaskBtn.addEventListener("click", () => {
-      closeTimerModal();
-      openTimerPopup();
     });
   }
 
