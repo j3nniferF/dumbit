@@ -243,6 +243,12 @@ function wireTimerModal() {
         if (tabKey && taskText) completeTask(tabKey, taskText);
       }
       closeTimerModal();
+      // Scroll to task input
+      const taskInput = document.getElementById("taskInput");
+      if (taskInput) {
+        taskInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => taskInput.focus(), 500);
+      }
     });
   }
 
@@ -274,15 +280,24 @@ function wireTimerModal() {
 function wirePrizeModalClose() {
   const overlay = document.getElementById("prizeOverlay");
   const btn = document.getElementById("backToItBtn");
+  const closeX = document.getElementById("closePrizeX");
 
   if (btn)
     btn.addEventListener("click", () => {
       closePrizeModal();
-      const completedCard = document.getElementById("completedCard");
-      if (completedCard) {
-        completedCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Scroll to task input
+      const taskInput = document.getElementById("taskInput");
+      if (taskInput) {
+        taskInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => taskInput.focus(), 500);
       }
     });
+
+  if (closeX) {
+    closeX.addEventListener("click", () => {
+      closePrizeModal();
+    });
+  }
 
   // click outside modal closes
   if (overlay) {
@@ -1541,17 +1556,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const PG_STORAGE_KEY = "dsigdt_pg_mode";
 
   const TEXT_MAP = {
-    titleLine1:       { punk: "DUMB shit",                    pg: "My Tasks" },
-    titleLine2:       { punk: "I GOTta dO TODay",             pg: "For Today" },
+    titleLine1:       { punk: "DUMB shit",                    pg: "SILLY STUFF" },
+    titleLine2:       { punk: "I GOTta dO TODay",             pg: "TO DO TODAY" },
     completedHeading: { punk: "SHIT I DID:",                  pg: "COMPLETED:" },
     resetBtn:         { punk: "🧨 RESET EVERYTHING",          pg: "Reset Everything" },
     prizeLine1:       { punk: "GOOD JOB",                     pg: "GREAT JOB" },
     prizeLine2:       { punk: "DUMMY!",                       pg: "SUPERSTAR!" },
-    prizeSubtitle:    { punk: "YOU GET TO PICK A PRIZE...",    pg: "You earned a reward!" },
+    prizeSubtitle:    { punk: "PICK A PRIZE",                 pg: "You earned a reward!" },
     prizeNote:        { punk: "or you can stare at this cute dumb cat", pg: "enjoy this cute cat!" },
-    backToItBtn:      { punk: "NOW GET BACK TO WORK!",        pg: "Keep Up the Great Work!" },
+    backToItBtn:      { punk: "NOW GET BACK TO WORK DUMMY",   pg: "KEEP UP THE GREAT WORK!" },
     timerChooseLabel: { punk: "CHOOSE VIOLENCE:",             pg: "SELECT YOUR TASK:" },
-    timerChooseHint:  { punk: "(PICK A TAB / PICK A TASK)",   pg: "(Choose a list / Choose a task)" },
+    timerChooseHint:  { punk: "(PICK A TAB / PICK A TASK)",   pg: "(Choose a tab / Choose a task)" },
     timerFooterMsg:   { punk: "→ MURDER TASKS! ✅ GET A PRIZE!", pg: "→ Complete tasks! ✅ Earn a reward!" },
   };
 

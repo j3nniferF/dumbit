@@ -495,12 +495,12 @@ body::before {
 
 /* Optional helper for experimenting with a really large card title */
 .card-title--big {
-  /* Mirror tabs styling - same font and letter-spacing */
-  font-family: var(--font-anarchy);
+  /* Use HitMePunk04 font for "SHIT I DID:" title */
+  font-family: var(--font-punk);
   font-size: clamp(2.8rem, 7vw, 8rem);
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--ink);
+  color: #000000;
   text-shadow:
     2px 2px 0 rgba(0, 0, 0, 0.2),
     -1px -1px 0 rgba(255, 255, 255, 0.15);
@@ -820,7 +820,7 @@ body::before {
 
 /* fix */
 .completed-groups--tabs .completed-group {
-  background: rgba(10, 10, 10, 0.06);
+  background: rgba(255, 255, 255, 0.95);
   border: 2px dashed rgba(197, 22, 22, 0.25);
   border-radius: 12px;
   padding: 10px 12px;
@@ -948,7 +948,7 @@ body::before {
   font-family: var(--font-anarchy);
   font-size: clamp(2.2rem, 3.6vw, 3.2rem);
   color: var(--accent-red);
-  margin-right: 8px;
+  margin-right: 4px;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
 }
 
@@ -2399,8 +2399,38 @@ body::before {
 
 /* ===== PG MODE THEME OVERRIDES ===== */
 body.pg-mode {
-  background: #ffffff !important;
-  background-image: none !important;
+  background: linear-gradient(135deg, 
+    #ffeef8 0%, 
+    #e6f3ff 15%, 
+    #fff4e6 30%, 
+    #f0e6ff 45%, 
+    #ffe6f0 60%, 
+    #e6fffa 75%, 
+    #fff0e6 90%, 
+    #ffe6f7 100%) !important;
+  background-size: 400% 400% !important;
+  animation: rainbowShift 20s ease infinite !important;
+  background-image: 
+    linear-gradient(135deg, 
+      #ffeef8 0%, 
+      #e6f3ff 15%, 
+      #fff4e6 30%, 
+      #f0e6ff 45%, 
+      #ffe6f0 60%, 
+      #e6fffa 75%, 
+      #fff0e6 90%, 
+      #ffe6f7 100%),
+    repeating-linear-gradient(45deg, 
+      transparent, 
+      transparent 10px, 
+      rgba(255, 255, 255, 0.05) 10px, 
+      rgba(255, 255, 255, 0.05) 20px) !important;
+}
+
+@keyframes rainbowShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .pg-mode .app {
@@ -2409,14 +2439,18 @@ body.pg-mode {
 
 .pg-mode .title {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  color: #111 !important;
+  color: #2563eb !important;
+  font-weight: 700 !important;
 }
 
 .pg-mode .title-line {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  color: #111 !important;
+  color: #2563eb !important;
   -webkit-text-stroke: 0 !important;
-  text-shadow: none !important;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  border-radius: 8px;
 }
 
 .pg-mode .tabs {
@@ -2803,38 +2837,15 @@ body.pg-mode {
 }
 
 /* ===== MODAL CLOSE X BUTTON ===== */
-.modal-close-x {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(0, 0, 0, 0.4);
-  color: #f6f3ea;
-  border: 2px solid rgba(246, 243, 234, 0.3);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 2;
-  transition: background 0.15s;
-}
-
-.modal-close-x:hover {
-  background: var(--accent-red);
-}
-
 .pg-mode .modal-close-x {
-  background: #eee !important;
-  color: #333 !important;
-  border-color: #ccc !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  border-color: #fff !important;
 }
 
 .pg-mode .modal-close-x:hover {
-  background: #dc2626 !important;
-  color: #fff !important;
+  background: #1d4ed8 !important;
+  transform: scale(1.1);
 }
 
 /* ===== PRIZE ROAST LINE ===== */
@@ -2903,6 +2914,87 @@ body.pg-mode {
     min-height: 44px;
     font-size: 1rem;
     padding: 10px 20px;
+  }
+}
+
+/* ===== PRIZE MODAL SIDE-BY-SIDE LAYOUT ===== */
+.prize-content {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.prize-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prize-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.prize-right .prize-note {
+  order: -1;
+  margin-top: 0;
+}
+
+.prize-right .prize-gif {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  max-height: 350px;
+  object-fit: contain;
+  margin: 0;
+}
+
+.prize-right .prize-actions {
+  width: 100%;
+}
+
+/* Make close X more visible */
+.modal-close-x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(197, 22, 22, 0.9);
+  color: #fff;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-close-x:hover {
+  background: #000;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile: Stack vertically */
+@media (max-width: 768px) {
+  .prize-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .prize-right .prize-gif {
+    max-height: 250px;
   }
 }
 
