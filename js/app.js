@@ -759,7 +759,7 @@ function buildFocusSelect(valueToSelect) {
   saveState();
 }
 
-function setSelectedFocus(value) {
+function setSelectedFocus(value, autoOpenTimer = false) {
   selectedFocusValue = value || "";
   buildFocusSelect(selectedFocusValue);
   syncCurrentTaskText();
@@ -767,8 +767,10 @@ function setSelectedFocus(value) {
   saveState();
   syncTimerBubble();
   
-  // Don't auto-open timer popup - let users manually open it
-  // This allows double-click editing to work without interference
+  // Auto-open timer if requested (when user clicks a task)
+  if (autoOpenTimer && value) {
+    openTimerPopup();
+  }
 }
 
 function clearSelectedFocus() {
@@ -822,7 +824,7 @@ function renderTasks(tabKey) {
     // Prevent checkbox click from selecting the row
     checkbox.addEventListener("click", (event) => event.stopPropagation());
 
-    // Click row selects CURRENT task (skip if inline-editing)
+    // Click row selects CURRENT task and opens timer (skip if inline-editing)
     li.addEventListener("click", () => {
       if (window.enhancedFeatures && window.enhancedFeatures.isEditingTask()) return;
       const focusTabSelect = document.getElementById("focusTabSelect");
@@ -830,7 +832,7 @@ function renderTasks(tabKey) {
         focusScope = "all";
         focusTabSelect.value = "all";
       }
-      setSelectedFocus(value);
+      setSelectedFocus(value, true); // Auto-open timer when clicking a task
     });
 
     // Checkbox completes task
@@ -989,12 +991,20 @@ function wireResetButton(tabsNodeList) {
 
   resetBtn.addEventListener("click", () => {
     const ok = confirm(
-      "💣 YOU REALLY WANNA RE-SET EVERYTHING? 💣\nThis clears all tasks + completed items.",
+      "💣 YOU REALLY WANNA RE-SET EVERYTHING? 💣\nThis clears all tasks + completed items and resets to default tasks.",
     );
     if (!ok) return;
 
     TASKS_BY_TAB = emptyState();
     COMPLETED_TASKS = emptyState();
+    
+    // Reapply preset tasks based on current mode
+    const defaults = window._pgMode ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
+    for (const tabKey of TAB_ORDER) {
+      if (defaults[tabKey]) {
+        TASKS_BY_TAB[tabKey] = [...defaults[tabKey]];
+      }
+    }
 
     activeTabKey = "dueToday";
     focusScope = "dueToday";

@@ -2333,18 +2333,17 @@ body::before {
 
 /* ===== PG MODE THEME OVERRIDES ===== */
 body.pg-mode {
-  /* Use unicorn texture background for PG mode */
-  background: url("../assets/textures/unicornWIDE.png") center/cover fixed !important;
+  /* Use pretty texture background for PG mode - tileable for mobile and desktop */
+  background: #f8f9fa url("../assets/textures/pretty.png") center/400px repeat !important;
 }
 
-/* PG mode: Use Helvetica for EVERYTHING except the mode switch label */
+/* PG mode: Use Helvetica for EVERYTHING */
 .pg-mode * {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
-/* Exception: Keep punk font for the mode switch label in PG mode */
+/* PG mode: Update switch label color */
 .pg-mode .pg-switch__label {
-  font-family: var(--font-punk) !important;
   color: #2563eb !important;
 }
 
@@ -2681,12 +2680,22 @@ body.pg-mode {
 .pg-mode #prizeModal .prize-list li {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   color: #333 !important;
+  line-height: 1.4 !important;
+  padding: 2px 10px !important;
 }
 
-/* PG mode: ensure prize subtitle uses readable font */
+/* PG mode: tighten prize list gap */
+.pg-mode #prizeModal .prize-list {
+  gap: 8px !important;
+  margin: 4px 0 8px !important;
+}
+
+/* PG mode: ensure prize subtitle uses readable font and tighter spacing */
 .pg-mode #prizeSubtitle {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   color: #2563eb !important;
+  margin-top: 4px !important;
+  margin-bottom: 8px !important;
 }
 
 /* PG mode: ensure prize modal title lines are visible */
@@ -3081,9 +3090,14 @@ body.pg-mode {
 }
 
 .pg-mode .floating-reset {
-  background: #dc2626;
-  border-color: #b91c1c;
+  background: #2563eb;
+  border-color: #1d4ed8;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.pg-mode .floating-reset:hover {
+  background: #1d4ed8;
+  border-color: #1e40af;
 }
 
 @media (max-width: 640px) {
@@ -3122,6 +3136,9 @@ body.pg-mode {
   max-width: 600px;
   max-height: 80vh;
   overflow-y: auto;
+  background: #0d0d0d url("../assets/textures/dirty-paper.png");
+  background-blend-mode: multiply;
+  color: #f3f1e9;
 }
 
 .modal--howto .howto-content {
