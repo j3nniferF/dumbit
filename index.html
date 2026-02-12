@@ -39,9 +39,14 @@
         <!-- HEADER -->
         <header class="header" id="header">
           <h1 class="title" role="banner" aria-label="site title">
-            <span class="title-line">DUMB shit</span>
-            <span class="title-line">I GOTta dO TODay</span>
+            <span class="title-line" id="titleLine1">DUMB shit</span>
+            <span class="title-line" id="titleLine2">I GOTta dO TODay</span>
           </h1>
+          <label class="pg-switch" id="pgSwitch" title="Toggle PG Mode">
+            <input type="checkbox" id="pgToggle" />
+            <span class="pg-switch__slider"></span>
+            <span class="pg-switch__label" id="pgLabel">$H!T MODE</span>
+          </label>
         </header>
 
         <!-- TABS -->
@@ -70,7 +75,6 @@
           title="Open Timer"
           aria-label="Open timer"
         >
-          <span class="floating-timer__icon" aria-hidden="true">🕒</span>
           <span class="floating-timer__label">TIMER</span>
           <span class="timer-bubble is-hidden" id="timerBubble">15:00</span>
         </button>
@@ -179,8 +183,8 @@
     >
       <div class="modal" id="prizeModal">
         <h2 class="modal-title" id="prizeTitle">
-          <span class="modal-title-line1">GOOD JOB</span>
-          <span class="modal-title-line2">DUMMY!</span>
+          <span class="modal-title-line1" id="prizeLine1">GOOD JOB</span>
+          <span class="modal-title-line2" id="prizeLine2">DUMMY!</span>
         </h2>
         <p class="modal-subtitle" id="prizeSubtitle">
           YOU GET TO PICK A PRIZE...
@@ -193,7 +197,7 @@
         </ul>
 
         <img class="prize-gif" src="https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif" alt="Cute cat"/>
-        <p class="prize-note">or you can stare at this cute dumb cat</p>
+        <p class="prize-note" id="prizeNote">or you can stare at this cute dumb cat</p>
 
         <div class="prize-actions">
           <button class="btn btn--primary" id="backToItBtn" type="button">
@@ -216,8 +220,8 @@
 
         <div class="timer-grid">
           <div class="timer-block">
-            <p class="timer-block__title">CHOOSE VIOLENCE:</p>
-            <p class="timer-block__hint">(PICK A TAB / PICK A TASK)</p>
+            <p class="timer-block__title" id="timerChooseLabel">CHOOSE VIOLENCE:</p>
+            <p class="timer-block__hint" id="timerChooseHint">(PICK A TAB / PICK A TASK)</p>
 
             <div class="timer-selects">
               <select
@@ -245,48 +249,32 @@
           <div class="timer-block">
             <p class="timer-block__title">→ SET YOUR TIME:</p>
 
-            <select
-              class="field-select"
-              id="durationSelect"
-              name="durationSelect"
-            >
-              <option value="300">5 min</option>
-              <option value="900" selected>15 min</option>
-              <option value="1800">30 min</option>
-              <option value="2700">45 min</option>
-              <option value="3600">60 min</option>
-            </select>
-
-            <p class="timer-block__sub">CUSTOM:</p>
-            <div class="custom-timer__controls">
-              <input
-                class="field-input"
-                id="customHoursInput"
-                name="customHoursInput"
-                type="number"
-                min="0"
-                max="8"
-                placeholder="hrs"
-                inputmode="numeric"
-              />
-              <input
-                class="field-input"
-                id="customMinutesInput"
-                name="customMinutesInput"
-                type="number"
-                min="0"
-                max="59"
-                placeholder="mins"
-                inputmode="numeric"
-              />
+            <div class="dial-picker" id="dialPicker">
+              <div class="dial-column">
+                <label class="dial-label">HRS</label>
+                <div class="dial-scroll" id="dialHours" tabindex="0" role="listbox" aria-label="Hours">
+                  <!-- filled by JS -->
+                </div>
+              </div>
+              <span class="dial-sep">:</span>
+              <div class="dial-column">
+                <label class="dial-label">MIN</label>
+                <div class="dial-scroll" id="dialMinutes" tabindex="0" role="listbox" aria-label="Minutes">
+                  <!-- filled by JS -->
+                </div>
+              </div>
+              <span class="dial-sep">:</span>
+              <div class="dial-column">
+                <label class="dial-label">SEC</label>
+                <div class="dial-scroll" id="dialSeconds" tabindex="0" role="listbox" aria-label="Seconds">
+                  <!-- filled by JS -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <p class="timer-block__footer">→ MURDER TASKS! ✅ GET A PRIZE!</p>
-        <div class="timer-display" id="timerDisplay" aria-live="polite">
-          15:00
-        </div>
+        <p class="timer-block__footer" id="timerFooterMsg">→ MURDER TASKS! ✅ GET A PRIZE!</p>
 
         <div class="timer-controls">
           <button class="btn" id="startBtn" type="button">START</button>
