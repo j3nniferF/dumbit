@@ -67,16 +67,32 @@
             DON'T FORGET
           </button>
         </nav>
-        <button
-          class="floating-timer"
-          type="button"
-          id="openTimerBtn"
-          title="Open Timer"
-          aria-label="Open timer"
-        >
-          <span class="floating-timer__label">TIMER</span>
-          <span class="timer-bubble is-hidden" id="timerBubble">25:00</span>
-        </button>
+        
+        <!-- Icon Navigation Group - Top Right -->
+        <div class="icon-nav" id="iconNav">
+          <button
+            class="icon-button icon-button--timer"
+            type="button"
+            id="openTimerBtn"
+            title="Open Timer"
+            aria-label="Open timer"
+          >
+            <span class="icon-button__icon">🕐</span>
+            <span class="timer-bubble is-hidden" id="timerBubble">25:00</span>
+          </button>
+          
+          <button class="icon-button icon-button--howto" id="howtoButton" type="button" title="How to use" aria-label="How to use">
+            <span class="icon-button__icon">📖</span>
+          </button>
+          
+          <button class="icon-button icon-button--reset" id="resetBtn" type="button" title="Reset everything" aria-label="Reset everything">
+            <span class="icon-button__icon">🧨</span>
+          </button>
+          
+          <button class="icon-button icon-button--sound" id="soundToggle" type="button" title="Toggle sound effects" aria-label="Toggle sound effects">
+            <span class="icon-button__icon">🔊</span>
+          </button>
+        </div>
 
         <!-- Floating countdown widget (visible when timer running) -->
         <div class="floating-countdown" id="floatingCountdown">
@@ -84,16 +100,6 @@
           <div class="floating-countdown__time" id="floatingCountdownTime">00:00</div>
           <button class="floating-countdown__pause" id="floatingCountdownPause" type="button" title="Pause timer" aria-label="Pause timer">❚❚</button>
         </div>
-
-        <!-- Sound toggle button -->
-        <button class="sound-toggle" id="soundToggle" type="button" title="Toggle sound effects" aria-label="Toggle sound effects">
-          🔊
-        </button>
-
-        <!-- HOW TO GUIDE (moved to top right) -->
-        <button class="howto-button" id="howtoButton" type="button" title="How to use" aria-label="How to use">
-          📖 HOW TO
-        </button>
 
         <main class="main" id="main">
           <!-- TASKS -->
@@ -151,10 +157,6 @@
               class="completed-groups completed-groups--tabs"
               id="completedGroups"
             ></div>
-
-            <button class="floating-reset" id="resetBtn" type="button" title="Reset everything" aria-label="Reset everything">
-              🧨 RESET ALL SHIT
-            </button>
           </section>
         </main>
 

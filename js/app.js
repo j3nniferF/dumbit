@@ -433,15 +433,18 @@ function celebrateIfTabJustCompleted(tabKey) {
   const nowComplete = isTabComplete(tabKey);
   const wasComplete = TAB_COMPLETE_LAST[tabKey];
 
-  // Only fire on transition: not complete -> complete
-  if (!wasComplete && nowComplete) {
+  // Fire confetti and prize modal every time a tab is complete
+  if (nowComplete) {
     // confetti + modal are non-critical — fail gracefully if something goes wrong
     try {
       fireConfettiBurst();
     } catch (e) {
       // no-op
     }
-    openPrizeModal();
+    // Only show prize modal on transition: not complete -> complete
+    if (!wasComplete) {
+      openPrizeModal();
+    }
   }
 
   // update last-known state
