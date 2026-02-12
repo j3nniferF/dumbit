@@ -31,7 +31,20 @@ const TAB_LABELS_DEFAULT = {
 
 let TAB_LABELS = { ...TAB_LABELS_DEFAULT };
 
-// No preset tasks - user starts with empty tabs
+// Preset tasks - mode-specific defaults
+const DEFAULT_TASKS_PUNK = {
+  dueToday: ["Shower (yes, today)", "Take your damn meds", "Answer that email you've been ignoring"],
+  soon: ["Clean the kitchen before it becomes sentient", "Drag yourself to the grocery store"],
+  asSoonAsICan: ["Organize closet (stop pretending you will)", "Call the dentist already"],
+  dontForget: ["Buy cat food or face the consequences", "Pay credit card before they find you"],
+};
+
+const DEFAULT_TASKS_PG = {
+  dueToday: ["Take a nice shower", "Take your vitamins", "Breathe & stretch for 5 min"],
+  soon: ["Tidy up the kitchen", "Quick grocery run"],
+  asSoonAsICan: ["Organize your closet", "Schedule a dentist appointment"],
+  dontForget: ["Pick up pet food", "Pay credit card bill"],
+};
 
 let TASKS_BY_TAB = {
   dueToday: [],
@@ -469,12 +482,21 @@ function saveState() {
   }
 }
 
+function seedDefaultTasks() {
+  // Seed mode-specific default tasks
+  const defaults = window._pgMode ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
+  TAB_ORDER.forEach((k) => {
+    if (defaults[k]) TASKS_BY_TAB[k] = [...defaults[k]];
+  });
+}
+
 function loadState() {
   // Load from mode-specific storage key
   const storageKey = window._pgMode ? STORAGE_KEY_PG : STORAGE_KEY_SHIT;
   const raw = localStorage.getItem(storageKey);
   if (!raw) {
-    // No preset tasks - start with empty tabs
+    // Seed mode-specific preset tasks
+    seedDefaultTasks();
     normalizeState();
     initTabCompleteLast();
     return;
@@ -506,7 +528,8 @@ function loadState() {
     // Ensure the baseline for celebration logic reflects the loaded state
     initTabCompleteLast();
   } catch (err) {
-    console.warn("Saved state corrupted; using defaults.", err);
+    console.warn("Saved state corrupted; seeding defaults.", err);
+    seedDefaultTasks();
     normalizeState();
     initTabCompleteLast();
   }
