@@ -2,14 +2,25 @@
   /* ===== CSS FOUNDATION ===== */
   box-sizing: border-box;
 }
-html,
+html {
+  height: 100%; /* Keep html at 100% of viewport */
+}
 body {
-  height: 100%;
+  min-height: 100%; /* Make body at least 100% of html, but allow it to grow */
   /* Add dark textured background to eliminate white space */
   background: #0b0b0b url("../assets/textures/dirty-paper.png") center/cover
-    fixed;
+    fixed; /* This will be overridden by .pg-mode in PG mode */
   margin: 0;
 }
+
+/* ===== PG MODE THEME OVERRIDES ===== */
+body.pg-mode {
+  /* Use pretty texture background for PG mode - tileable for mobile and desktop */
+  background: #f8f9fa url("../assets/textures/pretty.png") center/400px repeat !important;
+  /* Add this line: */
+  background-attachment: scroll !important; /* Ensure background scrolls with content */
+}
+
 .app {
   position: relative;
   z-index: 1;
@@ -1658,7 +1669,7 @@ body::before {
   height: 56px;
   border-radius: 50%;
   border: 3px solid #0a0a0a;
-  background: 
+  background:
     radial-gradient(circle at 30% 30%, #f8f5ed 0%, #e2dccc 70%) padding-box,
     url("../assets/textures/dirty-paper.png");
   box-shadow:
@@ -1712,7 +1723,8 @@ body::before {
 }
 
 .icon-button--reset:hover {
-  background: radial-gradient(circle at 30% 30%, #ffc9c9 0%, #ff8080 70%) padding-box;
+  background: radial-gradient(circle at 30% 30%, #ffc9c9 0%, #ff8080 70%)
+    padding-box;
 }
 
 /* Sound button muted state */
@@ -1727,13 +1739,13 @@ body::before {
     right: 12px;
     gap: 10px;
   }
-  
+
   .icon-button {
     width: 48px;
     height: 48px;
     border-width: 2px;
   }
-  
+
   .icon-button__icon {
     font-size: 1.5rem;
   }
@@ -1746,12 +1758,12 @@ body::before {
     right: 16px;
     gap: 11px;
   }
-  
+
   .icon-button {
     width: 52px;
     height: 52px;
   }
-  
+
   .icon-button__icon {
     font-size: 1.65rem;
   }
@@ -2051,7 +2063,9 @@ body::before {
   border-radius: 8px;
   cursor: pointer;
   margin-top: 6px;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .floating-countdown__pause:hover {
@@ -2567,7 +2581,8 @@ body.pg-mode {
 }
 
 @keyframes timerGlowPG {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
   }
   50% {
@@ -2743,7 +2758,7 @@ body.pg-mode {
 
 .pg-mode .streak-badge {
   background: rgba(37, 99, 235, 0.08) !important;
-  border-color: rgba(37, 99, 235, 0.3) !important;
+  border-color: rgba(189, 193, 201, 0.608) !important;
   color: #2563eb !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
@@ -3015,7 +3030,7 @@ body.pg-mode {
     padding: 12px 16px;
     gap: 6px;
   }
-  
+
   #prizeModal .prize-gif {
     max-width: 220px;
     max-height: 180px;
@@ -3025,23 +3040,53 @@ body.pg-mode {
 /* ===== HOW-TO GUIDE ===== */
 /* ===== TASK SHAKE ANIMATION ===== */
 @keyframes punkShake {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  10% { transform: translateX(-8px) rotate(-3deg); }
-  20% { transform: translateX(8px) rotate(3deg); }
-  30% { transform: translateX(-8px) rotate(-3deg); }
-  40% { transform: translateX(8px) rotate(3deg); }
-  50% { transform: translateX(-6px) rotate(-2deg); }
-  60% { transform: translateX(6px) rotate(2deg); }
-  70% { transform: translateX(-4px) rotate(-1deg); }
-  80% { transform: translateX(4px) rotate(1deg); }
-  90% { transform: translateX(-2px) rotate(-0.5deg); }
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  10% {
+    transform: translateX(-8px) rotate(-3deg);
+  }
+  20% {
+    transform: translateX(8px) rotate(3deg);
+  }
+  30% {
+    transform: translateX(-8px) rotate(-3deg);
+  }
+  40% {
+    transform: translateX(8px) rotate(3deg);
+  }
+  50% {
+    transform: translateX(-6px) rotate(-2deg);
+  }
+  60% {
+    transform: translateX(6px) rotate(2deg);
+  }
+  70% {
+    transform: translateX(-4px) rotate(-1deg);
+  }
+  80% {
+    transform: translateX(4px) rotate(1deg);
+  }
+  90% {
+    transform: translateX(-2px) rotate(-0.5deg);
+  }
 }
 
 @keyframes gentleBounce {
-  0%, 100% { transform: translateY(0) scale(1); }
-  25% { transform: translateY(-4px) scale(1.02); }
-  50% { transform: translateY(-2px) scale(1.01); }
-  75% { transform: translateY(-1px) scale(1.005); }
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-4px) scale(1.02);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.01);
+  }
+  75% {
+    transform: translateY(-1px) scale(1.005);
+  }
 }
 
 .task-row.completing {

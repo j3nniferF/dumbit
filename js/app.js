@@ -33,14 +33,31 @@ let TAB_LABELS = { ...TAB_LABELS_DEFAULT };
 
 // Preset tasks - mode-specific defaults
 const DEFAULT_TASKS_PUNK = {
-  dueToday: ["Shower (yes, today)", "Take your damn meds", "Answer that email you've been ignoring"],
-  soon: ["Clean the kitchen before it becomes sentient", "Drag yourself to the grocery store"],
-  asSoonAsICan: ["Organize closet (stop pretending you will)", "Call the dentist already"],
-  dontForget: ["Buy cat food or face the consequences", "Pay credit card before they find you"],
+  dueToday: [
+    "Shower (yes, today)",
+    "Take your damn meds",
+    "Answer that email you've been ignoring",
+  ],
+  soon: [
+    "Clean the kitchen before it becomes sentient",
+    "Drag yourself to the grocery store",
+  ],
+  asSoonAsICan: [
+    "Organize closet (stop pretending you will)",
+    "Call the dentist already",
+  ],
+  dontForget: [
+    "Buy cat food or face the consequences",
+    "Pay credit card before they find you",
+  ],
 };
 
 const DEFAULT_TASKS_PG = {
-  dueToday: ["Take a nice shower", "Take your vitamins", "Breathe & stretch for 5 min"],
+  dueToday: [
+    "Take a nice shower",
+    "Take your vitamins",
+    "Breathe & stretch for 5 min",
+  ],
   soon: ["Tidy up the kitchen", "Quick grocery run"],
   asSoonAsICan: ["Organize your closet", "Schedule a dentist appointment"],
   dontForget: ["Pick up pet food", "Pay credit card bill"],
@@ -177,31 +194,35 @@ function wireHowtoModal() {
   const overlay = document.getElementById("howtoOverlay");
   const button = document.getElementById("howtoButton");
   const closeX = document.getElementById("closeHowtoX");
-  
+
   function openHowto() {
     if (overlay) overlay.classList.remove("is-hidden");
   }
-  
+
   function closeHowto() {
     if (overlay) overlay.classList.add("is-hidden");
   }
-  
+
   if (button) {
     button.addEventListener("click", openHowto);
   }
-  
+
   if (closeX) {
     closeX.addEventListener("click", closeHowto);
   }
-  
+
   if (overlay) {
     overlay.addEventListener("click", (event) => {
       if (event.target === overlay) closeHowto();
     });
   }
-  
+
   window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && overlay && !overlay.classList.contains("is-hidden")) {
+    if (
+      event.key === "Escape" &&
+      overlay &&
+      !overlay.classList.contains("is-hidden")
+    ) {
       closeHowto();
     }
   });
@@ -210,20 +231,23 @@ function wireHowtoModal() {
 function wireTimerPopup() {
   if (timerPopupWired) return; // Prevent multiple wirings
   timerPopupWired = true;
-  
+
   const overlay = document.getElementById("timerPopupOverlay");
   const closeXBtn = document.getElementById("closeTimerX");
   const openBtn = document.getElementById("openTimerBtn");
-  
+
   if (openBtn) {
     openBtn.addEventListener("click", () => openTimerPopup());
   }
 
   if (closeXBtn) {
     closeXBtn.addEventListener("click", () => closeTimerPopup());
-    closeXBtn.addEventListener("touchend", (e) => { e.preventDefault(); closeTimerPopup(); });
+    closeXBtn.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      closeTimerPopup();
+    });
   }
-  
+
   if (overlay) {
     overlay.addEventListener("click", (event) => {
       if (event.target === overlay) closeTimerPopup();
@@ -236,9 +260,13 @@ function wireTimerPopup() {
       }
     });
   }
-  
+
   window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && overlay && !overlay.classList.contains("is-hidden")) {
+    if (
+      event.key === "Escape" &&
+      overlay &&
+      !overlay.classList.contains("is-hidden")
+    ) {
       closeTimerPopup();
     }
   });
@@ -251,7 +279,7 @@ function openTimerModal(taskName) {
 
   taskText.textContent = `DONE WITH "${taskName || "THIS TASK"}"?`;
   overlay.classList.remove("is-hidden");
-  
+
   // Dispatch event for sound effect
   document.dispatchEvent(new CustomEvent("timer:complete"));
 }
@@ -339,7 +367,7 @@ function wirePrizeModalClose() {
 /* JS-only confetti (no libraries) */
 function fireConfettiBurst() {
   const isPgMode = window._pgMode;
-  
+
   // inject keyframes once
   if (!document.getElementById("confettiStyles")) {
     const style = document.createElement("style");
@@ -373,36 +401,37 @@ function fireConfettiBurst() {
     for (let i = 0; i < 50; i++) {
       const sparkle = document.createElement("div");
       const size = Math.random() * 8 + 4;
-      
+
       sparkle.style.position = "absolute";
       sparkle.style.left = Math.random() * 100 + "vw";
       sparkle.style.top = Math.random() * 100 + "vh";
       sparkle.style.width = size + "px";
       sparkle.style.height = size + "px";
-      sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      sparkle.style.background =
+        colors[Math.floor(Math.random() * colors.length)];
       sparkle.style.borderRadius = "50%";
       sparkle.style.boxShadow = `0 0 ${size * 2}px ${colors[Math.floor(Math.random() * colors.length)]}`;
-      
+
       const duration = 1 + Math.random() * 1.5;
       const delay = Math.random() * 0.5;
-      
+
       sparkle.style.animation = `sparkleAnimation ${duration}s ease-in-out ${delay}s forwards`;
       wrap.appendChild(sparkle);
     }
   } else {
     // SHIT MODE: Explosions effect
     const colors = ["#c51616", "#ff0000", "#ff6b6b", "#111", "#333"];
-    
+
     for (let i = 0; i < 100; i++) {
       const bit = document.createElement("div");
       const size = Math.random() * 12 + 6;
-      
+
       // Calculate explosion direction
       const angle = Math.random() * Math.PI * 2;
       const distance = 200 + Math.random() * 400;
       const dx = Math.cos(angle) * distance;
       const dy = Math.sin(angle) * distance;
-      
+
       bit.style.position = "absolute";
       bit.style.left = "50vw";
       bit.style.top = "50vh";
@@ -412,10 +441,10 @@ function fireConfettiBurst() {
       bit.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
       bit.style.setProperty("--dx", dx + "px");
       bit.style.setProperty("--dy", dy + "px");
-      
+
       const duration = 0.8 + Math.random() * 0.7;
       const delay = Math.random() * 0.1;
-      
+
       bit.style.animation = `explosionAnimation ${duration}s ease-out ${delay}s forwards`;
       wrap.appendChild(bit);
     }
@@ -647,11 +676,16 @@ function updateProgress() {
       const isPg = window._pgMode;
       let msg = "";
       if (total === 0) msg = isPg ? "Add some tasks!" : "ADD SOME SHIT!";
-      else if (percent === 0) msg = isPg ? "Let's get started!" : "GET OFF YOUR ASS! 🔥";
-      else if (percent < 25) msg = isPg ? "Good start! Keep going!" : "BABY STEPS... 👶";
-      else if (percent < 50) msg = isPg ? "Making progress! ✨" : "OKAY NOT BAD... 🤔";
-      else if (percent < 75) msg = isPg ? "Over halfway! 🎉" : "HALFWAY THERE, LEGEND 💪";
-      else if (percent < 100) msg = isPg ? "Almost done! 🌟" : "SO CLOSE I CAN TASTE IT 🔥🔥";
+      else if (percent === 0)
+        msg = isPg ? "Let's get started!" : "GET OFF YOUR ASS! 🔥";
+      else if (percent < 25)
+        msg = isPg ? "Good start! Keep going!" : "BABY STEPS... 👶";
+      else if (percent < 50)
+        msg = isPg ? "Making progress! ✨" : "OKAY NOT BAD... 🤔";
+      else if (percent < 75)
+        msg = isPg ? "Over halfway! 🎉" : "HALFWAY THERE, LEGEND 💪";
+      else if (percent < 100)
+        msg = isPg ? "Almost done! 🌟" : "SO CLOSE I CAN TASTE IT 🔥🔥";
       else msg = isPg ? "All done! Amazing! 🏆" : "YOU ABSOLUTE BEAST!! 🏆🎉💀";
       label.textContent = msg;
     }
@@ -769,7 +803,7 @@ function setSelectedFocus(value, autoOpenTimer = false) {
   renderTasks(activeTabKey);
   saveState();
   syncTimerBubble();
-  
+
   // Auto-open timer if requested (when user clicks a task)
   if (autoOpenTimer && value) {
     openTimerPopup();
@@ -829,7 +863,8 @@ function renderTasks(tabKey) {
 
     // Click row selects CURRENT task and opens timer (skip if inline-editing)
     li.addEventListener("click", () => {
-      if (window.enhancedFeatures && window.enhancedFeatures.isEditingTask()) return;
+      if (window.enhancedFeatures && window.enhancedFeatures.isEditingTask())
+        return;
       const focusTabSelect = document.getElementById("focusTabSelect");
       if (focusTabSelect && focusScope !== "all" && focusScope !== tabKey) {
         focusScope = "all";
@@ -853,7 +888,7 @@ function renderTasks(tabKey) {
       });
     }
   });
-  
+
   // Dispatch event to notify interactive features
   document.dispatchEvent(new CustomEvent("tasks:updated"));
 }
@@ -1000,9 +1035,10 @@ function wireResetButton(tabsNodeList) {
 
     TASKS_BY_TAB = emptyState();
     COMPLETED_TASKS = emptyState();
-    
+
     // Reapply preset tasks based on current mode (default to punk if not initialized)
-    const defaults = (window._pgMode || false) ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
+    const defaults =
+      window._pgMode || false ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
     for (const tabKey of TAB_ORDER) {
       if (defaults[tabKey]) {
         TASKS_BY_TAB[tabKey] = [...defaults[tabKey]];
@@ -1070,10 +1106,7 @@ function syncTimerBubble(forceHide = false) {
   }
 
   // Hide timer bubble when floating countdown is visible (avoid duplicate timers)
-  const shouldShow =
-    !forceHide &&
-    selectedFocusValue &&
-    !isRunning;
+  const shouldShow = !forceHide && selectedFocusValue && !isRunning;
 
   bubble.classList.toggle("is-hidden", !shouldShow);
   floatBtn.classList.toggle("is-running", intervalId !== null);
@@ -1123,15 +1156,21 @@ function buildDialColumn(container, count, initialValue) {
   container.appendChild(bottomSpacer);
 
   // Size spacers so first/last items can be centered (half container minus half item height)
-    requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
     const itemHeight = 40; // matches .dial-item height in CSS
-    const spacerHeight = Math.max(0, container.offsetHeight / 2 - itemHeight / 2);
+    const spacerHeight = Math.max(
+      0,
+      container.offsetHeight / 2 - itemHeight / 2,
+    );
     topSpacer.style.height = spacerHeight + "px";
     bottomSpacer.style.height = spacerHeight + "px";
 
     const selected = container.querySelector(".dial-item--selected");
     if (selected) {
-      container.scrollTop = selected.offsetTop - container.offsetHeight / 2 + selected.offsetHeight / 2;
+      container.scrollTop =
+        selected.offsetTop -
+        container.offsetHeight / 2 +
+        selected.offsetHeight / 2;
     }
   });
 }
@@ -1178,7 +1217,9 @@ function wireDialScroll(container, onChange) {
   container.addEventListener("click", (e) => {
     const item = e.target.closest(".dial-item");
     if (!item) return;
-    container.querySelectorAll(".dial-item").forEach((i) => i.classList.remove("dial-item--selected"));
+    container
+      .querySelectorAll(".dial-item")
+      .forEach((i) => i.classList.remove("dial-item--selected"));
     item.classList.add("dial-item--selected");
     item.scrollIntoView({ block: "center", behavior: "smooth" });
     if (onChange) onChange(Number(item.dataset.value));
@@ -1197,7 +1238,9 @@ function wireDialScroll(container, onChange) {
       e.preventDefault();
     }
     if (next && next.classList.contains("dial-item")) {
-      container.querySelectorAll(".dial-item").forEach((i) => i.classList.remove("dial-item--selected"));
+      container
+        .querySelectorAll(".dial-item")
+        .forEach((i) => i.classList.remove("dial-item--selected"));
       next.classList.add("dial-item--selected");
       next.scrollIntoView({ block: "center", behavior: "smooth" });
       if (onChange) onChange(Number(next.dataset.value));
@@ -1216,11 +1259,17 @@ function wireDialPicker() {
   const MAX_TIMER_HOURS = 9; // 0 through 8 hours
   buildDialColumn(hoursEl, MAX_TIMER_HOURS, 0);
   buildDialColumn(minutesEl, 60, 0); // 0-59 minutes, default 0
-  buildDialColumn(secondsEl, 60, 0);  // 0-59 seconds
+  buildDialColumn(secondsEl, 60, 0); // 0-59 seconds
 
-  wireDialScroll(hoursEl, (v) => { window._dialValues.hours = v; });
-  wireDialScroll(minutesEl, (v) => { window._dialValues.minutes = v; });
-  wireDialScroll(secondsEl, (v) => { window._dialValues.seconds = v; });
+  wireDialScroll(hoursEl, (v) => {
+    window._dialValues.hours = v;
+  });
+  wireDialScroll(minutesEl, (v) => {
+    window._dialValues.minutes = v;
+  });
+  wireDialScroll(secondsEl, (v) => {
+    window._dialValues.seconds = v;
+  });
 }
 
 function playTimerBell() {
@@ -1344,7 +1393,10 @@ function wireFloatingCountdown() {
 
   let isDragging = false;
   let didDrag = false;
-  let startX = 0, startY = 0, startLeft = 0, startTop = 0;
+  let startX = 0,
+    startY = 0,
+    startLeft = 0,
+    startTop = 0;
 
   el.addEventListener("mousedown", (e) => {
     isDragging = true;
@@ -1363,8 +1415,8 @@ function wireFloatingCountdown() {
     didDrag = true;
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
-    el.style.left = (startLeft + dx) + "px";
-    el.style.top = (startTop + dy) + "px";
+    el.style.left = startLeft + dx + "px";
+    el.style.top = startTop + dy + "px";
     el.style.right = "auto";
   });
 
@@ -1376,28 +1428,36 @@ function wireFloatingCountdown() {
   });
 
   // Touch support
-  el.addEventListener("touchstart", (e) => {
-    isDragging = true;
-    didDrag = false;
-    el.classList.add("is-dragging");
-    const rect = el.getBoundingClientRect();
-    const touch = e.touches[0];
-    startX = touch.clientX;
-    startY = touch.clientY;
-    startLeft = rect.left;
-    startTop = rect.top;
-  }, { passive: true });
+  el.addEventListener(
+    "touchstart",
+    (e) => {
+      isDragging = true;
+      didDrag = false;
+      el.classList.add("is-dragging");
+      const rect = el.getBoundingClientRect();
+      const touch = e.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+      startLeft = rect.left;
+      startTop = rect.top;
+    },
+    { passive: true },
+  );
 
-  document.addEventListener("touchmove", (e) => {
-    if (!isDragging) return;
-    didDrag = true;
-    const touch = e.touches[0];
-    const dx = touch.clientX - startX;
-    const dy = touch.clientY - startY;
-    el.style.left = (startLeft + dx) + "px";
-    el.style.top = (startTop + dy) + "px";
-    el.style.right = "auto";
-  }, { passive: true });
+  document.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!isDragging) return;
+      didDrag = true;
+      const touch = e.touches[0];
+      const dx = touch.clientX - startX;
+      const dy = touch.clientY - startY;
+      el.style.left = startLeft + dx + "px";
+      el.style.top = startTop + dy + "px";
+      el.style.right = "auto";
+    },
+    { passive: true },
+  );
 
   document.addEventListener("touchend", () => {
     if (isDragging) {
@@ -1486,7 +1546,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tab.addEventListener("click", () => {
       // Skip if this is the timer button
       if (tab.id === "openTimerBtn") return;
-      
+
       activeTabKey = tab.dataset.tab;
 
       const focusTabSelect = document.getElementById("focusTabSelect");
@@ -1636,18 +1696,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const PG_STORAGE_KEY = "dsigdt_pg_mode";
 
   const TEXT_MAP = {
-    titleLine1:       { punk: "DUMB shit",                    pg: "SILLY STUFF" },
-    titleLine2:       { punk: "I GOTta dO TODay",             pg: "TO DO TODAY" },
-    completedHeading: { punk: "SHIT I DID:",                  pg: "COMPLETED:" },
-    resetBtn:         { punk: "🧨 RESET ALL SHIT",            pg: "🧨 RESET ALL STUFF" },
-    prizeLine1:       { punk: "GOOD JOB",                     pg: "GREAT JOB" },
-    prizeLine2:       { punk: "DUMMY!",                       pg: "SUPERSTAR!" },
-    prizeSubtitle:    { punk: "PICK A PRIZE",                 pg: "You earned a reward!" },
-    prizeNote:        { punk: "or you can stare at this cute dumb cat", pg: "enjoy this cute cat!" },
-    backToItBtn:      { punk: "NOW GET BACK TO WORK DUMMY",   pg: "KEEP GOING, YOU'RE AMAZING! 🙌" },
-    timerChooseLabel: { punk: "CHOOSE VIOLENCE:",             pg: "SELECT YOUR TASK:" },
-    timerChooseHint:  { punk: "(PICK A TAB / PICK A TASK)",   pg: "(Choose a tab / Choose a task)" },
-    timerFooterMsg:   { punk: "→ MURDER TASKS! ✅ GET A PRIZE!", pg: "→ Complete tasks! ✅ Earn a reward!" },
+    titleLine1: { punk: "DUMB shit", pg: "SILLY STUFF" },
+    titleLine2: { punk: "I GOTta dO TODay", pg: "TO DO TODAY" },
+    completedHeading: { punk: "SHIT I DID:", pg: "COMPLETED:" },
+    resetBtn: { punk: "🧨 RESET", pg: "🧨 RESET" },
+    prizeLine1: { punk: "GOOD JOB", pg: "GREAT JOB" },
+    prizeLine2: { punk: "ding-dong!", pg: "SUPERSTAR!" },
+    prizeSubtitle: { punk: "PICK A PRIZE", pg: "You earned a reward!" },
+    prizeNote: {
+      punk: "or you can stare at this cute dumb cat",
+      pg: "enjoy this cute cat!",
+    },
+    backToItBtn: {
+      punk: "NOW GET BACK TO WORK DUMMY",
+      pg: "KEEP GOING, YOU'RE AMAZING! 🙌",
+    },
+    timerChooseLabel: { punk: "CHOOSE VIOLENCE:", pg: "SELECT YOUR TASK:" },
+    timerChooseHint: {
+      punk: "(PICK A TAB / PICK A TASK)",
+      pg: "(Choose a tab / Choose a task)",
+    },
+    timerFooterMsg: {
+      punk: "→ MURDER TASKS! ✅ GET A PRIZE!",
+      pg: "→ Complete tasks! ✅ Earn a reward!",
+    },
   };
 
   const PLACEHOLDER_MAP = {
@@ -1667,12 +1739,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const prizeList = document.getElementById("prizeList");
     if (prizeList) {
       const items = prizeList.querySelectorAll("li");
-      const punkPrizes = ["GO FOR A WALK.", "TAKE A QUICK NAP.", "GO GET YOUR PRODUCTIVE ASS SOME SKITTLES."];
-      const pgPrizes = ["Go for a nice walk.", "Take a quick nap.", "Treat yourself to a snack!"];
+      const punkPrizes = [
+        "GO FOR A WALK.",
+        "TAKE A QUICK NAP.",
+        "GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.",
+      ];
+      const pgPrizes = [
+        "Go for a nice walk.",
+        "Take a quick nap.",
+        "Treat yourself to a snack!",
+      ];
       const prizes = mode === "pg" ? pgPrizes : punkPrizes;
-      items.forEach((li, i) => { if (prizes[i]) li.textContent = prizes[i]; });
+      items.forEach((li, i) => {
+        if (prizes[i]) li.textContent = prizes[i];
+      });
     }
-    
+
     // Update roast messages container to have tighter text in PG mode
     const prizeRoast = document.getElementById("prizeRoast");
     if (prizeRoast) {
@@ -1700,14 +1782,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load state for the new mode (separate data for each mode)
     loadState();
-    
+
     // Reapply tab labels from loaded state
     const tabs = document.querySelectorAll(".tab");
     tabs.forEach((tab) => {
       const key = tab.dataset.tab;
       if (key && TAB_LABELS[key]) tab.textContent = TAB_LABELS[key];
     });
-    
+
     renderTasks(activeTabKey);
     buildFocusSelect();
     updateProgress();
@@ -1722,27 +1804,27 @@ document.addEventListener("DOMContentLoaded", () => {
   // Restore saved preference (always call setPgMode to set toggle state)
   const savedPg = localStorage.getItem(PG_STORAGE_KEY);
   setPgMode(savedPg === "1");
-  
+
   // ===== TASK REORDERING (for drag & drop) =====
   document.addEventListener("task:reorder", (event) => {
     const { tabKey, fromTask, toTask } = event.detail;
-    
+
     const tasks = TASKS_BY_TAB[tabKey];
     if (!tasks) return;
-    
+
     const fromIdx = tasks.indexOf(fromTask);
     const toIdx = tasks.indexOf(toTask);
-    
+
     if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return;
-    
+
     // Remove from old position
     tasks.splice(fromIdx, 1);
-    
+
     // Calculate new insertion index after removal
     // If we moved item down, toIdx decreases by 1
     const insertIdx = fromIdx < toIdx ? toIdx - 1 : toIdx;
     tasks.splice(insertIdx, 0, fromTask);
-    
+
     saveState();
     renderTasks(tabKey);
     buildFocusSelect();
