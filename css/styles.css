@@ -104,6 +104,11 @@ body::before {
   z-index: 0; /* KEY: behind content */
 }
 
+/* Hide grime in PG mode */
+.pg-mode::before {
+  display: none;
+}
+
 /* ===== LAYOUT GRID ===== */
 /* center items inside the grid so cards don't stretch edge-to-edge */
 .layout {
