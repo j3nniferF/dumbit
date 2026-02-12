@@ -70,7 +70,6 @@
           title="Open Timer"
           aria-label="Open timer"
         >
-          <span class="floating-timer__icon" aria-hidden="true">🕒</span>
           <span class="floating-timer__label">TIMER</span>
           <span class="timer-bubble is-hidden" id="timerBubble">15:00</span>
         </button>
@@ -245,48 +244,32 @@
           <div class="timer-block">
             <p class="timer-block__title">→ SET YOUR TIME:</p>
 
-            <select
-              class="field-select"
-              id="durationSelect"
-              name="durationSelect"
-            >
-              <option value="300">5 min</option>
-              <option value="900" selected>15 min</option>
-              <option value="1800">30 min</option>
-              <option value="2700">45 min</option>
-              <option value="3600">60 min</option>
-            </select>
-
-            <p class="timer-block__sub">CUSTOM:</p>
-            <div class="custom-timer__controls">
-              <input
-                class="field-input"
-                id="customHoursInput"
-                name="customHoursInput"
-                type="number"
-                min="0"
-                max="8"
-                placeholder="hrs"
-                inputmode="numeric"
-              />
-              <input
-                class="field-input"
-                id="customMinutesInput"
-                name="customMinutesInput"
-                type="number"
-                min="0"
-                max="59"
-                placeholder="mins"
-                inputmode="numeric"
-              />
+            <div class="dial-picker" id="dialPicker">
+              <div class="dial-column">
+                <label class="dial-label">HRS</label>
+                <div class="dial-scroll" id="dialHours" tabindex="0" role="listbox" aria-label="Hours">
+                  <!-- filled by JS -->
+                </div>
+              </div>
+              <span class="dial-sep">:</span>
+              <div class="dial-column">
+                <label class="dial-label">MIN</label>
+                <div class="dial-scroll" id="dialMinutes" tabindex="0" role="listbox" aria-label="Minutes">
+                  <!-- filled by JS -->
+                </div>
+              </div>
+              <span class="dial-sep">:</span>
+              <div class="dial-column">
+                <label class="dial-label">SEC</label>
+                <div class="dial-scroll" id="dialSeconds" tabindex="0" role="listbox" aria-label="Seconds">
+                  <!-- filled by JS -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <p class="timer-block__footer">→ MURDER TASKS! ✅ GET A PRIZE!</p>
-        <div class="timer-display" id="timerDisplay" aria-live="polite">
-          15:00
-        </div>
 
         <div class="timer-controls">
           <button class="btn" id="startBtn" type="button">START</button>

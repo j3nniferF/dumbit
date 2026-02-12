@@ -297,33 +297,27 @@ function makeTasksDraggable() {
  * Add visual feedback when timer is running
  */
 function enableTimerAnimations() {
-  const timerCard = document.querySelector(".card--timer");
-  const timerDisplay = document.getElementById("timerDisplay");
   const startBtn = document.getElementById("startBtn");
   const pauseBtn = document.getElementById("pauseBtn");
   const stopBtn = document.getElementById("stopBtn");
+  const floatingCountdown = document.getElementById("floatingCountdown");
 
-  if (!timerCard || !timerDisplay || !startBtn) return;
+  if (!startBtn) return;
 
-  // Add running class when timer starts
+  // Add running class to floating countdown when timer starts
   startBtn.addEventListener("click", () => {
-    timerCard.classList.add("timer--running");
-    timerDisplay.classList.add("timer--running");
+    if (floatingCountdown) floatingCountdown.classList.add("timer--running");
   });
 
-  // Remove running class when paused
   if (pauseBtn) {
     pauseBtn.addEventListener("click", () => {
-      timerCard.classList.remove("timer--running");
-      timerDisplay.classList.remove("timer--running");
+      if (floatingCountdown) floatingCountdown.classList.remove("timer--running");
     });
   }
 
-  // Remove running class when stopped
   if (stopBtn) {
     stopBtn.addEventListener("click", () => {
-      timerCard.classList.remove("timer--running");
-      timerDisplay.classList.remove("timer--running");
+      if (floatingCountdown) floatingCountdown.classList.remove("timer--running");
     });
   }
 
@@ -335,9 +329,7 @@ function enableTimerAnimations() {
         if (mutation.attributeName === "class") {
           const isHidden = timerOverlay.classList.contains("is-hidden");
           if (!isHidden) {
-            // Timer completed - remove running state
-            timerCard.classList.remove("timer--running");
-            timerDisplay.classList.remove("timer--running");
+            if (floatingCountdown) floatingCountdown.classList.remove("timer--running");
           }
         }
       });
@@ -351,9 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Wait a bit for the main app to initialize
   setTimeout(() => {
-    enableInlineEditing();
-    // addClearCompletedButton(); // REMOVED - user wants to keep completed tasks visible
-    // addDataButtons(); // REMOVED - user doesn't want export/import
+    // enableInlineEditing(); // REMOVED - inline editing disabled for now
     enableDragAndDrop();
     enableDragToTabs();
     makeTasksDraggable();
