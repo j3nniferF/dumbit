@@ -190,11 +190,11 @@ function wireTimerPopup() {
   }
   
   if (closeBtn) {
-    closeBtn.addEventListener("click", (e) => { e.preventDefault(); closeTimerPopup({ keepFloating: false }); });
+    closeBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
   }
 
   if (closeXBtn) {
-    closeXBtn.addEventListener("click", (e) => { e.preventDefault(); closeTimerPopup({ keepFloating: false }); });
+    closeXBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
   }
   
   if (overlay) {
@@ -235,8 +235,6 @@ function closeTimerModal() {
 function wireTimerModal() {
   const overlay = document.getElementById("timerOverlay");
   const doneBtn = document.getElementById("timerDoneBtn");
-  const addTimeBtn = document.getElementById("timerAddTimeBtn");
-  const addTimeSelect = document.getElementById("timerAddSelect");
   const notDoneBtn = document.getElementById("timerNotDoneBtn");
   const newTaskBtn = document.getElementById("timerNewTaskBtn");
 
@@ -261,15 +259,6 @@ function wireTimerModal() {
     newTaskBtn.addEventListener("click", () => {
       closeTimerModal();
       openTimerPopup();
-    });
-  }
-
-  if (addTimeBtn) {
-    addTimeBtn.addEventListener("click", () => {
-      const seconds = Number(addTimeSelect?.value ?? 300);
-      const minutes = Math.max(1, Math.round(seconds / 60));
-      addTimeMinutes(minutes);
-      closeTimerModal();
     });
   }
 
@@ -1198,24 +1187,6 @@ function addTimeMinutes(minutes) {
   startCountdown();
 }
 
-function parseCustomDuration(input) {
-  if (!input) return null;
-  const trimmed = String(input).trim();
-
-  if (trimmed.includes(":")) {
-    const [mmStr, ssStr] = trimmed.split(":");
-    const mm = Number(mmStr);
-    const ss = Number(ssStr);
-    if (!Number.isFinite(mm) || !Number.isFinite(ss)) return null;
-    if (mm < 0 || ss < 0 || ss > 59) return null;
-    return mm * 60 + ss;
-  }
-
-  const minutes = Number(trimmed);
-  if (!Number.isFinite(minutes) || minutes <= 0) return null;
-  return Math.round(minutes * 60);
-}
-
 function stopInterval() {
   if (intervalId !== null) {
     clearInterval(intervalId);
@@ -1484,62 +1455,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Persist and refresh UI
     saveState();
     renderTasks(activeTabKey);
-  });
-
-  // Listen for task moved to different tab event
-  document.addEventListener("tasks:movedToTab", (e) => {
-    const { sourceTab, targetTab, taskText } = e.detail || {};
-    if (!sourceTab || !targetTab || !taskText) return;
-
-    // Remove from source tab
-    const sourceIdx = (TASKS_BY_TAB[sourceTab] || []).indexOf(taskText);
-    if (sourceIdx > -1) {
-      TASKS_BY_TAB[sourceTab].splice(sourceIdx, 1);
-    }
-
-    // Check if task was completed in source tab
-    const wasCompleted = (COMPLETED_TASKS[sourceTab] || []).includes(taskText);
-    if (wasCompleted) {
-      // Remove from source completed
-      const completedIdx = COMPLETED_TASKS[sourceTab].indexOf(taskText);
-      if (completedIdx > -1) {
-        COMPLETED_TASKS[sourceTab].splice(completedIdx, 1);
-      }
-    }
-
-    // Add to target tab
-    if (!Array.isArray(TASKS_BY_TAB[targetTab])) {
-      TASKS_BY_TAB[targetTab] = [];
-    }
-    if (!TASKS_BY_TAB[targetTab].includes(taskText)) {
-      TASKS_BY_TAB[targetTab].push(taskText);
-    }
-
-    // If it was completed, add to target completed
-    if (wasCompleted) {
-      if (!Array.isArray(COMPLETED_TASKS[targetTab])) {
-        COMPLETED_TASKS[targetTab] = [];
-      }
-      if (!COMPLETED_TASKS[targetTab].includes(taskText)) {
-        COMPLETED_TASKS[targetTab].push(taskText);
-      }
-    }
-
-    // Update completion tracking
-    syncTabCompleteLast(sourceTab);
-    syncTabCompleteLast(targetTab);
-
-    // Persist and refresh UI
-    saveState();
-    renderTasks(activeTabKey);
-    renderCompletedGrouped();
-    buildFocusSelect(selectedFocusValue);
-    updateProgress();
-
-    // Show notification
-    alert(
-      `✅ Moved "${taskText}" from ${TAB_LABELS[sourceTab]} to ${TAB_LABELS[targetTab]}`,
-    );
   });
 
   // ===== FUN FEATURE: Motivational roast toasts on task completion =====
