@@ -45,12 +45,12 @@ const DEFAULT_TASKS_PG = {
   dontForget: ["Pick up pet food", "Pay credit card bill"],
 };
 
-// Default seed (only used if no localStorage state exists)
+// Start with empty task lists (no preset tasks)
 let TASKS_BY_TAB = {
-  dueToday: [...DEFAULT_TASKS_PUNK.dueToday],
-  soon: [...DEFAULT_TASKS_PUNK.soon],
-  asSoonAsICan: [...DEFAULT_TASKS_PUNK.asSoonAsICan],
-  dontForget: [...DEFAULT_TASKS_PUNK.dontForget],
+  dueToday: [],
+  soon: [],
+  asSoonAsICan: [],
+  dontForget: [],
 };
 
 let COMPLETED_TASKS = {
@@ -69,7 +69,6 @@ let selectedFocusValue = ""; // `${tabKey}::${taskText}`
 /* Timer state */
 let remainingSeconds = 0;
 let intervalId = null;
-let floatingPinned = false;
 
 /* -------------------------------
    Celebration (confetti + modal)
@@ -151,7 +150,6 @@ function openTimerPopup() {
   const overlay = document.getElementById("timerPopupOverlay");
   if (!overlay) return;
   overlay.classList.remove("is-hidden");
-  floatingPinned = false;
   syncTimerBubble(true);
   // Make timer icon faint while popup is open
   const timerBtn = document.getElementById("openTimerBtn");
@@ -163,11 +161,10 @@ function isTimerPopupOpen() {
   return overlay && !overlay.classList.contains("is-hidden");
 }
 
-function closeTimerPopup({ keepFloating = false } = {}) {
+function closeTimerPopup() {
   const overlay = document.getElementById("timerPopupOverlay");
   if (!overlay) return;
   overlay.classList.add("is-hidden");
-  floatingPinned = keepFloating || floatingPinned;
   syncTimerBubble();
   // Restore timer icon visibility
   const timerBtn = document.getElementById("openTimerBtn");
@@ -190,22 +187,24 @@ function wireTimerPopup() {
   }
   
   if (closeBtn) {
-    closeBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
+    closeBtn.addEventListener("click", () => closeTimerPopup());
+    closeBtn.addEventListener("touchend", (e) => { e.preventDefault(); closeTimerPopup(); });
   }
 
   if (closeXBtn) {
-    closeXBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
+    closeXBtn.addEventListener("click", () => closeTimerPopup());
+    closeXBtn.addEventListener("touchend", (e) => { e.preventDefault(); closeTimerPopup(); });
   }
   
   if (overlay) {
     overlay.addEventListener("click", (event) => {
-      if (event.target === overlay) closeTimerPopup({ keepFloating: false });
+      if (event.target === overlay) closeTimerPopup();
     });
     // Also handle touchend for mobile close
     overlay.addEventListener("touchend", (event) => {
       if (event.target === overlay) {
         event.preventDefault();
-        closeTimerPopup({ keepFloating: false });
+        closeTimerPopup();
       }
     });
   }
@@ -601,7 +600,7 @@ function renderCompletedGrouped() {
       li.appendChild(textSpan);
 
       const deleteBtn = document.createElement("button");
-      deleteBtn.className = "task-delete";
+      deleteBtn.className = "task-delete completed-delete";
       deleteBtn.type = "button";
       deleteBtn.title = "Remove task";
       deleteBtn.setAttribute("aria-label", "Remove task");
@@ -971,8 +970,7 @@ function syncTimerBubble(forceHide = false) {
   const shouldShow =
     !forceHide &&
     selectedFocusValue &&
-    !isRunning &&
-    (floatingPinned || intervalId !== null);
+    !isRunning;
 
   bubble.classList.toggle("is-hidden", !shouldShow);
   floatBtn.classList.toggle("is-running", intervalId !== null);
@@ -985,12 +983,12 @@ function setTimerDisplay(seconds) {
 }
 
 function getSelectedDurationSeconds() {
-  if (!window._dialValues) return 900; // 15 min default if dials not yet initialized
+  if (!window._dialValues) return 1500; // 25 min default if dials not yet initialized
   const h = window._dialValues.hours || 0;
   const m = window._dialValues.minutes || 0;
   const s = window._dialValues.seconds || 0;
   const total = h * 3600 + m * 60 + s;
-  return total > 0 ? total : 900; // 15 min fallback if user sets all zeros
+  return total > 0 ? total : 1500; // 25 min fallback if user sets all zeros
 }
 
 function resetTimerToSelectedDuration() {
@@ -1111,11 +1109,11 @@ function wireDialPicker() {
   const secondsEl = document.getElementById("dialSeconds");
   if (!hoursEl || !minutesEl || !secondsEl) return;
 
-  window._dialValues = { hours: 0, minutes: 15, seconds: 0 };
+  window._dialValues = { hours: 0, minutes: 25, seconds: 0 };
 
   const MAX_TIMER_HOURS = 9; // 0 through 8 hours
   buildDialColumn(hoursEl, MAX_TIMER_HOURS, 0);
-  buildDialColumn(minutesEl, 60, 15); // 0-59 minutes
+  buildDialColumn(minutesEl, 60, 25); // 0-59 minutes, default 25
   buildDialColumn(secondsEl, 60, 0);  // 0-59 seconds
 
   wireDialScroll(hoursEl, (v) => { window._dialValues.hours = v; });
@@ -1158,8 +1156,7 @@ function startCountdown() {
 
   // Auto-close timer popup when starting
   if (isTimerPopupOpen()) {
-    floatingPinned = true;
-    closeTimerPopup({ keepFloating: true });
+    closeTimerPopup();
   }
 
   intervalId = setInterval(() => {
@@ -1211,21 +1208,19 @@ function wireTimer() {
   startBtn.addEventListener("click", () => startCountdown());
 
   pauseBtn.addEventListener("click", () => {
-    floatingPinned = true;
     stopInterval();
   });
 
   if (resetTimerBtn) {
     resetTimerBtn.addEventListener("click", () => {
       stopInterval();
-      floatingPinned = false;
       // Reset dial values and rebuild dials to default
-      window._dialValues = { hours: 0, minutes: 15, seconds: 0 };
+      window._dialValues = { hours: 0, minutes: 25, seconds: 0 };
       const hoursEl = document.getElementById("dialHours");
       const minutesEl = document.getElementById("dialMinutes");
       const secondsEl = document.getElementById("dialSeconds");
       if (hoursEl) buildDialColumn(hoursEl, 9, 0);
-      if (minutesEl) buildDialColumn(minutesEl, 60, 15);
+      if (minutesEl) buildDialColumn(minutesEl, 60, 25);
       if (secondsEl) buildDialColumn(secondsEl, 60, 0);
       resetTimerToSelectedDuration();
     });
@@ -1444,19 +1439,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
   });
 
-  // Listen for task reorder event
-  document.addEventListener("tasks:reordered", (e) => {
-    const { tabKey, newOrder } = e.detail || {};
-    if (!tabKey || !Array.isArray(newOrder)) return;
-
-    // Update the tasks order
-    TASKS_BY_TAB[tabKey] = newOrder;
-
-    // Persist and refresh UI
-    saveState();
-    renderTasks(activeTabKey);
-  });
-
   // ===== FUN FEATURE: Motivational roast toasts on task completion =====
   // (Roast message arrays are defined at module level for prize modal access)
 
@@ -1583,8 +1565,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const label = document.getElementById("pgLabel");
     if (label) label.textContent = on ? "PG MODE" : "$H!T MODE";
 
+    // Flipped: checked = shit mode, unchecked = PG mode
     const toggle = document.getElementById("pgToggle");
-    if (toggle) toggle.checked = on;
+    if (toggle) toggle.checked = !on;
 
     localStorage.setItem(PG_STORAGE_KEY, on ? "1" : "0");
 
@@ -1594,13 +1577,13 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
   }
 
-  // Wire toggle
+  // Wire toggle — flipped: checked means shit mode (not PG)
   const pgToggle = document.getElementById("pgToggle");
   if (pgToggle) {
-    pgToggle.addEventListener("change", () => setPgMode(pgToggle.checked));
+    pgToggle.addEventListener("change", () => setPgMode(!pgToggle.checked));
   }
 
-  // Restore saved preference
+  // Restore saved preference (always call setPgMode to set toggle state)
   const savedPg = localStorage.getItem(PG_STORAGE_KEY);
-  if (savedPg === "1") setPgMode(true);
+  setPgMode(savedPg === "1");
 });

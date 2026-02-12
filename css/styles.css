@@ -261,6 +261,20 @@ body::before {
 }
 
 /* ===== TABS ===== */
+.tabs-hint {
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(242, 239, 231, 0.4);
+  margin: -12px auto 10px;
+}
+
+.pg-mode .tabs-hint {
+  color: rgba(0, 0, 0, 0.3);
+}
+
 .tabs {
   display: flex;
   justify-content: center;
@@ -482,13 +496,14 @@ body::before {
 /* Optional helper for experimenting with a really large card title */
 .card-title--big {
   /* Mirror tabs styling - same font and letter-spacing */
-  font-family: var(--font-ui);
-  font-size: clamp(2.2rem, 6vw, 7.6rem);
-  letter-spacing: 5px;
+  font-family: var(--font-anarchy);
+  font-size: clamp(2.8rem, 7vw, 8rem);
+  letter-spacing: 4px;
   text-transform: uppercase;
+  color: var(--ink);
   text-shadow:
-    1px 1px 0 rgba(0, 0, 0, 0.15),
-    -1px -1px 0 rgba(255, 255, 255, 0.2);
+    2px 2px 0 rgba(0, 0, 0, 0.2),
+    -1px -1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* ===== MAIN LAYOUT ===== */
@@ -783,20 +798,21 @@ body::before {
 
 /* fix */
 .completed-groups--tabs .completed-group {
-  background: #fff;
-  opacity: 0.9;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
+  background: rgba(10, 10, 10, 0.06);
+  border: 2px dashed rgba(197, 22, 22, 0.25);
   border-radius: 12px;
-  padding: 8px 10px;
+  padding: 10px 12px;
 }
 
 .completed-groups--tabs .completed-subheading {
+  font-family: var(--font-ui);
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   font-size: 1.35rem;
   cursor: pointer;
   list-style: none;
+  color: var(--accent-red);
 }
 
 .completed-groups--tabs .completed-subheading::-webkit-details-marker {
@@ -891,24 +907,27 @@ body::before {
 /* Completed stats and progress tracking */
 .completed-stat {
   margin: 0;
+  font-family: var(--font-ui);
   font-weight: 900;
-  letter-spacing: 0.6px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--ink);
-  font-size: clamp(1rem, 1.4vw, 2rem);
+  font-size: clamp(1.1rem, 1.6vw, 2rem);
 }
 
 .completed-stat--center {
   font-family: var(--font-ui);
   text-align: center;
   width: 100%;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .completed-stat__count {
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-family: var(--font-anarchy);
+  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
   color: var(--accent-red);
   margin-right: 8px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
 }
 
 /* Completed groups - mobile first: vertical stack */
@@ -938,12 +957,18 @@ body::before {
 }
 
 .completed-list {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-family: var(--font-ui);
-  margin: 0;
-  padding-left: 18px;
+  margin: 6px 0 0;
+  padding-left: 0;
+  list-style: none;
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+.completed-list li {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* Hide music player */
@@ -1201,13 +1226,15 @@ body::before {
   /* tighter modal so it never gets huge */
   max-width: 420px;
   width: min(94%, 420px);
-  padding: 20px 22px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 18px 20px;
   box-sizing: border-box;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   /* Add punk/grunge styling - torn paper effect with strong border */
   border: 3px solid rgba(0, 0, 0, 0.7);
   border-radius: 4px;
@@ -1298,10 +1325,10 @@ body::before {
 
 /* GIF: smaller and constrained to avoid dominating modal */
 .modal img.prize-gif {
-  max-width: 220px;
-  width: 70%;
+  max-width: 180px;
+  width: 60%;
   height: auto;
-  max-height: 30vh;
+  max-height: 22vh;
   margin: 6px auto;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
@@ -1400,49 +1427,51 @@ body::before {
 /* make sure modal looks great on mobile */
 @media (max-width: 420px) {
   #prizeModal {
-    max-width: 92%;
-    width: 92%;
-    padding: 14px 14px;
-    gap: 8px;
+    max-width: 88%;
+    width: 88%;
+    padding: 10px 12px;
+    gap: 6px;
+    max-height: 85vh;
+    overflow-y: auto;
   }
 
   #prizeModal .modal-title {
-    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-size: clamp(1.4rem, 6vw, 2rem);
   }
 
   #prizeModal .modal-subtitle {
-    font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+    font-size: clamp(0.8rem, 3vw, 1rem);
   }
 
   .modal img.prize-gif {
-    max-width: 160px;
-    width: 50%;
-    max-height: 20vh;
+    max-width: 120px;
+    width: 40%;
+    max-height: 15vh;
   }
 
   #prizeModal .prize-list {
-    gap: 8px;
-    margin: 4px 0 6px;
+    gap: 4px;
+    margin: 2px 0 4px;
   }
 
   #prizeModal .prize-list li {
-    font-size: clamp(0.85rem, 1.8vw, 1rem);
-    padding: 4px 6px;
+    font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+    padding: 3px 5px;
   }
 
   .prize-roast {
-    font-size: clamp(0.85rem, 1.8vw, 1rem) !important;
-    padding: 6px 10px !important;
+    font-size: clamp(0.75rem, 1.6vw, 0.9rem) !important;
+    padding: 4px 8px !important;
   }
 
   .prize-note {
-    font-size: 0.85rem;
-    margin: 2px 0 6px;
+    font-size: 0.75rem;
+    margin: 2px 0 4px;
   }
 
   #prizeModal .prize-actions .btn {
-    font-size: 0.9rem;
-    padding: 8px 14px;
+    font-size: 0.85rem;
+    padding: 6px 12px;
   }
 }
 
@@ -1599,6 +1628,8 @@ body::before {
   font-size: clamp(2.6rem, 5vw, 5rem) !important;
   letter-spacing: 1.8px;
   text-align: center;
+  color: var(--ink) !important;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 /* Ensure subtitle line is centered and tighter */
@@ -2685,7 +2716,7 @@ body.pg-mode {
   border-radius: 50%;
   transition: color 0.15s, background 0.15s;
   flex-shrink: 0;
-  display: flex;
+  display: none; /* hidden in shit mode by default */
   align-items: center;
   justify-content: center;
 }
@@ -2697,11 +2728,17 @@ body.pg-mode {
 
 .pg-mode .task-delete {
   color: rgba(0, 0, 0, 0.4) !important;
+  display: flex !important;
 }
 
 .pg-mode .task-delete:hover {
   color: #dc2626 !important;
   background: rgba(220, 38, 38, 0.08) !important;
+}
+
+/* Always show delete buttons in completed section */
+.completed-delete {
+  display: flex !important;
 }
 
 /* ===== MODAL CLOSE X BUTTON ===== */
@@ -2805,5 +2842,118 @@ body.pg-mode {
     min-height: 44px;
     font-size: 1rem;
     padding: 10px 20px;
+  }
+}
+
+/* ===== HOW-TO GUIDE ===== */
+.card--howto {
+  margin-top: 8px;
+  background-color: transparent !important;
+  background-image: url("../assets/textures/dirty-paper.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: cover !important;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35) !important;
+  border: none !important;
+}
+
+.howto-details {
+  width: 100%;
+}
+
+.howto-toggle {
+  font-family: var(--font-ui);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  padding: 8px;
+  list-style: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.howto-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.howto-toggle:hover {
+  opacity: 1;
+}
+
+.howto-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+  padding: 4px;
+}
+
+.howto-section h3 {
+  font-family: var(--font-ui);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: var(--accent-red);
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.howto-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.howto-section li {
+  font-family: var(--font-ui);
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  color: var(--ink);
+  padding: 3px 0;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+}
+
+.howto-section li::before {
+  content: "→ ";
+  color: var(--accent-red);
+  font-weight: 900;
+}
+
+/* PG mode howto */
+.pg-mode .card--howto {
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.pg-mode .howto-toggle {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+}
+
+.pg-mode .howto-section h3 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+}
+
+.pg-mode .howto-section li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .howto-section li::before {
+  color: #2563eb !important;
+}
+
+@media (max-width: 420px) {
+  .howto-content {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 }
