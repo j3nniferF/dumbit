@@ -2526,3 +2526,40 @@ body.pg-mode {
 .pg-mode .task-checkbox {
   accent-color: #2563eb;
 }
+
+/* PG mode: ensure completed list items use readable font */
+.pg-mode .completed-list,
+.pg-mode .completed-list li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+/* PG mode: ensure prize list items use readable font (override #prizeModal specificity) */
+.pg-mode #prizeModal .prize-list li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+/* PG mode: ensure prize subtitle uses readable font */
+.pg-mode #prizeSubtitle {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+}
+
+/* PG mode: ensure prize modal title lines are visible */
+.pg-mode #prizeModal .modal-title-line1,
+.pg-mode #prizeModal .modal-title-line2 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+}
+
+/* PG mode: remove drop-shadow/filter on title */
+.pg-mode .title-line {
+  filter: none !important;
+}
+
+/* PG mode: ensure completed subheading uses readable font */
+.pg-mode .completed-subheading {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+}
