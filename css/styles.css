@@ -1782,9 +1782,6 @@ body::before {
   }
 }
 
-/* Remove old floating-timer label styles */
-}
-
 .timer-bubble {
   position: absolute;
   top: -10px;

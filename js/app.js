@@ -1001,8 +1001,8 @@ function wireResetButton(tabsNodeList) {
     TASKS_BY_TAB = emptyState();
     COMPLETED_TASKS = emptyState();
     
-    // Reapply preset tasks based on current mode
-    const defaults = window._pgMode ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
+    // Reapply preset tasks based on current mode (default to punk if not initialized)
+    const defaults = (window._pgMode || false) ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
     for (const tabKey of TAB_ORDER) {
       if (defaults[tabKey]) {
         TASKS_BY_TAB[tabKey] = [...defaults[tabKey]];
