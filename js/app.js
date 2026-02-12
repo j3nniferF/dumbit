@@ -1162,6 +1162,7 @@ function startCountdown() {
   if (intervalId !== null) return;
   if (remainingSeconds <= 0) resetTimerToSelectedDuration();
 
+  // Still zero after reset means user hasn't set a duration on the dials
   if (remainingSeconds <= 0) {
     alert("Set a time first.");
     return;
