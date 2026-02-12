@@ -3,8 +3,6 @@ console.log("enhanced-features.js loaded");
 /* =====================================================
    ENHANCED FEATURES MODULE
    - Inline task editing
-   - Drag & drop reordering
-   - Move tasks between tabs
 ===================================================== */
 
 /* -------------------------------
@@ -113,118 +111,6 @@ function enableInlineEditing() {
   });
 }
 
-
-function enableDragAndDrop() {
-  const taskList = document.getElementById("taskList");
-  if (!taskList) return;
-
-  // Make task list a drop zone
-  let draggedItem = null;
-
-  // Dragstart
-  taskList.addEventListener("dragstart", (e) => {
-    const task = e.target.closest(".task");
-    if (!task) return;
-
-    draggedItem = task;
-    task.style.opacity = "0.5";
-  });
-
-  // Dragend
-  taskList.addEventListener("dragend", (e) => {
-    const task = e.target.closest(".task");
-    if (task) {
-      task.style.opacity = "1";
-    }
-    draggedItem = null;
-  });
-
-  // Dragover
-  taskList.addEventListener("dragover", (e) => {
-    e.preventDefault();
-
-    const afterElement = getDragAfterElement(taskList, e.clientY);
-    if (afterElement == null) {
-      taskList.appendChild(draggedItem);
-    } else {
-      taskList.insertBefore(draggedItem, afterElement);
-    }
-  });
-
-  // Drop
-  taskList.addEventListener("drop", (e) => {
-    e.preventDefault();
-
-    // Dispatch event to save new order
-    const tasks = Array.from(taskList.children);
-    const tabKey =
-      tasks.find((task) => task.dataset.tab)?.dataset.tab ||
-      document.querySelector(".tab--active")?.dataset.tab;
-    const event = new CustomEvent("tasks:reordered", {
-      detail: {
-        tabKey,
-        newOrder: tasks.map((task) => task.dataset.task).filter(Boolean),
-      },
-    });
-    document.dispatchEvent(event);
-  });
-}
-
-/**
- * Helper: Find element after which to insert dragged item
- */
-function getDragAfterElement(container, y) {
-  const draggableElements = [
-    ...container.querySelectorAll(".task:not(.dragging)"),
-  ];
-
-  return draggableElements.reduce(
-    (closest, child) => {
-      const box = child.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
-
-      if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: child };
-      } else {
-        return closest;
-      }
-    },
-    { offset: Number.NEGATIVE_INFINITY }
-  ).element;
-}
-
-/**
- * Make tasks draggable (called after rendering)
- */
-function makeTasksDraggable() {
-  const taskList = document.getElementById("taskList");
-  if (!taskList) return;
-
-  // Observer to make new tasks draggable
-  const observer = new MutationObserver(() => {
-    const tasks = taskList.querySelectorAll(".task");
-    tasks.forEach((task) => {
-      if (!task.getAttribute("draggable")) {
-        task.setAttribute("draggable", "true");
-        task.style.cursor = "move";
-      }
-    });
-  });
-
-  observer.observe(taskList, { childList: true, subtree: true });
-
-  // Initial application
-  const tasks = taskList.querySelectorAll(".task");
-  tasks.forEach((task) => {
-    task.setAttribute("draggable", "true");
-    task.style.cursor = "move";
-  });
-}
-
-/* -------------------------------
-   Initialize All Features
--------------------------------- */
-
 /**
  * Add visual feedback when timer is running
  */
@@ -263,13 +149,15 @@ function enableTimerAnimations() {
   }
 }
 
+/* -------------------------------
+   Initialize All Features
+-------------------------------- */
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Initializing enhanced features...");
 
   // Wait a bit for the main app to initialize
   setTimeout(() => {
-    enableDragAndDrop();
-    makeTasksDraggable();
     enableTimerAnimations();
 
     console.log("✅ Enhanced features initialized");
@@ -279,8 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // Expose functions for debugging
 window.enhancedFeatures = {
   enableInlineEditing,
-  enableDragAndDrop,
-  makeTasksDraggable,
   enableTimerAnimations,
   isEditingTask: () => isEditingTask,
 };
