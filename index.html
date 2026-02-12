@@ -90,54 +90,10 @@
           🔊
         </button>
 
-        <!-- HOW TO GUIDE -->
-        <section class="card card--howto" id="howtoCard">
-          <details class="howto-details">
-            <summary class="howto-toggle">📖 HOW THIS WORKS</summary>
-            <div class="howto-content">
-              <div class="howto-section">
-                <h3>📝 TASKS</h3>
-                <ul>
-                  <li>Type in the box and hit ADD to create a task</li>
-                  <li>Click a task to select it as your CURRENT focus</li>
-                  <li>Check the box to mark it done</li>
-                  <li>Double-click a task to edit its text</li>
-                </ul>
-              </div>
-              <div class="howto-section">
-                <h3>📂 TABS</h3>
-                <ul>
-                  <li>Use tabs to organize: DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET</li>
-                  <li>Double-click any tab name to rename it</li>
-                  <li>Tasks are saved per tab</li>
-                </ul>
-              </div>
-              <div class="howto-section">
-                <h3>⏱️ TIMER</h3>
-                <ul>
-                  <li>Click the TIMER button (top right) to open it</li>
-                  <li>Pick a tab + task, set your time, hit START</li>
-                  <li>A floating countdown shows while you work</li>
-                  <li>When time's up: mark it done or add 5 more minutes</li>
-                </ul>
-              </div>
-              <div class="howto-section">
-                <h3>🎉 PRIZES</h3>
-                <ul>
-                  <li>Finish ALL tasks in a tab = confetti + prize!</li>
-                  <li>You earned it. Pick a reward.</li>
-                </ul>
-              </div>
-              <div class="howto-section">
-                <h3>🔀 MODES</h3>
-                <ul>
-                  <li>Toggle the switch to flip between $H!T MODE and PG MODE</li>
-                  <li>$H!T MODE = punk vibes, PG MODE = clean and friendly</li>
-                </ul>
-              </div>
-            </div>
-          </details>
-        </section>
+        <!-- HOW TO GUIDE (moved to top right) -->
+        <button class="howto-button" id="howtoButton" type="button" title="How to use" aria-label="How to use">
+          📖 HOW TO
+        </button>
 
         <main class="main" id="main">
           <!-- TASKS -->
@@ -196,8 +152,8 @@
               id="completedGroups"
             ></div>
 
-            <button class="linkish reset-global" id="resetBtn" type="button">
-              🧨 RESET EVERYTHING
+            <button class="floating-reset" id="resetBtn" type="button" title="Reset everything" aria-label="Reset everything">
+              🧨 RESET ALL SHIT
             </button>
           </section>
         </main>
@@ -245,7 +201,7 @@
       <div class="modal" id="prizeModal">
         <button class="modal-close-x" id="closePrizeX" type="button" title="Close" aria-label="Close">✕</button>
         
-        <h2 class="modal-title" id="prizeTitle">
+        <h2 class="modal-title modal-title--prize" id="prizeTitle">
           <span class="modal-title-line1" id="prizeLine1">GOOD JOB</span>
           <span class="modal-title-line2" id="prizeLine2">DUMMY!</span>
         </h2>
@@ -269,6 +225,73 @@
           <button class="btn btn--primary" id="backToItBtn" type="button">
             NOW GET BACK TO WORK!
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW TO MODAL -->
+    <div
+      class="modal-overlay is-hidden"
+      id="howtoOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="howtoTitle"
+    >
+      <div class="modal modal--howto" id="howtoModal">
+        <button class="modal-close-x" id="closeHowtoX" type="button" title="Close" aria-label="Close">✕</button>
+        <h2 class="modal-title" id="howtoTitle">📖 HOW TO USE</h2>
+        
+        <div class="howto-content">
+          <div class="howto-section">
+            <h3>📝 TASKS</h3>
+            <ul>
+              <li>Type in the box and hit ADD (or press Enter) to create a task</li>
+              <li>Click a task to select it for the timer</li>
+              <li>Check the box to mark it done</li>
+              <li>Double-click a task to edit its text</li>
+              <li>Click the ✕ button to delete a task</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>📂 TABS</h3>
+            <ul>
+              <li>Use tabs to organize: DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET</li>
+              <li>Double-click any tab name to rename it</li>
+              <li>Each mode (SHIT/PG) has separate tabs and tasks</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>⏱️ TIMER</h3>
+            <ul>
+              <li>Click a task to select it, then click TIMER button</li>
+              <li>Set your time and hit START</li>
+              <li>A floating countdown shows while you work</li>
+              <li>When time's up: mark it done or add 5 more minutes</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>🎉 PRIZES</h3>
+            <ul>
+              <li>Finish ALL tasks in a tab = celebration + prize!</li>
+              <li>You earned it. Pick a reward.</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>🔀 MODES</h3>
+            <ul>
+              <li>Toggle the switch to flip between $H!T MODE and PG MODE</li>
+              <li>$H!T MODE = punk vibes with explosions 💥</li>
+              <li>PG MODE = clean and friendly with sparkles ✨</li>
+              <li>Each mode has separate tabs and tasks</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>🔊 SOUND</h3>
+            <ul>
+              <li>Click the speaker icon to toggle sound effects</li>
+              <li>Enjoy different sounds for each mode!</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -360,7 +383,7 @@
       aria-labelledby="timerModalTitle"
     >
       <div class="modal modal--timer-done" id="timerModal">
-        <h2 class="modal-title" id="timerModalTitle">TIME'S UP</h2>
+        <h2 class="modal-title modal-title--timesup" id="timerModalTitle">⏰ TIME'S UP!</h2>
         <p class="modal-subtitle" id="timerModalTask">DONE WITH THIS TASK?</p>
         <p class="modal-hint" id="timerModalHint">
           Need more time? Add 5 minutes.
