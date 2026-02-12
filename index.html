@@ -84,6 +84,7 @@
         <div class="floating-countdown" id="floatingCountdown">
           <div class="floating-countdown__task" id="floatingCountdownTask"></div>
           <div class="floating-countdown__time" id="floatingCountdownTime">00:00</div>
+          <button class="floating-countdown__pause" id="floatingCountdownPause" type="button" title="Pause timer" aria-label="Pause timer">❚❚</button>
         </div>
 
         <main class="main" id="main">
@@ -94,6 +95,13 @@
             aria-labelledby="tasksHeading"
           >
             <h2 class="card-title" id="tasksHeading">DUE TODAY:</h2>
+
+            <div class="current-task is-hidden" id="currentTaskText">
+              <span class="current-task__label">CURRENT:</span>
+              <span class="current-task__tab"></span>
+              <span class="current-task__sep">→</span>
+              <span class="current-task__task"></span>
+            </div>
 
             <ul class="task-list" id="taskList"></ul>
 
