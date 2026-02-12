@@ -177,17 +177,11 @@ function wireTimerPopup() {
   timerPopupWired = true;
   
   const overlay = document.getElementById("timerPopupOverlay");
-  const closeBtn = document.getElementById("closeTimerPopup");
   const closeXBtn = document.getElementById("closeTimerX");
   const openBtn = document.getElementById("openTimerBtn");
   
   if (openBtn) {
     openBtn.addEventListener("click", () => openTimerPopup());
-  }
-  
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => closeTimerPopup());
-    closeBtn.addEventListener("touchend", (e) => { e.preventDefault(); closeTimerPopup(); });
   }
 
   if (closeXBtn) {
@@ -222,6 +216,9 @@ function openTimerModal(taskName) {
 
   taskText.textContent = `DONE WITH "${taskName || "THIS TASK"}"?`;
   overlay.classList.remove("is-hidden");
+  
+  // Dispatch event for sound effect
+  document.dispatchEvent(new CustomEvent("timer:complete"));
 }
 
 function closeTimerModal() {
@@ -234,7 +231,6 @@ function wireTimerModal() {
   const overlay = document.getElementById("timerOverlay");
   const doneBtn = document.getElementById("timerDoneBtn");
   const notDoneBtn = document.getElementById("timerNotDoneBtn");
-  const newTaskBtn = document.getElementById("timerNewTaskBtn");
 
   if (doneBtn) {
     doneBtn.addEventListener("click", () => {
@@ -243,6 +239,12 @@ function wireTimerModal() {
         if (tabKey && taskText) completeTask(tabKey, taskText);
       }
       closeTimerModal();
+      // Scroll to task input
+      const taskInput = document.getElementById("taskInput");
+      if (taskInput) {
+        taskInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => taskInput.focus(), 500);
+      }
     });
   }
 
@@ -250,13 +252,6 @@ function wireTimerModal() {
     notDoneBtn.addEventListener("click", () => {
       closeTimerModal();
       addTimeMinutes(5);
-    });
-  }
-
-  if (newTaskBtn) {
-    newTaskBtn.addEventListener("click", () => {
-      closeTimerModal();
-      openTimerPopup();
     });
   }
 
@@ -274,15 +269,24 @@ function wireTimerModal() {
 function wirePrizeModalClose() {
   const overlay = document.getElementById("prizeOverlay");
   const btn = document.getElementById("backToItBtn");
+  const closeX = document.getElementById("closePrizeX");
 
   if (btn)
     btn.addEventListener("click", () => {
       closePrizeModal();
-      const completedCard = document.getElementById("completedCard");
-      if (completedCard) {
-        completedCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Scroll to task input
+      const taskInput = document.getElementById("taskInput");
+      if (taskInput) {
+        taskInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => taskInput.focus(), 500);
       }
     });
+
+  if (closeX) {
+    closeX.addEventListener("click", () => {
+      closePrizeModal();
+    });
+  }
 
   // click outside modal closes
   if (overlay) {
@@ -770,6 +774,9 @@ function renderTasks(tabKey) {
       });
     }
   });
+  
+  // Dispatch event to notify interactive features
+  document.dispatchEvent(new CustomEvent("tasks:updated"));
 }
 
 function completeTask(tabKey, taskText) {
@@ -1541,17 +1548,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const PG_STORAGE_KEY = "dsigdt_pg_mode";
 
   const TEXT_MAP = {
-    titleLine1:       { punk: "DUMB shit",                    pg: "My Tasks" },
-    titleLine2:       { punk: "I GOTta dO TODay",             pg: "For Today" },
+    titleLine1:       { punk: "DUMB shit",                    pg: "SILLY STUFF" },
+    titleLine2:       { punk: "I GOTta dO TODay",             pg: "TO DO TODAY" },
     completedHeading: { punk: "SHIT I DID:",                  pg: "COMPLETED:" },
     resetBtn:         { punk: "🧨 RESET EVERYTHING",          pg: "Reset Everything" },
     prizeLine1:       { punk: "GOOD JOB",                     pg: "GREAT JOB" },
     prizeLine2:       { punk: "DUMMY!",                       pg: "SUPERSTAR!" },
-    prizeSubtitle:    { punk: "YOU GET TO PICK A PRIZE...",    pg: "You earned a reward!" },
+    prizeSubtitle:    { punk: "PICK A PRIZE",                 pg: "You earned a reward!" },
     prizeNote:        { punk: "or you can stare at this cute dumb cat", pg: "enjoy this cute cat!" },
-    backToItBtn:      { punk: "NOW GET BACK TO WORK!",        pg: "Keep Up the Great Work!" },
+    backToItBtn:      { punk: "NOW GET BACK TO WORK DUMMY",   pg: "KEEP UP THE GREAT WORK!" },
     timerChooseLabel: { punk: "CHOOSE VIOLENCE:",             pg: "SELECT YOUR TASK:" },
-    timerChooseHint:  { punk: "(PICK A TAB / PICK A TASK)",   pg: "(Choose a list / Choose a task)" },
+    timerChooseHint:  { punk: "(PICK A TAB / PICK A TASK)",   pg: "(Choose a tab / Choose a task)" },
     timerFooterMsg:   { punk: "→ MURDER TASKS! ✅ GET A PRIZE!", pg: "→ Complete tasks! ✅ Earn a reward!" },
   };
 
@@ -1610,4 +1617,29 @@ document.addEventListener("DOMContentLoaded", () => {
   // Restore saved preference (always call setPgMode to set toggle state)
   const savedPg = localStorage.getItem(PG_STORAGE_KEY);
   setPgMode(savedPg === "1");
+  
+  // ===== TASK REORDERING (for drag & drop) =====
+  document.addEventListener("task:reorder", (event) => {
+    const { tabKey, fromTask, toTask } = event.detail;
+    
+    const tasks = TASKS_BY_TAB[tabKey];
+    if (!tasks) return;
+    
+    const fromIdx = tasks.indexOf(fromTask);
+    const toIdx = tasks.indexOf(toTask);
+    
+    if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return;
+    
+    // Remove from old position
+    tasks.splice(fromIdx, 1);
+    
+    // Calculate new insertion index after removal
+    // If we moved item down, toIdx decreases by 1
+    const insertIdx = fromIdx < toIdx ? toIdx - 1 : toIdx;
+    tasks.splice(insertIdx, 0, fromTask);
+    
+    saveState();
+    renderTasks(tabKey);
+    buildFocusSelect();
+  });
 });

@@ -67,8 +67,6 @@
             DON'T FORGET
           </button>
         </nav>
-        <p class="tabs-hint" id="tabsHint">DOUBLE-CLICK A TAB TO RENAME IT</p>
-
         <button
           class="floating-timer"
           type="button"
@@ -87,6 +85,60 @@
           <button class="floating-countdown__pause" id="floatingCountdownPause" type="button" title="Pause timer" aria-label="Pause timer">❚❚</button>
         </div>
 
+        <!-- Sound toggle button -->
+        <button class="sound-toggle" id="soundToggle" type="button" title="Toggle sound effects" aria-label="Toggle sound effects">
+          🔊
+        </button>
+
+        <!-- HOW TO GUIDE -->
+        <section class="card card--howto" id="howtoCard">
+          <details class="howto-details">
+            <summary class="howto-toggle">📖 HOW THIS WORKS</summary>
+            <div class="howto-content">
+              <div class="howto-section">
+                <h3>📝 TASKS</h3>
+                <ul>
+                  <li>Type in the box and hit ADD to create a task</li>
+                  <li>Click a task to select it as your CURRENT focus</li>
+                  <li>Check the box to mark it done</li>
+                  <li>Double-click a task to edit its text</li>
+                </ul>
+              </div>
+              <div class="howto-section">
+                <h3>📂 TABS</h3>
+                <ul>
+                  <li>Use tabs to organize: DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET</li>
+                  <li>Double-click any tab name to rename it</li>
+                  <li>Tasks are saved per tab</li>
+                </ul>
+              </div>
+              <div class="howto-section">
+                <h3>⏱️ TIMER</h3>
+                <ul>
+                  <li>Click the TIMER button (top right) to open it</li>
+                  <li>Pick a tab + task, set your time, hit START</li>
+                  <li>A floating countdown shows while you work</li>
+                  <li>When time's up: mark it done or add 5 more minutes</li>
+                </ul>
+              </div>
+              <div class="howto-section">
+                <h3>🎉 PRIZES</h3>
+                <ul>
+                  <li>Finish ALL tasks in a tab = confetti + prize!</li>
+                  <li>You earned it. Pick a reward.</li>
+                </ul>
+              </div>
+              <div class="howto-section">
+                <h3>🔀 MODES</h3>
+                <ul>
+                  <li>Toggle the switch to flip between $H!T MODE and PG MODE</li>
+                  <li>$H!T MODE = punk vibes, PG MODE = clean and friendly</li>
+                </ul>
+              </div>
+            </div>
+          </details>
+        </section>
+
         <main class="main" id="main">
           <!-- TASKS -->
           <section
@@ -95,13 +147,6 @@
             aria-labelledby="tasksHeading"
           >
             <h2 class="card-title" id="tasksHeading">DUE TODAY:</h2>
-
-            <div class="current-task is-hidden" id="currentTaskText">
-              <span class="current-task__label">CURRENT:</span>
-              <span class="current-task__tab"></span>
-              <span class="current-task__sep">→</span>
-              <span class="current-task__task"></span>
-            </div>
 
             <ul class="task-list" id="taskList"></ul>
 
@@ -157,55 +202,6 @@
           </section>
         </main>
 
-        <!-- HOW TO GUIDE -->
-        <section class="card card--howto" id="howtoCard">
-          <details class="howto-details">
-            <summary class="howto-toggle">📖 HOW THIS WORKS</summary>
-            <div class="howto-content">
-              <div class="howto-section">
-                <h3>📝 TASKS</h3>
-                <ul>
-                  <li>Type in the box and hit ADD to create a task</li>
-                  <li>Click a task to select it as your CURRENT focus</li>
-                  <li>Check the box to mark it done</li>
-                  <li>Double-click a task to edit its text</li>
-                </ul>
-              </div>
-              <div class="howto-section">
-                <h3>📂 TABS</h3>
-                <ul>
-                  <li>Use tabs to organize: DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET</li>
-                  <li>Double-click any tab name to rename it</li>
-                  <li>Tasks are saved per tab</li>
-                </ul>
-              </div>
-              <div class="howto-section">
-                <h3>⏱️ TIMER</h3>
-                <ul>
-                  <li>Click the TIMER button (top right) to open it</li>
-                  <li>Pick a tab + task, set your time, hit START</li>
-                  <li>A floating countdown shows while you work</li>
-                  <li>When time's up: mark it done or add 5 more minutes</li>
-                </ul>
-              </div>
-              <div class="howto-section">
-                <h3>🎉 PRIZES</h3>
-                <ul>
-                  <li>Finish ALL tasks in a tab = confetti + prize!</li>
-                  <li>You earned it. Pick a reward.</li>
-                </ul>
-              </div>
-              <div class="howto-section">
-                <h3>🔀 MODES</h3>
-                <ul>
-                  <li>Toggle the switch to flip between $H!T MODE and PG MODE</li>
-                  <li>$H!T MODE = punk vibes, PG MODE = clean and friendly</li>
-                </ul>
-              </div>
-            </div>
-          </details>
-        </section>
-
         <!-- MUSIC PLAYER -->
         <!-- <footer class="music" id="musicPlayer" aria-label="Music player">
           <div class="music-title">NOW PLAYING:</div>
@@ -247,12 +243,17 @@
       aria-labelledby="prizeTitle"
     >
       <div class="modal" id="prizeModal">
+        <button class="modal-close-x" id="closePrizeX" type="button" title="Close" aria-label="Close">✕</button>
+        
         <h2 class="modal-title" id="prizeTitle">
           <span class="modal-title-line1" id="prizeLine1">GOOD JOB</span>
           <span class="modal-title-line2" id="prizeLine2">DUMMY!</span>
         </h2>
+        
+        <p class="prize-roast" id="prizeRoast"></p>
+        
         <p class="modal-subtitle" id="prizeSubtitle">
-          YOU GET TO PICK A PRIZE...
+          PICK A PRIZE
         </p>
 
         <ul class="prize-list" id="prizeList">
@@ -260,8 +261,6 @@
           <li>TAKE A QUICK NAP.</li>
           <li>GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.</li>
         </ul>
-
-        <p class="prize-roast" id="prizeRoast"></p>
 
         <img class="prize-gif" src="https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif" alt="Cute cat"/>
         <p class="prize-note" id="prizeNote">or you can stare at this cute dumb cat</p>
@@ -349,12 +348,6 @@
           <button class="btn" id="pauseBtn" type="button">PAUSE</button>
           <button class="btn" id="resetTimerBtn" type="button">RESET</button>
         </div>
-
-        <div class="timer-footer-actions">
-          <button class="btn btn--close" id="closeTimerPopup" type="button">
-            CLOSE
-          </button>
-        </div>
       </div>
     </div>
 
@@ -370,7 +363,7 @@
         <h2 class="modal-title" id="timerModalTitle">TIME'S UP</h2>
         <p class="modal-subtitle" id="timerModalTask">DONE WITH THIS TASK?</p>
         <p class="modal-hint" id="timerModalHint">
-          Need more time? Add 5 minutes or pick a new task + timer.
+          Need more time? Add 5 minutes.
         </p>
 
         <div class="timer-modal-actions">
@@ -380,9 +373,6 @@
           <button class="btn" id="timerNotDoneBtn" type="button">
             NOT YET (+5 MIN)
           </button>
-          <button class="btn btn--ghost" id="timerNewTaskBtn" type="button">
-            PICK NEW TASK + TIMER
-          </button>
         </div>
       </div>
     </div>
@@ -390,5 +380,6 @@
     <script src="./js/app.js" defer></script>
     <script src="./js/tasks-edit.js" defer></script>
     <script src="./js/enhanced-features.js" defer></script>
+    <script src="./js/interactive-features.js" defer></script>
   </body>
 </html>
