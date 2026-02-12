@@ -1,4 +1,5 @@
-console.log("App loaded — feature/test-inline-edit");
+// feature/test-inline-edit
+// Or use a debug flag if needed
 
 /* =====================================================
    DSIGDT — MVP v3.4 (CLEAN + CELEBRATION)
@@ -20,19 +21,35 @@ const STORAGE_KEY = "dsigdt_state_v1";
 
 const TAB_ORDER = ["dueToday", "soon", "asSoonAsICan", "dontForget"];
 
-const TAB_LABELS = {
+const TAB_LABELS_DEFAULT = {
   dueToday: "DUE TODAY",
   soon: "NEXT UP",
   asSoonAsICan: "WHEN I CAN",
   dontForget: "DON'T FORGET",
 };
 
-// Default seed (only used if no localStorage state exists)
+let TAB_LABELS = { ...TAB_LABELS_DEFAULT };
+
+// Default seed tasks — sassy for $H!T mode, friendly for PG mode
+const DEFAULT_TASKS_PUNK = {
+  dueToday: ["Shower (yes, today)", "Take your damn meds", "Answer that email you've been ignoring"],
+  soon: ["Clean the kitchen before it becomes sentient", "Drag yourself to the grocery store"],
+  asSoonAsICan: ["Organize closet (stop pretending you will)", "Call the dentist already"],
+  dontForget: ["Buy cat food or face the consequences", "Pay credit card before they find you"],
+};
+
+const DEFAULT_TASKS_PG = {
+  dueToday: ["Take a nice shower", "Take your vitamins", "Breathe & stretch for 5 min"],
+  soon: ["Tidy up the kitchen", "Quick grocery run"],
+  asSoonAsICan: ["Organize your closet", "Schedule a dentist appointment"],
+  dontForget: ["Pick up pet food", "Pay credit card bill"],
+};
+
 let TASKS_BY_TAB = {
-  dueToday: ["Email landlord", "Finish capstone work", "Take meds"],
-  soon: ["Clean kitchen", "Grocery run"],
-  asSoonAsICan: ["Organize closet", "Call dentist"],
-  dontForget: ["Buy cat food", "Pay credit card"],
+  dueToday: [],
+  soon: [],
+  asSoonAsICan: [],
+  dontForget: [],
 };
 
 let COMPLETED_TASKS = {
@@ -81,9 +98,44 @@ function initTabCompleteLast() {
   });
 }
 
+/* Roast messages (module-level so prize modal can use them) */
+const ROAST_MESSAGES_PUNK = [
+  "WOW YOU ACTUALLY DID SOMETHING 🎉",
+  "LOOK AT YOU, BEING A FUNCTIONAL HUMAN 💅",
+  "ONE DOWN, A MILLION TO GO 🔥",
+  "THAT WASN'T SO HARD, WAS IT? 😏",
+  "YOUR MOM WOULD BE SO PROUD RN 🥲",
+  "OKAY OKAY, I SEE YOU WORKING 👀",
+  "SOMEBODY GIVE THIS PERSON A COOKIE 🍪",
+  "BET THAT FELT GOOD, DIDN'T IT? 😎",
+  "NOW DO ANOTHER ONE. DON'T STOP. 💪",
+  "ARE YOU... ACTUALLY BEING PRODUCTIVE?! 😱",
+];
+
+const ROAST_MESSAGES_PG = [
+  "NICE WORK! YOU'RE DOING GREAT! 🌟",
+  "ANOTHER ONE DONE — YOU'RE ON A ROLL! ✨",
+  "LOOK AT THAT PROGRESS! 🎉",
+  "YOU SHOULD BE PROUD OF YOURSELF! 💙",
+  "KEEP GOING, YOU'RE AMAZING! 🙌",
+  "ONE STEP CLOSER TO YOUR GOALS! 🚀",
+  "WONDERFUL JOB! TREAT YOURSELF! 🍫",
+  "PRODUCTIVITY LOOKS GOOD ON YOU! 😊",
+  "YOU'RE MAKING IT HAPPEN! 💪",
+  "THAT'S THE WAY TO DO IT! ⭐",
+];
+
 function openPrizeModal() {
   const overlay = document.getElementById("prizeOverlay");
   if (!overlay) return;
+
+  // Show a roast message inside the prize modal
+  const roastEl = document.getElementById("prizeRoast");
+  if (roastEl) {
+    const messages = window._pgMode ? ROAST_MESSAGES_PG : ROAST_MESSAGES_PUNK;
+    roastEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+  }
+
   overlay.classList.remove("is-hidden");
 }
 
@@ -93,6 +145,70 @@ function closePrizeModal() {
   overlay.classList.add("is-hidden");
 }
 
+function openTimerPopup() {
+  const overlay = document.getElementById("timerPopupOverlay");
+  if (!overlay) return;
+  overlay.classList.remove("is-hidden");
+  syncTimerBubble(true);
+  // Make timer icon faint while popup is open
+  const timerBtn = document.getElementById("openTimerBtn");
+  if (timerBtn) timerBtn.classList.add("timer--faint");
+}
+
+function isTimerPopupOpen() {
+  const overlay = document.getElementById("timerPopupOverlay");
+  return overlay && !overlay.classList.contains("is-hidden");
+}
+
+function closeTimerPopup() {
+  const overlay = document.getElementById("timerPopupOverlay");
+  if (!overlay) return;
+  overlay.classList.add("is-hidden");
+  syncTimerBubble();
+  // Restore timer icon visibility
+  const timerBtn = document.getElementById("openTimerBtn");
+  if (timerBtn) timerBtn.classList.remove("timer--faint");
+}
+
+let timerPopupWired = false;
+
+function wireTimerPopup() {
+  if (timerPopupWired) return; // Prevent multiple wirings
+  timerPopupWired = true;
+  
+  const overlay = document.getElementById("timerPopupOverlay");
+  const closeXBtn = document.getElementById("closeTimerX");
+  const openBtn = document.getElementById("openTimerBtn");
+  
+  if (openBtn) {
+    openBtn.addEventListener("click", () => openTimerPopup());
+  }
+
+  if (closeXBtn) {
+    closeXBtn.addEventListener("click", () => closeTimerPopup());
+    closeXBtn.addEventListener("touchend", (e) => { e.preventDefault(); closeTimerPopup(); });
+  }
+  
+  if (overlay) {
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) closeTimerPopup();
+    });
+    // Also handle touchend for mobile close
+    overlay.addEventListener("touchend", (event) => {
+      if (event.target === overlay) {
+        event.preventDefault();
+        closeTimerPopup();
+      }
+    });
+  }
+  
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && overlay && !overlay.classList.contains("is-hidden")) {
+      closeTimerPopup();
+    }
+  });
+}
+
 function openTimerModal(taskName) {
   const overlay = document.getElementById("timerOverlay");
   const taskText = document.getElementById("timerModalTask");
@@ -100,6 +216,9 @@ function openTimerModal(taskName) {
 
   taskText.textContent = `DONE WITH "${taskName || "THIS TASK"}"?`;
   overlay.classList.remove("is-hidden");
+  
+  // Dispatch event for sound effect
+  document.dispatchEvent(new CustomEvent("timer:complete"));
 }
 
 function closeTimerModal() {
@@ -111,8 +230,6 @@ function closeTimerModal() {
 function wireTimerModal() {
   const overlay = document.getElementById("timerOverlay");
   const doneBtn = document.getElementById("timerDoneBtn");
-  const addTimeBtn = document.getElementById("timerAddTimeBtn");
-  const addTimeSelect = document.getElementById("timerAddSelect");
   const notDoneBtn = document.getElementById("timerNotDoneBtn");
 
   if (doneBtn) {
@@ -122,19 +239,19 @@ function wireTimerModal() {
         if (tabKey && taskText) completeTask(tabKey, taskText);
       }
       closeTimerModal();
+      // Scroll to task input
+      const taskInput = document.getElementById("taskInput");
+      if (taskInput) {
+        taskInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => taskInput.focus(), 500);
+      }
     });
   }
 
   if (notDoneBtn) {
-    notDoneBtn.addEventListener("click", () => closeTimerModal());
-  }
-
-  if (addTimeBtn) {
-    addTimeBtn.addEventListener("click", () => {
-      const seconds = Number(addTimeSelect?.value ?? 300);
-      const minutes = Math.max(1, Math.round(seconds / 60));
-      addTimeMinutes(minutes);
+    notDoneBtn.addEventListener("click", () => {
       closeTimerModal();
+      addTimeMinutes(5);
     });
   }
 
@@ -152,8 +269,24 @@ function wireTimerModal() {
 function wirePrizeModalClose() {
   const overlay = document.getElementById("prizeOverlay");
   const btn = document.getElementById("backToItBtn");
+  const closeX = document.getElementById("closePrizeX");
 
-  if (btn) btn.addEventListener("click", () => closePrizeModal());
+  if (btn)
+    btn.addEventListener("click", () => {
+      closePrizeModal();
+      // Scroll to task input
+      const taskInput = document.getElementById("taskInput");
+      if (taskInput) {
+        taskInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => taskInput.focus(), 500);
+      }
+    });
+
+  if (closeX) {
+    closeX.addEventListener("click", () => {
+      closePrizeModal();
+    });
+  }
 
   // click outside modal closes
   if (overlay) {
@@ -272,6 +405,7 @@ function saveState() {
     activeTabKey,
     focusScope,
     selectedFocusValue,
+    tabLabels: TAB_LABELS,
   };
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -281,9 +415,19 @@ function saveState() {
   }
 }
 
+function seedDefaultTasks() {
+  const defaults = window._pgMode ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
+  TAB_ORDER.forEach((k) => {
+    if (defaults[k]) TASKS_BY_TAB[k] = [...defaults[k]];
+  });
+}
+
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return;
+  if (!raw) {
+    seedDefaultTasks();
+    return;
+  }
 
   try {
     const parsed = JSON.parse(raw);
@@ -303,6 +447,9 @@ function loadState() {
     if (typeof parsed.focusScope === "string") focusScope = parsed.focusScope;
     if (typeof parsed.selectedFocusValue === "string")
       selectedFocusValue = parsed.selectedFocusValue;
+    if (parsed.tabLabels && typeof parsed.tabLabels === "object") {
+      TAB_LABELS = { ...TAB_LABELS_DEFAULT, ...parsed.tabLabels };
+    }
 
     normalizeState();
     // Ensure the baseline for celebration logic reflects the loaded state
@@ -376,6 +523,7 @@ function updateProgress() {
   const completedCount = document.getElementById("completedCount");
   const breakdown = document.getElementById("progressBreakdown");
   const ring = document.getElementById("progressRing");
+  const funBar = document.getElementById("funProgressBar");
 
   let total = 0;
   let done = 0;
@@ -384,6 +532,8 @@ function updateProgress() {
     total += (TASKS_BY_TAB[tabKey] || []).length;
     done += (COMPLETED_TASKS[tabKey] || []).length;
   });
+
+  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
 
   if (completedCount) {
     completedCount.textContent = `${done}/${total}`;
@@ -396,7 +546,6 @@ function updateProgress() {
   }
 
   if (ring) {
-    const percent = total > 0 ? Math.round((done / total) * 100) : 0;
     ring.style.setProperty("--progress", `${percent}`);
     ring.setAttribute("aria-label", `${percent}% complete`);
   }
@@ -410,6 +559,25 @@ function updateProgress() {
       li.textContent = `${TAB_LABELS[tabKey]}: ${d} / ${t}`;
       breakdown.appendChild(li);
     });
+  }
+
+  // Fun progress bar
+  if (funBar) {
+    const fill = funBar.querySelector(".fun-progress__fill");
+    const label = funBar.querySelector(".fun-progress__label");
+    if (fill) fill.style.width = percent + "%";
+    if (label) {
+      const isPg = window._pgMode;
+      let msg = "";
+      if (total === 0) msg = isPg ? "Add some tasks!" : "ADD SOME SHIT!";
+      else if (percent === 0) msg = isPg ? "Let's get started!" : "GET OFF YOUR ASS! 🔥";
+      else if (percent < 25) msg = isPg ? "Good start! Keep going!" : "BABY STEPS... 👶";
+      else if (percent < 50) msg = isPg ? "Making progress! ✨" : "OKAY NOT BAD... 🤔";
+      else if (percent < 75) msg = isPg ? "Over halfway! 🎉" : "HALFWAY THERE, LEGEND 💪";
+      else if (percent < 100) msg = isPg ? "Almost done! 🌟" : "SO CLOSE I CAN TASTE IT 🔥🔥";
+      else msg = isPg ? "All done! Amazing! 🏆" : "YOU ABSOLUTE BEAST!! 🏆🎉💀";
+      label.textContent = msg;
+    }
   }
 }
 
@@ -436,7 +604,26 @@ function renderCompletedGrouped() {
 
     done.forEach((taskText) => {
       const li = document.createElement("li");
-      li.textContent = taskText;
+      li.style.display = "flex";
+      li.style.alignItems = "center";
+      li.style.justifyContent = "space-between";
+
+      const textSpan = document.createElement("span");
+      textSpan.textContent = taskText;
+      li.appendChild(textSpan);
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "task-delete completed-delete";
+      deleteBtn.type = "button";
+      deleteBtn.title = "Remove task";
+      deleteBtn.setAttribute("aria-label", "Remove task");
+      deleteBtn.textContent = "✕";
+      deleteBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        deleteTask(tabKey, taskText);
+      });
+      li.appendChild(deleteBtn);
+
       ul.appendChild(li);
     });
 
@@ -504,6 +691,10 @@ function setSelectedFocus(value) {
   syncCurrentTaskText();
   renderTasks(activeTabKey);
   saveState();
+  syncTimerBubble();
+  
+  // Don't auto-open timer popup - let users manually open it
+  // This allows double-click editing to work without interference
 }
 
 function clearSelectedFocus() {
@@ -526,6 +717,8 @@ function renderTasks(tabKey) {
 
     const li = document.createElement("li");
     li.className = "task";
+    li.dataset.tab = tabKey;
+    li.dataset.task = taskText;
     if (value === selectedFocusValue) li.classList.add("task--selected");
 
     li.innerHTML = `
@@ -533,6 +726,7 @@ function renderTasks(tabKey) {
         <input class="task-checkbox" type="checkbox" />
         <span class="task-text"></span>
       </label>
+      <button class="task-delete" type="button" title="Delete task" aria-label="Delete task">✕</button>
     `;
 
     // --- NEW: attach identifying data so inline editor can find and update this task ---
@@ -543,7 +737,10 @@ function renderTasks(tabKey) {
     }
     // -------------------------------------------------------------------------------
 
-    li.querySelector(".task-text").textContent = taskText;
+    const textEl = li.querySelector(".task-text");
+    textEl.textContent = taskText;
+    textEl.setAttribute("tabindex", "0");
+    textEl.setAttribute("role", "textbox");
     taskList.appendChild(li);
 
     const checkbox = li.querySelector(".task-checkbox");
@@ -551,8 +748,9 @@ function renderTasks(tabKey) {
     // Prevent checkbox click from selecting the row
     checkbox.addEventListener("click", (event) => event.stopPropagation());
 
-    // Click row selects CURRENT task
+    // Click row selects CURRENT task (skip if inline-editing)
     li.addEventListener("click", () => {
+      if (window.enhancedFeatures && window.enhancedFeatures.isEditingTask()) return;
       const focusTabSelect = document.getElementById("focusTabSelect");
       if (focusTabSelect && focusScope !== "all" && focusScope !== tabKey) {
         focusScope = "all";
@@ -566,7 +764,19 @@ function renderTasks(tabKey) {
       if (!event.target.checked) return;
       completeTask(tabKey, taskText);
     });
+
+    // Delete button removes task
+    const deleteBtn = li.querySelector(".task-delete");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        deleteTask(tabKey, taskText);
+      });
+    }
   });
+  
+  // Dispatch event to notify interactive features
+  document.dispatchEvent(new CustomEvent("tasks:updated"));
 }
 
 function completeTask(tabKey, taskText) {
@@ -587,6 +797,32 @@ function completeTask(tabKey, taskText) {
 
   // ✅ celebration after UI updates
   celebrateIfTabJustCompleted(tabKey);
+}
+
+function deleteTask(tabKey, taskText) {
+  const tasks = TASKS_BY_TAB[tabKey];
+  if (!tasks) return;
+
+  const idx = tasks.indexOf(taskText);
+  if (idx > -1) tasks.splice(idx, 1);
+
+  // Also remove from completed if present
+  const completed = COMPLETED_TASKS[tabKey];
+  if (completed) {
+    const cIdx = completed.indexOf(taskText);
+    if (cIdx > -1) completed.splice(cIdx, 1);
+  }
+
+  const value = makeTaskValue(tabKey, taskText);
+  if (selectedFocusValue === value) selectedFocusValue = "";
+
+  syncTabCompleteLast(tabKey);
+  saveState();
+  syncCurrentTaskText();
+  renderTasks(activeTabKey);
+  renderCompletedGrouped();
+  buildFocusSelect();
+  updateProgress();
 }
 
 /* -------------------------------
@@ -713,25 +949,215 @@ function wireResetButton(tabsNodeList) {
    Timer (minimal wiring)
 -------------------------------- */
 function formatTime(seconds) {
-  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const hh = String(Math.floor(seconds / 3600)).padStart(2, "0");
+  const mm = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
   const ss = String(seconds % 60).padStart(2, "0");
-  return `${mm}:${ss}`;
+  if (hh === "00") return `${mm}:${ss}`;
+  return `${hh}:${mm}:${ss}`;
+}
+
+function syncTimerBubble(forceHide = false) {
+  const bubble = document.getElementById("timerBubble");
+  const floatBtn = document.getElementById("openTimerBtn");
+  const floatingCountdown = document.getElementById("floatingCountdown");
+  const floatingTime = document.getElementById("floatingCountdownTime");
+  const floatingTask = document.getElementById("floatingCountdownTask");
+  if (!bubble || !floatBtn) return;
+
+  const displaySeconds =
+    remainingSeconds > 0 ? remainingSeconds : getSelectedDurationSeconds();
+
+  bubble.textContent = formatTime(Math.max(0, displaySeconds));
+
+  // Update floating countdown widget - show whenever timer is running
+  const isRunning = intervalId !== null;
+  if (floatingCountdown && floatingTime) {
+    floatingCountdown.classList.toggle("is-visible", !!isRunning);
+    if (isRunning) {
+      floatingTime.textContent = formatTime(Math.max(0, displaySeconds));
+      if (floatingTask && selectedFocusValue) {
+        const { tabKey, taskText } = parseTaskValue(selectedFocusValue);
+        floatingTask.textContent = `${TAB_LABELS[tabKey] || tabKey}: ${taskText}`;
+      }
+    }
+  }
+
+  // Hide timer bubble when floating countdown is visible (avoid duplicate timers)
+  const shouldShow =
+    !forceHide &&
+    selectedFocusValue &&
+    !isRunning;
+
+  bubble.classList.toggle("is-hidden", !shouldShow);
+  floatBtn.classList.toggle("is-running", intervalId !== null);
+  // Hide timer icon entirely when timer is running (floating countdown is visible instead)
+  floatBtn.classList.toggle("timer--hidden", isRunning);
 }
 
 function setTimerDisplay(seconds) {
-  const el = document.getElementById("timerDisplay");
-  if (el) el.textContent = formatTime(seconds);
+  syncTimerBubble();
 }
 
 function getSelectedDurationSeconds() {
-  const durationSelect = document.getElementById("durationSelect");
-  const n = Number(durationSelect?.value ?? 900);
-  return Number.isFinite(n) ? n : 900;
+  if (!window._dialValues) return 0;
+  const h = window._dialValues.hours || 0;
+  const m = window._dialValues.minutes || 0;
+  const s = window._dialValues.seconds || 0;
+  return h * 3600 + m * 60 + s;
 }
 
 function resetTimerToSelectedDuration() {
   remainingSeconds = getSelectedDurationSeconds();
   setTimerDisplay(remainingSeconds);
+  syncTimerBubble();
+}
+
+/* Scrollable Dial Picker */
+function buildDialColumn(container, count, initialValue) {
+  container.innerHTML = "";
+
+  // Add top spacer so first item can be centered in the scroll view
+  const topSpacer = document.createElement("div");
+  topSpacer.className = "dial-spacer";
+  container.appendChild(topSpacer);
+
+  for (let i = 0; i < count; i++) {
+    const item = document.createElement("div");
+    item.className = "dial-item";
+    item.dataset.value = i;
+    item.textContent = String(i).padStart(2, "0");
+    if (i === initialValue) item.classList.add("dial-item--selected");
+    container.appendChild(item);
+  }
+
+  // Add bottom spacer so last item can be centered
+  const bottomSpacer = document.createElement("div");
+  bottomSpacer.className = "dial-spacer";
+  container.appendChild(bottomSpacer);
+
+  // Size spacers so first/last items can be centered (half container minus half item height)
+    requestAnimationFrame(() => {
+    const itemHeight = 40; // matches .dial-item height in CSS
+    const spacerHeight = Math.max(0, container.offsetHeight / 2 - itemHeight / 2);
+    topSpacer.style.height = spacerHeight + "px";
+    bottomSpacer.style.height = spacerHeight + "px";
+
+    const selected = container.querySelector(".dial-item--selected");
+    if (selected) {
+      container.scrollTop = selected.offsetTop - container.offsetHeight / 2 + selected.offsetHeight / 2;
+    }
+  });
+}
+
+function getDialValue(container) {
+  const selected = container.querySelector(".dial-item--selected");
+  return selected ? Number(selected.dataset.value) : 0;
+}
+
+function wireDialScroll(container, onChange) {
+  let scrollTimeout = null;
+
+  function snapToNearest() {
+    const items = container.querySelectorAll(".dial-item");
+    const containerRect = container.getBoundingClientRect();
+    const centerY = containerRect.top + containerRect.height / 2;
+    let closest = null;
+    let closestDist = Infinity;
+
+    items.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      const itemCenter = rect.top + rect.height / 2;
+      const dist = Math.abs(itemCenter - centerY);
+      if (dist < closestDist) {
+        closestDist = dist;
+        closest = item;
+      }
+    });
+
+    if (closest) {
+      items.forEach((i) => i.classList.remove("dial-item--selected"));
+      closest.classList.add("dial-item--selected");
+      closest.scrollIntoView({ block: "center", behavior: "smooth" });
+      if (onChange) onChange(Number(closest.dataset.value));
+    }
+  }
+
+  container.addEventListener("scroll", () => {
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(snapToNearest, 120);
+  });
+
+  // Click to select
+  container.addEventListener("click", (e) => {
+    const item = e.target.closest(".dial-item");
+    if (!item) return;
+    container.querySelectorAll(".dial-item").forEach((i) => i.classList.remove("dial-item--selected"));
+    item.classList.add("dial-item--selected");
+    item.scrollIntoView({ block: "center", behavior: "smooth" });
+    if (onChange) onChange(Number(item.dataset.value));
+  });
+
+  // Keyboard support
+  container.addEventListener("keydown", (e) => {
+    const current = container.querySelector(".dial-item--selected");
+    if (!current) return;
+    let next = null;
+    if (e.key === "ArrowDown") {
+      next = current.nextElementSibling;
+      e.preventDefault();
+    } else if (e.key === "ArrowUp") {
+      next = current.previousElementSibling;
+      e.preventDefault();
+    }
+    if (next && next.classList.contains("dial-item")) {
+      container.querySelectorAll(".dial-item").forEach((i) => i.classList.remove("dial-item--selected"));
+      next.classList.add("dial-item--selected");
+      next.scrollIntoView({ block: "center", behavior: "smooth" });
+      if (onChange) onChange(Number(next.dataset.value));
+    }
+  });
+}
+
+function wireDialPicker() {
+  const hoursEl = document.getElementById("dialHours");
+  const minutesEl = document.getElementById("dialMinutes");
+  const secondsEl = document.getElementById("dialSeconds");
+  if (!hoursEl || !minutesEl || !secondsEl) return;
+
+  window._dialValues = { hours: 0, minutes: 0, seconds: 0 };
+
+  const MAX_TIMER_HOURS = 9; // 0 through 8 hours
+  buildDialColumn(hoursEl, MAX_TIMER_HOURS, 0);
+  buildDialColumn(minutesEl, 60, 0); // 0-59 minutes, default 0
+  buildDialColumn(secondsEl, 60, 0);  // 0-59 seconds
+
+  wireDialScroll(hoursEl, (v) => { window._dialValues.hours = v; });
+  wireDialScroll(minutesEl, (v) => { window._dialValues.minutes = v; });
+  wireDialScroll(secondsEl, (v) => { window._dialValues.seconds = v; });
+}
+
+function playTimerBell() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = (window._timerAudioCtx =
+      window._timerAudioCtx || new AudioCtx());
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(440, now + 0.7);
+    gain.gain.setValueAtTime(0.0, now);
+    gain.gain.linearRampToValueAtTime(0.4, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.9);
+  } catch (e) {
+    console.warn("Timer bell failed", e);
+  }
 }
 
 function startCountdown() {
@@ -743,6 +1169,17 @@ function startCountdown() {
   if (intervalId !== null) return;
   if (remainingSeconds <= 0) resetTimerToSelectedDuration();
 
+  // Still zero after reset means user hasn't set a duration on the dials
+  if (remainingSeconds <= 0) {
+    alert("Set a time first.");
+    return;
+  }
+
+  // Auto-close timer popup when starting
+  if (isTimerPopupOpen()) {
+    closeTimerPopup();
+  }
+
   intervalId = setInterval(() => {
     remainingSeconds -= 1;
     setTimerDisplay(remainingSeconds);
@@ -752,9 +1189,13 @@ function startCountdown() {
       remainingSeconds = 0;
       setTimerDisplay(0);
       const { taskText } = parseTaskValue(selectedFocusValue);
+      playTimerBell();
+      fireConfettiBurst();
+      // Show timer done modal first (prize comes after if task is completed)
       openTimerModal(taskText);
     }
   }, 1000);
+  syncTimerBubble();
 }
 
 function addTimeMinutes(minutes) {
@@ -764,79 +1205,136 @@ function addTimeMinutes(minutes) {
   startCountdown();
 }
 
-function parseCustomDuration(input) {
-  if (!input) return null;
-  const trimmed = String(input).trim();
-
-  if (trimmed.includes(":")) {
-    const [mmStr, ssStr] = trimmed.split(":");
-    const mm = Number(mmStr);
-    const ss = Number(ssStr);
-    if (!Number.isFinite(mm) || !Number.isFinite(ss)) return null;
-    if (mm < 0 || ss < 0 || ss > 59) return null;
-    return mm * 60 + ss;
-  }
-
-  const minutes = Number(trimmed);
-  if (!Number.isFinite(minutes) || minutes <= 0) return null;
-  return Math.round(minutes * 60);
-}
-
 function stopInterval() {
   if (intervalId !== null) {
     clearInterval(intervalId);
     intervalId = null;
   }
+  syncTimerBubble();
 }
 
 function wireTimer() {
   const startBtn = document.getElementById("startBtn");
   const pauseBtn = document.getElementById("pauseBtn");
-  const stopBtn = document.getElementById("stopBtn");
-  const durationSelect = document.getElementById("durationSelect");
-  const customHoursInput = document.getElementById("customHoursInput");
-  const customMinutesInput = document.getElementById("customMinutesInput");
+  const resetTimerBtn = document.getElementById("resetTimerBtn");
 
-  if (!startBtn || !pauseBtn || !stopBtn || !durationSelect) {
+  if (!startBtn || !pauseBtn) {
     console.warn("Timer elements missing. Check IDs in index.html.");
     return;
   }
 
+  wireDialPicker();
   resetTimerToSelectedDuration();
-
-  durationSelect.addEventListener("change", () => {
-    if (intervalId === null) resetTimerToSelectedDuration();
-  });
-
-  function applyCustomTimerStart() {
-    if (!customHoursInput || !customMinutesInput) return;
-    const hours = Number(customHoursInput.value || 0);
-    const minutes = Number(customMinutesInput.value || 0);
-    const seconds = Math.max(0, hours * 3600 + minutes * 60);
-    if (seconds <= 0) return;
-    stopInterval();
-    remainingSeconds = seconds;
-    setTimerDisplay(remainingSeconds);
-    startCountdown();
-  }
-
-  if (customHoursInput) {
-    customHoursInput.addEventListener("change", () => applyCustomTimerStart());
-  }
-  if (customMinutesInput) {
-    customMinutesInput.addEventListener("change", () =>
-      applyCustomTimerStart(),
-    );
-  }
 
   startBtn.addEventListener("click", () => startCountdown());
 
-  pauseBtn.addEventListener("click", () => stopInterval());
-
-  stopBtn.addEventListener("click", () => {
+  pauseBtn.addEventListener("click", () => {
     stopInterval();
-    resetTimerToSelectedDuration();
   });
+
+  if (resetTimerBtn) {
+    resetTimerBtn.addEventListener("click", () => {
+      stopInterval();
+      // Reset dial values and rebuild dials to default
+      window._dialValues = { hours: 0, minutes: 0, seconds: 0 };
+      const hoursEl = document.getElementById("dialHours");
+      const minutesEl = document.getElementById("dialMinutes");
+      const secondsEl = document.getElementById("dialSeconds");
+      if (hoursEl) buildDialColumn(hoursEl, 9, 0);
+      if (minutesEl) buildDialColumn(minutesEl, 60, 0);
+      if (secondsEl) buildDialColumn(secondsEl, 60, 0);
+      resetTimerToSelectedDuration();
+    });
+  }
+}
+
+/* -------------------------------
+   Draggable floating countdown
+-------------------------------- */
+function wireFloatingCountdown() {
+  const el = document.getElementById("floatingCountdown");
+  if (!el) return;
+
+  let isDragging = false;
+  let didDrag = false;
+  let startX = 0, startY = 0, startLeft = 0, startTop = 0;
+
+  el.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    didDrag = false;
+    el.classList.add("is-dragging");
+    const rect = el.getBoundingClientRect();
+    startX = e.clientX;
+    startY = e.clientY;
+    startLeft = rect.left;
+    startTop = rect.top;
+    e.preventDefault();
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    didDrag = true;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    el.style.left = (startLeft + dx) + "px";
+    el.style.top = (startTop + dy) + "px";
+    el.style.right = "auto";
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isDragging) {
+      isDragging = false;
+      el.classList.remove("is-dragging");
+    }
+  });
+
+  // Touch support
+  el.addEventListener("touchstart", (e) => {
+    isDragging = true;
+    didDrag = false;
+    el.classList.add("is-dragging");
+    const rect = el.getBoundingClientRect();
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    startLeft = rect.left;
+    startTop = rect.top;
+  }, { passive: true });
+
+  document.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    didDrag = true;
+    const touch = e.touches[0];
+    const dx = touch.clientX - startX;
+    const dy = touch.clientY - startY;
+    el.style.left = (startLeft + dx) + "px";
+    el.style.top = (startTop + dy) + "px";
+    el.style.right = "auto";
+  }, { passive: true });
+
+  document.addEventListener("touchend", () => {
+    if (isDragging) {
+      isDragging = false;
+      el.classList.remove("is-dragging");
+    }
+  });
+
+  // Click on countdown opens timer popup (only if not dragged)
+  el.addEventListener("click", (e) => {
+    if (e.target.closest(".floating-countdown__pause")) return;
+    if (!didDrag) {
+      openTimerPopup();
+    }
+  });
+
+  // Pause button on floating countdown
+  const pauseBtn = document.getElementById("floatingCountdownPause");
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      stopInterval();
+    });
+  }
 }
 
 /* -------------------------------
@@ -849,43 +1347,58 @@ document.addEventListener("DOMContentLoaded", () => {
   normalizeState();
   initTabCompleteLast();
 
+  // Apply custom tab labels to tab buttons and focus dropdown
+  function applyTabLabels() {
+    tabs.forEach((tab) => {
+      const key = tab.dataset.tab;
+      if (key && TAB_LABELS[key]) tab.textContent = TAB_LABELS[key];
+    });
+    // Update focus tab dropdown
+    const fts = document.getElementById("focusTabSelect");
+    if (fts) {
+      Array.from(fts.options).forEach((opt) => {
+        if (opt.value !== "all" && TAB_LABELS[opt.value]) {
+          opt.textContent = TAB_LABELS[opt.value];
+        }
+      });
+    }
+  }
+  applyTabLabels();
+
+  // Double-click tab to rename
+  tabs.forEach((tab) => {
+    tab.addEventListener("dblclick", (e) => {
+      e.stopPropagation();
+      const key = tab.dataset.tab;
+      if (!key) return;
+      const current = TAB_LABELS[key] || key;
+      const newName = prompt("Rename this tab:", current);
+      if (newName && newName.trim()) {
+        TAB_LABELS[key] = newName.trim().toUpperCase();
+        applyTabLabels();
+        syncHeadings(activeTabKey);
+        renderCompletedGrouped();
+        buildFocusSelect(selectedFocusValue);
+        saveState();
+      }
+    });
+  });
+
   wirePrizeModalClose();
   wireTimerModal();
+  wireTimerPopup();
+  wireFloatingCountdown();
   wireResetButton(tabs);
   wireAddTaskForm();
   wireFocusPickers();
   wireTimer();
 
-  // MAYBE TO DELETE LATER?
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const element = document.querySelector("section#tasksCard");
-
-    if (element) {
-      const parallaxSpeed = 0.3; // Adjust this value for different speeds
-
-      function updateParallax() {
-        const scrollTop =
-          window.pageYOffset || document.documentElement.scrollTop;
-        const yPos = -(scrollTop - element.offsetTop) * parallaxSpeed;
-        element.style.backgroundPosition = `center ${yPos}px`;
-      }
-
-      window.addEventListener("scroll", updateParallax);
-      updateParallax(); // Set initial position
-      console.log(
-        "JavaScript parallax effect applied with dirty paper background.",
-      );
-    } else {
-      console.warn(
-        "Element section#tasksCard not found, parallax not applied.",
-      );
-    }
-  });
-
   // Tab click behavior
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
+      // Skip if this is the timer button
+      if (tab.id === "openTimerBtn") return;
+      
       activeTabKey = tab.dataset.tab;
 
       const focusTabSelect = document.getElementById("focusTabSelect");
@@ -920,6 +1433,7 @@ document.addEventListener("DOMContentLoaded", () => {
   buildFocusSelect(selectedFocusValue);
   syncCurrentTaskText();
   updateProgress();
+  syncTimerBubble();
 
   // Listen for inline edits from tasks-edit.js or enhanced-features.js
   document.addEventListener("task:edited", (e) => {
@@ -956,70 +1470,176 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
   });
 
-  // Listen for task reorder event
-  document.addEventListener("tasks:reordered", (e) => {
-    const { tabKey, newOrder } = e.detail || {};
-    if (!tabKey || !Array.isArray(newOrder)) return;
+  // ===== FUN FEATURE: Motivational roast toasts on task completion =====
+  // (Roast message arrays are defined at module level for prize modal access)
 
-    // Update the tasks order
-    TASKS_BY_TAB[tabKey] = newOrder;
+  function showRoastToast() {
+    // If prize modal is about to show, skip toast — roast appears in prize modal instead
+    const prizeOverlay = document.getElementById("prizeOverlay");
+    if (prizeOverlay && !prizeOverlay.classList.contains("is-hidden")) return;
 
-    // Persist and refresh UI
-    saveState();
-    renderTasks(activeTabKey);
+    const messages = window._pgMode ? ROAST_MESSAGES_PG : ROAST_MESSAGES_PUNK;
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    const toast = document.createElement("div");
+    toast.className = "roast-toast";
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    // Trigger animation
+    requestAnimationFrame(() => toast.classList.add("roast-toast--show"));
+    setTimeout(() => {
+      toast.classList.remove("roast-toast--show");
+      toast.classList.add("roast-toast--hide");
+      setTimeout(() => toast.remove(), 400);
+    }, 3500);
+  }
+
+  // Hook into task completion via checkbox changes
+  document.getElementById("taskList")?.addEventListener("change", (e) => {
+    if (e.target.classList.contains("task-checkbox") && e.target.checked) {
+      showRoastToast();
+    }
   });
 
-  // Listen for task moved to different tab event
-  document.addEventListener("tasks:movedToTab", (e) => {
-    const { sourceTab, targetTab, taskText } = e.detail || {};
-    if (!sourceTab || !targetTab || !taskText) return;
+  // ===== FUN FEATURE: Task streak counter =====
+  const MS_PER_DAY = 24 * 60 * 60 * 1000; // milliseconds in one day
+  let streak = Number(localStorage.getItem("dsigdt_streak") || 0);
+  const lastDate = localStorage.getItem("dsigdt_streak_date");
+  const today = new Date().toDateString();
+  if (lastDate !== today) {
+    // Check if yesterday
+    const yesterday = new Date(Date.now() - MS_PER_DAY).toDateString();
+    if (lastDate !== yesterday) streak = 0;
+  }
 
-    // Remove from source tab
-    const sourceIdx = (TASKS_BY_TAB[sourceTab] || []).indexOf(taskText);
-    if (sourceIdx > -1) {
-      TASKS_BY_TAB[sourceTab].splice(sourceIdx, 1);
+  function bumpStreak() {
+    const now = new Date().toDateString();
+    if (localStorage.getItem("dsigdt_streak_date") !== now) {
+      streak++;
+      localStorage.setItem("dsigdt_streak", streak);
+      localStorage.setItem("dsigdt_streak_date", now);
     }
+  }
 
-    // Check if task was completed in source tab
-    const wasCompleted = (COMPLETED_TASKS[sourceTab] || []).includes(taskText);
-    if (wasCompleted) {
-      // Remove from source completed
-      const completedIdx = COMPLETED_TASKS[sourceTab].indexOf(taskText);
-      if (completedIdx > -1) {
-        COMPLETED_TASKS[sourceTab].splice(completedIdx, 1);
-      }
+  // Show streak in header
+  const streakEl = document.createElement("div");
+  streakEl.className = "streak-badge";
+  const fireEmoji = document.createTextNode("🔥 ");
+  const streakSpan = document.createElement("span");
+  streakSpan.id = "streakCount";
+  streakSpan.textContent = streak;
+  const streakLabel = document.createTextNode(" DAY STREAK");
+  streakEl.appendChild(fireEmoji);
+  streakEl.appendChild(streakSpan);
+  streakEl.appendChild(streakLabel);
+  streakEl.title = "Complete a task each day to keep your streak!";
+  const header = document.getElementById("header");
+  if (header) header.appendChild(streakEl);
+
+  // Bump streak on any task completion
+  document.getElementById("taskList")?.addEventListener("change", (e) => {
+    if (e.target.classList.contains("task-checkbox") && e.target.checked) {
+      bumpStreak();
+      const countEl = document.getElementById("streakCount");
+      if (countEl) countEl.textContent = streak;
     }
+  });
 
-    // Add to target tab
-    if (!Array.isArray(TASKS_BY_TAB[targetTab])) {
-      TASKS_BY_TAB[targetTab] = [];
+  // ===== PG MODE / $H!T MODE TOGGLE =====
+  const PG_STORAGE_KEY = "dsigdt_pg_mode";
+
+  const TEXT_MAP = {
+    titleLine1:       { punk: "DUMB shit",                    pg: "SILLY STUFF" },
+    titleLine2:       { punk: "I GOTta dO TODay",             pg: "TO DO TODAY" },
+    completedHeading: { punk: "SHIT I DID:",                  pg: "COMPLETED:" },
+    resetBtn:         { punk: "🧨 RESET EVERYTHING",          pg: "Reset Everything" },
+    prizeLine1:       { punk: "GOOD JOB",                     pg: "GREAT JOB" },
+    prizeLine2:       { punk: "DUMMY!",                       pg: "SUPERSTAR!" },
+    prizeSubtitle:    { punk: "PICK A PRIZE",                 pg: "You earned a reward!" },
+    prizeNote:        { punk: "or you can stare at this cute dumb cat", pg: "enjoy this cute cat!" },
+    backToItBtn:      { punk: "NOW GET BACK TO WORK DUMMY",   pg: "KEEP UP THE GREAT WORK!" },
+    timerChooseLabel: { punk: "CHOOSE VIOLENCE:",             pg: "SELECT YOUR TASK:" },
+    timerChooseHint:  { punk: "(PICK A TAB / PICK A TASK)",   pg: "(Choose a tab / Choose a task)" },
+    timerFooterMsg:   { punk: "→ MURDER TASKS! ✅ GET A PRIZE!", pg: "→ Complete tasks! ✅ Earn a reward!" },
+  };
+
+  const PLACEHOLDER_MAP = {
+    taskInput: { punk: "+ ADD MORE SHIT", pg: "+ Add a new task" },
+  };
+
+  function applyThemeText(mode) {
+    for (const [id, texts] of Object.entries(TEXT_MAP)) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = texts[mode];
     }
-    if (!TASKS_BY_TAB[targetTab].includes(taskText)) {
-      TASKS_BY_TAB[targetTab].push(taskText);
+    for (const [id, texts] of Object.entries(PLACEHOLDER_MAP)) {
+      const el = document.getElementById(id);
+      if (el) el.placeholder = texts[mode];
     }
-
-    // If it was completed, add to target completed
-    if (wasCompleted) {
-      if (!Array.isArray(COMPLETED_TASKS[targetTab])) {
-        COMPLETED_TASKS[targetTab] = [];
-      }
-      if (!COMPLETED_TASKS[targetTab].includes(taskText)) {
-        COMPLETED_TASKS[targetTab].push(taskText);
-      }
+    // Update prize list items
+    const prizeList = document.getElementById("prizeList");
+    if (prizeList) {
+      const items = prizeList.querySelectorAll("li");
+      const punkPrizes = ["GO FOR A WALK.", "TAKE A QUICK NAP.", "GO GET YOUR PRODUCTIVE ASS SOME SKITTLES."];
+      const pgPrizes = ["Go for a nice walk.", "Take a quick nap.", "Treat yourself to a snack!"];
+      const prizes = mode === "pg" ? pgPrizes : punkPrizes;
+      items.forEach((li, i) => { if (prizes[i]) li.textContent = prizes[i]; });
     }
+  }
 
-    // Update completion tracking
-    syncTabCompleteLast(sourceTab);
-    syncTabCompleteLast(targetTab);
+  window._pgMode = false;
 
-    // Persist and refresh UI
-    saveState();
-    renderTasks(activeTabKey);
-    renderCompletedGrouped();
-    buildFocusSelect(selectedFocusValue);
+  function setPgMode(on) {
+    const mode = on ? "pg" : "punk";
+    document.body.classList.toggle("pg-mode", on);
+    applyThemeText(mode);
+
+    const label = document.getElementById("pgLabel");
+    if (label) label.textContent = on ? "PG MODE" : "$H!T MODE";
+
+    // Flipped: checked = shit mode, unchecked = PG mode
+    const toggle = document.getElementById("pgToggle");
+    if (toggle) toggle.checked = !on;
+
+    localStorage.setItem(PG_STORAGE_KEY, on ? "1" : "0");
+
+    window._pgMode = on;
+
+    // Update fun progress label for current mode
     updateProgress();
+  }
 
-    // Show notification
-    alert(`✅ Moved "${taskText}" from ${TAB_LABELS[sourceTab]} to ${TAB_LABELS[targetTab]}`);
+  // Wire toggle — flipped: checked means shit mode (not PG)
+  const pgToggle = document.getElementById("pgToggle");
+  if (pgToggle) {
+    pgToggle.addEventListener("change", () => setPgMode(!pgToggle.checked));
+  }
+
+  // Restore saved preference (always call setPgMode to set toggle state)
+  const savedPg = localStorage.getItem(PG_STORAGE_KEY);
+  setPgMode(savedPg === "1");
+  
+  // ===== TASK REORDERING (for drag & drop) =====
+  document.addEventListener("task:reorder", (event) => {
+    const { tabKey, fromTask, toTask } = event.detail;
+    
+    const tasks = TASKS_BY_TAB[tabKey];
+    if (!tasks) return;
+    
+    const fromIdx = tasks.indexOf(fromTask);
+    const toIdx = tasks.indexOf(toTask);
+    
+    if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return;
+    
+    // Remove from old position
+    tasks.splice(fromIdx, 1);
+    
+    // Calculate new insertion index after removal
+    // If we moved item down, toIdx decreases by 1
+    const insertIdx = fromIdx < toIdx ? toIdx - 1 : toIdx;
+    tasks.splice(insertIdx, 0, fromTask);
+    
+    saveState();
+    renderTasks(tabKey);
+    buildFocusSelect();
   });
 });

@@ -1,64 +1,60 @@
-# DUMB SHIT I GOTTA DO TODAY 💥
+# dUMb shit I GOTta dO TODay
 
-A punk rock, grunge-style todo app to help you manage your tasks with attitude!
+A fun, engaging task management web app to help you track and complete your daily tasks!
 
-## 🎸 What You're Looking At
+## Features
 
-This is YOUR app with all the styling and features you worked on:
+- 📋 **Multiple Task Lists**: Organize tasks by urgency (Due Today, Next Up, When I Can, Don't Forget)
+- ✅ **Task Completion Tracking**: Mark tasks as done and see your progress
+- ⏱️ **Built-in Timer**: Focus mode with task-specific timers
+- 🎁 **Reward System**: Get fun rewards when you complete tasks
+- 💾 **Local Storage**: Your tasks persist across browser sessions
 
-### ✅ YOUR Design Changes (ALL PRESENT!)
-- **Title**: Using Bangers font - "DUMB SHIT I GOTTA DO TODAY"
-- **Background**: Dark textured background with grime overlay
-- **Cards**: Paper-textured cards with notebook lines
-- **Prize Modal**: Fun celebration modal with GIF and quirky reward suggestions
-- **Timer**: Big red numbers, punk-style design
-- **Overall Vibe**: Grunge/punk aesthetic throughout
+## Getting Started
 
-### ✅ Removed Features (As Requested)
-- ❌ NO "Clear Completed" button (never existed in the UI)
-- ❌ NO Import/Export buttons (never existed in the UI)
+1. Open `index.html` in your web browser
+2. Add tasks using the input field
+3. Switch between different task categories using the tabs
+4. Check off tasks as you complete them
+5. Use the timer to focus on specific tasks
 
-### ✨ What Works
-- ✅ Add tasks to different tabs (DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET)
-- ✅ Check off completed tasks
-- ✅ Timer with START/PAUSE/STOP
-- ✅ Prize modal shows when you complete all tasks in a tab
-- ✅ Inline editing (double-click a task to edit it)
-- ✅ Drag & drop reordering
-- ✅ Move tasks between tabs
+## Project Structure
 
-## 🌐 Live Site
-
-**Your live site**: https://j3nniferF.github.io/dumbit/
-
-If you don't see your changes there, merge this PR to update it!
-
-## 💻 Testing Locally
-
-```bash
-cd dumbit
-python3 -m http.server 8000
+```
+dumbit/
+├── index.html          # Main HTML structure
+├── css/
+│   └── styles.css     # Styling
+├── js/
+│   ├── app.js                 # Core app logic
+│   ├── tasks-edit.js          # Task editing functionality
+│   └── enhanced-features.js   # Timer and additional features
+└── assets/            # Images and other assets
 ```
 
-Then visit `http://localhost:8000` in your browser.
+## Development
 
-## 🤔 Still Confused?
+This is a vanilla JavaScript project with no build process required. Simply edit the files and refresh your browser to see changes.
 
-**Q: Why aren't my changes showing?**  
-A: Your changes ARE in this branch! Merge this PR to deploy them live.
+## Contributing
 
-**Q: Where's the clear completed button?**  
-A: It was never in the UI - only backend code existed, now cleaned up.
+Want to contribute? Check out our [GitHub Copilot Guide](./COPILOT-GUIDE.md) for tips on using AI tools to help with code editing!
 
-**Q: Where's import/export?**  
-A: Same - never was in the UI.
+## GitHub Copilot Guide
 
-**Q: Did we lose my card/background/title work?**  
-A: NOPE! It's all here and working perfectly!
+If you're looking for help with code editing using AI assistants, we've created a comprehensive guide:
 
-## 🚀 What's Next?
+**[📖 GitHub Copilot Guide: Choosing the Right Tool for Code Editing](./COPILOT-GUIDE.md)**
 
-1. Merge this PR
-2. Wait 1-2 minutes
-3. Check https://j3nniferF.github.io/dumbit/
-4. Party! 🎉
+This guide covers:
+- Different GitHub Copilot tools (Chat, Workspace, CLI, etc.)
+- Which tool is best for interactive editing with preview capabilities
+- Comparison of features across all Copilot options
+- Practical workflows and examples
+- Tips for getting the best results
+
+**TL;DR**: For interactive code editing with previews, use **GitHub Copilot Chat** in your IDE!
+
+## License
+
+This project is open source and available for personal use.
