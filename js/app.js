@@ -116,43 +116,9 @@ function initTabCompleteLast() {
   });
 }
 
-/* Roast messages (module-level so prize modal can use them) */
-const ROAST_MESSAGES_PUNK = [
-  "WOW YOU ACTUALLY DID SOMETHING 🎉",
-  "LOOK AT YOU, BEING A FUNCTIONAL HUMAN 💅",
-  "ONE DOWN, A MILLION TO GO 🔥",
-  "THAT WASN'T SO HARD, WAS IT? 😏",
-  "YOUR MOM WOULD BE SO PROUD RN 🥲",
-  "OKAY OKAY, I SEE YOU WORKING 👀",
-  "SOMEBODY GIVE THIS PERSON A COOKIE 🍪",
-  "BET THAT FELT GOOD, DIDN'T IT? 😎",
-  "NOW DO ANOTHER ONE. DON'T STOP. 💪",
-  "ARE YOU... ACTUALLY BEING PRODUCTIVE?! 😱",
-];
-
-const ROAST_MESSAGES_PG = [
-  "NICE WORK! YOU'RE DOING GREAT! 🌟",
-  "ANOTHER ONE DONE — YOU'RE ON A ROLL! ✨",
-  "LOOK AT THAT PROGRESS! 🎉",
-  "YOU SHOULD BE PROUD OF YOURSELF! 💙",
-  "KEEP GOING, YOU'RE AMAZING! 🙌",
-  "ONE STEP CLOSER TO YOUR GOALS! 🚀",
-  "WONDERFUL JOB! TREAT YOURSELF! 🍫",
-  "PRODUCTIVITY LOOKS GOOD ON YOU! 😊",
-  "YOU'RE MAKING IT HAPPEN! 💪",
-  "THAT'S THE WAY TO DO IT! ⭐",
-];
-
 function openPrizeModal() {
   const overlay = document.getElementById("prizeOverlay");
   if (!overlay) return;
-
-  // Show a roast message inside the prize modal
-  const roastEl = document.getElementById("prizeRoast");
-  if (roastEl) {
-    const messages = window._pgMode ? ROAST_MESSAGES_PG : ROAST_MESSAGES_PUNK;
-    roastEl.textContent = messages[Math.floor(Math.random() * messages.length)];
-  }
 
   overlay.classList.remove("is-hidden");
 }
@@ -393,30 +359,30 @@ function fireConfettiBurst() {
   wrap.style.position = "fixed";
   wrap.style.inset = "0";
   wrap.style.pointerEvents = "none";
-  wrap.style.zIndex = "9999";
+  // Keep celebration visible above modals in both modes.
+  wrap.style.zIndex = "10020";
 
   if (isPgMode) {
-    // PG MODE: Sparkles effect
-    const colors = ["#ffd700", "#ffeb3b", "#fff59d", "#ffffff", "#ffe082"];
-    for (let i = 0; i < 50; i++) {
-      const sparkle = document.createElement("div");
-      const size = Math.random() * 8 + 4;
+    // PG mode: bright falling confetti with sparkly palette.
+    const colors = ["#2563eb", "#60a5fa", "#93c5fd", "#f59e0b", "#f472b6"];
+    for (let i = 0; i < 80; i++) {
+      const bit = document.createElement("div");
+      const size = Math.random() * 9 + 5;
 
-      sparkle.style.position = "absolute";
-      sparkle.style.left = Math.random() * 100 + "vw";
-      sparkle.style.top = Math.random() * 100 + "vh";
-      sparkle.style.width = size + "px";
-      sparkle.style.height = size + "px";
-      sparkle.style.background =
-        colors[Math.floor(Math.random() * colors.length)];
-      sparkle.style.borderRadius = "50%";
-      sparkle.style.boxShadow = `0 0 ${size * 2}px ${colors[Math.floor(Math.random() * colors.length)]}`;
+      bit.style.position = "absolute";
+      bit.style.left = Math.random() * 100 + "vw";
+      bit.style.top = -Math.random() * 20 + "vh";
+      bit.style.width = size + "px";
+      bit.style.height = size + "px";
+      bit.style.background = colors[Math.floor(Math.random() * colors.length)];
+      bit.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+      bit.style.opacity = "0.95";
+      bit.style.boxShadow = `0 0 ${Math.max(8, size)}px rgba(255,255,255,0.45)`;
 
-      const duration = 1 + Math.random() * 1.5;
-      const delay = Math.random() * 0.5;
-
-      sparkle.style.animation = `sparkleAnimation ${duration}s ease-in-out ${delay}s forwards`;
-      wrap.appendChild(sparkle);
+      const duration = 1.4 + Math.random() * 1.2;
+      const delay = Math.random() * 0.35;
+      bit.style.animation = `confettiFall ${duration}s linear ${delay}s forwards`;
+      wrap.appendChild(bit);
     }
   } else {
     // SHIT MODE: Explosions effect
@@ -462,18 +428,17 @@ function celebrateIfTabJustCompleted(tabKey) {
   const nowComplete = isTabComplete(tabKey);
   const wasComplete = TAB_COMPLETE_LAST[tabKey];
 
-  // Fire confetti and prize modal every time a tab is complete
-  if (nowComplete) {
-    // confetti + modal are non-critical — fail gracefully if something goes wrong
-    try {
-      fireConfettiBurst();
-    } catch (e) {
-      // no-op
-    }
-    // Only show prize modal on transition: not complete -> complete
-    if (!wasComplete) {
-      openPrizeModal();
-    }
+  // Show celebration only on transition: not complete -> complete.
+  if (nowComplete && !wasComplete) {
+    openPrizeModal();
+    // Trigger confetti right after the modal opens.
+    requestAnimationFrame(() => {
+      try {
+        fireConfettiBurst();
+      } catch (e) {
+        // no-op
+      }
+    });
   }
 
   // update last-known state
@@ -522,7 +487,29 @@ function seedDefaultTasks() {
   });
 }
 
+function resetStateForModeLoad() {
+  TASKS_BY_TAB = {
+    dueToday: [],
+    soon: [],
+    asSoonAsICan: [],
+    dontForget: [],
+  };
+  COMPLETED_TASKS = {
+    dueToday: [],
+    soon: [],
+    asSoonAsICan: [],
+    dontForget: [],
+  };
+  activeTabKey = "dueToday";
+  focusScope = "dueToday";
+  selectedFocusValue = "";
+  TAB_LABELS = { ...TAB_LABELS_DEFAULT };
+}
+
 function loadState() {
+  // Always start clean so modes cannot bleed into each other in-memory.
+  resetStateForModeLoad();
+
   // Load from mode-specific storage key
   const storageKey = window._pgMode ? STORAGE_KEY_PG : STORAGE_KEY_SHIT;
   const raw = localStorage.getItem(storageKey);
@@ -642,7 +629,7 @@ function updateProgress() {
   const percent = total > 0 ? Math.round((done / total) * 100) : 0;
 
   if (completedCount) {
-    completedCount.textContent = `${done}/${total}`;
+    completedCount.textContent = `${done} / ${total}`;
   } else if (progressText) {
     progressText.textContent = `${done} / ${total} TASKS DONE`;
   }
@@ -1484,6 +1471,46 @@ function wireFloatingCountdown() {
   }
 }
 
+function wireIconButtonInteractions() {
+  const buttons = Array.from(document.querySelectorAll(".icon-button"));
+  if (!buttons.length) return;
+
+  const sparkById = {
+    openTimerBtn: ["⏱️", "✨"],
+    howtoButton: ["📖", "💡"],
+    resetBtn: ["💥", "🧨"],
+    soundToggle: ["🎵", "💫"],
+  };
+
+  const spawnSpark = (button) => {
+    const options = sparkById[button.id] || ["✨"];
+    const spark = document.createElement("span");
+    spark.className = "icon-button-spark";
+    spark.textContent = options[Math.floor(Math.random() * options.length)];
+    spark.style.left = 30 + Math.random() * 40 + "%";
+    spark.style.top = 30 + Math.random() * 30 + "%";
+    button.appendChild(spark);
+    setTimeout(() => spark.remove(), 700);
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener("pointerenter", () => {
+      button.classList.remove("icon-button--wiggle");
+      requestAnimationFrame(() => button.classList.add("icon-button--wiggle"));
+    });
+
+    button.addEventListener("animationend", () => {
+      button.classList.remove("icon-button--wiggle");
+    });
+
+    button.addEventListener("click", () => {
+      button.classList.add("icon-button--pop");
+      spawnSpark(button);
+      setTimeout(() => button.classList.remove("icon-button--pop"), 180);
+    });
+  });
+}
+
 /* -------------------------------
    Boot
 -------------------------------- */
@@ -1536,6 +1563,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wireTimerPopup();
   wireHowtoModal();
   wireFloatingCountdown();
+  wireIconButtonInteractions();
   wireResetButton(tabs);
   wireAddTaskForm();
   wireFocusPickers();
@@ -1618,35 +1646,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
   });
 
-  // ===== FUN FEATURE: Motivational roast toasts on task completion =====
-  // (Roast message arrays are defined at module level for prize modal access)
-
-  function showRoastToast() {
-    // If prize modal is about to show, skip toast — roast appears in prize modal instead
-    const prizeOverlay = document.getElementById("prizeOverlay");
-    if (prizeOverlay && !prizeOverlay.classList.contains("is-hidden")) return;
-
-    const messages = window._pgMode ? ROAST_MESSAGES_PG : ROAST_MESSAGES_PUNK;
-    const msg = messages[Math.floor(Math.random() * messages.length)];
-    const toast = document.createElement("div");
-    toast.className = "roast-toast";
-    toast.textContent = msg;
-    document.body.appendChild(toast);
-    // Trigger animation
-    requestAnimationFrame(() => toast.classList.add("roast-toast--show"));
-    setTimeout(() => {
-      toast.classList.remove("roast-toast--show");
-      toast.classList.add("roast-toast--hide");
-      setTimeout(() => toast.remove(), 400);
-    }, 3500);
-  }
-
-  // Hook into task completion via checkbox changes
-  document.getElementById("taskList")?.addEventListener("change", (e) => {
-    if (e.target.classList.contains("task-checkbox") && e.target.checked) {
-      showRoastToast();
-    }
-  });
+  // Roast toasts removed per UX preference.
 
   // ===== FUN FEATURE: Task streak counter =====
   const MS_PER_DAY = 24 * 60 * 60 * 1000; // milliseconds in one day
@@ -1701,8 +1701,9 @@ document.addEventListener("DOMContentLoaded", () => {
     completedHeading: { punk: "SHIT I DID:", pg: "COMPLETED:" },
     resetBtn: { punk: "🧨 RESET", pg: "🧨 RESET" },
     prizeLine1: { punk: "GOOD JOB", pg: "GREAT JOB" },
-    prizeLine2: { punk: "ding-dong!", pg: "SUPERSTAR!" },
+    prizeLine2: { punk: "DING-DONG!", pg: "SUPERSTAR!" },
     prizeSubtitle: { punk: "PICK A PRIZE", pg: "You earned a reward!" },
+    timerModalTitle: { punk: "⏰ TIME'S UP!", pg: "⏰ TIME'S UP!" },
     prizeNote: {
       punk: "or you can stare at this cute dumb cat",
       pg: "enjoy this cute cat!",
@@ -1755,11 +1756,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Update roast messages container to have tighter text in PG mode
-    const prizeRoast = document.getElementById("prizeRoast");
-    if (prizeRoast) {
-      prizeRoast.classList.toggle("prize-roast--tight", mode === "pg");
-    }
   }
 
   window._pgMode = false;

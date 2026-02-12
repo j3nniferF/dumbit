@@ -2353,6 +2353,15 @@ body::before {
   margin: 8px auto 0;
 }
 
+/* SHIT mode: give mode switch a streak-style bordered badge look */
+body:not(.pg-mode) .pg-switch {
+  background: rgba(197, 22, 22, 0.12);
+  border: 2px dashed rgba(197, 22, 22, 0.42);
+  border-radius: 12px;
+  padding: 6px 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 .pg-switch input {
   display: none;
 }
@@ -2955,6 +2964,38 @@ body.pg-mode {
   }
 }
 
+/* Timer text emphasis: bigger SET YOUR TIME + MURDER TASKS line. */
+.modal--timer-popup .timer-block:nth-of-type(2) .timer-block__title {
+  font-size: clamp(2rem, 4vw, 2.8rem) !important;
+  letter-spacing: 2.4px !important;
+}
+
+#timerFooterMsg {
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem) !important;
+  letter-spacing: 1.6px !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
+  white-space: normal !important;
+  word-break: keep-all;
+}
+
+@media (max-width: 640px) {
+  .modal--timer-popup .timer-block:nth-of-type(2) .timer-block__title {
+    font-size: clamp(1.35rem, 5.6vw, 1.9rem) !important;
+    letter-spacing: 1.2px !important;
+    line-height: 1.05 !important;
+  }
+
+  #timerFooterMsg {
+    font-size: clamp(1.1rem, 4.2vw, 1.45rem) !important;
+    letter-spacing: 0.6px !important;
+    line-height: 1.2 !important;
+    max-width: 92% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
 /* ===== PRIZE MODAL TIGHTER SPACING ===== */
 #prizeModal {
   gap: 8px;
@@ -2977,15 +3018,6 @@ body.pg-mode {
 #prizeModal .prize-list {
   margin: 8px 0;
   gap: 8px;
-}
-
-#prizeModal .prize-gif {
-  max-width: 280px;
-  width: 80%;
-  height: auto;
-  max-height: 240px;
-  margin: 8px auto;
-  display: block;
 }
 
 #prizeModal .prize-note {
@@ -3196,9 +3228,11 @@ body.pg-mode {
   max-width: 600px;
   max-height: 80vh;
   overflow-y: auto;
-  background: #0d0d0d url("../assets/textures/dirty-paper.png");
-  background-blend-mode: multiply;
+  background:
+    linear-gradient(rgba(16, 16, 16, 0.55), rgba(16, 16, 16, 0.55)),
+    url("../assets/textures/dirty-paper.png") center/cover;
   color: #f3f1e9;
+  border: 2px solid rgba(246, 243, 234, 0.28);
 }
 
 .modal--howto .howto-content {
@@ -3247,4 +3281,504 @@ body.pg-mode {
 
 .pg-mode .modal--howto .howto-section li::before {
   color: #2563eb;
+}
+
+/* ===== UX POLISH: PRIZE + HEADER + ICON NAV ===== */
+/* Remove roast line from prize modal in both modes. */
+#prizeModal .prize-roast {
+  display: none !important;
+}
+
+/* Keep cat gif fully visible while making it smaller. */
+#prizeModal .prize-gif,
+.modal img.prize-gif,
+.prize-gif {
+  width: min(100%, 220px) !important;
+  max-width: 220px !important;
+  max-height: 220px !important;
+  height: auto !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  display: block;
+  margin: 8px auto !important;
+}
+
+/* PG mode: tighter light backgrounds for title/subtitle area, switch, and streak. */
+.pg-mode .title-line {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(37, 99, 235, 0.24) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.14) !important;
+  padding: 6px 12px !important;
+}
+
+.pg-mode .title-line:last-child {
+  margin-top: -4px !important;
+}
+
+.pg-mode .pg-switch {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(37, 99, 235, 0.24);
+  border-radius: 999px;
+  padding: 6px 10px;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+}
+
+.pg-mode .streak-badge {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(37, 99, 235, 0.24) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12) !important;
+}
+
+/* Top-right icon buttons: more visibility + pop in both modes. */
+.icon-button {
+  border-width: 3px;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.52),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.2),
+    0 0 0 2px #0a0a0a,
+    0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+
+.icon-button:hover {
+  transform: translateY(-3px) scale(1.08);
+}
+
+.icon-button__icon {
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.42))
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.24));
+}
+
+.pg-mode .icon-button {
+  border: 2px solid rgba(37, 99, 235, 0.28) !important;
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.18),
+    0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 0 4px rgba(37, 99, 235, 0.12) !important;
+}
+
+/* PG mode: tighten title stack and reduce extra whitespace. */
+.pg-mode .layout {
+  gap: 14px !important;
+}
+
+.pg-mode .header {
+  gap: 2px !important;
+  margin-bottom: 2px !important;
+  padding-top: 2px !important;
+}
+
+.pg-mode .title {
+  margin: 0.1rem 0 0.2rem !important;
+  line-height: 0.92 !important;
+}
+
+.pg-mode .title-line {
+  display: inline-block !important;
+  width: auto !important;
+  padding: 4px 10px !important;
+}
+
+.pg-mode .title-line:first-child {
+  margin-bottom: 2px !important;
+  line-height: 0.86 !important;
+}
+
+.pg-mode .title-line:last-child {
+  margin-top: 0 !important;
+  line-height: 0.94 !important;
+}
+
+.pg-mode .tabs {
+  margin: 6px auto 12px !important;
+}
+
+/* ===== FINAL MODAL + ICON POLISH OVERRIDES ===== */
+/* Prize modal readability: remove conflicting inline/animated list treatments. */
+#prizeModal {
+  max-width: 480px !important;
+  width: min(94vw, 480px) !important;
+  padding: 10px 16px 10px !important;
+  gap: 4px !important;
+}
+
+#prizeModal .modal-title {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 0 !important;
+  line-height: 0.94 !important;
+  letter-spacing: 0.5px !important;
+  text-shadow: none !important;
+  text-align: center !important;
+}
+
+#prizeModal .modal-title-line1,
+#prizeModal .modal-title-line2 {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  color: #111 !important;
+  word-spacing: 0 !important;
+  text-align: center !important;
+  letter-spacing: 0.03em !important;
+  transform: translateX(0) !important;
+}
+
+#prizeModal .modal-title-line2 {
+  margin-top: 1px !important;
+  text-align: center !important;
+  justify-self: center !important;
+  align-self: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+#prizeSubtitle {
+  margin: 0 0 2px !important;
+  letter-spacing: 0.02em !important;
+  text-shadow: none !important;
+}
+
+#prizeModal .prize-list {
+  list-style: none;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 8px !important;
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#prizeModal .prize-list li {
+  display: block !important;
+  opacity: 1 !important;
+  animation: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.12 !important;
+  text-align: center !important;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+#prizeModal .prize-list li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+/* GIF should fill naturally without side whitespace artifacts. */
+#prizeModal .prize-gif {
+  width: auto !important;
+  max-width: min(92%, 300px) !important;
+  max-height: 280px !important;
+  height: auto !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+#prizeModal .prize-note {
+  margin: 0 !important;
+}
+
+.pg-mode #prizeModal .modal-title-line1,
+.pg-mode #prizeModal .modal-title-line2 {
+  color: #1f2937 !important;
+}
+
+.pg-mode #prizeModal .prize-list {
+  grid-template-columns: 1fr 1fr;
+}
+
+.pg-mode #prizeModal .prize-list li {
+  background: rgba(37, 99, 235, 0.08);
+  color: #1f2937 !important;
+}
+
+/* Timer done modal readability on textured paper in both modes. */
+.modal--timer-done {
+  background:
+    linear-gradient(rgba(15, 15, 15, 0.78), rgba(15, 15, 15, 0.78)),
+    url("../assets/textures/dirty-paper.png") center/cover !important;
+  border: 3px solid rgba(0, 0, 0, 0.8) !important;
+}
+
+.modal--timer-done .modal-title {
+  letter-spacing: 1px !important;
+}
+
+.pg-mode .modal--timer-done {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
+    url("../assets/textures/pretty.png") center/360px repeat !important;
+  border: 2px solid rgba(37, 99, 235, 0.25) !important;
+  color: #1f2937 !important;
+}
+
+.pg-mode .modal--timer-done .modal-title {
+  color: #1d4ed8 !important;
+}
+
+.pg-mode .modal--timer-done .modal-subtitle,
+.pg-mode .modal--timer-done .modal-hint {
+  color: #374151 !important;
+}
+
+/* Top-right button delight interactions. */
+@keyframes iconWiggle {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-7deg) scale(1.04);
+  }
+  75% {
+    transform: rotate(7deg) scale(1.04);
+  }
+}
+
+@keyframes iconPop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.14);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes sparkRise {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -170%) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.icon-button--wiggle {
+  animation: iconWiggle 220ms ease;
+}
+
+.icon-button--pop {
+  animation: iconPop 180ms ease;
+}
+
+.icon-button-spark {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: sparkRise 700ms ease forwards;
+  font-size: 1rem;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.28));
+}
+
+@media (max-width: 640px) {
+  #prizeModal {
+    width: min(95vw, 420px) !important;
+    padding: 8px 10px 8px !important;
+    gap: 3px !important;
+  }
+
+  #prizeModal .prize-list {
+    grid-template-columns: 1fr !important;
+    gap: 2px !important;
+  }
+
+  #prizeModal .prize-gif {
+    max-width: min(90%, 240px) !important;
+    max-height: 220px !important;
+  }
+}
+
+/* ===== FINAL READABILITY PASS ===== */
+/* Keep SHIT mode vibe but improve readability of key text blocks. */
+body:not(.pg-mode) .completed-stat,
+body:not(.pg-mode) .fun-progress__label {
+  font-family: var(--font-song), var(--font-stack) !important;
+  letter-spacing: 0.6px !important;
+}
+
+/* SHIT mode: force progress status lines into Wrong font */
+body:not(.pg-mode) #progressText,
+body:not(.pg-mode) #progressText .completed-stat__count,
+body:not(.pg-mode) .fun-progress__label {
+  font-family: var(--font-wrong), var(--font-stack) !important;
+}
+
+body:not(.pg-mode) .completed-list,
+body:not(.pg-mode) .completed-list li,
+body:not(.pg-mode) .completed-list li span {
+  font-family: var(--font-song), var(--font-stack) !important;
+  font-size: clamp(1.06rem, 1.8vw, 1.24rem) !important;
+  letter-spacing: 0.3px !important;
+  line-height: 1.45 !important;
+}
+
+/* Prize options should be plain text rows (no boxy borders/background cards). */
+#prizeModal .prize-list li,
+.pg-mode #prizeModal .prize-list li {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Always pin prize close X to actual top-right corner in both modes. */
+#prizeModal #closePrizeX {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  left: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+  z-index: 120 !important;
+}
+
+/* Black text + bigger responsive prize titles (mobile-safe). */
+#prizeModal,
+#prizeModal .modal-subtitle,
+#prizeModal .prize-list,
+#prizeModal .prize-list li,
+#prizeModal .prize-note {
+  color: #111 !important;
+}
+
+#prizeModal #prizeTitle,
+#prizeModal #prizeSubtitle,
+#prizeModal #prizeLine1,
+#prizeModal #prizeLine2,
+#prizeModal #prizeNote,
+.pg-mode #prizeModal #prizeTitle,
+.pg-mode #prizeModal #prizeSubtitle,
+.pg-mode #prizeModal #prizeLine1,
+.pg-mode #prizeModal #prizeLine2,
+.pg-mode #prizeModal #prizeNote,
+.pg-mode #prizeModal .prize-list li {
+  color: #000 !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  filter: none !important;
+}
+
+#prizeModal .modal-title-line1,
+#prizeModal .modal-title-line2 {
+  font-size: clamp(2.4rem, 8.2vw, 4.4rem) !important;
+  line-height: 0.9 !important;
+}
+
+@media (max-width: 640px) {
+  #prizeModal .modal-title-line1,
+  #prizeModal .modal-title-line2 {
+    font-size: clamp(2rem, 10vw, 3rem) !important;
+    line-height: 0.92 !important;
+  }
+}
+
+/* Timer popup: tighter spacing + bigger TIMER heading (same font). */
+.modal--timer-popup {
+  padding: 8px 12px !important;
+}
+
+.modal--timer-popup .modal-title {
+  font-family: var(--font-anarchy) !important;
+  font-size: clamp(5rem, 11vw, 8.8rem) !important;
+  line-height: 0.86 !important;
+  margin: 0 0 4px !important;
+  padding: 2px 8px !important;
+}
+
+.modal--timer-popup .timer-grid {
+  gap: 8px !important;
+  margin-bottom: 4px !important;
+}
+
+.modal--timer-popup .timer-block {
+  padding: 8px 10px !important;
+}
+
+.modal--timer-popup .timer-block__title {
+  margin: 0 0 2px !important;
+}
+
+.modal--timer-popup .timer-block__hint {
+  margin: 0 0 4px !important;
+}
+
+.modal--timer-popup .timer-display {
+  margin: 4px 0 !important;
+}
+
+.modal--timer-popup .timer-block__footer {
+  margin: 2px 0 4px !important;
+}
+
+.modal--timer-popup .timer-controls {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+}
+
+.modal--timer-popup .dial-picker {
+  margin: 4px auto !important;
+}
+
+.modal--timer-popup .dial-scroll {
+  height: 96px !important;
+}
+
+.modal--timer-popup .dial-item {
+  height: 32px !important;
+}
+
+.modal--timer-popup .dial-sep {
+  padding-top: 12px !important;
+}
+
+@media (max-width: 640px) {
+  .modal--timer-popup {
+    padding: 8px 7px !important;
+  }
+
+  .modal--timer-popup .modal-title {
+    font-size: clamp(3.6rem, 14vw, 5.4rem) !important;
+    margin-top: 10px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .modal--timer-popup .timer-grid {
+    gap: 6px !important;
+    margin-bottom: 3px !important;
+  }
+
+  .modal--timer-popup .timer-block {
+    padding: 7px 8px !important;
+  }
+
+  .modal--timer-popup .timer-display {
+    margin: 3px 0 !important;
+  }
+
+  .modal--timer-popup .dial-scroll {
+    height: 86px !important;
+  }
+
+  .modal--timer-popup .dial-item {
+    height: 28px !important;
+  }
 }
