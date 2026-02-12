@@ -2735,7 +2735,7 @@ body.pg-mode {
   .modal--timer-popup {
     width: 96% !important;
     max-width: 96% !important;
-    max-height: 88vh;
+    max-height: 88vh; /* leave room for status bar + bottom nav on mobile */
     overflow-y: auto;
     padding: 14px 10px !important;
   }

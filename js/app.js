@@ -962,12 +962,12 @@ function setTimerDisplay(seconds) {
 }
 
 function getSelectedDurationSeconds() {
-  if (!window._dialValues) return 900; // default 15 min if dials not initialized
+  if (!window._dialValues) return 900; // 15 min default if dials not yet initialized
   const h = window._dialValues.hours || 0;
   const m = window._dialValues.minutes || 0;
   const s = window._dialValues.seconds || 0;
   const total = h * 3600 + m * 60 + s;
-  return total > 0 ? total : 900; // fallback to 15 min if all zeros
+  return total > 0 ? total : 900; // 15 min fallback if user sets all zeros
 }
 
 function resetTimerToSelectedDuration() {
@@ -999,9 +999,10 @@ function buildDialColumn(container, count, initialValue) {
   bottomSpacer.className = "dial-spacer";
   container.appendChild(bottomSpacer);
 
-  // Size spacers based on container dimensions
-  requestAnimationFrame(() => {
-    const spacerHeight = Math.max(0, container.offsetHeight / 2 - 20);
+  // Size spacers so first/last items can be centered (half container minus half item height)
+    requestAnimationFrame(() => {
+    const itemHeight = 40; // matches .dial-item height in CSS
+    const spacerHeight = Math.max(0, container.offsetHeight / 2 - itemHeight / 2);
     topSpacer.style.height = spacerHeight + "px";
     bottomSpacer.style.height = spacerHeight + "px";
 
