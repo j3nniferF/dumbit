@@ -21,20 +21,32 @@ const STORAGE_KEY = "dsigdt_state_v1";
 
 const TAB_ORDER = ["dueToday", "soon", "asSoonAsICan", "dontForget"];
 
-const TAB_LABELS = {
+const TAB_LABELS_DEFAULT = {
   dueToday: "DUE TODAY",
   soon: "NEXT UP",
   asSoonAsICan: "WHEN I CAN",
   dontForget: "DON'T FORGET",
 };
 
-// Default seed (only used if no localStorage state exists)
-let TASKS_BY_TAB = {
-  dueToday: ["Email landlord", "Finish capstone work", "Take meds"],
-  soon: ["Clean kitchen", "Grocery run"],
-  asSoonAsICan: ["Organize closet", "Call dentist"],
-  dontForget: ["Buy cat food", "Pay credit card"],
+let TAB_LABELS = { ...TAB_LABELS_DEFAULT };
+
+// Default seed tasks — sassy for $H!T mode, friendly for PG mode
+const DEFAULT_TASKS_PUNK = {
+  dueToday: ["Shower (yes, today)", "Take your damn meds", "Answer that email you've been ignoring"],
+  soon: ["Clean the kitchen before it becomes sentient", "Drag yourself to the grocery store"],
+  asSoonAsICan: ["Organize closet (stop pretending you will)", "Call the dentist already"],
+  dontForget: ["Buy cat food or face the consequences", "Pay credit card before they find you"],
 };
+
+const DEFAULT_TASKS_PG = {
+  dueToday: ["Take a nice shower", "Take your vitamins", "Breathe & stretch for 5 min"],
+  soon: ["Tidy up the kitchen", "Quick grocery run"],
+  asSoonAsICan: ["Organize your closet", "Schedule a dentist appointment"],
+  dontForget: ["Pick up pet food", "Pay credit card bill"],
+};
+
+// Default seed (only used if no localStorage state exists)
+let TASKS_BY_TAB = { ...DEFAULT_TASKS_PUNK };
 
 let COMPLETED_TASKS = {
   dueToday: [],
@@ -83,9 +95,44 @@ function initTabCompleteLast() {
   });
 }
 
+/* Roast messages (module-level so prize modal can use them) */
+const ROAST_MESSAGES_PUNK = [
+  "WOW YOU ACTUALLY DID SOMETHING 🎉",
+  "LOOK AT YOU, BEING A FUNCTIONAL HUMAN 💅",
+  "ONE DOWN, A MILLION TO GO 🔥",
+  "THAT WASN'T SO HARD, WAS IT? 😏",
+  "YOUR MOM WOULD BE SO PROUD RN 🥲",
+  "OKAY OKAY, I SEE YOU WORKING 👀",
+  "SOMEBODY GIVE THIS PERSON A COOKIE 🍪",
+  "BET THAT FELT GOOD, DIDN'T IT? 😎",
+  "NOW DO ANOTHER ONE. DON'T STOP. 💪",
+  "ARE YOU... ACTUALLY BEING PRODUCTIVE?! 😱",
+];
+
+const ROAST_MESSAGES_PG = [
+  "NICE WORK! YOU'RE DOING GREAT! 🌟",
+  "ANOTHER ONE DONE — YOU'RE ON A ROLL! ✨",
+  "LOOK AT THAT PROGRESS! 🎉",
+  "YOU SHOULD BE PROUD OF YOURSELF! 💙",
+  "KEEP GOING, YOU'RE AMAZING! 🙌",
+  "ONE STEP CLOSER TO YOUR GOALS! 🚀",
+  "WONDERFUL JOB! TREAT YOURSELF! 🍫",
+  "PRODUCTIVITY LOOKS GOOD ON YOU! 😊",
+  "YOU'RE MAKING IT HAPPEN! 💪",
+  "THAT'S THE WAY TO DO IT! ⭐",
+];
+
 function openPrizeModal() {
   const overlay = document.getElementById("prizeOverlay");
   if (!overlay) return;
+
+  // Show a roast message inside the prize modal
+  const roastEl = document.getElementById("prizeRoast");
+  if (roastEl) {
+    const messages = window._pgMode ? ROAST_MESSAGES_PG : ROAST_MESSAGES_PUNK;
+    roastEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+  }
+
   overlay.classList.remove("is-hidden");
 }
 
@@ -124,6 +171,7 @@ function wireTimerPopup() {
   
   const overlay = document.getElementById("timerPopupOverlay");
   const closeBtn = document.getElementById("closeTimerPopup");
+  const closeXBtn = document.getElementById("closeTimerX");
   const openBtn = document.getElementById("openTimerBtn");
   const floatBtn = document.getElementById("floatTimerBtn");
   
@@ -133,6 +181,10 @@ function wireTimerPopup() {
   
   if (closeBtn) {
     closeBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
+  }
+
+  if (closeXBtn) {
+    closeXBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
   }
 
    if (floatBtn) {
@@ -349,6 +401,7 @@ function saveState() {
     activeTabKey,
     focusScope,
     selectedFocusValue,
+    tabLabels: TAB_LABELS,
   };
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -380,6 +433,9 @@ function loadState() {
     if (typeof parsed.focusScope === "string") focusScope = parsed.focusScope;
     if (typeof parsed.selectedFocusValue === "string")
       selectedFocusValue = parsed.selectedFocusValue;
+    if (parsed.tabLabels && typeof parsed.tabLabels === "object") {
+      TAB_LABELS = { ...TAB_LABELS_DEFAULT, ...parsed.tabLabels };
+    }
 
     normalizeState();
     // Ensure the baseline for celebration logic reflects the loaded state
@@ -453,6 +509,7 @@ function updateProgress() {
   const completedCount = document.getElementById("completedCount");
   const breakdown = document.getElementById("progressBreakdown");
   const ring = document.getElementById("progressRing");
+  const funBar = document.getElementById("funProgressBar");
 
   let total = 0;
   let done = 0;
@@ -461,6 +518,8 @@ function updateProgress() {
     total += (TASKS_BY_TAB[tabKey] || []).length;
     done += (COMPLETED_TASKS[tabKey] || []).length;
   });
+
+  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
 
   if (completedCount) {
     completedCount.textContent = `${done}/${total}`;
@@ -473,7 +532,6 @@ function updateProgress() {
   }
 
   if (ring) {
-    const percent = total > 0 ? Math.round((done / total) * 100) : 0;
     ring.style.setProperty("--progress", `${percent}`);
     ring.setAttribute("aria-label", `${percent}% complete`);
   }
@@ -487,6 +545,25 @@ function updateProgress() {
       li.textContent = `${TAB_LABELS[tabKey]}: ${d} / ${t}`;
       breakdown.appendChild(li);
     });
+  }
+
+  // Fun progress bar
+  if (funBar) {
+    const fill = funBar.querySelector(".fun-progress__fill");
+    const label = funBar.querySelector(".fun-progress__label");
+    if (fill) fill.style.width = percent + "%";
+    if (label) {
+      const isPg = window._pgMode;
+      let msg = "";
+      if (total === 0) msg = isPg ? "Add some tasks!" : "ADD SOME SHIT!";
+      else if (percent === 0) msg = isPg ? "Let's get started!" : "GET OFF YOUR ASS! 🔥";
+      else if (percent < 25) msg = isPg ? "Good start! Keep going!" : "BABY STEPS... 👶";
+      else if (percent < 50) msg = isPg ? "Making progress! ✨" : "OKAY NOT BAD... 🤔";
+      else if (percent < 75) msg = isPg ? "Over halfway! 🎉" : "HALFWAY THERE, LEGEND 💪";
+      else if (percent < 100) msg = isPg ? "Almost done! 🌟" : "SO CLOSE I CAN TASTE IT 🔥🔥";
+      else msg = isPg ? "All done! Amazing! 🏆" : "YOU ABSOLUTE BEAST!! 🏆🎉💀";
+      label.textContent = msg;
+    }
   }
 }
 
@@ -616,6 +693,7 @@ function renderTasks(tabKey) {
         <input class="task-checkbox" type="checkbox" />
         <span class="task-text"></span>
       </label>
+      <button class="task-delete" type="button" title="Delete task" aria-label="Delete task">✕</button>
     `;
 
     // --- NEW: attach identifying data so inline editor can find and update this task ---
@@ -653,6 +731,15 @@ function renderTasks(tabKey) {
       if (!event.target.checked) return;
       completeTask(tabKey, taskText);
     });
+
+    // Delete button removes task
+    const deleteBtn = li.querySelector(".task-delete");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        deleteTask(tabKey, taskText);
+      });
+    }
   });
 }
 
@@ -674,6 +761,32 @@ function completeTask(tabKey, taskText) {
 
   // ✅ celebration after UI updates
   celebrateIfTabJustCompleted(tabKey);
+}
+
+function deleteTask(tabKey, taskText) {
+  const tasks = TASKS_BY_TAB[tabKey];
+  if (!tasks) return;
+
+  const idx = tasks.indexOf(taskText);
+  if (idx > -1) tasks.splice(idx, 1);
+
+  // Also remove from completed if present
+  const completed = COMPLETED_TASKS[tabKey];
+  if (completed) {
+    const cIdx = completed.indexOf(taskText);
+    if (cIdx > -1) completed.splice(cIdx, 1);
+  }
+
+  const value = makeTaskValue(tabKey, taskText);
+  if (selectedFocusValue === value) selectedFocusValue = "";
+
+  syncTabCompleteLast(tabKey);
+  saveState();
+  syncCurrentTaskText();
+  renderTasks(activeTabKey);
+  renderCompletedGrouped();
+  buildFocusSelect();
+  updateProgress();
 }
 
 /* -------------------------------
@@ -849,11 +962,12 @@ function setTimerDisplay(seconds) {
 }
 
 function getSelectedDurationSeconds() {
-  const h = window._dialValues ? window._dialValues.hours : 0;
-  const m = window._dialValues ? window._dialValues.minutes : 15;
-  const s = window._dialValues ? window._dialValues.seconds : 0;
+  if (!window._dialValues) return 900; // default 15 min if dials not initialized
+  const h = window._dialValues.hours || 0;
+  const m = window._dialValues.minutes || 0;
+  const s = window._dialValues.seconds || 0;
   const total = h * 3600 + m * 60 + s;
-  return total > 0 ? total : 900; // default 15 min
+  return total > 0 ? total : 900; // fallback to 15 min if all zeros
 }
 
 function resetTimerToSelectedDuration() {
@@ -865,6 +979,12 @@ function resetTimerToSelectedDuration() {
 /* Scrollable Dial Picker */
 function buildDialColumn(container, count, initialValue) {
   container.innerHTML = "";
+
+  // Add top spacer so first item can be centered in the scroll view
+  const topSpacer = document.createElement("div");
+  topSpacer.className = "dial-spacer";
+  container.appendChild(topSpacer);
+
   for (let i = 0; i < count; i++) {
     const item = document.createElement("div");
     item.className = "dial-item";
@@ -873,8 +993,18 @@ function buildDialColumn(container, count, initialValue) {
     if (i === initialValue) item.classList.add("dial-item--selected");
     container.appendChild(item);
   }
-  // Scroll to initial value
+
+  // Add bottom spacer so last item can be centered
+  const bottomSpacer = document.createElement("div");
+  bottomSpacer.className = "dial-spacer";
+  container.appendChild(bottomSpacer);
+
+  // Size spacers based on container dimensions
   requestAnimationFrame(() => {
+    const spacerHeight = Math.max(0, container.offsetHeight / 2 - 20);
+    topSpacer.style.height = spacerHeight + "px";
+    bottomSpacer.style.height = spacerHeight + "px";
+
     const selected = container.querySelector(".dial-item--selected");
     if (selected) {
       container.scrollTop = selected.offsetTop - container.offsetHeight / 2 + selected.offsetHeight / 2;
@@ -1063,6 +1193,7 @@ function wireTimer() {
   const startBtn = document.getElementById("startBtn");
   const pauseBtn = document.getElementById("pauseBtn");
   const stopBtn = document.getElementById("stopBtn");
+  const resetTimerBtn = document.getElementById("resetTimerBtn");
 
   if (!startBtn || !pauseBtn || !stopBtn) {
     console.warn("Timer elements missing. Check IDs in index.html.");
@@ -1084,6 +1215,22 @@ function wireTimer() {
     floatingPinned = false;
     resetTimerToSelectedDuration();
   });
+
+  if (resetTimerBtn) {
+    resetTimerBtn.addEventListener("click", () => {
+      stopInterval();
+      floatingPinned = false;
+      // Reset dial values and rebuild dials to default
+      window._dialValues = { hours: 0, minutes: 15, seconds: 0 };
+      const hoursEl = document.getElementById("dialHours");
+      const minutesEl = document.getElementById("dialMinutes");
+      const secondsEl = document.getElementById("dialSeconds");
+      if (hoursEl) buildDialColumn(hoursEl, 9, 0);
+      if (minutesEl) buildDialColumn(minutesEl, 60, 15);
+      if (secondsEl) buildDialColumn(secondsEl, 60, 0);
+      resetTimerToSelectedDuration();
+    });
+  }
 }
 
 /* -------------------------------
@@ -1174,6 +1321,43 @@ document.addEventListener("DOMContentLoaded", () => {
   loadState();
   normalizeState();
   initTabCompleteLast();
+
+  // Apply custom tab labels to tab buttons and focus dropdown
+  function applyTabLabels() {
+    tabs.forEach((tab) => {
+      const key = tab.dataset.tab;
+      if (key && TAB_LABELS[key]) tab.textContent = TAB_LABELS[key];
+    });
+    // Update focus tab dropdown
+    const fts = document.getElementById("focusTabSelect");
+    if (fts) {
+      Array.from(fts.options).forEach((opt) => {
+        if (opt.value !== "all" && TAB_LABELS[opt.value]) {
+          opt.textContent = TAB_LABELS[opt.value];
+        }
+      });
+    }
+  }
+  applyTabLabels();
+
+  // Double-click tab to rename
+  tabs.forEach((tab) => {
+    tab.addEventListener("dblclick", (e) => {
+      e.stopPropagation();
+      const key = tab.dataset.tab;
+      if (!key) return;
+      const current = TAB_LABELS[key] || key;
+      const newName = prompt("Rename this tab:", current);
+      if (newName && newName.trim()) {
+        TAB_LABELS[key] = newName.trim().toUpperCase();
+        applyTabLabels();
+        syncHeadings(activeTabKey);
+        renderCompletedGrouped();
+        buildFocusSelect(selectedFocusValue);
+        saveState();
+      }
+    });
+  });
 
   wirePrizeModalClose();
   wireTimerModal();
@@ -1331,33 +1515,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===== FUN FEATURE: Motivational roast toasts on task completion =====
-  const ROAST_MESSAGES_PUNK = [
-    "WOW YOU ACTUALLY DID SOMETHING 🎉",
-    "LOOK AT YOU, BEING A FUNCTIONAL HUMAN 💅",
-    "ONE DOWN, A MILLION TO GO 🔥",
-    "THAT WASN'T SO HARD, WAS IT? 😏",
-    "YOUR MOM WOULD BE SO PROUD RN 🥲",
-    "OKAY OKAY, I SEE YOU WORKING 👀",
-    "SOMEBODY GIVE THIS PERSON A COOKIE 🍪",
-    "BET THAT FELT GOOD, DIDN'T IT? 😎",
-    "NOW DO ANOTHER ONE. DON'T STOP. 💪",
-    "ARE YOU... ACTUALLY BEING PRODUCTIVE?! 😱",
-  ];
-
-  const ROAST_MESSAGES_PG = [
-    "NICE WORK! YOU'RE DOING GREAT! 🌟",
-    "ANOTHER ONE DONE — YOU'RE ON A ROLL! ✨",
-    "LOOK AT THAT PROGRESS! 🎉",
-    "YOU SHOULD BE PROUD OF YOURSELF! 💙",
-    "KEEP GOING, YOU'RE AMAZING! 🙌",
-    "ONE STEP CLOSER TO YOUR GOALS! 🚀",
-    "WONDERFUL JOB! TREAT YOURSELF! 🍫",
-    "PRODUCTIVITY LOOKS GOOD ON YOU! 😊",
-    "YOU'RE MAKING IT HAPPEN! 💪",
-    "THAT'S THE WAY TO DO IT! ⭐",
-  ];
+  // (Roast message arrays are defined at module level for prize modal access)
 
   function showRoastToast() {
+    // If prize modal is about to show, skip toast — roast appears in prize modal instead
+    const prizeOverlay = document.getElementById("prizeOverlay");
+    if (prizeOverlay && !prizeOverlay.classList.contains("is-hidden")) return;
+
     const messages = window._pgMode ? ROAST_MESSAGES_PG : ROAST_MESSAGES_PUNK;
     const msg = messages[Math.floor(Math.random() * messages.length)];
     const toast = document.createElement("div");
@@ -1370,7 +1534,7 @@ document.addEventListener("DOMContentLoaded", () => {
       toast.classList.remove("roast-toast--show");
       toast.classList.add("roast-toast--hide");
       setTimeout(() => toast.remove(), 400);
-    }, 2500);
+    }, 3500);
   }
 
   // Hook into task completion via checkbox changes
@@ -1434,6 +1598,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resetBtn:         { punk: "🧨 RESET EVERYTHING",          pg: "Reset Everything" },
     prizeLine1:       { punk: "GOOD JOB",                     pg: "GREAT JOB" },
     prizeLine2:       { punk: "DUMMY!",                       pg: "SUPERSTAR!" },
+    prizeSubtitle:    { punk: "YOU GET TO PICK A PRIZE...",    pg: "You earned a reward!" },
     prizeNote:        { punk: "or you can stare at this cute dumb cat", pg: "enjoy this cute cat!" },
     backToItBtn:      { punk: "NOW GET BACK TO WORK!",        pg: "Keep Up the Great Work!" },
     timerChooseLabel: { punk: "CHOOSE VIOLENCE:",             pg: "SELECT YOUR TASK:" },
@@ -1454,6 +1619,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.getElementById(id);
       if (el) el.placeholder = texts[mode];
     }
+    // Update prize list items
+    const prizeList = document.getElementById("prizeList");
+    if (prizeList) {
+      const items = prizeList.querySelectorAll("li");
+      const punkPrizes = ["GO FOR A WALK.", "TAKE A QUICK NAP.", "GO GET YOUR PRODUCTIVE ASS SOME SKITTLES."];
+      const pgPrizes = ["Go for a nice walk.", "Take a quick nap.", "Treat yourself to a snack!"];
+      const prizes = mode === "pg" ? pgPrizes : punkPrizes;
+      items.forEach((li, i) => { if (prizes[i]) li.textContent = prizes[i]; });
+    }
   }
 
   window._pgMode = false;
@@ -1472,6 +1646,9 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem(PG_STORAGE_KEY, on ? "1" : "0");
 
     window._pgMode = on;
+
+    // Update fun progress label for current mode
+    updateProgress();
   }
 
   // Wire toggle
