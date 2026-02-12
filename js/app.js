@@ -637,8 +637,9 @@ function renderTasks(tabKey) {
     // Prevent checkbox click from selecting the row
     checkbox.addEventListener("click", (event) => event.stopPropagation());
 
-    // Click row selects CURRENT task
+    // Click row selects CURRENT task (skip if inline-editing)
     li.addEventListener("click", () => {
+      if (window.enhancedFeatures && window.enhancedFeatures.isEditingTask()) return;
       const focusTabSelect = document.getElementById("focusTabSelect");
       if (focusTabSelect && focusScope !== "all" && focusScope !== tabKey) {
         focusScope = "all";
@@ -817,17 +818,9 @@ function syncTimerBubble(forceHide = false) {
 
   bubble.textContent = formatTime(Math.max(0, displaySeconds));
 
-  const shouldShow =
-    !forceHide &&
-    selectedFocusValue &&
-    (floatingPinned || intervalId !== null);
-
-  bubble.classList.toggle("is-hidden", !shouldShow);
-  floatBtn.classList.toggle("is-running", intervalId !== null);
-
   // Update floating countdown widget
+  const isRunning = intervalId !== null && selectedFocusValue;
   if (floatingCountdown && floatingTime) {
-    const isRunning = intervalId !== null && selectedFocusValue;
     floatingCountdown.classList.toggle("is-visible", !!isRunning);
     if (isRunning) {
       floatingTime.textContent = formatTime(Math.max(0, displaySeconds));
@@ -837,6 +830,16 @@ function syncTimerBubble(forceHide = false) {
       }
     }
   }
+
+  // Hide timer bubble when floating countdown is visible (avoid duplicate timers)
+  const shouldShow =
+    !forceHide &&
+    selectedFocusValue &&
+    !isRunning &&
+    (floatingPinned || intervalId !== null);
+
+  bubble.classList.toggle("is-hidden", !shouldShow);
+  floatBtn.classList.toggle("is-running", intervalId !== null);
 }
 
 function setTimerDisplay(seconds) {
@@ -1098,33 +1101,6 @@ document.addEventListener("DOMContentLoaded", () => {
   wireAddTaskForm();
   wireFocusPickers();
   wireTimer();
-
-  // MAYBE TO DELETE LATER?
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const element = document.querySelector("section#tasksCard");
-
-    if (element) {
-      const parallaxSpeed = 0.3; // Adjust this value for different speeds
-
-      function updateParallax() {
-        const scrollTop =
-          window.pageYOffset || document.documentElement.scrollTop;
-        const yPos = -(scrollTop - element.offsetTop) * parallaxSpeed;
-        element.style.backgroundPosition = `center ${yPos}px`;
-      }
-
-      window.addEventListener("scroll", updateParallax);
-      updateParallax(); // Set initial position
-      console.log(
-        "JavaScript parallax effect applied with dirty paper background.",
-      );
-    } else {
-      console.warn(
-        "Element section#tasksCard not found, parallax not applied.",
-      );
-    }
-  });
 
   // Tab click behavior
   tabs.forEach((tab) => {
