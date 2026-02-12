@@ -2182,7 +2182,9 @@ body::before {
   color: rgba(246, 243, 234, 0.35);
   scroll-snap-align: center;
   cursor: pointer;
-  transition: color 0.15s, transform 0.15s;
+  transition:
+    color 0.15s,
+    transform 0.15s;
   user-select: none;
 }
 
@@ -2244,7 +2246,9 @@ body::before {
   z-index: 10000;
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s;
   white-space: nowrap;
   max-width: 90vw;
   text-align: center;
@@ -2356,7 +2360,9 @@ body::before {
   background: #333;
   border-radius: 28px;
   border: 2px solid #555;
-  transition: background 0.25s, border-color 0.25s;
+  transition:
+    background 0.25s,
+    border-color 0.25s;
   flex-shrink: 0;
 }
 
@@ -2747,6 +2753,7 @@ body.pg-mode {
 
 /* PG mode: remove drop-shadow/filter on title */
 .pg-mode .title-line {
+  color: #2563eb !important;
   filter: none !important;
 }
 
@@ -2766,7 +2773,9 @@ body.pg-mode {
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 50%;
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
   flex-shrink: 0;
   display: flex;
   align-items: center;
