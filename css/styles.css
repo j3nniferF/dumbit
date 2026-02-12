@@ -2337,6 +2337,17 @@ body.pg-mode {
   background: url("../assets/textures/unicornWIDE.png") center/cover fixed !important;
 }
 
+/* PG mode: Use Helvetica for EVERYTHING except the mode switch label */
+.pg-mode * {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+/* Exception: Keep punk font for the mode switch label in PG mode */
+.pg-mode .pg-switch__label {
+  font-family: var(--font-punk) !important;
+  color: #2563eb !important;
+}
+
 .pg-mode .app {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -2629,11 +2640,6 @@ body.pg-mode {
 .pg-mode .prize-note {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   color: #666 !important;
-}
-
-.pg-mode .pg-switch__label {
-  color: #2563eb !important;
-  font-family: var(--font-punk) !important; /* Keep punk font for mode switch even in PG mode */
 }
 
 .pg-mode .streak-badge {
@@ -3124,7 +3130,7 @@ body.pg-mode {
 .howto-button {
   position: fixed;
   top: 20px;
-  right: 20px;
+  right: 100px; /* Move left to avoid timer button */
   z-index: 1000;
   background: var(--accent-red);
   color: #fff;
@@ -3154,7 +3160,7 @@ body.pg-mode {
 @media (max-width: 640px) {
   .howto-button {
     top: 12px;
-    right: 12px;
+    right: 80px; /* Adjust for mobile */
     padding: 6px 10px;
     font-size: 0.8rem;
   }

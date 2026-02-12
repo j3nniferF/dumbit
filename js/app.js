@@ -1676,7 +1676,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load state for the new mode (separate data for each mode)
     loadState();
-    renderTabs();
+    
+    // Reapply tab labels from loaded state
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach((tab) => {
+      const key = tab.dataset.tab;
+      if (key && TAB_LABELS[key]) tab.textContent = TAB_LABELS[key];
+    });
+    
     renderTasks(activeTabKey);
     buildFocusSelect();
     updateProgress();
