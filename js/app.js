@@ -46,7 +46,12 @@ const DEFAULT_TASKS_PG = {
 };
 
 // Default seed (only used if no localStorage state exists)
-let TASKS_BY_TAB = { ...DEFAULT_TASKS_PUNK };
+let TASKS_BY_TAB = {
+  dueToday: [...DEFAULT_TASKS_PUNK.dueToday],
+  soon: [...DEFAULT_TASKS_PUNK.soon],
+  asSoonAsICan: [...DEFAULT_TASKS_PUNK.asSoonAsICan],
+  dontForget: [...DEFAULT_TASKS_PUNK.dontForget],
+};
 
 let COMPLETED_TASKS = {
   dueToday: [],
@@ -148,6 +153,9 @@ function openTimerPopup() {
   overlay.classList.remove("is-hidden");
   floatingPinned = false;
   syncTimerBubble(true);
+  // Make timer icon faint while popup is open
+  const timerBtn = document.getElementById("openTimerBtn");
+  if (timerBtn) timerBtn.classList.add("timer--faint");
 }
 
 function isTimerPopupOpen() {
@@ -161,6 +169,9 @@ function closeTimerPopup({ keepFloating = false } = {}) {
   overlay.classList.add("is-hidden");
   floatingPinned = keepFloating || floatingPinned;
   syncTimerBubble();
+  // Restore timer icon visibility
+  const timerBtn = document.getElementById("openTimerBtn");
+  if (timerBtn) timerBtn.classList.remove("timer--faint");
 }
 
 let timerPopupWired = false;
@@ -173,7 +184,6 @@ function wireTimerPopup() {
   const closeBtn = document.getElementById("closeTimerPopup");
   const closeXBtn = document.getElementById("closeTimerX");
   const openBtn = document.getElementById("openTimerBtn");
-  const floatBtn = document.getElementById("floatTimerBtn");
   
   if (openBtn) {
     openBtn.addEventListener("click", () => openTimerPopup());
@@ -186,17 +196,17 @@ function wireTimerPopup() {
   if (closeXBtn) {
     closeXBtn.addEventListener("click", () => closeTimerPopup({ keepFloating: false }));
   }
-
-   if (floatBtn) {
-     floatBtn.addEventListener("click", () => {
-       floatingPinned = true;
-       closeTimerPopup({ keepFloating: true });
-     });
-   }
   
   if (overlay) {
     overlay.addEventListener("click", (event) => {
       if (event.target === overlay) closeTimerPopup({ keepFloating: false });
+    });
+    // Also handle touchend for mobile close
+    overlay.addEventListener("touchend", (event) => {
+      if (event.target === overlay) {
+        event.preventDefault();
+        closeTimerPopup({ keepFloating: false });
+      }
     });
   }
   
@@ -225,8 +235,6 @@ function closeTimerModal() {
 function wireTimerModal() {
   const overlay = document.getElementById("timerOverlay");
   const doneBtn = document.getElementById("timerDoneBtn");
-  const addTimeBtn = document.getElementById("timerAddTimeBtn");
-  const addTimeSelect = document.getElementById("timerAddSelect");
   const notDoneBtn = document.getElementById("timerNotDoneBtn");
   const newTaskBtn = document.getElementById("timerNewTaskBtn");
 
@@ -241,22 +249,16 @@ function wireTimerModal() {
   }
 
   if (notDoneBtn) {
-    notDoneBtn.addEventListener("click", () => closeTimerModal());
+    notDoneBtn.addEventListener("click", () => {
+      closeTimerModal();
+      addTimeMinutes(5);
+    });
   }
 
   if (newTaskBtn) {
     newTaskBtn.addEventListener("click", () => {
       closeTimerModal();
       openTimerPopup();
-    });
-  }
-
-  if (addTimeBtn) {
-    addTimeBtn.addEventListener("click", () => {
-      const seconds = Number(addTimeSelect?.value ?? 300);
-      const minutes = Math.max(1, Math.round(seconds / 60));
-      addTimeMinutes(minutes);
-      closeTimerModal();
     });
   }
 
@@ -590,7 +592,26 @@ function renderCompletedGrouped() {
 
     done.forEach((taskText) => {
       const li = document.createElement("li");
-      li.textContent = taskText;
+      li.style.display = "flex";
+      li.style.alignItems = "center";
+      li.style.justifyContent = "space-between";
+
+      const textSpan = document.createElement("span");
+      textSpan.textContent = taskText;
+      li.appendChild(textSpan);
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "task-delete";
+      deleteBtn.type = "button";
+      deleteBtn.title = "Remove task";
+      deleteBtn.setAttribute("aria-label", "Remove task");
+      deleteBtn.textContent = "✕";
+      deleteBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        deleteTask(tabKey, taskText);
+      });
+      li.appendChild(deleteBtn);
+
       ul.appendChild(li);
     });
 
@@ -955,6 +976,8 @@ function syncTimerBubble(forceHide = false) {
 
   bubble.classList.toggle("is-hidden", !shouldShow);
   floatBtn.classList.toggle("is-running", intervalId !== null);
+  // Hide timer icon entirely when timer is running (floating countdown is visible instead)
+  floatBtn.classList.toggle("timer--hidden", isRunning);
 }
 
 function setTimerDisplay(seconds) {
@@ -1164,24 +1187,6 @@ function addTimeMinutes(minutes) {
   startCountdown();
 }
 
-function parseCustomDuration(input) {
-  if (!input) return null;
-  const trimmed = String(input).trim();
-
-  if (trimmed.includes(":")) {
-    const [mmStr, ssStr] = trimmed.split(":");
-    const mm = Number(mmStr);
-    const ss = Number(ssStr);
-    if (!Number.isFinite(mm) || !Number.isFinite(ss)) return null;
-    if (mm < 0 || ss < 0 || ss > 59) return null;
-    return mm * 60 + ss;
-  }
-
-  const minutes = Number(trimmed);
-  if (!Number.isFinite(minutes) || minutes <= 0) return null;
-  return Math.round(minutes * 60);
-}
-
 function stopInterval() {
   if (intervalId !== null) {
     clearInterval(intervalId);
@@ -1193,10 +1198,9 @@ function stopInterval() {
 function wireTimer() {
   const startBtn = document.getElementById("startBtn");
   const pauseBtn = document.getElementById("pauseBtn");
-  const stopBtn = document.getElementById("stopBtn");
   const resetTimerBtn = document.getElementById("resetTimerBtn");
 
-  if (!startBtn || !pauseBtn || !stopBtn) {
+  if (!startBtn || !pauseBtn) {
     console.warn("Timer elements missing. Check IDs in index.html.");
     return;
   }
@@ -1209,12 +1213,6 @@ function wireTimer() {
   pauseBtn.addEventListener("click", () => {
     floatingPinned = true;
     stopInterval();
-  });
-
-  stopBtn.addEventListener("click", () => {
-    stopInterval();
-    floatingPinned = false;
-    resetTimerToSelectedDuration();
   });
 
   if (resetTimerBtn) {
@@ -1457,62 +1455,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Persist and refresh UI
     saveState();
     renderTasks(activeTabKey);
-  });
-
-  // Listen for task moved to different tab event
-  document.addEventListener("tasks:movedToTab", (e) => {
-    const { sourceTab, targetTab, taskText } = e.detail || {};
-    if (!sourceTab || !targetTab || !taskText) return;
-
-    // Remove from source tab
-    const sourceIdx = (TASKS_BY_TAB[sourceTab] || []).indexOf(taskText);
-    if (sourceIdx > -1) {
-      TASKS_BY_TAB[sourceTab].splice(sourceIdx, 1);
-    }
-
-    // Check if task was completed in source tab
-    const wasCompleted = (COMPLETED_TASKS[sourceTab] || []).includes(taskText);
-    if (wasCompleted) {
-      // Remove from source completed
-      const completedIdx = COMPLETED_TASKS[sourceTab].indexOf(taskText);
-      if (completedIdx > -1) {
-        COMPLETED_TASKS[sourceTab].splice(completedIdx, 1);
-      }
-    }
-
-    // Add to target tab
-    if (!Array.isArray(TASKS_BY_TAB[targetTab])) {
-      TASKS_BY_TAB[targetTab] = [];
-    }
-    if (!TASKS_BY_TAB[targetTab].includes(taskText)) {
-      TASKS_BY_TAB[targetTab].push(taskText);
-    }
-
-    // If it was completed, add to target completed
-    if (wasCompleted) {
-      if (!Array.isArray(COMPLETED_TASKS[targetTab])) {
-        COMPLETED_TASKS[targetTab] = [];
-      }
-      if (!COMPLETED_TASKS[targetTab].includes(taskText)) {
-        COMPLETED_TASKS[targetTab].push(taskText);
-      }
-    }
-
-    // Update completion tracking
-    syncTabCompleteLast(sourceTab);
-    syncTabCompleteLast(targetTab);
-
-    // Persist and refresh UI
-    saveState();
-    renderTasks(activeTabKey);
-    renderCompletedGrouped();
-    buildFocusSelect(selectedFocusValue);
-    updateProgress();
-
-    // Show notification
-    alert(
-      `✅ Moved "${taskText}" from ${TAB_LABELS[sourceTab]} to ${TAB_LABELS[targetTab]}`,
-    );
   });
 
   // ===== FUN FEATURE: Motivational roast toasts on task completion =====

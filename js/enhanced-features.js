@@ -114,9 +114,6 @@ function enableInlineEditing() {
 }
 
 
-let draggedElement = null;
-let draggedTaskData = null;
-
 function enableDragAndDrop() {
   const taskList = document.getElementById("taskList");
   if (!taskList) return;
@@ -197,71 +194,6 @@ function getDragAfterElement(container, y) {
 }
 
 /**
- * Enable dragging tasks to different tabs
- */
-function enableDragToTabs() {
-  const taskList = document.getElementById("taskList");
-  const tabs = document.querySelectorAll(".tab");
-  if (!taskList || !tabs.length) return;
-
-  let draggedTask = null;
-
-  // Track dragged task
-  taskList.addEventListener("dragstart", (e) => {
-    const task = e.target.closest(".task");
-    if (task) {
-      draggedTask = {
-        text: task.dataset.task,
-        tab: task.dataset.tab,
-        completed: task.querySelector("input[type='checkbox']")?.checked || false,
-      };
-    }
-  });
-
-  taskList.addEventListener("dragend", () => {
-    draggedTask = null;
-    tabs.forEach((tab) => {
-      tab.style.backgroundColor = "";
-    });
-  });
-
-  // Tab hover effects
-  tabs.forEach((tab) => {
-    tab.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      if (draggedTask && tab.dataset.tab !== draggedTask.tab) {
-        tab.style.backgroundColor = "#c51616";
-      }
-    });
-
-    tab.addEventListener("dragleave", () => {
-      tab.style.backgroundColor = "";
-    });
-
-    tab.addEventListener("drop", (e) => {
-      e.preventDefault();
-      tab.style.backgroundColor = "";
-
-      if (!draggedTask) return;
-
-      const targetTab = tab.dataset.tab;
-      if (targetTab === draggedTask.tab) return;
-
-      // Dispatch event to move task
-      const event = new CustomEvent("task:movedToTab", {
-        detail: {
-          taskText: draggedTask.text,
-          sourceTab: draggedTask.tab,
-          targetTab,
-          completed: draggedTask.completed,
-        },
-      });
-      document.dispatchEvent(event);
-    });
-  });
-}
-
-/**
  * Make tasks draggable (called after rendering)
  */
 function makeTasksDraggable() {
@@ -299,7 +231,6 @@ function makeTasksDraggable() {
 function enableTimerAnimations() {
   const startBtn = document.getElementById("startBtn");
   const pauseBtn = document.getElementById("pauseBtn");
-  const stopBtn = document.getElementById("stopBtn");
   const floatingCountdown = document.getElementById("floatingCountdown");
 
   if (!startBtn) return;
@@ -311,12 +242,6 @@ function enableTimerAnimations() {
 
   if (pauseBtn) {
     pauseBtn.addEventListener("click", () => {
-      if (floatingCountdown) floatingCountdown.classList.remove("timer--running");
-    });
-  }
-
-  if (stopBtn) {
-    stopBtn.addEventListener("click", () => {
       if (floatingCountdown) floatingCountdown.classList.remove("timer--running");
     });
   }
@@ -343,9 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Wait a bit for the main app to initialize
   setTimeout(() => {
-    // enableInlineEditing(); // REMOVED - inline editing disabled for now
     enableDragAndDrop();
-    enableDragToTabs();
     makeTasksDraggable();
     enableTimerAnimations();
 
@@ -357,7 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
 window.enhancedFeatures = {
   enableInlineEditing,
   enableDragAndDrop,
-  enableDragToTabs,
   makeTasksDraggable,
   enableTimerAnimations,
   isEditingTask: () => isEditingTask,

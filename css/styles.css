@@ -1400,17 +1400,49 @@ body::before {
 /* make sure modal looks great on mobile */
 @media (max-width: 420px) {
   #prizeModal {
-    max-width: 96%;
-    width: 96%;
-    padding: 16px 18px;
+    max-width: 92%;
+    width: 92%;
+    padding: 14px 14px;
+    gap: 8px;
   }
 
   #prizeModal .modal-title {
-    font-size: clamp(2.2rem, 9vw, 3rem);
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
   }
 
   #prizeModal .modal-subtitle {
-    font-size: clamp(1rem, 4vw, 1.4rem);
+    font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+  }
+
+  .modal img.prize-gif {
+    max-width: 160px;
+    width: 50%;
+    max-height: 20vh;
+  }
+
+  #prizeModal .prize-list {
+    gap: 8px;
+    margin: 4px 0 6px;
+  }
+
+  #prizeModal .prize-list li {
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
+    padding: 4px 6px;
+  }
+
+  .prize-roast {
+    font-size: clamp(0.85rem, 1.8vw, 1rem) !important;
+    padding: 6px 10px !important;
+  }
+
+  .prize-note {
+    font-size: 0.85rem;
+    margin: 2px 0 6px;
+  }
+
+  #prizeModal .prize-actions .btn {
+    font-size: 0.9rem;
+    padding: 8px 14px;
   }
 }
 
@@ -1654,6 +1686,16 @@ body::before {
 
 .floating-timer.is-running {
   animation: timerGlow 1.3s ease-in-out infinite;
+}
+
+.floating-timer.timer--faint {
+  opacity: 0.25;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.floating-timer.timer--hidden {
+  display: none;
 }
 
 @keyframes timerGlow {
@@ -2635,7 +2677,7 @@ body.pg-mode {
 .task-delete {
   background: none;
   border: none;
-  color: rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.4);
   font-size: 1.1rem;
   line-height: 1;
   cursor: pointer;
@@ -2654,7 +2696,7 @@ body.pg-mode {
 }
 
 .pg-mode .task-delete {
-  color: rgba(0, 0, 0, 0.25) !important;
+  color: rgba(0, 0, 0, 0.4) !important;
 }
 
 .pg-mode .task-delete:hover {
@@ -2747,5 +2789,21 @@ body.pg-mode {
 
   .modal--timer-popup .timer-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  /* Bigger close X button on mobile for easier tapping */
+  .modal-close-x {
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+    top: 6px;
+    right: 6px;
+  }
+
+  /* Bigger close button on mobile */
+  .btn--close {
+    min-height: 44px;
+    font-size: 1rem;
+    padding: 10px 20px;
   }
 }
