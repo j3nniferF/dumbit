@@ -3697,7 +3697,6 @@ body:not(.pg-mode) .completed-list li span {
 }
 
 .modal--timer-popup .modal-title {
-  font-family: var(--font-anarchy) !important;
   font-size: clamp(5rem, 11vw, 8.8rem) !important;
   line-height: 0.86 !important;
   margin: 0 0 4px !important;
