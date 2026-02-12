@@ -764,11 +764,11 @@ body::before {
   margin-bottom: 12px;
 }
 
-/* Responsive adjustment for very small screens */
+/* Responsive adjustment for mobile screens */
 @media (max-width: 768px) {
   .completed-groups--tabs {
-    /* Stack in 2 columns on medium screens */
-    grid-template-columns: repeat(2, 1fr);
+    /* Stack vertically on mobile - 1 column */
+    grid-template-columns: 1fr !important;
     gap: 10px;
   }
 }
@@ -978,11 +978,18 @@ body::before {
 }
 
 .task {
+  display: flex;
+  align-items: center;
   padding: 6px 8px;
   border-radius: 6px;
   transition:
     transform 0.06s ease,
     background 0.2s ease;
+}
+
+.task .task-row {
+  flex: 1;
+  min-width: 0;
 }
 
 .task:hover {
@@ -1043,13 +1050,6 @@ body::before {
 
 .card--completed {
   padding: 20px 22px !important;
-}
-
-.completed-groups--tabs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 12px;
 }
 
 .field-label {
@@ -1741,6 +1741,9 @@ body::before {
     0 26px 60px rgba(0, 0, 0, 0.7),
     inset 0 0 0 2px rgba(255, 255, 255, 0.12),
     0 0 0 4px rgba(0, 0, 0, 0.6);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal--timer-popup .modal-title {
@@ -2073,11 +2076,11 @@ body::before {
 }
 
 .dial-item--selected {
-  color: var(--accent-red) !important;
+  color: #f6f3ea !important;
   font-size: 1.6rem;
   font-weight: 900;
   transform: scale(1.1);
-  text-shadow: 0 0 12px rgba(197, 22, 22, 0.5);
+  text-shadow: 0 0 12px rgba(246, 243, 234, 0.5);
 }
 
 .dial-sep {
@@ -2164,6 +2167,57 @@ body::before {
 .streak-badge #streakCount {
   font-size: 1.3em;
   font-weight: 900;
+}
+
+/* ===== FUN PROGRESS BAR ===== */
+.fun-progress {
+  margin: 12px 0 16px;
+  text-align: center;
+}
+
+.fun-progress__track {
+  width: 100%;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.fun-progress__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-red), #e84040, #ff6b6b);
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  box-shadow: 0 0 10px rgba(197, 22, 22, 0.4);
+}
+
+.fun-progress__label {
+  margin: 6px 0 0;
+  font-family: var(--font-ui);
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.pg-mode .fun-progress__track {
+  background: #eee !important;
+  border-color: #ddd !important;
+}
+
+.pg-mode .fun-progress__fill {
+  background: linear-gradient(90deg, #2563eb, #60a5fa, #93c5fd) !important;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.3) !important;
+}
+
+.pg-mode .fun-progress__label {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
 }
 
 /* ===== PG MODE TOGGLE SWITCH ===== */
@@ -2263,6 +2317,10 @@ body.pg-mode {
 
 .pg-mode .tab--active {
   color: #2563eb !important;
+}
+
+.pg-mode .tab--active::after {
+  background: #2563eb !important;
 }
 
 .pg-mode .card--tasks,
@@ -2455,8 +2513,9 @@ body.pg-mode {
 }
 
 .pg-mode .dial-item--selected {
-  color: #2563eb !important;
+  color: #111 !important;
   text-shadow: none !important;
+  font-weight: 900;
 }
 
 .pg-mode .dial-sep {
@@ -2471,6 +2530,10 @@ body.pg-mode {
 .pg-mode .completed-stat {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   color: #333 !important;
+}
+
+.pg-mode .completed-stat__count {
+  color: #2563eb !important;
 }
 
 .pg-mode .completed-groups--tabs .completed-group {
@@ -2523,6 +2586,166 @@ body.pg-mode {
   border-color: #2563eb !important;
 }
 
+.pg-mode .task--selected::after {
+  background: #2563eb !important;
+}
+
 .pg-mode .task-checkbox {
   accent-color: #2563eb;
+}
+
+/* PG mode: ensure completed list items use readable font */
+.pg-mode .completed-list,
+.pg-mode .completed-list li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+/* PG mode: ensure prize list items use readable font (override #prizeModal specificity) */
+.pg-mode #prizeModal .prize-list li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+/* PG mode: ensure prize subtitle uses readable font */
+.pg-mode #prizeSubtitle {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+}
+
+/* PG mode: ensure prize modal title lines are visible */
+.pg-mode #prizeModal .modal-title-line1,
+.pg-mode #prizeModal .modal-title-line2 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+}
+
+/* PG mode: remove drop-shadow/filter on title */
+.pg-mode .title-line {
+  filter: none !important;
+}
+
+/* PG mode: ensure completed subheading uses readable font */
+.pg-mode .completed-subheading {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+}
+
+/* ===== TASK DELETE BUTTON ===== */
+.task-delete {
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-delete:hover {
+  color: var(--accent-red);
+  background: rgba(197, 22, 22, 0.12);
+}
+
+.pg-mode .task-delete {
+  color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.pg-mode .task-delete:hover {
+  color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.08) !important;
+}
+
+/* ===== MODAL CLOSE X BUTTON ===== */
+.modal-close-x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  color: #f6f3ea;
+  border: 2px solid rgba(246, 243, 234, 0.3);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.15s;
+}
+
+.modal-close-x:hover {
+  background: var(--accent-red);
+}
+
+.pg-mode .modal-close-x {
+  background: #eee !important;
+  color: #333 !important;
+  border-color: #ccc !important;
+}
+
+.pg-mode .modal-close-x:hover {
+  background: #dc2626 !important;
+  color: #fff !important;
+}
+
+/* ===== PRIZE ROAST LINE ===== */
+.prize-roast {
+  font-family: var(--font-ui);
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--accent-red);
+  margin: 8px 0;
+  padding: 10px 14px;
+  border: 2px dashed var(--accent-red);
+  border-radius: 8px;
+  background: rgba(197, 22, 22, 0.08);
+  animation: fadeSlideIn 0.5s ease-out 0.6s backwards;
+}
+
+.prize-roast:empty {
+  display: none;
+}
+
+.pg-mode .prize-roast {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+  border-color: #2563eb !important;
+  background: rgba(37, 99, 235, 0.06) !important;
+}
+
+/* ===== DIAL SPACER ===== */
+.dial-spacer {
+  flex-shrink: 0;
+}
+
+/* ===== MOBILE TIMER POPUP FIX ===== */
+@media (max-width: 640px) {
+  .modal--timer-popup {
+    width: 96% !important;
+    max-width: 96% !important;
+    max-height: 88vh; /* leave room for status bar + bottom nav on mobile */
+    overflow-y: auto;
+    padding: 14px 10px !important;
+  }
+
+  .modal--timer-popup .modal-title {
+    font-size: clamp(2rem, 8vw, 3.5rem) !important;
+    margin-top: 32px; /* space for close X */
+  }
+
+  .modal--timer-popup .timer-grid {
+    grid-template-columns: 1fr !important;
+  }
 }

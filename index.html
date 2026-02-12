@@ -130,6 +130,13 @@
               OF ALL TASKS DONE
             </p>
 
+            <div class="fun-progress" id="funProgressBar">
+              <div class="fun-progress__track">
+                <div class="fun-progress__fill"></div>
+              </div>
+              <p class="fun-progress__label"></p>
+            </div>
+
             <div
               class="completed-groups completed-groups--tabs"
               id="completedGroups"
@@ -196,6 +203,8 @@
           <li>GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.</li>
         </ul>
 
+        <p class="prize-roast" id="prizeRoast"></p>
+
         <img class="prize-gif" src="https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif" alt="Cute cat"/>
         <p class="prize-note" id="prizeNote">or you can stare at this cute dumb cat</p>
 
@@ -216,6 +225,7 @@
       aria-labelledby="timerPopupTitle"
     >
       <div class="modal modal--timer-popup" id="timerPopupModal">
+        <button class="modal-close-x" id="closeTimerX" type="button" title="Close" aria-label="Close timer">✕</button>
         <h2 class="modal-title" id="timerPopupTitle">TIMER</h2>
 
         <div class="timer-grid">
@@ -280,6 +290,7 @@
           <button class="btn" id="startBtn" type="button">START</button>
           <button class="btn" id="pauseBtn" type="button">PAUSE</button>
           <button class="btn" id="stopBtn" type="button">STOP</button>
+          <button class="btn" id="resetTimerBtn" type="button">RESET</button>
         </div>
 
         <div class="timer-footer-actions">
