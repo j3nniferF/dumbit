@@ -17,7 +17,8 @@
        (and can fire again if you add tasks later and re-finish)
 ===================================================== */
 
-const STORAGE_KEY = "dsigdt_state_v1";
+const STORAGE_KEY_SHIT = "dsigdt_state_shit_v1";
+const STORAGE_KEY_PG = "dsigdt_state_pg_v1";
 
 const TAB_ORDER = ["dueToday", "soon", "asSoonAsICan", "dontForget"];
 
@@ -30,20 +31,7 @@ const TAB_LABELS_DEFAULT = {
 
 let TAB_LABELS = { ...TAB_LABELS_DEFAULT };
 
-// Default seed tasks — sassy for $H!T mode, friendly for PG mode
-const DEFAULT_TASKS_PUNK = {
-  dueToday: ["Shower (yes, today)", "Take your damn meds", "Answer that email you've been ignoring"],
-  soon: ["Clean the kitchen before it becomes sentient", "Drag yourself to the grocery store"],
-  asSoonAsICan: ["Organize closet (stop pretending you will)", "Call the dentist already"],
-  dontForget: ["Buy cat food or face the consequences", "Pay credit card before they find you"],
-};
-
-const DEFAULT_TASKS_PG = {
-  dueToday: ["Take a nice shower", "Take your vitamins", "Breathe & stretch for 5 min"],
-  soon: ["Tidy up the kitchen", "Quick grocery run"],
-  asSoonAsICan: ["Organize your closet", "Schedule a dentist appointment"],
-  dontForget: ["Pick up pet food", "Pay credit card bill"],
-};
+// No preset tasks - user starts with empty tabs
 
 let TASKS_BY_TAB = {
   dueToday: [],
@@ -171,6 +159,40 @@ function closeTimerPopup() {
 }
 
 let timerPopupWired = false;
+
+function wireHowtoModal() {
+  const overlay = document.getElementById("howtoOverlay");
+  const button = document.getElementById("howtoButton");
+  const closeX = document.getElementById("closeHowtoX");
+  
+  function openHowto() {
+    if (overlay) overlay.classList.remove("is-hidden");
+  }
+  
+  function closeHowto() {
+    if (overlay) overlay.classList.add("is-hidden");
+  }
+  
+  if (button) {
+    button.addEventListener("click", openHowto);
+  }
+  
+  if (closeX) {
+    closeX.addEventListener("click", closeHowto);
+  }
+  
+  if (overlay) {
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) closeHowto();
+    });
+  }
+  
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && overlay && !overlay.classList.contains("is-hidden")) {
+      closeHowto();
+    }
+  });
+}
 
 function wireTimerPopup() {
   if (timerPopupWired) return; // Prevent multiple wirings
@@ -303,6 +325,8 @@ function wirePrizeModalClose() {
 
 /* JS-only confetti (no libraries) */
 function fireConfettiBurst() {
+  const isPgMode = window._pgMode;
+  
   // inject keyframes once
   if (!document.getElementById("confettiStyles")) {
     const style = document.createElement("style");
@@ -311,6 +335,14 @@ function fireConfettiBurst() {
       @keyframes confettiFall {
         0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
         100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+      }
+      @keyframes sparkleAnimation {
+        0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+        50% { transform: scale(1) rotate(180deg); opacity: 1; }
+      }
+      @keyframes explosionAnimation {
+        0% { transform: translate(0, 0) scale(1); opacity: 1; }
+        100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
       }
     `;
     document.head.appendChild(style);
@@ -322,36 +354,68 @@ function fireConfettiBurst() {
   wrap.style.pointerEvents = "none";
   wrap.style.zIndex = "9999";
 
-  const colors = ["#c51616", "#111", "#f3f1e9", "#eaeaea", "#f0ecde"];
-  // increased count and larger size range for bigger confetti
-  for (let i = 0; i < 180; i++) {
-    const bit = document.createElement("div");
-    const size = Math.random() * 18 + 8; // bigger pieces
-
-    bit.style.position = "absolute";
-    bit.style.top = "-10vh";
-    bit.style.left = Math.random() * 100 + "vw";
-    bit.style.width = size + "px";
-    bit.style.height = Math.max(4, size * (0.5 + Math.random() * 0.4)) + "px";
-    bit.style.background = colors[Math.floor(Math.random() * colors.length)];
-    bit.style.borderRadius = Math.random() > 0.6 ? "50%" : "3px";
-    bit.style.opacity = "0.95";
-
-    const duration = 2 + Math.random() * 2.2;
-    const delay = Math.random() * 0.35;
-
-    bit.style.transform = `rotate(${Math.random() * 360}deg)`;
-    bit.style.animation = `confettiFall ${duration}s linear ${delay}s forwards`;
-
-    wrap.appendChild(bit);
+  if (isPgMode) {
+    // PG MODE: Sparkles effect
+    const colors = ["#ffd700", "#ffeb3b", "#fff59d", "#ffffff", "#ffe082"];
+    for (let i = 0; i < 50; i++) {
+      const sparkle = document.createElement("div");
+      const size = Math.random() * 8 + 4;
+      
+      sparkle.style.position = "absolute";
+      sparkle.style.left = Math.random() * 100 + "vw";
+      sparkle.style.top = Math.random() * 100 + "vh";
+      sparkle.style.width = size + "px";
+      sparkle.style.height = size + "px";
+      sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      sparkle.style.borderRadius = "50%";
+      sparkle.style.boxShadow = `0 0 ${size * 2}px ${colors[Math.floor(Math.random() * colors.length)]}`;
+      
+      const duration = 1 + Math.random() * 1.5;
+      const delay = Math.random() * 0.5;
+      
+      sparkle.style.animation = `sparkleAnimation ${duration}s ease-in-out ${delay}s forwards`;
+      wrap.appendChild(sparkle);
+    }
+  } else {
+    // SHIT MODE: Explosions effect
+    const colors = ["#c51616", "#ff0000", "#ff6b6b", "#111", "#333"];
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    for (let i = 0; i < 100; i++) {
+      const bit = document.createElement("div");
+      const size = Math.random() * 12 + 6;
+      
+      // Calculate explosion direction
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 200 + Math.random() * 400;
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+      
+      bit.style.position = "absolute";
+      bit.style.left = "50vw";
+      bit.style.top = "50vh";
+      bit.style.width = size + "px";
+      bit.style.height = size + "px";
+      bit.style.background = colors[Math.floor(Math.random() * colors.length)];
+      bit.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+      bit.style.setProperty("--dx", dx + "px");
+      bit.style.setProperty("--dy", dy + "px");
+      
+      const duration = 0.8 + Math.random() * 0.7;
+      const delay = Math.random() * 0.1;
+      
+      bit.style.animation = `explosionAnimation ${duration}s ease-out ${delay}s forwards`;
+      wrap.appendChild(bit);
+    }
   }
 
   document.body.appendChild(wrap);
 
-  // keep on screen longer so larger pieces finish animating
+  // Clean up
   setTimeout(() => {
     wrap.remove();
-  }, 5000);
+  }, 3000);
 }
 
 function celebrateIfTabJustCompleted(tabKey) {
@@ -408,24 +472,23 @@ function saveState() {
     tabLabels: TAB_LABELS,
   };
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    // Save to mode-specific storage key
+    const storageKey = window._pgMode ? STORAGE_KEY_PG : STORAGE_KEY_SHIT;
+    localStorage.setItem(storageKey, JSON.stringify(state));
   } catch (e) {
     // localStorage may be unavailable in some environments; keep app usable
     console.warn("Could not save state:", e);
   }
 }
 
-function seedDefaultTasks() {
-  const defaults = window._pgMode ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
-  TAB_ORDER.forEach((k) => {
-    if (defaults[k]) TASKS_BY_TAB[k] = [...defaults[k]];
-  });
-}
-
 function loadState() {
-  const raw = localStorage.getItem(STORAGE_KEY);
+  // Load from mode-specific storage key
+  const storageKey = window._pgMode ? STORAGE_KEY_PG : STORAGE_KEY_SHIT;
+  const raw = localStorage.getItem(storageKey);
   if (!raw) {
-    seedDefaultTasks();
+    // No preset tasks - start with empty tabs
+    normalizeState();
+    initTabCompleteLast();
     return;
   }
 
@@ -1387,6 +1450,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wirePrizeModalClose();
   wireTimerModal();
   wireTimerPopup();
+  wireHowtoModal();
   wireFloatingCountdown();
   wireResetButton(tabs);
   wireAddTaskForm();
@@ -1551,12 +1615,12 @@ document.addEventListener("DOMContentLoaded", () => {
     titleLine1:       { punk: "DUMB shit",                    pg: "SILLY STUFF" },
     titleLine2:       { punk: "I GOTta dO TODay",             pg: "TO DO TODAY" },
     completedHeading: { punk: "SHIT I DID:",                  pg: "COMPLETED:" },
-    resetBtn:         { punk: "🧨 RESET EVERYTHING",          pg: "Reset Everything" },
+    resetBtn:         { punk: "🧨 RESET ALL SHIT",            pg: "🧨 RESET ALL STUFF" },
     prizeLine1:       { punk: "GOOD JOB",                     pg: "GREAT JOB" },
     prizeLine2:       { punk: "DUMMY!",                       pg: "SUPERSTAR!" },
     prizeSubtitle:    { punk: "PICK A PRIZE",                 pg: "You earned a reward!" },
     prizeNote:        { punk: "or you can stare at this cute dumb cat", pg: "enjoy this cute cat!" },
-    backToItBtn:      { punk: "NOW GET BACK TO WORK DUMMY",   pg: "KEEP UP THE GREAT WORK!" },
+    backToItBtn:      { punk: "NOW GET BACK TO WORK DUMMY",   pg: "KEEP GOING, YOU'RE AMAZING! 🙌" },
     timerChooseLabel: { punk: "CHOOSE VIOLENCE:",             pg: "SELECT YOUR TASK:" },
     timerChooseHint:  { punk: "(PICK A TAB / PICK A TASK)",   pg: "(Choose a tab / Choose a task)" },
     timerFooterMsg:   { punk: "→ MURDER TASKS! ✅ GET A PRIZE!", pg: "→ Complete tasks! ✅ Earn a reward!" },
@@ -1584,6 +1648,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const prizes = mode === "pg" ? pgPrizes : punkPrizes;
       items.forEach((li, i) => { if (prizes[i]) li.textContent = prizes[i]; });
     }
+    
+    // Update roast messages container to have tighter text in PG mode
+    const prizeRoast = document.getElementById("prizeRoast");
+    if (prizeRoast) {
+      prizeRoast.classList.toggle("prize-roast--tight", mode === "pg");
+    }
   }
 
   window._pgMode = false;
@@ -1604,7 +1674,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window._pgMode = on;
 
-    // Update fun progress label for current mode
+    // Load state for the new mode (separate data for each mode)
+    loadState();
+    renderTabs();
+    renderTasks(activeTabKey);
+    buildFocusSelect();
     updateProgress();
   }
 
