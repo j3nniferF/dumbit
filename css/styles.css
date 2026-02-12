@@ -35,6 +35,7 @@ body {
   /* ===== FONTS (keep your vibe; change body font for readability) */
   --font-anarchy: "Anarchy"; /* title / big decorative */
   --font-punk: "HitMePunk04"; /* tabs & headings (your vibe) */
+  --font-punk2: "Punk2"; /* prize modal subtitle */
   --font-song: "Song"; /* existing body fallback */
   --font-wrong: "Wrong"; /* label/display fallback */
   --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -103,6 +104,11 @@ body::before {
   z-index: 0; /* KEY: behind content */
 }
 
+/* Hide grime in PG mode */
+.pg-mode::before {
+  display: none;
+}
+
 /* ===== LAYOUT GRID ===== */
 /* center items inside the grid so cards don't stretch edge-to-edge */
 .layout {
@@ -111,7 +117,6 @@ body::before {
     "header"
     "tabs"
     "tasks"
-    "timer"
     "completed"
     "music";
   gap: 20px;
@@ -174,17 +179,24 @@ body::before {
   display: inline-block;
   padding: 6px 18px;
   margin: 0 0 8px;
-  background: rgba(239, 231, 214, 0.95);
-  color: #111 !important;
+  /* Background removed for pop effect */
   border-radius: 2px;
+  /* Add punk effects to make it pop */
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.8),
+    -1px -1px 0 rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(197, 22, 22, 0.4);
+  /* Add outline/stroke effect */
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
-/* size tuning */
+/* size tuning - make it BIGGER */
 .title-line:first-child {
-  font-size: clamp(2rem, 6vw, 5rem) !important;
+  font-size: clamp(3rem, 9vw, 7rem) !important;
 }
 .title-line:last-child {
-  font-size: clamp(1rem, 2.6vw, 2rem) !important;
+  font-size: clamp(1.5rem, 4vw, 3.5rem) !important;
 }
 
 .tabs {
@@ -194,9 +206,6 @@ body::before {
 /* card grid areas */
 .card--tasks {
   grid-area: tasks;
-}
-.card--timer {
-  grid-area: timer;
 }
 .card--completed {
   grid-area: completed;
@@ -235,18 +244,15 @@ body::before {
   display: block;
   width: fit-content;
   padding: 6px 14px 8px;
-  background: #efe7d6;
-  /* box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.35),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.4); */
+  /* Remove background for pop effect */
   margin-bottom: 8px;
 }
 
-/* DSIGDT */
+/* DSIGDT - Make it BIGGER and more punk */
 .title-line:first-child {
   font-family: var(--font-anarchy);
-  /* responsive, big but not insane — change the numbers if you want it larger/smaller */
-  font-size: clamp(3rem, 8.5vw, 9rem);
+  /* BIGGER responsive sizing for maximum pop */
+  font-size: clamp(5rem, 13vw, 15rem);
   margin-bottom: 10px;
   line-height: 0.95; /* tight but readable */
   text-align: center;
@@ -254,7 +260,8 @@ body::before {
 
 .title-line:last-child {
   font-family: var(--font-punk);
-  font-size: clamp(1.7rem, 5vw, 6.4rem);
+  /* BIGGER sizing for subtitle */
+  font-size: clamp(3rem, 8vw, 10rem);
   text-align: center;
 }
 
@@ -262,12 +269,12 @@ body::before {
 .tabs {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 16px auto 30px;
-  padding: 12px 20px; /* less bulky so tabs read as one group */
-  width: min(100%, 980px);
-  border-radius: 80px;
-  background: var(--paper);
+  gap: 10px;
+  margin: 12px auto 22px;
+  padding: 8px 24px; /* increased side padding for more whitespace */
+  width: min(100%, 920px);
+  border-radius: 48px;
+  background: rgba(242, 239, 231, 0.95); /* softer paper surface */
   color: var(--ink);
   position: relative;
   flex-wrap: wrap; /* allow multiple rows if needed */
@@ -276,10 +283,10 @@ body::before {
 .tab {
   background: transparent;
   border: none;
-  padding: 10px 14px; /* slightly tighter than before */
+  padding: 8px 14px; /* increased padding for better spacing */
   font: inherit;
   font-family: var(--font-ui); /* keep the vibe */
-  letter-spacing: 5px; /* reduce spacing so "Due Today" / "Next Up" fit nicer */
+  letter-spacing: 3px; /* gentler spacing */
   text-transform: uppercase;
   opacity: 0.5;
   cursor: pointer;
@@ -304,11 +311,63 @@ body::before {
   opacity: 0.35;
 }
 
+.tab--timer {
+  background: rgba(197, 22, 22, 0.1);
+  border-radius: 8px;
+  margin-left: auto; /* Push to the right */
+}
+
+.tab--timer:hover {
+  background: rgba(197, 22, 22, 0.2);
+  opacity: 1;
+}
+
+.tab--timer::before {
+  display: none; /* No separator before timer button */
+}
+
 @media (max-width: 420px) {
   .tab {
-    letter-spacing: 2px;
-    padding: 8px 10px;
-    font-size: clamp(1.2rem, 3.8vw, 1.6rem);
+    letter-spacing: 1.6px;
+    padding: 6px 8px;
+    font-size: clamp(1.1rem, 4.2vw, 1.5rem);
+  }
+
+  /* Make card titles bigger on mobile */
+  .card--tasks .card-title,
+  .card--completed .card-title {
+    font-size: clamp(2rem, 5vw, 2.8rem) !important;
+  }
+
+  /* Make SHIT I DID bigger on mobile */
+  .card-title--big {
+    font-size: clamp(2.8rem, 8vw, 4rem);
+  }
+
+  /* Make timer display bigger on mobile */
+  .timer-display {
+    font-size: clamp(5.5rem, 12vw, 7rem) !important;
+  }
+}
+
+/* Mobile: make title bigger and tighter */
+@media (max-width: 420px) {
+  .title-line:first-child {
+    font-size: clamp(4.2rem, 14vw, 9rem) !important;
+    line-height: 0.9;
+    margin-bottom: 6px;
+  }
+  .title-line:last-child {
+    font-size: clamp(1.6rem, 6.5vw, 2.6rem) !important;
+    line-height: 0.95;
+    margin-top: -6px; /* bring lines closer */
+  }
+  /* Reduce the tabs' visual bulk on small screens */
+  .tabs {
+    padding: 6px 8px;
+    gap: 8px;
+    border-radius: 32px;
+    margin-bottom: 18px;
   }
 }
 
@@ -364,7 +423,6 @@ body::before {
 
 /* Override: remove white border and unify textured cards */
 .card--tasks,
-.card--timer,
 .card--completed {
   border: none !important;
   background-color: transparent !important;
@@ -373,7 +431,7 @@ body::before {
   background-position: center top !important;
   background-size: cover !important;
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35) !important;
-  max-width: 440px !important;
+  max-width: 820px !important; /* Same width for both sections */
   padding: 14px 16px !important;
 }
 
@@ -385,6 +443,12 @@ body::before {
   background-blend-mode: multiply !important;
   position: relative;
   transition: all 0.3s ease;
+  /* Add sass and love with enhanced borders and shadows */
+  border: 3px solid rgba(197, 22, 22, 0.15) !important;
+  box-shadow:
+    0 16px 35px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Pulsing border when timer is running */
@@ -412,9 +476,8 @@ body::before {
   }
 }
 
-/* Single rule to control the three card titles together */
+/* Single rule to control the two card titles together */
 .card--tasks .card-title,
-.card--timer .card-title,
 .card--completed .card-title {
   font-size: clamp(1.6rem, 3vw, 2.4rem) !important;
   letter-spacing: 2px;
@@ -423,8 +486,15 @@ body::before {
 
 /* Optional helper for experimenting with a really large card title */
 .card-title--big {
-  font-size: clamp(2.2rem, 6vw, 7.6rem);
-  letter-spacing: 2px;
+  /* Use HitMePunk04 font for "SHIT I DID:" title */
+  font-family: var(--font-punk);
+  font-size: clamp(2.8rem, 7vw, 8rem);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #000000;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.2),
+    -1px -1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* ===== MAIN LAYOUT ===== */
@@ -464,9 +534,9 @@ body::before {
   color: #fff;
   border: 1px solid var(--accent-red-dark);
 
-  /* bigger hit area & text */
-  padding: 14px 20px;
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  /* slightly smaller hit area to be less dominant */
+  padding: 10px 14px;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
   letter-spacing: 1px;
   text-transform: uppercase;
 
@@ -566,32 +636,6 @@ body::before {
 .linkish:hover {
   opacity: 0.7;
   transform: translateY(-1px);
-}
-
-.current-task.is-hidden {
-  display: none;
-}
-
-.current-task__name {
-  font-weight: 800;
-  background: rgba(197, 22, 22, 0.12);
-  border: 1px solid rgba(197, 22, 22, 0.35);
-  padding: 3px 8px;
-  border-radius: 999px;
-}
-
-.current-task__tab,
-.current-task__task {
-  font-weight: 800;
-  background: rgba(197, 22, 22, 0.12);
-  border: 1px solid rgba(197, 22, 22, 0.35);
-  padding: 3px 8px;
-  border-radius: 999px;
-}
-
-.current-task__divider {
-  opacity: 0.6;
-  margin: 0 6px;
 }
 
 .helper-text--tiny {
@@ -694,37 +738,46 @@ body::before {
 
 .completed-groups--tabs {
   display: grid;
-  grid-template-columns: repeat(
-    4,
-    1fr
-  ); /* Fixed 4 columns for horizontal row */
+  /* show completed groups side by side on wider screens */
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 12px;
 }
 
-/* Responsive adjustment for very small screens */
+/* Responsive adjustment for mobile screens */
+@media (max-width: 768px) {
+  .completed-groups--tabs {
+    /* Stack vertically on mobile - 1 column */
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+}
+
 @media (max-width: 420px) {
   .completed-groups--tabs {
-    gap: 8px; /* Reduce gap on small screens */
+    /* Stack vertically on mobile - 1 column */
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
 /* fix */
 .completed-groups--tabs .completed-group {
-  background: #fff;
-  opacity: 0.9;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px dashed rgba(197, 22, 22, 0.25);
   border-radius: 12px;
-  padding: 8px 10px;
+  padding: 10px 12px;
 }
 
 .completed-groups--tabs .completed-subheading {
+  font-family: var(--font-ui);
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   font-size: 1.35rem;
   cursor: pointer;
   list-style: none;
+  color: var(--accent-red);
 }
 
 .completed-groups--tabs .completed-subheading::-webkit-details-marker {
@@ -776,16 +829,15 @@ body::before {
   font-size: clamp(0.9rem, 1.8vw, 1.1rem); /* Smaller, clearer hint text */
   font-family: var(--font-ui);
   opacity: 0.85;
-  font-style: italic;
 }
 
 .timer-block__sub {
+  font-family: var(--font-wrong) !important;
   margin: 14px 0 8px;
   font-weight: 900;
   text-transform: uppercase;
   text-align: center;
   letter-spacing: 1.5px;
-  font-family: var(--font-label), var(--font-stack);
   font-size: clamp(1.1rem, 2.2vw, 1.4rem);
   color: var(--accent-red);
 }
@@ -798,9 +850,9 @@ body::before {
   text-transform: uppercase;
   font-size: clamp(1.3rem, 2.6vw, 1.7rem);
   font-family: var(--font-label), var(--font-stack);
-  color: var(--accent-red);
+  color: #0a0909;
   padding: 10px;
-  background: rgba(197, 22, 22, 0.08);
+  /* background: rgba(197, 22, 22, 0.08); */
   border-radius: 8px;
   border: 1px dashed rgba(197, 22, 22, 0.3);
 }
@@ -814,53 +866,74 @@ body::before {
 .timer-selects {
   display: grid;
   gap: 10px;
+  justify-items: center;
 }
 
 /* Completed stats and progress tracking */
 .completed-stat {
   margin: 0;
+  font-family: var(--font-ui);
   font-weight: 900;
-  letter-spacing: 0.6px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--ink);
-  font-size: clamp(1rem, 1.4vw, 2rem);
+  font-size: clamp(1.1rem, 1.6vw, 2rem);
 }
 
 .completed-stat--center {
   font-family: var(--font-ui);
   text-align: center;
   width: 100%;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .completed-stat__count {
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-family: var(--font-anarchy);
+  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
   color: var(--accent-red);
-  margin-right: 8px;
+  margin-right: 4px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
 }
 
-/* Completed groups */
+/* Completed groups - mobile first: vertical stack */
 .completed-groups {
   font-family: var(--font-ui);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
   margin-top: 10px;
 }
 
+/* Desktop: horizontal grid with 4 columns */
+@media (min-width: 768px) {
+  .completed-groups {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .completed-subheading {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   margin: 0 0 6px;
   font-weight: 900;
-  letter-spacing: 0.4px;
+  letter-spacing: 1.2px;
+  font-family: var(--font-punk);
+  color: var(--accent-red);
+  text-align: center;
 }
 
 .completed-list {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-family: var(--font-ui);
-  margin: 0;
-  padding-left: 18px;
-  color: var(--ink-soft);
+  margin: 6px 0 0;
+  padding-left: 0;
+  list-style: none;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.completed-list li {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* Hide music player */
@@ -879,15 +952,11 @@ body::before {
     grid-template-areas:
       "header header"
       "tabs tabs"
-      "tasks timer"
+      "tasks tasks"
       "completed completed"
       "music music";
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: 1fr;
     align-items: start;
-  }
-
-  .card--timer .timer-grid {
-    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -899,11 +968,18 @@ body::before {
 }
 
 .task {
+  display: flex;
+  align-items: center;
   padding: 6px 8px;
   border-radius: 6px;
   transition:
     transform 0.06s ease,
     background 0.2s ease;
+}
+
+.task .task-row {
+  flex: 1;
+  min-width: 0;
 }
 
 .task:hover {
@@ -966,13 +1042,6 @@ body::before {
   padding: 20px 22px !important;
 }
 
-.completed-groups--tabs {
-  grid-template-columns: repeat(
-    4,
-    1fr
-  ); /* Fixed 4 columns for horizontal row */
-}
-
 .field-label {
   font-size: var(--size-body);
   line-height: 1.3;
@@ -987,10 +1056,10 @@ body::before {
   color: var(--ink);
 }
 
-/* Inline task editing visuals */
-.task-row.editing {
-  background: rgba(0, 0, 0, 0.04);
-  border-radius: 8px;
+/* Double-click hint */
+.task-text {
+  cursor: text;
+  user-select: text;
 }
 
 .task-text[contenteditable="true"] {
@@ -1041,6 +1110,16 @@ body::before {
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Punk2";
+  src:
+    url("../assets/fonts/punk2/hit-me-punk-07.woff2") format("woff2"),
+    url("../assets/fonts/punk2/punk2.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Modal overlay (ensure visible above app) */
 .modal-overlay {
   position: fixed;
@@ -1068,6 +1147,27 @@ body::before {
   animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+/* Responsive modal and gif */
+.modal {
+  width: min(540px, 96%);
+  max-width: 540px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.modal-overlay {
+  padding: 12px; /* keeps modal inset on small screens */
+}
+
+.prize-gif {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 18px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
 @keyframes modalPop {
   0% {
     transform: scale(0.5) rotate(-5deg);
@@ -1083,43 +1183,36 @@ body::before {
   }
 }
 
-/* Prize modal - make it more FUN! */
+/* === USER: PRIZE MODAL OVERRIDES START === */
+/* (custom prize modal styles begin here) */
+
+/* ===== PRIZE MODAL TWEAKS (overrides and fixes) ===== */
 #prizeModal {
-  background:
-    linear-gradient(135deg, #fdf5e6 0%, #fff9e6 50%, #fdf5e6 100%),
-    linear-gradient(45deg, rgba(197, 22, 22, 0.03) 0%, transparent 100%);
-  border: 3px solid var(--accent-red);
-  box-shadow:
-    0 20px 60px rgba(197, 22, 22, 0.3),
-    0 0 0 6px rgba(197, 22, 22, 0.1),
-    inset 0 0 100px rgba(255, 215, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  animation: modalPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* Add celebratory pattern behind prize modal content */
-#prizeModal::before {
-  content: "🎉🎊✨🏆⭐🎉🎊✨🏆⭐";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 3rem;
+  /* tighter modal so it never gets huge */
+  max-width: 420px;
+  width: min(94%, 420px);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 18px 20px;
+  box-sizing: border-box;
   text-align: center;
-  opacity: 0.08;
-  letter-spacing: 30px;
-  line-height: 4rem;
-  z-index: 0;
-  animation: floatEmoji 4s ease-in-out infinite;
-  word-wrap: break-word;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  /* Add punk/grunge styling - torn paper effect with strong border */
+  border: 3px solid rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+  /* Add torn edge effect with filter */
+  position: relative;
 }
 
-/* Sparkles floating around */
-#prizeModal::after {
-  content: "✨";
+#prizeModal::before {
+  content: "";
   position: absolute;
   top: 10px;
   right: 10px;
@@ -1166,23 +1259,17 @@ body::before {
   z-index: 1;
 }
 
-// ...existing code...
-.modal-title {
-  /* editable tokens you can change at runtime (via devtools or JS) */
-  --modal-title-font: var(--font-punk), var(--font-stack);
-  --modal-title-size: clamp(2rem, 6vw, 3.5rem); /* change this value to scale */
-  --modal-title-weight: 700;
-  --modal-title-letter-spacing: 2px;
-  --modal-title-color: var(--accent-red);
-
-  font-family: var(--modal-title-font);
-  font-size: var(--modal-title-size);
-  font-weight: var(--modal-title-weight);
-  letter-spacing: var(--modal-title-letter-spacing);
-  color: var(--modal-title-color);
-  text-align: center;
-  margin: 0 0 12px;
-  text-transform: uppercase;
+/* Title: BIGGER and better centered with punk effects */
+#prizeModal .modal-title {
+  display: block;
+  width: 100%;
+  font-family: "Anarchy", var(--font-stack);
+  /* MUCH BIGGER title */
+  font-size: clamp(2.8rem, 7vw, 4.2rem);
+  margin: 8px 0 10px;
+  line-height: 1;
+  letter-spacing: 2px;
+  color: var(--accent-red);
   text-shadow:
     2px 2px 0 rgba(0, 0, 0, 0.1),
     0 0 20px rgba(255, 215, 0, 0.3);
@@ -1190,62 +1277,33 @@ body::before {
   position: relative;
 }
 
-/* Optional presets you can toggle on the .modal-title element */
-.modal-title--large {
-  --modal-title-size: clamp(2.8rem, 8vw, 5rem);
-  --modal-title-weight: 900;
+/* Subtitle: Use Punk2 font with cool styling */
+#prizeModal .modal-subtitle {
+  font-family: var(--font-punk2);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  letter-spacing: 1.5px;
+  margin: 8px 0;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.5),
+    -1px -1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.modal-title--serif {
-  --modal-title-font: "Georgia", "Times New Roman", serif;
-  --modal-title-letter-spacing: 1px;
+/* GIF: smaller and constrained to avoid dominating modal */
+.modal img.prize-gif {
+  max-width: 180px;
+  width: 60%;
+  height: auto;
+  max-height: 22vh;
+  margin: 6px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 }
 
-.modal-title--tight {
-  --modal-title-letter-spacing: 1px;
-}
-
-/* Mobile tweak (keeps behavior consistent with your existing mobile rules) */
-@media (max-width: 420px) {
-  .modal-title {
-    --modal-title-size: clamp(1.6rem, 7vw, 2.2rem);
-  }
-}
-
-/* OG MODAL TITLE 2.9 1.45
- .modal-title {
-  font-family: var(--font-punk), var(--font-stack);
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  text-align: center;
-  margin: 0 0 12px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent-red);
-  text-shadow: 
-    2px 2px 0 rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(255, 215, 0, 0.3);
-  animation: titleBounce 0.8s ease-out;
-  position: relative;
-} */
-
-/* Sparkle effect on title */
-.modal-title::before,
-.modal-title::after {
-  content: "✨";
-  position: absolute;
-  font-size: 1.5rem;
-  animation: titleSparkle 2s ease-in-out infinite;
-}
-
-.modal-title::before {
-  left: -10px;
-  top: 0;
-}
-
-.modal-title::after {
-  right: -10px;
-  top: 0;
-  animation-delay: 1s;
+/* List: more readable spacing and increased letter spacing */
+#prizeModal .prize-list {
+  gap: 18px;
+  padding: 0;
+  margin: 8px 0 10px;
 }
 
 @keyframes titleSparkle {
@@ -1277,24 +1335,108 @@ body::before {
   }
 }
 
-.modal-subtitle {
-  font-family: var(--font-ui);
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  text-align: center;
-  margin: 0 0 16px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  animation: fadeSlideIn 0.5s ease-out 0.2s backwards;
+#prizeModal .prize-list li {
+  font-family: "HitMePunk04", var(--font-stack);
+  font-size: clamp(0.98rem, 2vw, 1.12rem);
+  line-height: 1.9;
+  letter-spacing: 1.4px;
+  margin: 0;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+#prizeModal .modal-title-line1,
+#prizeModal .modal-title-line2 {
+  color: #0a0a0a;
+  font-size: clamp(2.4rem, 6vw, 3rem);
+  display: block;
+  text-align: center;
+}
+
+#prizeSubtitle {
+  font-family: var(--font-wrong);
+  color: var(--accent-red);
+}
+
+#prizeModal li::before {
+  content: none;
+}
+
+.prize-arrows {
+  display: none;
+}
+
+.prize-note {
+  text-align: center;
+  font-family: var(--font-ui);
+  color: #0a0a0a;
+  margin: 4px 0 10px;
+}
+
+#prizeModal .prize-list li {
+  color: #0a0a0a;
+}
+
+/* apply Punk2 to the prize subtitle text */
+#prizeSubtitle {
+  font-family: "Punk2", "Bangers", cursive, sans-serif;
+  text-align: center;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: var(--accent-red);
+}
+
+/* make sure title scales nicely on phones */
+/* make sure modal looks great on mobile */
+@media (max-width: 420px) {
+  #prizeModal {
+    max-width: 88%;
+    width: 88%;
+    padding: 10px 12px;
+    gap: 6px;
+    max-height: 85vh;
+    overflow-y: auto;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  #prizeModal .modal-title {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+  }
+
+  #prizeModal .modal-subtitle {
+    font-size: clamp(0.8rem, 3vw, 1rem);
+  }
+
+  .modal img.prize-gif {
+    max-width: 120px;
+    width: 40%;
+    max-height: 15vh;
+  }
+
+  #prizeModal .prize-list {
+    gap: 4px;
+    margin: 2px 0 4px;
+  }
+
+  #prizeModal .prize-list li {
+    font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+    padding: 3px 5px;
+  }
+
+  .prize-roast {
+    font-size: clamp(0.75rem, 1.6vw, 0.9rem) !important;
+    padding: 4px 8px !important;
+  }
+
+  .prize-note {
+    font-size: 0.75rem;
+    margin: 2px 0 4px;
+  }
+
+  #prizeModal .prize-actions .btn {
+    font-size: 0.85rem;
+    padding: 6px 12px;
   }
 }
 
@@ -1303,11 +1445,12 @@ body::before {
   font-family: var(--font-ui);
   font-size: clamp(1rem, 2.2vw, 1.3rem);
   margin: 8px 0;
-  padding-left: 24px;
+  padding-left: 0;
   position: relative;
   line-height: 1.4;
   opacity: 0;
   animation: listItemSlideIn 0.5s ease-out forwards;
+  text-align: center;
 }
 
 /* Stagger animation for list items */
@@ -1339,208 +1482,1724 @@ body::before {
 }
 
 #prizeModal li::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  color: var(--accent-red);
-  font-weight: bold;
-  animation: arrowPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes arrowPulse {
-  0%,
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(4px);
-    opacity: 0.7;
-  }
+  content: none;
 }
 
 /* TUNE: modal + title sizing tweaks (mobile-friendly + bigger titles) */
 
-/* Make the prize modal less dominant on small screens and cap GIF height */
-.modal {
-  /* keep defaults above; add better max-height handling for media */
-  max-width: 560px;
+/* VISUAL TUNES: bigger, tighter title + stronger card headings */
+/* Tighten title padding and increase scale (desktop + mobile) */
+.title-line {
+  padding: 4px 8px !important;
+  -webkit-text-stroke: 0.8px rgba(0, 0, 0, 0.35) !important;
 }
 
-.modal img.prize-gif {
-  width: 100%;
-  height: auto;
-  max-width: 380px; /* Reduced from 420px for better mobile fit */
-  max-height: 50vh; /* Reduced from 60vh to prevent modal overflow */
-  object-fit: contain;
-  display: block;
-  margin: 12px auto 0;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Mobile-specific modal shrink + font scaling */
-@media (max-width: 420px) {
-  .modal {
-    max-width: 340px !important; /* Increased from 320px for better readability */
-    width: calc(100% - 24px) !important; /* Better margins */
-    padding: 16px 14px !important;
-    margin: 0 8px;
-  }
-
-  .modal-title {
-    font-size: clamp(1.6rem, 7vw, 2.2rem) !important; /* Larger on mobile */
-    margin-bottom: 10px;
-  }
-
-  .modal-subtitle {
-    font-size: clamp(1rem, 2.8vw, 1.3rem) !important;
-  }
-
-  .modal {
-    font-size: 0.95rem !important;
-  }
-
-  .modal img.prize-gif {
-    max-width: 280px;
-    max-height: 40vh; /* Smaller on mobile to prevent overflow */
-  }
-
-  #prizeModal li {
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
-    margin: 6px 0;
-  }
-}
-
-/* Make main site title larger & punchier (adjustable) */
 .title-line:first-child {
-  font-size: clamp(
-    4rem,
-    11vw,
-    13rem
-  ) !important; /* INCREASED from 3.6rem to 4rem min */
-  line-height: 0.92;
+  font-size: clamp(5rem, 13vw, 14rem) !important;
+  line-height: 0.88;
+  margin-bottom: 4px !important;
 }
 
 .title-line:last-child {
-  font-size: clamp(
-    2rem,
-    5.8vw,
-    6rem
-  ) !important; /* INCREASED from 1.8rem to 2rem min */
+  font-size: clamp(2.2rem, 5.5vw, 4.2rem) !important;
+  line-height: 0.95;
+  margin-top: -4px !important;
 }
 
-/* Stronger card title for visibility */
-.card-title {
-  font-size: clamp(
-    2.2rem,
-    4vw,
-    4.2rem
-  ) !important; /* INCREASED from 1.9rem to 2.2rem min */
-}
-
-/* Optional: slightly larger tab labels on small screens for legibility */
-@media (max-width: 640px) {
-  .tab {
-    font-size: clamp(1.2rem, 3.8vw, 1.8rem) !important;
+@media (max-width: 420px) {
+  .title-line:first-child {
+    font-size: clamp(4.5rem, 22vw, 9rem) !important;
+    line-height: 0.86;
+    margin-bottom: 6px !important;
+  }
+  .title-line:last-child {
+    font-size: clamp(1.9rem, 7vw, 2.8rem) !important;
+    line-height: 0.95;
+    margin-top: -6px !important;
   }
 }
 
-/* ===== ENHANCED FEATURES STYLES ===== */
+/* Make card titles more prominent */
+.card-title {
+  font-size: clamp(2.4rem, 4.2vw, 4.2rem) !important;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+}
+.card-title--big {
+  font-size: clamp(3rem, 7vw, 8rem) !important;
+}
 
-/* Inline editing input */
-.task-edit-input {
+/* Center timer grid content and make timer display feel centered */
+.card--timer .timer-grid {
+  justify-items: center;
+  align-items: center;
+}
+.card--timer .timer-block {
   width: 100%;
-  font-size: inherit;
-  font-family: inherit;
-  padding: 4px 8px;
-  border: 2px solid var(--accent-red, #c51616);
-  border-radius: 4px;
-  background: #fff;
-  outline: none;
+  max-width: 420px; /* keeps blocks consistent */
+  box-sizing: border-box;
+}
+.card--timer .timer-display {
+  margin: 10px auto 8px !important;
+  text-align: center;
+}
+.card--timer .timer-controls {
+  justify-content: center !important;
 }
 
-.task-edit-input:focus {
-  border-color: var(--accent-red-dark, #9f1010);
-  box-shadow: 0 0 0 3px rgba(197, 22, 22, 0.1);
+/* Slightly reduce tab bar height to remove excess white space */
+.tabs {
+  padding: 6px 10px !important;
+  margin: 10px auto 18px !important;
 }
 
-/* Data export/import buttons - REMOVED per user request */
-
-/* Drag and drop feedback */
-.task[draggable="true"] {
-  cursor: move;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+/* Center and tighten timer headings + controls */
+.timer-block__title {
+  text-align: center;
+  font-size: clamp(1rem, 2.2vw, 1.45rem) !important;
+  margin: 0 0 8px;
+  color: var(--accent-red);
 }
 
-.task.dragging {
-  opacity: 0.5;
+.card--timer .timer-selects,
+.card--timer .timer-grid {
+  display: grid;
+  justify-items: center;
+  align-items: start;
 }
 
-.task:active {
-  cursor: grabbing;
+.card--timer .field-select {
+  display: block;
+  margin: 6px auto 10px;
+  max-width: 360px;
+  width: 88%;
 }
 
-/* Tab drop zone highlighting */
-.tab.drag-over {
-  background: rgba(197, 22, 22, 0.2) !important;
-  transform: scale(1.05);
-  transition: all 0.2s ease;
+.custom-timer__controls {
+  justify-content: center !important;
+  gap: 8px;
+}
+.custom-timer__controls .field-input {
+  width: 96px;
+  max-width: 40%;
+  min-width: 64px;
+  text-align: center;
 }
 
-/* Visual hint for draggable tasks */
-.task::before {
-  content: "⋮⋮";
-  position: absolute;
-  left: 4px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(0, 0, 0, 0.2);
-  font-size: 1.2em;
-  line-height: 0.8;
+/* Make card titles larger and more visible */
+.card--tasks .card-title,
+.card--timer .card-title,
+.card--completed .card-title {
+  font-size: clamp(2.6rem, 5vw, 5rem) !important;
+  letter-spacing: 1.8px;
+  text-align: center;
+  color: var(--ink) !important;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Ensure subtitle line is centered and tighter */
+.title-line:last-child {
+  display: block;
+  width: 100%;
+  text-align: center !important;
+  margin-top: -6px !important;
+}
+
+/* Slightly reduce top padding near header to tighten layout */
+.header {
+  margin-bottom: 6px !important;
+  padding-top: 6px;
+}
+
+/* FINAL OVERRIDES: balance title + tabs + desktop card widths */
+/* Make the big title less extreme and ensure subtitle sits tightly beneath */
+.title-line:first-child {
+  font-size: clamp(4rem, 14vw, 9rem) !important; /* louder main line */
+  line-height: 0.88;
+  margin-bottom: 6px !important;
+}
+.title-line:last-child {
+  font-size: clamp(2.4rem, 6vw, 4.2rem) !important; /* stretched subtitle */
+  letter-spacing: 1.6px;
+  line-height: 0.92;
+  margin-top: -2px !important;
+}
+
+/* Make tabs pill hug its content but with adequate whitespace */
+.tabs {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: 820px;
+  padding: 8px 24px !important; /* more side padding */
+  gap: 10px !important;
+  border-radius: 40px !important;
+  margin: 12px auto 18px !important;
+}
+
+/* Ensure each tab has adequate spacing */
+.tabs > .tab {
+  padding: 8px 14px !important;
+}
+
+/* ===== ICON NAVIGATION GROUP (Top Right) ===== */
+.icon-nav {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: var(--z-top);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.icon-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid #0a0a0a;
+  background: 
+    radial-gradient(circle at 30% 30%, #f8f5ed 0%, #e2dccc 70%) padding-box,
+    url("../assets/textures/dirty-paper.png");
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.15),
+    0 0 0 2px #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 150ms ease;
+  position: relative;
+}
+
+.icon-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.2),
+    0 0 0 2px #0a0a0a;
+}
+
+.icon-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.icon-button__icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Timer button specific styles */
+.icon-button--timer.is-running {
+  animation: timerGlow 1.3s ease-in-out infinite;
+}
+
+.icon-button--timer.timer--faint {
+  opacity: 0.25;
   pointer-events: none;
-  opacity: 0;
   transition: opacity 0.2s ease;
 }
 
-.task:hover::before {
+.icon-button--timer.timer--hidden {
+  display: none;
+}
+
+/* Reset button red accent in shit mode */
+.icon-button--reset {
+  border-color: var(--accent-red-dark);
+}
+
+.icon-button--reset:hover {
+  background: radial-gradient(circle at 30% 30%, #ffc9c9 0%, #ff8080 70%) padding-box;
+}
+
+/* Sound button muted state */
+.icon-button--sound.muted .icon-button__icon {
   opacity: 0.5;
 }
 
-/* Adjust task row padding to make room for drag handle */
-.task-row {
-  position: relative;
-  padding-left: 24px;
-}
-
-/* Double-click hint */
-.task-text {
-  cursor: text;
-  user-select: text;
-}
-
-.task-text:hover {
-  background: rgba(197, 22, 22, 0.05);
-  border-radius: 3px;
-  padding: 2px 4px;
-  margin: -2px -4px;
-}
-
-/* Mobile adjustments */
+/* Mobile responsive - smaller icons, adjusted spacing */
 @media (max-width: 640px) {
-  .task-text {
-    font-size: 1.8rem; /* Slightly smaller on mobile */
+  .icon-nav {
+    top: 12px;
+    right: 12px;
+    gap: 10px;
+  }
+  
+  .icon-button {
+    width: 48px;
+    height: 48px;
+    border-width: 2px;
+  }
+  
+  .icon-button__icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablet responsive */
+@media (max-width: 768px) and (min-width: 641px) {
+  .icon-nav {
+    top: 16px;
+    right: 16px;
+    gap: 11px;
+  }
+  
+  .icon-button {
+    width: 52px;
+    height: 52px;
+  }
+  
+  .icon-button__icon {
+    font-size: 1.65rem;
+  }
+}
+
+/* Legacy floating-timer styles kept for timer bubble positioning */
+.floating-timer {
+  /* No longer visible, but maintains structure for timer bubble */
+  position: relative;
+  display: inline-flex;
+}
+
+@keyframes timerGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.45),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.15),
+      0 0 0 2px #0a0a0a,
+      0 0 0 0 rgba(197, 22, 22, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 12px 28px rgba(0, 0, 0, 0.5),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.2),
+      0 0 0 3px #0a0a0a,
+      0 0 20px 6px rgba(197, 22, 22, 0.4);
+  }
+}
+
+.timer-bubble {
+  position: absolute;
+  top: -10px;
+  right: -18px;
+  background: #0a0a0a;
+  color: var(--accent-red);
+  border: 2px solid #f6f3ea;
+  border-radius: 14px;
+  padding: 6px 10px;
+  font-family: var(--font-anarchy);
+  font-size: 1.1rem;
+  line-height: 1;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+  animation: flashTimer 1s steps(2, end) infinite;
+}
+
+.timer-bubble.is-hidden {
+  display: none;
+}
+
+@keyframes flashTimer {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 640px) {
+  .floating-timer {
+    width: 56px;
+    height: 56px;
+    top: 14px;
+    right: 14px;
+  }
+  .floating-timer__label {
+    font-size: 0.75rem;
+  }
+  .timer-bubble {
+    right: -10px;
+    top: -6px;
+  }
+}
+
+/* Timer Popup Modal Styling */
+.modal--timer-popup {
+  max-width: 600px;
+  width: min(90%, 600px);
+  background: url("../assets/textures/dirty-paper.png");
+  background-blend-mode: multiply;
+  color: #f3f1e9;
+  border: 5px solid #0a0a0a;
+  outline: 2px dashed rgba(243, 241, 233, 0.35);
+  box-shadow:
+    0 26px 60px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+    0 0 0 4px rgba(0, 0, 0, 0.6);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal--timer-popup .modal-title {
+  font-family: var(--font-anarchy);
+  font-size: clamp(0.6rem, 5vw, 6.8rem);
+  text-align: center;
+  letter-spacing: 3px;
+  color: #111;
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.14);
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+.modal--timer-popup .timer-grid {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.modal--timer-popup .timer-display {
+  font-size: clamp(4.6rem, 9vw, 6.8rem);
+  font-family: var(--font-anarchy);
+  text-align: center;
+  color: var(--accent-red);
+  font-weight: 900;
+  letter-spacing: 4px;
+  margin: 16px 0;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.modal--timer-popup .timer-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.modal--timer-popup .btn--close {
+  margin-top: 0;
+}
+
+.timer-block {
+  background: rgba(243, 241, 233, 0.12);
+  border: 2px solid rgba(243, 241, 233, 0.25);
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+.timer-block .field-select {
+  display: block;
+  margin: 6px auto 10px;
+  width: 88%;
+  max-width: 360px;
+}
+
+.timer-block__title {
+  color: var(--accent-red);
+  font-family: var(--font-ui);
+  letter-spacing: 2px;
+  font-size: clamp(1.5rem, 2.6vw, 1.9rem) !important;
+}
+
+.timer-block__hint {
+  color: #000000;
+  text-align: center;
+
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-family: var(--font-wrong);
+  font-size: clamp(1rem, 2.1vw, 1.2rem) !important;
+}
+
+.timer-selects select,
+.modal--timer-popup .field-select,
+.modal--timer-popup .field-input {
+  appearance: none;
+  background: #111;
+  color: #f6f3ea;
+  border: 2px solid #f6f3ea;
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-family: var(--font-ui);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
+}
+
+.timer-selects select:focus,
+.modal--timer-popup .field-select:focus,
+.modal--timer-popup .field-input:focus {
+  outline: 2px solid var(--accent-red);
+  box-shadow:
+    0 0 0 2px var(--accent-red),
+    0 10px 16px rgba(0, 0, 0, 0.5);
+}
+
+.timer-block__sub {
+  font-family: var(--font-wrong) !important;
+  color: #000000;
+}
+
+.timer-block__footer {
+  color: #000000;
+  border: 1px dashed rgba(243, 241, 233, 0.4);
+}
+
+.btn--ghost {
+  background: var(--ink);
+  color: #ffffff;
+  border: 2px solid #f6f3ea;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn--ghost:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* On wide screens let the task/completed cards fill their grid columns (consistent lengths) */
+@media (min-width: 1200px) {
+  .card--tasks,
+  .card--completed {
+    max-width: none !important;
+    width: 100% !important;
   }
 
-  .btn {
+  /* keep header aligned to card widths */
+  .header .title {
+    max-width: 820px;
+  }
+
+  .modal--timer-popup .timer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ===== FLOATING TIMER COUNTDOWN WIDGET ===== */
+.floating-countdown {
+  position: fixed;
+  top: 22px;
+  right: 100px;
+  z-index: var(--z-top);
+  background: #0d0d0d url("../assets/textures/dirty-paper.png");
+  background-blend-mode: multiply;
+  border: 4px solid #0a0a0a;
+  border-radius: 16px;
+  padding: 12px 18px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+  user-select: none;
+  min-width: 180px;
+  text-align: center;
+  display: none;
+}
+
+.floating-countdown.is-visible {
+  display: block;
+}
+
+.floating-countdown.is-dragging {
+  cursor: grabbing;
+  opacity: 0.9;
+}
+
+.floating-countdown__task {
+  font-family: var(--font-ui);
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  color: #f6f3ea;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.floating-countdown__time {
+  font-family: var(--font-anarchy);
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  color: var(--accent-red);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 3px;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(197, 22, 22, 0.5);
+  animation: flashTimer 1s steps(2, end) infinite;
+}
+
+.floating-countdown__pause {
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  color: #f6f3ea;
+  font-size: 0.9rem;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.floating-countdown__pause:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 640px) {
+  .floating-countdown {
+    top: 14px;
+    right: 100px;
+    padding: 8px 12px;
+    min-width: 140px;
+  }
+  .floating-countdown__time {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+}
+
+/* ===== TIMER DONE MODAL IMPROVEMENTS ===== */
+.modal--timer-done {
+  background: #0d0d0d url("../assets/textures/dirty-paper.png");
+  background-blend-mode: multiply;
+  color: #f3f1e9;
+  border: 5px solid #0a0a0a;
+  text-align: center;
+}
+
+.modal--timer-done .modal-title {
+  font-family: var(--font-anarchy);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  color: var(--accent-red);
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.modal--timer-done .modal-subtitle {
+  font-family: var(--font-ui);
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  letter-spacing: 1px;
+  color: #f6f3ea;
+}
+
+.modal--timer-done .modal-hint {
+  font-family: var(--font-ui);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  color: rgba(246, 243, 234, 0.7);
+  margin: 8px 0 16px;
+}
+
+.timer-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+/* ===== SCROLLABLE DIAL PICKER ===== */
+.dial-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 12px auto;
+}
+
+.dial-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dial-label {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(246, 243, 234, 0.6);
+  margin-bottom: 4px;
+  font-weight: 800;
+}
+
+.dial-scroll {
+  width: 68px;
+  height: 120px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  border: 2px solid rgba(246, 243, 234, 0.3);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.5);
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dial-scroll:focus {
+  outline: 2px solid var(--accent-red);
+  border-color: var(--accent-red);
+}
+
+/* Hide scrollbar but keep scroll */
+.dial-scroll::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+.dial-scroll {
+  scrollbar-width: none;
+}
+
+.dial-item {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgba(246, 243, 234, 0.35);
+  scroll-snap-align: center;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    transform 0.15s;
+  user-select: none;
+}
+
+.dial-item:hover {
+  color: rgba(246, 243, 234, 0.7);
+}
+
+.dial-item--selected {
+  color: #f6f3ea !important;
+  font-size: 1.6rem;
+  font-weight: 900;
+  transform: scale(1.1);
+  text-shadow: 0 0 12px rgba(246, 243, 234, 0.5);
+}
+
+.dial-sep {
+  font-family: var(--font-ui);
+  font-size: 2rem;
+  font-weight: 900;
+  color: rgba(246, 243, 234, 0.5);
+  margin: 0 2px;
+  padding-top: 20px; /* Align with dial content area */
+}
+
+@media (max-width: 420px) {
+  .dial-scroll {
+    width: 56px;
+    height: 100px;
+  }
+  .dial-item {
+    height: 34px;
+    font-size: 1.1rem;
+  }
+  .dial-item--selected {
+    font-size: 1.3rem;
+  }
+  .dial-sep {
+    font-size: 1.5rem;
+  }
+}
+
+/* ===== ROAST TOAST ===== */
+.roast-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: #0d0d0d;
+  color: #f6f3ea;
+  font-family: var(--font-ui);
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 14px 24px;
+  border-radius: 16px;
+  border: 3px solid var(--accent-red);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s;
+  white-space: nowrap;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.roast-toast--show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.roast-toast--hide {
+  transform: translateX(-50%) translateY(60px);
+  opacity: 0;
+}
+
+/* ===== STREAK BADGE ===== */
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(197, 22, 22, 0.15);
+  border: 2px dashed rgba(197, 22, 22, 0.4);
+  border-radius: 12px;
+  padding: 6px 14px;
+  font-family: var(--font-ui);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--accent-red);
+  text-transform: uppercase;
+  margin: 8px auto 0;
+  cursor: default;
+}
+
+.streak-badge #streakCount {
+  font-size: 1.3em;
+  font-weight: 900;
+}
+
+/* ===== FUN PROGRESS BAR ===== */
+.fun-progress {
+  margin: 12px 0 16px;
+  text-align: center;
+}
+
+.fun-progress__track {
+  width: 100%;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.fun-progress__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-red), #e84040, #ff6b6b);
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  box-shadow: 0 0 10px rgba(197, 22, 22, 0.4);
+}
+
+.fun-progress__label {
+  margin: 6px 0 0;
+  font-family: var(--font-ui);
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.pg-mode .fun-progress__track {
+  background: #eee !important;
+  border-color: #ddd !important;
+}
+
+.pg-mode .fun-progress__fill {
+  background: linear-gradient(90deg, #2563eb, #60a5fa, #93c5fd) !important;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.3) !important;
+}
+
+.pg-mode .fun-progress__label {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+/* ===== PG MODE TOGGLE SWITCH ===== */
+.pg-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  margin: 8px auto 0;
+}
+
+.pg-switch input {
+  display: none;
+}
+
+.pg-switch__slider {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  background: #333;
+  border-radius: 28px;
+  border: 2px solid #555;
+  transition:
+    background 0.25s,
+    border-color 0.25s;
+  flex-shrink: 0;
+}
+
+.pg-switch__slider::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #f6f3ea;
+  border-radius: 50%;
+  transition: transform 0.25s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pg-switch input:checked + .pg-switch__slider {
+  background: #c51616;
+  border-color: #9f1010;
+}
+
+.pg-switch input:checked + .pg-switch__slider::after {
+  transform: translateX(24px);
+}
+
+/* PG mode switch stays blue */
+.pg-mode .pg-switch input:checked + .pg-switch__slider {
+  background: #2563eb;
+  border-color: #1d4ed8;
+}
+
+.pg-switch__label {
+  font-family: var(--font-ui);
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-red);
+}
+
+/* ===== PG MODE THEME OVERRIDES ===== */
+body.pg-mode {
+  /* Use pretty texture background for PG mode - tileable for mobile and desktop */
+  background: #f8f9fa url("../assets/textures/pretty.png") center/400px repeat !important;
+}
+
+/* PG mode: Use Helvetica for EVERYTHING */
+.pg-mode * {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+/* PG mode: Update switch label color */
+.pg-mode .pg-switch__label {
+  color: #2563eb !important;
+}
+
+.pg-mode .app {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.pg-mode .title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+  font-weight: 700 !important;
+}
+
+.pg-mode .title-line {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8) !important;
+  /* Semi-transparent white pill background for better contrast over animated gradient */
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.pg-mode .tabs {
+  background: #f5f5f5 !important;
+  border-radius: 8px;
+  border: 1px solid #ddd !important;
+}
+
+.pg-mode .tab {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #555 !important;
+  letter-spacing: 0.5px !important;
+  font-size: clamp(0.85rem, 2vw, 1.1rem) !important;
+}
+
+.pg-mode .tab::before {
+  color: #ccc !important;
+}
+
+.pg-mode .tab--active {
+  color: #2563eb !important;
+}
+
+.pg-mode .tab--active::after {
+  background: #2563eb !important;
+}
+
+.pg-mode .card--tasks,
+.pg-mode .card--completed {
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+}
+
+.pg-mode .card-title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+}
+
+.pg-mode .task-text {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .task-input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #f9f9f9 !important;
+  border: 1px solid #ccc !important;
+  color: #333 !important;
+  border-radius: 8px !important;
+}
+
+.pg-mode .task-add-btn {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+}
+
+.pg-mode .task-add-btn:hover {
+  background: #1d4ed8 !important;
+}
+
+.pg-mode .btn {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  text-shadow: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  letter-spacing: 0.5px !important;
+}
+
+.pg-mode .btn:hover {
+  background: #1d4ed8 !important;
+  transform: translateY(-1px);
+}
+
+.pg-mode .btn--primary {
+  background: #2563eb !important;
+}
+
+.pg-mode .btn--ghost {
+  background: #f5f5f5 !important;
+  color: #333 !important;
+  border: 1px solid #ccc !important;
+}
+
+.pg-mode .btn--close {
+  background: #666 !important;
+}
+
+.pg-mode .floating-timer {
+  background: #2563eb !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+}
+
+.pg-mode .floating-timer__label {
+  color: #fff !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+/* PG mode icon navigation styles */
+.pg-mode .icon-button {
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 2px solid #e0e0e0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.pg-mode .icon-button:hover {
+  background: #f5f5f5 !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2) !important;
+}
+
+.pg-mode .icon-button--timer.is-running {
+  background: #eff6ff !important;
+  border-color: #2563eb !important;
+  animation: timerGlowPG 1.3s ease-in-out infinite;
+}
+
+.pg-mode .icon-button--reset {
+  border-color: #2563eb !important;
+}
+
+.pg-mode .icon-button--reset:hover {
+  background: #eff6ff !important;
+  border-color: #2563eb !important;
+}
+
+@keyframes timerGlowPG {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  }
+}
+
+.pg-mode .timer-bubble {
+  background: #1d4ed8 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  animation: none !important;
+}
+
+.pg-mode .floating-countdown {
+  background: #fff !important;
+  background-image: none !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.pg-mode .floating-countdown__task {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .floating-countdown__time {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+
+.pg-mode .floating-countdown__pause {
+  background: rgba(37, 99, 235, 0.1) !important;
+  border-color: #2563eb !important;
+  color: #2563eb !important;
+}
+
+.pg-mode .floating-countdown__pause:hover {
+  background: rgba(37, 99, 235, 0.2) !important;
+}
+
+.pg-mode .modal-overlay {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.pg-mode .modal,
+.pg-mode .modal--timer-popup,
+.pg-mode .modal--timer-done {
+  background: #fff !important;
+  background-image: none !important;
+  color: #222 !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
+  outline: none !important;
+}
+
+.pg-mode .modal-title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.pg-mode .modal-subtitle {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #555 !important;
+}
+
+.pg-mode .modal-hint {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #777 !important;
+}
+
+.pg-mode .timer-block {
+  background: #f9f9f9 !important;
+  border-color: #ddd !important;
+  box-shadow: none !important;
+}
+
+.pg-mode .timer-block__title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+}
+
+.pg-mode .timer-block__hint {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #666 !important;
+}
+
+.pg-mode .timer-block__footer {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+  border-color: #ddd !important;
+}
+
+.pg-mode .timer-selects select,
+.pg-mode .modal--timer-popup .field-select,
+.pg-mode .modal--timer-popup .field-input {
+  background: #fff !important;
+  color: #333 !important;
+  border: 1px solid #ccc !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.pg-mode .dial-scroll {
+  background: #f5f5f5 !important;
+  border-color: #ccc !important;
+}
+
+.pg-mode .dial-scroll:focus {
+  border-color: #2563eb !important;
+  outline-color: #2563eb !important;
+}
+
+.pg-mode .dial-item {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #aaa !important;
+}
+
+.pg-mode .dial-item--selected {
+  color: #111 !important;
+  text-shadow: none !important;
+  font-weight: 900;
+}
+
+.pg-mode .dial-sep {
+  color: #999 !important;
+}
+
+.pg-mode .dial-label {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #888 !important;
+}
+
+.pg-mode .completed-stat {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .completed-stat__count {
+  color: #2563eb !important;
+}
+
+.pg-mode .completed-groups--tabs .completed-group {
+  background: #f9f9f9 !important;
+  border-color: #e0e0e0 !important;
+}
+
+.pg-mode .completed-groups--tabs .completed-subheading {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+}
+
+.pg-mode .linkish {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #666 !important;
+}
+
+.pg-mode .prize-list {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .prize-note {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #666 !important;
+}
+
+.pg-mode .streak-badge {
+  background: rgba(37, 99, 235, 0.08) !important;
+  border-color: rgba(37, 99, 235, 0.3) !important;
+  color: #2563eb !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.pg-mode .roast-toast {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #fff !important;
+  color: #222 !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.pg-mode .task--selected {
+  background: rgba(37, 99, 235, 0.08) !important;
+  border-color: #2563eb !important;
+}
+
+.pg-mode .task--selected::after {
+  background: #2563eb !important;
+}
+
+.pg-mode .task-checkbox {
+  accent-color: #2563eb;
+}
+
+/* PG mode: ensure completed list items use readable font */
+.pg-mode .completed-list,
+.pg-mode .completed-list li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+/* PG mode: ensure prize list items use readable font (override #prizeModal specificity) */
+.pg-mode #prizeModal .prize-list li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+  line-height: 1.4 !important;
+  padding: 2px 10px !important;
+}
+
+/* PG mode: tighten prize list gap */
+.pg-mode #prizeModal .prize-list {
+  gap: 8px !important;
+  margin: 4px 0 8px !important;
+}
+
+/* PG mode: ensure prize subtitle uses readable font and tighter spacing */
+.pg-mode #prizeSubtitle {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+  margin-top: 4px !important;
+  margin-bottom: 8px !important;
+}
+
+/* PG mode: ensure prize modal title lines are visible */
+.pg-mode #prizeModal .modal-title-line1,
+.pg-mode #prizeModal .modal-title-line2 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+}
+
+/* PG mode: remove drop-shadow/filter on title */
+.pg-mode .title-line {
+  color: #2563eb !important;
+  filter: none !important;
+}
+
+/* PG mode: ensure completed subheading uses readable font */
+.pg-mode .completed-subheading {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+}
+
+/* ===== TASK DELETE BUTTON ===== */
+.task-delete {
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 1.4rem; /* Increased from 1.1rem for Shit mode */
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition:
+    color 0.15s,
+    background 0.15s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.task-delete:hover {
+  color: var(--accent-red);
+  background: rgba(197, 22, 22, 0.12);
+  transform: scale(1.1);
+}
+
+.pg-mode .task-delete {
+  color: rgba(0, 0, 0, 0.4) !important;
+  display: flex !important;
+  font-size: 1.1rem !important; /* Smaller in PG mode */
+}
+
+.pg-mode .task-delete:hover {
+  color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.08) !important;
+}
+
+/* Always show delete buttons in completed section */
+.completed-delete {
+  display: flex !important;
+}
+
+/* ===== MODAL CLOSE X BUTTON ===== */
+.pg-mode .modal-close-x {
+  background: #2563eb !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+.pg-mode .modal-close-x:hover {
+  background: #1d4ed8 !important;
+  transform: scale(1.1);
+}
+
+/* ===== PRIZE ROAST LINE ===== */
+.prize-roast {
+  font-family: var(--font-ui);
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--accent-red);
+  margin: 8px 0;
+  padding: 10px 14px;
+  border: 2px dashed var(--accent-red);
+  border-radius: 8px;
+  background: rgba(197, 22, 22, 0.08);
+  animation: fadeSlideIn 0.5s ease-out 0.6s backwards;
+}
+
+.prize-roast:empty {
+  display: none;
+}
+
+.pg-mode .prize-roast {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+  border-color: #2563eb !important;
+  background: rgba(37, 99, 235, 0.06) !important;
+}
+
+/* ===== DIAL SPACER ===== */
+.dial-spacer {
+  flex-shrink: 0;
+}
+
+/* ===== MOBILE TIMER POPUP FIX ===== */
+@media (max-width: 640px) {
+  .modal--timer-popup {
+    width: 96% !important;
+    max-width: 96% !important;
+    max-height: 88vh; /* leave room for status bar + bottom nav on mobile */
+    overflow-y: auto;
+    padding: 14px 10px !important;
+  }
+
+  .modal--timer-popup .modal-title {
+    font-size: clamp(2rem, 8vw, 3.5rem) !important;
+    margin-top: 32px; /* space for close X */
+  }
+
+  .modal--timer-popup .timer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Bigger close X button on mobile for easier tapping */
+  .modal-close-x {
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+    top: 6px;
+    right: 6px;
+  }
+
+  /* Bigger close button on mobile */
+  .btn--close {
+    min-height: 44px;
+    font-size: 1rem;
     padding: 10px 20px;
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
   }
+}
 
-  .btn--primary {
-    padding: 14px 28px;
-    font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+/* ===== PRIZE MODAL TIGHTER SPACING ===== */
+#prizeModal {
+  gap: 8px;
+  padding: 16px 20px;
+}
+
+#prizeModal .modal-title {
+  margin: 4px 0 8px;
+}
+
+#prizeModal .prize-roast {
+  margin: 4px 0;
+  padding: 8px 12px;
+}
+
+#prizeModal .modal-subtitle {
+  margin: 4px 0;
+}
+
+#prizeModal .prize-list {
+  margin: 8px 0;
+  gap: 8px;
+}
+
+#prizeModal .prize-gif {
+  max-width: 280px;
+  width: 80%;
+  height: auto;
+  max-height: 240px;
+  margin: 8px auto;
+  display: block;
+}
+
+#prizeModal .prize-note {
+  margin: 4px 0 8px;
+}
+
+#prizeModal .prize-actions {
+  margin-top: 8px;
+}
+
+/* Make close X more visible */
+.modal-close-x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(197, 22, 22, 0.9);
+  color: #fff;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-close-x:hover {
+  background: #000;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile: Even tighter */
+@media (max-width: 768px) {
+  #prizeModal {
+    padding: 12px 16px;
+    gap: 6px;
   }
+  
+  #prizeModal .prize-gif {
+    max-width: 220px;
+    max-height: 180px;
+  }
+}
+
+/* ===== HOW-TO GUIDE ===== */
+/* ===== TASK SHAKE ANIMATION ===== */
+@keyframes punkShake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  10% { transform: translateX(-8px) rotate(-3deg); }
+  20% { transform: translateX(8px) rotate(3deg); }
+  30% { transform: translateX(-8px) rotate(-3deg); }
+  40% { transform: translateX(8px) rotate(3deg); }
+  50% { transform: translateX(-6px) rotate(-2deg); }
+  60% { transform: translateX(6px) rotate(2deg); }
+  70% { transform: translateX(-4px) rotate(-1deg); }
+  80% { transform: translateX(4px) rotate(1deg); }
+  90% { transform: translateX(-2px) rotate(-0.5deg); }
+}
+
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(-4px) scale(1.02); }
+  50% { transform: translateY(-2px) scale(1.01); }
+  75% { transform: translateY(-1px) scale(1.005); }
+}
+
+.task-row.completing {
+  animation: punkShake 0.5s ease-in-out;
+}
+
+.pg-mode .task-row.completing {
+  animation: gentleBounce 0.6s ease-in-out;
+}
+
+/* Task row drag states */
+.task-row {
+  transition: all 0.2s ease;
+  cursor: move;
+}
+
+.task-row.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.task-row.drag-over {
+  border-top: 3px solid var(--accent-red);
+  margin-top: 8px;
+}
+
+.pg-mode .task-row.drag-over {
+  border-top-color: #2563eb;
+}
+
+.task-row:active {
+  cursor: grabbing;
+}
+
+/* Old sound-toggle and howto-button styles removed - now part of icon-nav */
+
+/* ===== FLOATING RESET BUTTON ===== */
+.floating-reset {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  background: var(--accent-red);
+  color: #fff;
+  border: 2px solid var(--accent-red-dark);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: var(--font-punk);
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}
+
+.floating-reset:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  background: var(--accent-red-dark);
+}
+
+.pg-mode .floating-reset {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.pg-mode .floating-reset:hover {
+  background: #1d4ed8;
+  border-color: #1e40af;
+}
+
+@media (max-width: 640px) {
+  .floating-reset {
+    bottom: 16px;
+    left: 16px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ===== PRIZE ROAST TIGHT TEXT ===== */
+.prize-roast--tight {
+  line-height: 1.3 !important;
+  margin: 8px 0 !important;
+}
+
+/* ===== MODAL TITLE VARIATIONS ===== */
+.modal-title--timesup {
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  color: var(--accent-red) !important;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
+.modal-title--prize {
+  margin-bottom: 0.5rem;
+}
+
+.pg-mode .modal-title--timesup {
+  color: #2563eb !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+/* ===== HOW TO MODAL ===== */
+.modal--howto {
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: #0d0d0d url("../assets/textures/dirty-paper.png");
+  background-blend-mode: multiply;
+  color: #f3f1e9;
+}
+
+.modal--howto .howto-content {
+  text-align: left;
+}
+
+.modal--howto .howto-section {
+  margin-bottom: 1.5rem;
+}
+
+.modal--howto .howto-section h3 {
+  font-family: var(--font-punk);
+  font-size: 1.3rem;
+  color: var(--accent-red);
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.modal--howto .howto-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal--howto .howto-section li {
+  font-family: var(--font-stack);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 0.4rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.modal--howto .howto-section li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent-red);
+  font-weight: bold;
+}
+
+.pg-mode .modal--howto .howto-section h3 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #2563eb;
+}
+
+.pg-mode .modal--howto .howto-section li::before {
+  color: #2563eb;
 }
