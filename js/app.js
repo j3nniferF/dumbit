@@ -379,8 +379,6 @@ function fireConfettiBurst() {
   } else {
     // SHIT MODE: Explosions effect
     const colors = ["#c51616", "#ff0000", "#ff6b6b", "#111", "#333"];
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
     
     for (let i = 0; i < 100; i++) {
       const bit = document.createElement("div");
@@ -421,16 +419,6 @@ function fireConfettiBurst() {
 function celebrateIfTabJustCompleted(tabKey) {
   const nowComplete = isTabComplete(tabKey);
   const wasComplete = TAB_COMPLETE_LAST[tabKey];
-
-  // DEBUG: show transition state in console
-  console.debug(
-    "[celebrate] tab:",
-    tabKey,
-    "wasComplete:",
-    wasComplete,
-    "nowComplete:",
-    nowComplete,
-  );
 
   // Only fire on transition: not complete -> complete
   if (!wasComplete && nowComplete) {
