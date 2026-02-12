@@ -2165,3 +2165,364 @@ body::before {
   font-size: 1.3em;
   font-weight: 900;
 }
+
+/* ===== PG MODE TOGGLE SWITCH ===== */
+.pg-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  margin: 8px auto 0;
+}
+
+.pg-switch input {
+  display: none;
+}
+
+.pg-switch__slider {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  background: #333;
+  border-radius: 28px;
+  border: 2px solid #555;
+  transition: background 0.25s, border-color 0.25s;
+  flex-shrink: 0;
+}
+
+.pg-switch__slider::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #f6f3ea;
+  border-radius: 50%;
+  transition: transform 0.25s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pg-switch input:checked + .pg-switch__slider {
+  background: #2563eb;
+  border-color: #1d4ed8;
+}
+
+.pg-switch input:checked + .pg-switch__slider::after {
+  transform: translateX(24px);
+}
+
+.pg-switch__label {
+  font-family: var(--font-ui);
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-red);
+}
+
+/* ===== PG MODE THEME OVERRIDES ===== */
+body.pg-mode {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+.pg-mode .app {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.pg-mode .title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #111 !important;
+}
+
+.pg-mode .title-line {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #111 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+}
+
+.pg-mode .tabs {
+  background: #f5f5f5 !important;
+  border-radius: 8px;
+  border: 1px solid #ddd !important;
+}
+
+.pg-mode .tab {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #555 !important;
+  letter-spacing: 0.5px !important;
+  font-size: clamp(0.85rem, 2vw, 1.1rem) !important;
+}
+
+.pg-mode .tab::before {
+  color: #ccc !important;
+}
+
+.pg-mode .tab--active {
+  color: #2563eb !important;
+}
+
+.pg-mode .card--tasks,
+.pg-mode .card--completed {
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+}
+
+.pg-mode .card-title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+}
+
+.pg-mode .task-text {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .task-input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #f9f9f9 !important;
+  border: 1px solid #ccc !important;
+  color: #333 !important;
+  border-radius: 8px !important;
+}
+
+.pg-mode .task-add-btn {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+}
+
+.pg-mode .task-add-btn:hover {
+  background: #1d4ed8 !important;
+}
+
+.pg-mode .btn {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  text-shadow: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  letter-spacing: 0.5px !important;
+}
+
+.pg-mode .btn:hover {
+  background: #1d4ed8 !important;
+  transform: translateY(-1px);
+}
+
+.pg-mode .btn--primary {
+  background: #2563eb !important;
+}
+
+.pg-mode .btn--ghost {
+  background: #f5f5f5 !important;
+  color: #333 !important;
+  border: 1px solid #ccc !important;
+}
+
+.pg-mode .btn--close {
+  background: #666 !important;
+}
+
+.pg-mode .floating-timer {
+  background: #2563eb !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+}
+
+.pg-mode .floating-timer__label {
+  color: #fff !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.pg-mode .timer-bubble {
+  background: #1d4ed8 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  animation: none !important;
+}
+
+.pg-mode .floating-countdown {
+  background: #fff !important;
+  background-image: none !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.pg-mode .floating-countdown__task {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .floating-countdown__time {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+
+.pg-mode .modal-overlay {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.pg-mode .modal,
+.pg-mode .modal--timer-popup,
+.pg-mode .modal--timer-done {
+  background: #fff !important;
+  background-image: none !important;
+  color: #222 !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
+  outline: none !important;
+}
+
+.pg-mode .modal-title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.pg-mode .modal-subtitle {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #555 !important;
+}
+
+.pg-mode .modal-hint {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #777 !important;
+}
+
+.pg-mode .timer-block {
+  background: #f9f9f9 !important;
+  border-color: #ddd !important;
+  box-shadow: none !important;
+}
+
+.pg-mode .timer-block__title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #2563eb !important;
+}
+
+.pg-mode .timer-block__hint {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #666 !important;
+}
+
+.pg-mode .timer-block__footer {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+  border-color: #ddd !important;
+}
+
+.pg-mode .timer-selects select,
+.pg-mode .modal--timer-popup .field-select,
+.pg-mode .modal--timer-popup .field-input {
+  background: #fff !important;
+  color: #333 !important;
+  border: 1px solid #ccc !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.pg-mode .dial-scroll {
+  background: #f5f5f5 !important;
+  border-color: #ccc !important;
+}
+
+.pg-mode .dial-scroll:focus {
+  border-color: #2563eb !important;
+  outline-color: #2563eb !important;
+}
+
+.pg-mode .dial-item {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #aaa !important;
+}
+
+.pg-mode .dial-item--selected {
+  color: #2563eb !important;
+  text-shadow: none !important;
+}
+
+.pg-mode .dial-sep {
+  color: #999 !important;
+}
+
+.pg-mode .dial-label {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #888 !important;
+}
+
+.pg-mode .completed-stat {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .completed-groups--tabs .completed-group {
+  background: #f9f9f9 !important;
+  border-color: #e0e0e0 !important;
+}
+
+.pg-mode .completed-groups--tabs .completed-subheading {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #222 !important;
+}
+
+.pg-mode .linkish {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #666 !important;
+}
+
+.pg-mode .prize-list {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #333 !important;
+}
+
+.pg-mode .prize-note {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #666 !important;
+}
+
+.pg-mode .pg-switch__label {
+  color: #2563eb !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.pg-mode .streak-badge {
+  background: rgba(37, 99, 235, 0.08) !important;
+  border-color: rgba(37, 99, 235, 0.3) !important;
+  color: #2563eb !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.pg-mode .roast-toast {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #fff !important;
+  color: #222 !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.pg-mode .task--selected {
+  background: rgba(37, 99, 235, 0.08) !important;
+  border-color: #2563eb !important;
+}
+
+.pg-mode .task-checkbox {
+  accent-color: #2563eb;
+}

@@ -959,7 +959,7 @@ function wireDialPicker() {
 
   window._dialValues = { hours: 0, minutes: 15, seconds: 0 };
 
-  buildDialColumn(hoursEl, 9, 0);   // 0-8 hours
+  buildDialColumn(hoursEl, 9, 0);   // 0 through 8 hours
   buildDialColumn(minutesEl, 60, 15); // 0-59 minutes
   buildDialColumn(secondsEl, 60, 0);  // 0-59 seconds
 
@@ -1330,7 +1330,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===== FUN FEATURE: Motivational roast toasts on task completion =====
-  const ROAST_MESSAGES = [
+  const ROAST_MESSAGES_PUNK = [
     "WOW YOU ACTUALLY DID SOMETHING 🎉",
     "LOOK AT YOU, BEING A FUNCTIONAL HUMAN 💅",
     "ONE DOWN, A MILLION TO GO 🔥",
@@ -1343,8 +1343,22 @@ document.addEventListener("DOMContentLoaded", () => {
     "ARE YOU... ACTUALLY BEING PRODUCTIVE?! 😱",
   ];
 
+  const ROAST_MESSAGES_PG = [
+    "NICE WORK! YOU'RE DOING GREAT! 🌟",
+    "ANOTHER ONE DONE — YOU'RE ON A ROLL! ✨",
+    "LOOK AT THAT PROGRESS! 🎉",
+    "YOU SHOULD BE PROUD OF YOURSELF! 💙",
+    "KEEP GOING, YOU'RE AMAZING! 🙌",
+    "ONE STEP CLOSER TO YOUR GOALS! 🚀",
+    "WONDERFUL JOB! TREAT YOURSELF! 🍫",
+    "PRODUCTIVITY LOOKS GOOD ON YOU! 😊",
+    "YOU'RE MAKING IT HAPPEN! 💪",
+    "THAT'S THE WAY TO DO IT! ⭐",
+  ];
+
   function showRoastToast() {
-    const msg = ROAST_MESSAGES[Math.floor(Math.random() * ROAST_MESSAGES.length)];
+    const messages = window._pgMode ? ROAST_MESSAGES_PG : ROAST_MESSAGES_PUNK;
+    const msg = messages[Math.floor(Math.random() * messages.length)];
     const toast = document.createElement("div");
     toast.className = "roast-toast";
     toast.textContent = msg;
@@ -1366,12 +1380,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===== FUN FEATURE: Task streak counter =====
+  const MS_PER_DAY = 86400000;
   let streak = Number(localStorage.getItem("dsigdt_streak") || 0);
   const lastDate = localStorage.getItem("dsigdt_streak_date");
   const today = new Date().toDateString();
   if (lastDate !== today) {
     // Check if yesterday
-    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    const yesterday = new Date(Date.now() - MS_PER_DAY).toDateString();
     if (lastDate !== yesterday) streak = 0;
   }
 
@@ -1387,7 +1402,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Show streak in header
   const streakEl = document.createElement("div");
   streakEl.className = "streak-badge";
-  streakEl.innerHTML = `🔥 <span id="streakCount">${streak}</span> DAY STREAK`;
+  const fireEmoji = document.createTextNode("🔥 ");
+  const streakSpan = document.createElement("span");
+  streakSpan.id = "streakCount";
+  streakSpan.textContent = streak;
+  const streakLabel = document.createTextNode(" DAY STREAK");
+  streakEl.appendChild(fireEmoji);
+  streakEl.appendChild(streakSpan);
+  streakEl.appendChild(streakLabel);
   streakEl.title = "Complete a task each day to keep your streak!";
   const header = document.getElementById("header");
   if (header) header.appendChild(streakEl);
@@ -1400,4 +1422,64 @@ document.addEventListener("DOMContentLoaded", () => {
       if (countEl) countEl.textContent = streak;
     }
   });
+
+  // ===== PG MODE / $H!T MODE TOGGLE =====
+  const PG_STORAGE_KEY = "dsigdt_pg_mode";
+
+  const TEXT_MAP = {
+    titleLine1:       { punk: "DUMB shit",                    pg: "My Tasks" },
+    titleLine2:       { punk: "I GOTta dO TODay",             pg: "For Today" },
+    completedHeading: { punk: "SHIT I DID:",                  pg: "COMPLETED:" },
+    resetBtn:         { punk: "🧨 RESET EVERYTHING",          pg: "Reset Everything" },
+    prizeLine1:       { punk: "GOOD JOB",                     pg: "GREAT JOB" },
+    prizeLine2:       { punk: "DUMMY!",                       pg: "SUPERSTAR!" },
+    prizeNote:        { punk: "or you can stare at this cute dumb cat", pg: "enjoy this cute cat!" },
+    backToItBtn:      { punk: "NOW GET BACK TO WORK!",        pg: "Keep Up the Great Work!" },
+    timerChooseLabel: { punk: "CHOOSE VIOLENCE:",             pg: "SELECT YOUR TASK:" },
+    timerChooseHint:  { punk: "(PICK A TAB / PICK A TASK)",   pg: "(Choose a list / Choose a task)" },
+    timerFooterMsg:   { punk: "→ MURDER TASKS! ✅ GET A PRIZE!", pg: "→ Complete tasks! ✅ Earn a reward!" },
+  };
+
+  const PLACEHOLDER_MAP = {
+    taskInput: { punk: "+ ADD MORE SHIT", pg: "+ Add a new task" },
+  };
+
+  function applyThemeText(mode) {
+    for (const [id, texts] of Object.entries(TEXT_MAP)) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = texts[mode];
+    }
+    for (const [id, texts] of Object.entries(PLACEHOLDER_MAP)) {
+      const el = document.getElementById(id);
+      if (el) el.placeholder = texts[mode];
+    }
+  }
+
+  window._pgMode = false;
+
+  function setPgMode(on) {
+    const mode = on ? "pg" : "punk";
+    document.body.classList.toggle("pg-mode", on);
+    applyThemeText(mode);
+
+    const label = document.getElementById("pgLabel");
+    if (label) label.textContent = on ? "PG MODE" : "$H!T MODE";
+
+    const toggle = document.getElementById("pgToggle");
+    if (toggle) toggle.checked = on;
+
+    localStorage.setItem(PG_STORAGE_KEY, on ? "1" : "0");
+
+    window._pgMode = on;
+  }
+
+  // Wire toggle
+  const pgToggle = document.getElementById("pgToggle");
+  if (pgToggle) {
+    pgToggle.addEventListener("change", () => setPgMode(pgToggle.checked));
+  }
+
+  // Restore saved preference
+  const savedPg = localStorage.getItem(PG_STORAGE_KEY);
+  if (savedPg === "1") setPgMode(true);
 });
