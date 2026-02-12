@@ -1699,7 +1699,7 @@ document.addEventListener("DOMContentLoaded", () => {
     titleLine1: { punk: "DUMB shit", pg: "SILLY STUFF" },
     titleLine2: { punk: "I GOTta dO TODay", pg: "TO DO TODAY" },
     completedHeading: { punk: "SHIT I DID:", pg: "COMPLETED:" },
-    resetBtn: { punk: "🧨 RESET", pg: "🧨 RESET" },
+    resetBtn: { punk: "🧨", pg: "🧨" },
     prizeLine1: { punk: "GOOD JOB", pg: "GREAT JOB" },
     prizeLine2: { punk: "DING-DONG!", pg: "SUPERSTAR!" },
     prizeSubtitle: { punk: "PICK A PRIZE", pg: "You earned a reward!" },
@@ -1755,7 +1755,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (prizes[i]) li.textContent = prizes[i];
       });
     }
-
   }
 
   window._pgMode = false;
