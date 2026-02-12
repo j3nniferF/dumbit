@@ -959,7 +959,8 @@ function wireDialPicker() {
 
   window._dialValues = { hours: 0, minutes: 15, seconds: 0 };
 
-  buildDialColumn(hoursEl, 9, 0);   // 0 through 8 hours
+  const MAX_TIMER_HOURS = 9; // 0 through 8 hours
+  buildDialColumn(hoursEl, MAX_TIMER_HOURS, 0);
   buildDialColumn(minutesEl, 60, 15); // 0-59 minutes
   buildDialColumn(secondsEl, 60, 0);  // 0-59 seconds
 
@@ -1380,7 +1381,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===== FUN FEATURE: Task streak counter =====
-  const MS_PER_DAY = 86400000;
+  const MS_PER_DAY = 24 * 60 * 60 * 1000; // milliseconds in one day
   let streak = Number(localStorage.getItem("dsigdt_streak") || 0);
   const lastDate = localStorage.getItem("dsigdt_streak_date");
   const today = new Date().toDateString();
