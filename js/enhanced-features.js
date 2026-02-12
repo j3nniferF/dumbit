@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Wait a bit for the main app to initialize
   setTimeout(() => {
+    enableInlineEditing();
     enableTimerAnimations();
 
     console.log("✅ Enhanced features initialized");

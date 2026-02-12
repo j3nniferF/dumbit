@@ -647,6 +647,28 @@ body::before {
   transform: translateY(-1px);
 }
 
+.current-task {
+  font-family: var(--font-ui);
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  margin-bottom: 6px;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.current-task__label {
+  font-weight: 900;
+  opacity: 0.7;
+}
+
+.current-task__sep {
+  opacity: 0.5;
+}
+
 .current-task.is-hidden {
   display: none;
 }
@@ -2027,6 +2049,26 @@ body::before {
   animation: flashTimer 1s steps(2, end) infinite;
 }
 
+.floating-countdown__pause {
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  color: #f6f3ea;
+  font-size: 0.9rem;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.floating-countdown__pause:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
 @media (max-width: 640px) {
   .floating-countdown {
     top: 14px;
@@ -2505,6 +2547,16 @@ body.pg-mode {
   animation: none !important;
 }
 
+.pg-mode .floating-countdown__pause {
+  background: rgba(37, 99, 235, 0.1) !important;
+  border-color: #2563eb !important;
+  color: #2563eb !important;
+}
+
+.pg-mode .floating-countdown__pause:hover {
+  background: rgba(37, 99, 235, 0.2) !important;
+}
+
 .pg-mode .modal-overlay {
   background: rgba(0, 0, 0, 0.3) !important;
 }
@@ -2716,7 +2768,7 @@ body.pg-mode {
   border-radius: 50%;
   transition: color 0.15s, background 0.15s;
   flex-shrink: 0;
-  display: none; /* hidden in shit mode by default */
+  display: flex;
   align-items: center;
   justify-content: center;
 }

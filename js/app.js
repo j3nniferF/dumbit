@@ -45,7 +45,6 @@ const DEFAULT_TASKS_PG = {
   dontForget: ["Pick up pet food", "Pay credit card bill"],
 };
 
-// Start with empty task lists (no preset tasks)
 let TASKS_BY_TAB = {
   dueToday: [],
   soon: [],
@@ -412,9 +411,19 @@ function saveState() {
   }
 }
 
+function seedDefaultTasks() {
+  const defaults = window._pgMode ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
+  TAB_ORDER.forEach((k) => {
+    if (defaults[k]) TASKS_BY_TAB[k] = [...defaults[k]];
+  });
+}
+
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return;
+  if (!raw) {
+    seedDefaultTasks();
+    return;
+  }
 
   try {
     const parsed = JSON.parse(raw);
@@ -983,12 +992,11 @@ function setTimerDisplay(seconds) {
 }
 
 function getSelectedDurationSeconds() {
-  if (!window._dialValues) return 1500; // 25 min default if dials not yet initialized
+  if (!window._dialValues) return 0;
   const h = window._dialValues.hours || 0;
   const m = window._dialValues.minutes || 0;
   const s = window._dialValues.seconds || 0;
-  const total = h * 3600 + m * 60 + s;
-  return total > 0 ? total : 1500; // 25 min fallback if user sets all zeros
+  return h * 3600 + m * 60 + s;
 }
 
 function resetTimerToSelectedDuration() {
@@ -1109,11 +1117,11 @@ function wireDialPicker() {
   const secondsEl = document.getElementById("dialSeconds");
   if (!hoursEl || !minutesEl || !secondsEl) return;
 
-  window._dialValues = { hours: 0, minutes: 25, seconds: 0 };
+  window._dialValues = { hours: 0, minutes: 0, seconds: 0 };
 
   const MAX_TIMER_HOURS = 9; // 0 through 8 hours
   buildDialColumn(hoursEl, MAX_TIMER_HOURS, 0);
-  buildDialColumn(minutesEl, 60, 25); // 0-59 minutes, default 25
+  buildDialColumn(minutesEl, 60, 0); // 0-59 minutes, default 0
   buildDialColumn(secondsEl, 60, 0);  // 0-59 seconds
 
   wireDialScroll(hoursEl, (v) => { window._dialValues.hours = v; });
@@ -1153,6 +1161,11 @@ function startCountdown() {
 
   if (intervalId !== null) return;
   if (remainingSeconds <= 0) resetTimerToSelectedDuration();
+
+  if (remainingSeconds <= 0) {
+    alert("Set a time first.");
+    return;
+  }
 
   // Auto-close timer popup when starting
   if (isTimerPopupOpen()) {
@@ -1215,12 +1228,12 @@ function wireTimer() {
     resetTimerBtn.addEventListener("click", () => {
       stopInterval();
       // Reset dial values and rebuild dials to default
-      window._dialValues = { hours: 0, minutes: 25, seconds: 0 };
+      window._dialValues = { hours: 0, minutes: 0, seconds: 0 };
       const hoursEl = document.getElementById("dialHours");
       const minutesEl = document.getElementById("dialMinutes");
       const secondsEl = document.getElementById("dialSeconds");
       if (hoursEl) buildDialColumn(hoursEl, 9, 0);
-      if (minutesEl) buildDialColumn(minutesEl, 60, 25);
+      if (minutesEl) buildDialColumn(minutesEl, 60, 0);
       if (secondsEl) buildDialColumn(secondsEl, 60, 0);
       resetTimerToSelectedDuration();
     });
@@ -1299,11 +1312,21 @@ function wireFloatingCountdown() {
   });
 
   // Click on countdown opens timer popup (only if not dragged)
-  el.addEventListener("click", () => {
+  el.addEventListener("click", (e) => {
+    if (e.target.closest(".floating-countdown__pause")) return;
     if (!didDrag) {
       openTimerPopup();
     }
   });
+
+  // Pause button on floating countdown
+  const pauseBtn = document.getElementById("floatingCountdownPause");
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      stopInterval();
+    });
+  }
 }
 
 /* -------------------------------
