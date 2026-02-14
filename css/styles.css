@@ -2541,13 +2541,6 @@ body.pg-mode {
         #60a5fa 0%, #f59e0b 25%, #f472b6 50%, #2563eb 75%, #60a5fa 100%
       ) border-box;
   }
-  100% {
-    background: 
-      linear-gradient(#fff, #fff) padding-box,
-      linear-gradient(90deg, 
-        #2563eb 0%, #60a5fa 25%, #f59e0b 50%, #f472b6 75%, #2563eb 100%
-      ) border-box;
-  }
 }
 
 .pg-mode .card-title {
