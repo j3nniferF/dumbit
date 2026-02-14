@@ -4183,3 +4183,49 @@ body:not(.pg-mode) .completed-list li span {
   font-size: clamp(1.05rem, 1.7vw, 1.2rem) !important;
   line-height: 1.55 !important;
 }
+
+/* Timer done text chips: no extra side whitespace + translucent/readable in both modes. */
+#timerModalTitle,
+#timerModalTask {
+  display: inline-block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 0.16em 0.3em !important;
+  border-radius: 6px !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+
+body:not(.pg-mode) #timerModalTitle,
+body:not(.pg-mode) #timerModalTask {
+  background: rgba(14, 14, 14, 0.45) !important;
+  color: #f6f3ea !important;
+}
+
+.pg-mode #timerModalTitle,
+.pg-mode #timerModalTask {
+  background: rgba(255, 255, 255, 0.24) !important;
+  color: #2563eb !important;
+}
+
+/* PG mode timer-done actions: matching blue buttons, same size, lighter text weight. */
+.pg-mode #timerModal .timer-modal-actions {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 12px !important;
+}
+
+.pg-mode #timerModal .timer-modal-actions .btn {
+  flex: 1 1 0 !important;
+  width: 100% !important;
+  margin-top: 0 !important;
+  padding: 14px 16px !important;
+  font-size: clamp(1rem, 2.1vw, 1.15rem) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  animation: none !important;
+}
