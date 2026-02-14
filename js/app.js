@@ -1737,8 +1737,8 @@ document.addEventListener("DOMContentLoaded", () => {
       pg: "(Choose a tab / Choose a task)",
     },
     timerFooterMsg: {
-      punk: "→ MURDER TASKS! ✅ GET A PRIZE!",
-      pg: "→ Complete tasks! ✅ Earn a reward!",
+      punk: "MURDER TASKS! ✅ GET A PRIZE!",
+      pg: "Complete tasks! ✅ Earn a reward!",
     },
   };
 
@@ -1784,9 +1784,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const prizeGif = document.querySelector(".prize-gif");
     if (prizeGif) {
       if (mode === "pg") {
-        prizeGif.src = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHBybnhveG4wdnRodGg2MnJ1NWhxNmxzcWV5Zm4weDcyZGFqMDV1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/75mBr8CLHect4tHlMb/giphy.gif";
+        prizeGif.src =
+          "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHBybnhveG4wdnRodGg2MnJ1NWhxNmxzcWV5Zm4weDcyZGFqMDV1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/75mBr8CLHect4tHlMb/giphy.gif";
       } else {
-        prizeGif.src = "https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif";
+        prizeGif.src =
+          "https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif";
       }
     }
   }
