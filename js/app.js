@@ -1732,8 +1732,8 @@ document.addEventListener("DOMContentLoaded", () => {
     prizeSubtitle: { punk: "PICK A PRIZE", pg: "You earned a reward!" },
     timerModalTitle: { punk: "⏰ TIME UP!", pg: "⏰ TIME'S UP!" },
     prizeNote: {
-      punk: "or you can stare at this cute dumb cat",
-      pg: "enjoy this cute cat!",
+      punk: "or you can stare at this ass demon dumb cat",
+      pg: "or you can enjoy this cute cat!",
     },
     backToItBtn: {
       punk: "NOW BACK TO WORK dummy",
