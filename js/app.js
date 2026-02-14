@@ -333,6 +333,8 @@ function wirePrizeModalClose() {
 /* JS-only confetti (no libraries) */
 function fireConfettiBurst() {
   const isPgMode = window._pgMode;
+  // Clear stale bursts if previous cleanup did not run.
+  document.querySelectorAll(".confetti-burst-layer").forEach((n) => n.remove());
 
   // inject keyframes once
   if (!document.getElementById("confettiStyles")) {
@@ -356,6 +358,7 @@ function fireConfettiBurst() {
   }
 
   const wrap = document.createElement("div");
+  wrap.className = "confetti-burst-layer";
   wrap.style.position = "fixed";
   wrap.style.inset = "0";
   wrap.style.pointerEvents = "none";
@@ -435,6 +438,8 @@ function celebrateIfTabJustCompleted(tabKey) {
     setTimeout(() => {
       try {
         fireConfettiBurst();
+        // Small second burst improves reliability if first frame is dropped.
+        setTimeout(() => fireConfettiBurst(), 140);
       } catch (e) {
         console.error("Confetti error:", e);
       }
@@ -579,6 +584,23 @@ function syncHeadings(tabKey) {
   const tasksHeading = document.getElementById("tasksHeading");
   const label = TAB_LABELS[tabKey] || tabKey;
   if (tasksHeading) tasksHeading.textContent = `${label}:`;
+}
+
+function applyTabLabelsToUI() {
+  const tabs = document.querySelectorAll(".tab");
+  tabs.forEach((tab) => {
+    const key = tab.dataset.tab;
+    if (key && TAB_LABELS[key]) tab.textContent = TAB_LABELS[key];
+  });
+
+  const focusTabSelect = document.getElementById("focusTabSelect");
+  if (!focusTabSelect) return;
+
+  Array.from(focusTabSelect.options).forEach((opt) => {
+    if (opt.value !== "all" && TAB_LABELS[opt.value]) {
+      opt.textContent = TAB_LABELS[opt.value];
+    }
+  });
 }
 
 function syncActiveTabUI(tabsNodeList, tabKey) {
@@ -1022,6 +1044,7 @@ function wireResetButton(tabsNodeList) {
 
     TASKS_BY_TAB = emptyState();
     COMPLETED_TASKS = emptyState();
+    TAB_LABELS = { ...TAB_LABELS_DEFAULT };
 
     // Reset tab labels to defaults
     TAB_LABELS = { ...TAB_LABELS_DEFAULT };
@@ -1041,9 +1064,12 @@ function wireResetButton(tabsNodeList) {
 
     stopInterval();
     resetTimerToSelectedDuration();
+    closeTimerPopup();
+    closeTimerModal();
 
     saveState();
 
+    applyTabLabelsToUI();
     syncActiveTabUI(tabsNodeList, activeTabKey);
     syncHeadings(activeTabKey);
 
@@ -1531,23 +1557,7 @@ document.addEventListener("DOMContentLoaded", () => {
   normalizeState();
   initTabCompleteLast();
 
-  // Apply custom tab labels to tab buttons and focus dropdown
-  function applyTabLabels() {
-    tabs.forEach((tab) => {
-      const key = tab.dataset.tab;
-      if (key && TAB_LABELS[key]) tab.textContent = TAB_LABELS[key];
-    });
-    // Update focus tab dropdown
-    const fts = document.getElementById("focusTabSelect");
-    if (fts) {
-      Array.from(fts.options).forEach((opt) => {
-        if (opt.value !== "all" && TAB_LABELS[opt.value]) {
-          opt.textContent = TAB_LABELS[opt.value];
-        }
-      });
-    }
-  }
-  applyTabLabels();
+  applyTabLabelsToUI();
 
   // Double-click tab to rename
   tabs.forEach((tab) => {
@@ -1559,7 +1569,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const newName = prompt("Rename this tab:", current);
       if (newName && newName.trim()) {
         TAB_LABELS[key] = newName.trim().toUpperCase();
-        applyTabLabels();
+        applyTabLabelsToUI();
         syncHeadings(activeTabKey);
         renderCompletedGrouped();
         buildFocusSelect(selectedFocusValue);
@@ -1739,7 +1749,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function applyThemeText(mode) {
     for (const [id, texts] of Object.entries(TEXT_MAP)) {
       const el = document.getElementById(id);
-      if (el) el.textContent = texts[mode];
+      if (!el) continue;
+      if (el.classList.contains("icon-button")) {
+        const icon = el.querySelector(".icon-button__icon");
+        if (icon) icon.textContent = texts[mode];
+      } else {
+        el.textContent = texts[mode];
+      }
     }
     for (const [id, texts] of Object.entries(PLACEHOLDER_MAP)) {
       const el = document.getElementById(id);
@@ -1796,15 +1812,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load state for the new mode (separate data for each mode)
     loadState();
 
-    // Reapply tab labels from loaded state
-    const tabs = document.querySelectorAll(".tab");
-    tabs.forEach((tab) => {
-      const key = tab.dataset.tab;
-      if (key && TAB_LABELS[key]) tab.textContent = TAB_LABELS[key];
-    });
-
+    applyTabLabelsToUI();
+    syncActiveTabUI(tabs, activeTabKey);
+    syncHeadings(activeTabKey);
     renderTasks(activeTabKey);
+    renderCompletedGrouped();
     buildFocusSelect();
+    syncCurrentTaskText();
     updateProgress();
   }
 

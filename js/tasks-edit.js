@@ -3,7 +3,7 @@ console.log("tasks-edit.js loaded");
 
 // Use the specific GIPHY asset you provided (direct media URL avoids API calls)
 const PRIZE_GIF_URL =
-  "https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif";
+  "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHBybnhveG4wdnRodGg2MnJ1NWhxNmxzcWV5Zm4weDcyZGFqMDV1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/75mBr8CLHect4tHlMb/giphy.gif";
 
 /**
  * Insert the provided GIF into the prize modal (deferred load).

@@ -30,9 +30,10 @@ function saveSoundPreference() {
 function updateSoundButton() {
   const btn = document.getElementById("soundToggle");
   if (!btn) return;
-  
+  const icon = btn.querySelector(".icon-button__icon");
+
   btn.classList.toggle("muted", !soundEnabled);
-  btn.textContent = soundEnabled ? "🔊" : "🔇";
+  if (icon) icon.textContent = soundEnabled ? "🔊" : "🔇";
   btn.title = soundEnabled ? "Mute sound effects" : "Unmute sound effects";
 }
 

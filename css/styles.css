@@ -3863,3 +3863,56 @@ body:not(.pg-mode) .completed-list li span {
     height: 28px !important;
   }
 }
+
+/* ---- 2026-02 polish fixes ---- */
+/* Ensure "SET YOUR TIME" stays centered and not oddly justified. */
+.modal--timer-popup .timer-block:nth-of-type(2) .timer-block__title {
+  display: block;
+  width: 100%;
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+/* Improve timer readability in PG mode with light chips behind text. */
+.pg-mode .floating-countdown__task,
+.pg-mode .floating-countdown__time {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(37, 99, 235, 0.24);
+  border-radius: 10px;
+  padding: 4px 8px;
+  text-shadow: none !important;
+}
+
+/* Give SHIT mode cards a rough ripped-paper vibe. */
+body:not(.pg-mode) .card--tasks,
+body:not(.pg-mode) .card--completed {
+  border: 3px dashed rgba(0, 0, 0, 0.7) !important;
+  border-radius: 10px !important;
+  position: relative;
+}
+
+body:not(.pg-mode) .card--tasks::after,
+body:not(.pg-mode) .card--completed::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  pointer-events: none;
+  border: 2px dashed rgba(197, 22, 22, 0.35);
+  border-radius: 8px;
+  opacity: 0.9;
+}
+
+/* Give PG mode cards a sparkly border glow. */
+.pg-mode .card--tasks,
+.pg-mode .card--completed {
+  border: 2px solid rgba(37, 99, 235, 0.3) !important;
+  box-shadow:
+    0 14px 28px rgba(37, 99, 235, 0.18),
+    0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 18px rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Keep prize title clear of close X in PG mode. */
+.pg-mode #prizeModal .modal-title {
+  padding: 0 52px 0 12px !important;
+}
