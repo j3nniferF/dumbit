@@ -1255,9 +1255,9 @@ body::before {
 
 .modal {
   background: var(--paper);
-  color: var(--ink);
-  padding: 22px 24px;
-  border-radius: 12px;
+  color: #2663eb;
+  padding: 0;
+  border-radius: 1px;
   max-width: 460px;
   width: calc(100% - 40px);
   border: 2px solid var(--ink);
@@ -1980,7 +1980,7 @@ body::before {
 }
 
 .timer-block .field-select {
-  display: block;
+  display: inline-block;
   margin: 6px auto 10px;
   width: 88%;
   max-width: 360px;
@@ -3374,6 +3374,10 @@ body.pg-mode {
 .pg-mode .modal-title--timesup {
   color: #2563eb !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  padding-left: 0px;
+  padding-right: 0px;
+  display: inline-block;
 }
 
 /* ===== HOW TO MODAL ===== */
@@ -3697,7 +3701,11 @@ body.pg-mode {
 
 .pg-mode .modal--timer-done .modal-subtitle,
 .pg-mode .modal--timer-done .modal-hint {
-  color: #374151 !important;
+  color: #2663eb !important;
+  display: block;
+  border-right: 0px;
+  border-left: 0px;
+  background-color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Top-right button delight interactions. */
@@ -4002,9 +4010,8 @@ body:not(.pg-mode) .card--completed::after {
 .pg-mode .modal--timer-done #timerModalTask,
 .pg-mode .modal--timer-done .modal-subtitle {
   background: rgba(255, 255, 255, 0.9) !important;
-  border-radius: 10px;
-  padding: 8px 12px;
-  color: #111827 !important;
+  padding-left: 0px;
+  padding-right: 0px;
   font-weight: 600 !important;
   text-shadow: none !important;
 }
