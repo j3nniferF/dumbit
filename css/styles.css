@@ -3692,7 +3692,7 @@ body.pg-mode {
 }
 
 .pg-mode .modal--timer-done .modal-title {
-  color: #1d4ed8 !important;
+  color: #2663eb !important;
 }
 
 .pg-mode .modal--timer-done .modal-subtitle,
@@ -3840,7 +3840,7 @@ body:not(.pg-mode) .completed-list li span {
 .pg-mode #prizeModal #prizeLine2,
 .pg-mode #prizeModal #prizeNote,
 .pg-mode #prizeModal .prize-list li {
-  color: #000 !important;
+  color: #2663eb !important;
   text-shadow: none !important;
   -webkit-text-stroke: 0 !important;
   filter: none !important;
