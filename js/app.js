@@ -431,14 +431,14 @@ function celebrateIfTabJustCompleted(tabKey) {
   // Show celebration only on transition: not complete -> complete.
   if (nowComplete && !wasComplete) {
     openPrizeModal();
-    // Trigger confetti right after the modal opens.
-    requestAnimationFrame(() => {
+    // Trigger confetti after modal is fully rendered (more reliable)
+    setTimeout(() => {
       try {
         fireConfettiBurst();
       } catch (e) {
-        // no-op
+        console.error("Confetti error:", e);
       }
-    });
+    }, 100);
   }
 
   // update last-known state
@@ -1023,6 +1023,9 @@ function wireResetButton(tabsNodeList) {
     TASKS_BY_TAB = emptyState();
     COMPLETED_TASKS = emptyState();
 
+    // Reset tab labels to defaults
+    TAB_LABELS = { ...TAB_LABELS_DEFAULT };
+
     // Reapply preset tasks based on current mode (default to punk if not initialized)
     const defaults =
       window._pgMode || false ? DEFAULT_TASKS_PG : DEFAULT_TASKS_PUNK;
@@ -1043,6 +1046,13 @@ function wireResetButton(tabsNodeList) {
 
     syncActiveTabUI(tabsNodeList, activeTabKey);
     syncHeadings(activeTabKey);
+
+    // Update tab labels in UI after reset
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach((tab) => {
+      const key = tab.dataset.tab;
+      if (key && TAB_LABELS[key]) tab.textContent = TAB_LABELS[key];
+    });
 
     renderTasks(activeTabKey);
     renderCompletedGrouped();
@@ -1753,6 +1763,15 @@ document.addEventListener("DOMContentLoaded", () => {
       items.forEach((li, i) => {
         if (prizes[i]) li.textContent = prizes[i];
       });
+    }
+    // Update prize GIF based on mode
+    const prizeGif = document.querySelector(".prize-gif");
+    if (prizeGif) {
+      if (mode === "pg") {
+        prizeGif.src = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHBybnhveG4wdnRodGg2MnJ1NWhxNmxzcWV5Zm4weDcyZGFqMDV1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/75mBr8CLHect4tHlMb/giphy.gif";
+      } else {
+        prizeGif.src = "https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif";
+      }
     }
   }
 
