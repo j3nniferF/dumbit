@@ -712,12 +712,20 @@ function renderCompletedGrouped() {
 
   TAB_ORDER.forEach((tabKey) => {
     const done = COMPLETED_TASKS[tabKey] || [];
+    const total = (TASKS_BY_TAB[tabKey] || []).length;
     const details = document.createElement("details");
     details.className = "completed-group";
 
     const summary = document.createElement("summary");
     summary.className = "completed-subheading";
-    summary.textContent = TAB_LABELS[tabKey] || tabKey;
+    const name = document.createElement("span");
+    name.className = "completed-subheading__name";
+    name.textContent = TAB_LABELS[tabKey] || tabKey;
+    const count = document.createElement("span");
+    count.className = "completed-subheading__count";
+    count.textContent = `${done.length}/${total}`;
+    summary.appendChild(name);
+    summary.appendChild(count);
 
     const ul = document.createElement("ul");
     ul.className = "completed-list";
@@ -1729,7 +1737,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     backToItBtn: {
       punk: "NOW BACK TO WORK dummy",
-      pg: "KEEP GOING, YOU'RE AMAZING! 🙌",
+      pg: "KEEP GOING, YOU'RE AMAZING!",
     },
     timerChooseLabel: { punk: "CHOOSE VIOLENCE:", pg: "SELECT YOUR TASK:" },
     timerChooseHint: {

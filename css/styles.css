@@ -1258,26 +1258,6 @@ body::before {
   }
 }
 
-@keyframes floatEmoji {
-  0%,
-  100% {
-    transform: translateY(0px) translateX(0px);
-    opacity: 0.08;
-  }
-  25% {
-    transform: translateY(-15px) translateX(10px);
-    opacity: 0.12;
-  }
-  50% {
-    transform: translateY(-10px) translateX(-10px);
-    opacity: 0.1;
-  }
-  75% {
-    transform: translateY(-5px) translateX(5px);
-    opacity: 0.09;
-  }
-}
-
 /* Make prize modal content pop above background */
 #prizeModal > * {
   position: relative;
@@ -1331,18 +1311,6 @@ body::before {
   margin: 8px 0 10px;
 }
 
-@keyframes titleSparkle {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(0.8) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2) rotate(180deg);
-  }
-}
-
 @keyframes titleBounce {
   0% {
     transform: scale(0.5) translateY(-30px);
@@ -1378,11 +1346,6 @@ body::before {
   font-size: clamp(2.4rem, 6vw, 3rem);
   display: block;
   text-align: center;
-}
-
-#prizeSubtitle {
-  font-family: var(--font-wrong);
-  color: var(--accent-red);
 }
 
 #prizeModal li::before {
@@ -3883,36 +3846,201 @@ body:not(.pg-mode) .completed-list li span {
   text-shadow: none !important;
 }
 
-/* Give SHIT mode cards a rough ripped-paper vibe. */
+/* Final mode cleanup */
+/* PG mode background: pretty texture, tiled, static/fixed like SHIT mode. */
+body.pg-mode {
+  background: #f8f9fa url("../assets/textures/pretty.png") center/360px repeat
+    fixed !important;
+}
+
+/* Remove card borders in both modes. */
+.card--tasks,
+.card--completed,
+.pg-mode .card--tasks,
+.pg-mode .card--completed,
 body:not(.pg-mode) .card--tasks,
 body:not(.pg-mode) .card--completed {
-  border: 3px dashed rgba(0, 0, 0, 0.7) !important;
-  border-radius: 10px !important;
-  position: relative;
+  border: none !important;
+  clip-path: none !important;
 }
 
+.card--tasks::after,
+.card--completed::after,
+.pg-mode .card--tasks::after,
+.pg-mode .card--completed::after,
 body:not(.pg-mode) .card--tasks::after,
 body:not(.pg-mode) .card--completed::after {
-  content: "";
-  position: absolute;
-  inset: 6px;
-  pointer-events: none;
-  border: 2px dashed rgba(197, 22, 22, 0.35);
-  border-radius: 8px;
-  opacity: 0.9;
+  content: none !important;
+  display: none !important;
 }
 
-/* Give PG mode cards a sparkly border glow. */
-.pg-mode .card--tasks,
-.pg-mode .card--completed {
-  border: 2px solid rgba(37, 99, 235, 0.3) !important;
-  box-shadow:
-    0 14px 28px rgba(37, 99, 235, 0.18),
-    0 0 0 2px rgba(255, 255, 255, 0.9),
-    0 0 18px rgba(255, 255, 255, 0.7) !important;
+/* PG timer-done modal readability */
+.pg-mode .modal--timer-done #timerModalTask,
+.pg-mode .modal--timer-done .modal-subtitle {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
 }
 
-/* Keep prize title clear of close X in PG mode. */
-.pg-mode #prizeModal .modal-title {
-  padding: 0 52px 0 12px !important;
+/* Reduce desktop whitespace around "SILLY STUFF" title in PG mode. */
+.pg-mode .header {
+  margin-bottom: 0 !important;
+  gap: 0 !important;
+}
+
+.pg-mode .title {
+  margin: 0 !important;
+  line-height: 0.9 !important;
+}
+
+.pg-mode .title-line {
+  margin-bottom: 2px !important;
+  padding: 3px 10px !important;
+}
+
+@media (min-width: 1024px) {
+  .pg-mode .title-line:first-child {
+    font-size: clamp(3.6rem, 8vw, 7rem) !important;
+    margin-bottom: 0 !important;
+  }
+
+  .pg-mode .title-line:last-child {
+    font-size: clamp(1.6rem, 2.8vw, 2.8rem) !important;
+    margin-top: 0 !important;
+  }
+}
+
+/* SHIT mode tabs use punk font 04. */
+body:not(.pg-mode) .tab {
+  font-family: var(--font-punk), var(--font-stack) !important;
+  font-weight: 400 !important;
+  letter-spacing: 1.2px !important;
+}
+
+/* Final override: tab labels under the title use Wrong font in all modes. */
+.tab,
+.pg-mode .tab,
+body:not(.pg-mode) .tab {
+  font-family: var(--font-wrong), var(--font-stack) !important;
+}
+
+/* Bottom completed tab names use punk font like "SHIT I DID". */
+.completed-subheading,
+.completed-groups--tabs .completed-subheading,
+.pg-mode .completed-subheading,
+.pg-mode .completed-groups--tabs .completed-subheading {
+  font-family: var(--font-punk), var(--font-stack) !important;
+  font-weight: 400 !important;
+  letter-spacing: 1.4px !important;
+}
+
+/* PG mode stays Helvetica everywhere, including tab labels and completed headings. */
+.pg-mode .tab,
+.pg-mode .completed-subheading,
+.pg-mode .completed-groups--tabs .completed-subheading {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Completed breakdown v2: compact chips with counts (both modes). */
+.completed-groups--tabs {
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+}
+
+.completed-groups--tabs .completed-group {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-radius: 999px !important;
+  padding: 6px 10px !important;
+}
+
+.completed-groups--tabs .completed-subheading {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 !important;
+  font-size: clamp(1rem, 2.2vw, 1.2rem) !important;
+  letter-spacing: 0.8px !important;
+}
+
+.completed-subheading__name {
+  display: inline-block;
+}
+
+.completed-subheading__count {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  font-family: var(--font-ui), var(--font-stack) !important;
+  font-size: 0.95rem;
+}
+
+.completed-groups--tabs .completed-subheading::before {
+  display: none !important;
+}
+
+.completed-groups--tabs .completed-list {
+  margin-top: 8px !important;
+}
+
+@media (max-width: 900px) {
+  .completed-groups--tabs {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
+/* Large-screen title lock: always exactly two stacked lines. */
+@media (min-width: 1024px) {
+  .title {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .title-line {
+    display: block !important;
+    width: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* Small-screen spacing cleanup for tabs area to remove odd white space/wrapping. */
+@media (max-width: 900px) {
+  .tabs {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 10px !important;
+    width: min(96vw, 700px) !important;
+    padding: 10px 12px !important;
+    margin: 6px auto 12px !important;
+    border-radius: 20px !important;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: center !important;
+    padding: 6px 8px !important;
+    white-space: nowrap;
+  }
+
+  .tab + .tab::before {
+    display: none !important;
+  }
+}
+
+/* SHIT mode completed tasks under tab names: Wrong font, readable spacing, lighter weight. */
+body:not(.pg-mode) .completed-list li,
+body:not(.pg-mode) .completed-list li span {
+  font-family: var(--font-wrong), var(--font-stack) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.8px !important;
+  font-size: clamp(1.05rem, 1.7vw, 1.2rem) !important;
+  line-height: 1.55 !important;
 }
