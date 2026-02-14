@@ -32,7 +32,9 @@ async function showPrizeSuggestion() {
   img.dataset.src = PRIZE_GIF_URL;
 
   const prizeList = prizeModal.querySelector("#prizeList");
-  if (prizeList) prizeModal.insertBefore(img, prizeList);
+  const prizeNote = prizeModal.querySelector(".prize-note");
+  if (prizeNote) prizeModal.insertBefore(img, prizeNote);
+  else if (prizeList) prizeList.insertAdjacentElement("afterend", img);
   else prizeModal.appendChild(img);
 
   // If the modal is already visible, trigger the actual load immediately
@@ -119,63 +121,3 @@ function playPrizeSound() {
 
 // Expose for manual testing from the console
 window.showPrizeSuggestion = showPrizeSuggestion;
-
-/* DEBUG: force title + hide music persistently, with logs */
-function ensureAndForceTitleAndHideMusic() {
-  try {
-    let header = document.getElementById("header");
-    if (!header) {
-      header = document.createElement("header");
-      header.id = "header";
-      header.className = "header";
-      document.body.insertBefore(header, document.body.firstChild);
-      console.info("Created header element");
-    }
-
-    let title = header.querySelector(".title");
-    if (!title) {
-      title = document.createElement("h1");
-      title.className = "title";
-      title.setAttribute("role", "banner");
-      title.innerHTML =
-        '<span class="title-line">DUMB SHIT</span><span class="title-line">I GOTTA DO TODAY</span>';
-      header.appendChild(title);
-      console.info("Inserted title markup");
-    }
-
-    // force visible inline styles (override CSS cascade issues)
-    Object.assign(title.style, {
-      display: "block",
-      textAlign: "center",
-      zIndex: "9999",
-      color: "#efe7d6",
-      margin: "0.25rem 0 0.75rem",
-      fontFamily: 'var(--font-punk), "HitMePunk04", "Bangers", sans-serif',
-    });
-    title.querySelectorAll(".title-line").forEach((el) => {
-      Object.assign(el.style, {
-        display: "inline-block",
-        padding: "6px 14px",
-        margin: "0 0 8px",
-        background: "rgba(239,231,214,0.95)",
-        color: "#111",
-      });
-    });
-
-    // hide the in-page music player
-    document.querySelectorAll(".music").forEach((el) => {
-      el.style.display = "none";
-      el.style.visibility = "hidden";
-    });
-    console.info("Ensured title + hid music");
-  } catch (err) {
-    console.warn("ensureAndForceTitleAndHideMusic failed:", err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  // only ensure title and hide music on load; don't auto-fetch the GIF
-  ensureAndForceTitleAndHideMusic();
-  // expose helper for debugging
-  window.ensureAndForceTitleAndHideMusic = ensureAndForceTitleAndHideMusic;
-});

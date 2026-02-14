@@ -31,9 +31,7 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
 
-  <script>
-    localStorage.setItem("myUrl", "http://localhost:5000/src/index.html");
-  </script>
+
 
   <body>
     <div class="app" id="app">
@@ -41,9 +39,14 @@
         <!-- HEADER -->
         <header class="header" id="header">
           <h1 class="title" role="banner" aria-label="site title">
-            <span class="title-line">DUMB SHIT</span>
-            <span class="title-line">I GOTTA DO TODAY</span>
+            <span class="title-line" id="titleLine1">DUMB shit</span>
+            <span class="title-line" id="titleLine2">I GOTta dO TODay</span>
           </h1>
+          <label class="pg-switch" id="pgSwitch" title="Toggle PG Mode">
+            <input type="checkbox" id="pgToggle" />
+            <span class="pg-switch__slider"></span>
+            <span class="pg-switch__label" id="pgLabel">$H!T MODE</span>
+          </label>
         </header>
 
         <!-- TABS -->
@@ -64,6 +67,39 @@
             DON'T FORGET
           </button>
         </nav>
+        
+        <!-- Icon Navigation Group - Top Right -->
+        <div class="icon-nav" id="iconNav">
+          <button class="icon-button icon-button--howto" id="howtoButton" type="button" title="How to use" aria-label="How to use">
+            <span class="icon-button__icon">📖</span>
+          </button>
+          
+          <button
+            class="icon-button icon-button--timer"
+            type="button"
+            id="openTimerBtn"
+            title="Open Timer"
+            aria-label="Open timer"
+          >
+            <span class="icon-button__icon">🕐</span>
+            <span class="timer-bubble is-hidden" id="timerBubble">25:00</span>
+          </button>
+          
+          <button class="icon-button icon-button--sound" id="soundToggle" type="button" title="Toggle sound effects" aria-label="Toggle sound effects">
+            <span class="icon-button__icon">🔊</span>
+          </button>
+          
+          <button class="icon-button icon-button--reset" id="resetBtn" type="button" title="Reset everything" aria-label="Reset everything">
+            <span class="icon-button__icon">🧨</span>
+          </button>
+        </div>
+
+        <!-- Floating countdown widget (visible when timer running) -->
+        <div class="floating-countdown" id="floatingCountdown">
+          <div class="floating-countdown__task" id="floatingCountdownTask"></div>
+          <div class="floating-countdown__time" id="floatingCountdownTime">00:00</div>
+          <button class="floating-countdown__pause" id="floatingCountdownPause" type="button" title="Pause timer" aria-label="Pause timer">❚❚</button>
+        </div>
 
         <main class="main" id="main">
           <!-- TASKS -->
@@ -95,101 +131,7 @@
             </form>
           </section>
 
-          <!-- TIMER -->
-          <section
-            class="card card--timer"
-            id="timerCard"
-            aria-labelledby="timerHeading"
-          >
-            <h2 class="card-title" id="timerHeading">TIMER</h2>
 
-            <div class="timer-grid">
-              <div class="timer-block">
-                <p class="timer-block__title">CHOOSE VIOLENCE:</p>
-                <p class="timer-block__hint">(PICK A TAB / PICK A TASK)</p>
-
-                <div class="timer-selects">
-                  <select
-                    class="field-select"
-                    id="focusTabSelect"
-                    name="focusTabSelect"
-                  >
-                    <option value="all">ALL TABS</option>
-                    <option value="dueToday">DUE TODAY</option>
-                    <option value="soon">NEXT UP</option>
-                    <option value="asSoonAsICan">WHEN I CAN</option>
-                    <option value="dontForget">DON'T FORGET</option>
-                  </select>
-
-                  <select
-                    class="field-select"
-                    id="focusSelect"
-                    name="focusSelect"
-                  >
-                    <option value="">(Pick a task)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="timer-block">
-                <p class="timer-block__title">→ SET YOUR TIME:</p>
-
-                <select
-                  class="field-select"
-                  id="durationSelect"
-                  name="durationSelect"
-                >
-                  <option value="300">5 min</option>
-                  <option value="900" selected>15 min</option>
-                  <option value="1800">30 min</option>
-                  <option value="2700">45 min</option>
-                  <option value="3600">60 min</option>
-                </select>
-
-                <p class="timer-block__sub">CUSTOM:</p>
-                <div class="custom-timer__controls">
-                  <input
-                    class="field-input"
-                    id="customHoursInput"
-                    name="customHoursInput"
-                    type="number"
-                    min="0"
-                    max="8"
-                    placeholder="hrs"
-                    inputmode="numeric"
-                  />
-                  <input
-                    class="field-input"
-                    id="customMinutesInput"
-                    name="customMinutesInput"
-                    type="number"
-                    min="0"
-                    max="59"
-                    placeholder="mins"
-                    inputmode="numeric"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- <p class="current-task current-task--hero" id="currentTaskText">
-              TAB:
-              <span class="current-task__tab">(none)</span>
-              <span class="current-task__divider">|</span>
-              TASK:
-              <span class="current-task__task">(none)</span>
-            </p> -->
-            <p class="timer-block__footer">→ MURDER TASKS! ✅ GET A PRIZE!</p>
-            <div class="timer-display" id="timerDisplay" aria-live="polite">
-              15:00
-            </div>
-
-            <div class="timer-controls">
-              <button class="btn" id="startBtn" type="button">START</button>
-              <button class="btn" id="pauseBtn" type="button">PAUSE</button>
-              <button class="btn" id="stopBtn" type="button">STOP</button>
-            </div>
-          </section>
 
           <!-- COMPLETED -->
           <section
@@ -197,59 +139,27 @@
             id="completedCard"
             aria-labelledby="completedHeading"
           >
-            <h2 class="card-title card-title--big" id="completedHeading">
-              SHIT I DID
-            </h2>
+            <h2 class="card-title card-title--big" id="completedHeading">SHIT I DID:</h2>
 
             <p class="completed-stat completed-stat--center" id="progressText">
               <span class="completed-stat__count" id="completedCount">0/0</span>
               OF ALL TASKS DONE
             </p>
 
+            <div class="fun-progress" id="funProgressBar">
+              <div class="fun-progress__track">
+                <div class="fun-progress__fill"></div>
+              </div>
+              <p class="fun-progress__label"></p>
+            </div>
+
             <div
               class="completed-groups completed-groups--tabs"
               id="completedGroups"
             ></div>
-
-            <button class="linkish reset-global" id="resetBtn" type="button">
-              🧨 RESET EVERYTHING
-            </button>
           </section>
         </main>
 
-        <!-- MUSIC PLAYER -->
-        <footer class="music" id="musicPlayer" aria-label="Music player">
-          <div class="music-title">NOW PLAYING:</div>
-          <div class="music-track" id="musicTrack">GRUNGY TUNES</div>
-          <div class="music-controls">
-            <button
-              class="btn btn--small"
-              type="button"
-              aria-label="Previous track"
-            >
-              ◀
-            </button>
-            <button
-              class="btn btn--small"
-              type="button"
-              aria-label="Play/Pause"
-            >
-              ▶
-            </button>
-            <button
-              class="btn btn--small"
-              type="button"
-              aria-label="Next track"
-            >
-              ▶▶
-            </button>
-          </div>
-          <div class="music-progress" aria-hidden="true"></div>
-        </footer>
-      </div>
-    </div>
-
-    <!-- PRIZE MODAL (unchanged) -->
     <div
       class="modal-overlay is-hidden"
       id="prizeOverlay"
@@ -258,22 +168,176 @@
       aria-labelledby="prizeTitle"
     >
       <div class="modal" id="prizeModal">
-        <h2 class="modal-title" id="prizeTitle">GOOD JOB DUMMY!</h2>
+        <button class="modal-close-x" id="closePrizeX" type="button" title="Close" aria-label="Close">✕</button>
+        
+        <h2 class="modal-title modal-title--prize" id="prizeTitle">
+          <span class="modal-title-line1" id="prizeLine1">GOOD JOB</span>
+          <span class="modal-title-line2" id="prizeLine2">DUMMY!</span>
+        </h2>
+                
         <p class="modal-subtitle" id="prizeSubtitle">
-          YOU GET TO PICK A PRIZE...
+          PICK A PRIZE
         </p>
 
         <ul class="prize-list" id="prizeList">
           <li>GO FOR A WALK.</li>
           <li>TAKE A QUICK NAP.</li>
           <li>GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.</li>
-          <li>THEN GET BACK TO WORK!</li>
-          <li>OR YOU CAN STARE AT THIS CUTE CAT!</li>
         </ul>
 
-        <button class="btn btn--primary" id="backToItBtn" type="button">
-          HELL YAH!
-        </button>
+        <img class="prize-gif" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHBybnhveG4wdnRodGg2MnJ1NWhxNmxzcWV5Zm4weDcyZGFqMDV1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/75mBr8CLHect4tHlMb/giphy.gif" alt="Cute cat"/>
+        <p class="prize-note" id="prizeNote">or you can stare at this cute dumb cat</p>
+
+        <div class="prize-actions">
+          <button class="btn btn--primary" id="backToItBtn" type="button">
+            NOW GET BACK TO WORK!
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW TO MODAL -->
+    <div
+      class="modal-overlay is-hidden"
+      id="howtoOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="howtoTitle"
+    >
+      <div class="modal modal--howto" id="howtoModal">
+        <button class="modal-close-x" id="closeHowtoX" type="button" title="Close" aria-label="Close">✕</button>
+        <h2 class="modal-title" id="howtoTitle">📖 HOW TO USE</h2>
+        
+        <div class="howto-content">
+          <div class="howto-section">
+            <h3>📝 TASKS</h3>
+            <ul>
+              <li>Type in the box and hit ADD (or press Enter) to create a task</li>
+              <li>Click a task to select it for the timer</li>
+              <li>Check the box to mark it done</li>
+              <li>Double-click a task to edit its text</li>
+              <li>Click the ✕ button to delete a task</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>📂 TABS</h3>
+            <ul>
+              <li>Use tabs to organize: DUE TODAY, NEXT UP, WHEN I CAN, DON'T FORGET</li>
+              <li>Double-click any tab name to rename it</li>
+              <li>Each mode (SHIT/PG) has separate tabs and tasks</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>⏱️ TIMER</h3>
+            <ul>
+              <li>Click a task to select it, then click TIMER button</li>
+              <li>Set your time and hit START</li>
+              <li>A floating countdown shows while you work</li>
+              <li>When time's up: mark it done or add 5 more minutes</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>🎉 PRIZES</h3>
+            <ul>
+              <li>Finish ALL tasks in a tab = celebration + prize!</li>
+              <li>You earned it. Pick a reward.</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>🔀 MODES</h3>
+            <ul>
+              <li>Toggle the switch to flip between $H!T MODE and PG MODE</li>
+              <li>$H!T MODE = punk vibes with explosions 💥</li>
+              <li>PG MODE = clean and friendly with sparkles ✨</li>
+              <li>Each mode has separate tabs and tasks</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>🔊 SOUND</h3>
+            <ul>
+              <li>Click the speaker icon to toggle sound effects</li>
+              <li>Enjoy different sounds for each mode!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIMER POPUP MODAL -->
+    <div
+      class="modal-overlay is-hidden"
+      id="timerPopupOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="timerPopupTitle"
+    >
+      <div class="modal modal--timer-popup" id="timerPopupModal">
+        <button class="modal-close-x" id="closeTimerX" type="button" title="Close" aria-label="Close timer">✕</button>
+        <h2 class="modal-title" id="timerPopupTitle">TIMER</h2>
+
+        <div class="timer-grid">
+          <div class="timer-block">
+            <p class="timer-block__title" id="timerChooseLabel">CHOOSE VIOLENCE:</p>
+            <p class="timer-block__hint" id="timerChooseHint">(PICK A TAB / PICK A TASK)</p>
+
+            <div class="timer-selects">
+              <select
+                class="field-select"
+                id="focusTabSelect"
+                name="focusTabSelect"
+              >
+                <option value="all">ALL TABS</option>
+                <option value="dueToday">DUE TODAY</option>
+                <option value="soon">NEXT UP</option>
+                <option value="asSoonAsICan">WHEN I CAN</option>
+                <option value="dontForget">DON'T FORGET</option>
+              </select>
+
+              <select
+                class="field-select"
+                id="focusSelect"
+                name="focusSelect"
+              >
+                <option value="">(Pick a task)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="timer-block">
+            <p class="timer-block__title">→ SET YOUR TIME:</p>
+
+            <div class="dial-picker" id="dialPicker">
+              <div class="dial-column">
+                <label class="dial-label">HRS</label>
+                <div class="dial-scroll" id="dialHours" tabindex="0" role="listbox" aria-label="Hours">
+                  <!-- filled by JS -->
+                </div>
+              </div>
+              <span class="dial-sep">:</span>
+              <div class="dial-column">
+                <label class="dial-label">MIN</label>
+                <div class="dial-scroll" id="dialMinutes" tabindex="0" role="listbox" aria-label="Minutes">
+                  <!-- filled by JS -->
+                </div>
+              </div>
+              <span class="dial-sep">:</span>
+              <div class="dial-column">
+                <label class="dial-label">SEC</label>
+                <div class="dial-scroll" id="dialSeconds" tabindex="0" role="listbox" aria-label="Seconds">
+                  <!-- filled by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="timer-block__footer" id="timerFooterMsg">→ MURDER TASKS! ✅ GET A PRIZE!</p>
+
+        <div class="timer-controls">
+          <button class="btn" id="startBtn" type="button">START</button>
+          <button class="btn" id="pauseBtn" type="button">PAUSE</button>
+          <button class="btn" id="resetTimerBtn" type="button">RESET</button>
+        </div>
       </div>
     </div>
 
@@ -285,22 +349,18 @@
       aria-modal="true"
       aria-labelledby="timerModalTitle"
     >
-      <div class="modal modal--timer" id="timerModal">
-        <h2 class="modal-title" id="timerModalTitle">TIME'S UP</h2>
+      <div class="modal modal--timer-done" id="timerModal">
+        <h2 class="modal-title modal-title--timesup" id="timerModalTitle">⏰ TIME'S UP!</h2>
         <p class="modal-subtitle" id="timerModalTask">DONE WITH THIS TASK?</p>
-        <p class="modal-hint" id="timerModalHint">
-          Need more time? Add 5 minutes.
+    
         </p>
 
         <div class="timer-modal-actions">
           <button class="btn btn--primary" id="timerDoneBtn" type="button">
             YES, DONE
           </button>
-          <button class="btn" id="timerAddTimeBtn" type="button">
-            ADD 5 MIN
-          </button>
           <button class="btn" id="timerNotDoneBtn" type="button">
-            NOT YET
+            NOT YET (+5 MIN)
           </button>
         </div>
       </div>
@@ -309,5 +369,6 @@
     <script src="./js/app.js" defer></script>
     <script src="./js/tasks-edit.js" defer></script>
     <script src="./js/enhanced-features.js" defer></script>
+    <script src="./js/interactive-features.js" defer></script>
   </body>
 </html>
