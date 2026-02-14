@@ -1694,22 +1694,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ===== PG MODE / $H!T MODE TOGGLE =====
   const PG_STORAGE_KEY = "dsigdt_pg_mode";
-
   const TEXT_MAP = {
     titleLine1: { punk: "DUMB shit", pg: "SILLY STUFF" },
     titleLine2: { punk: "I GOTta dO TODay", pg: "TO DO TODAY" },
     completedHeading: { punk: "SHIT I DID:", pg: "COMPLETED:" },
     resetBtn: { punk: "🧨", pg: "🧨" },
-    prizeLine1: { punk: "GOOD JOB", pg: "GREAT JOB" },
-    prizeLine2: { punk: "DING-DONG!", pg: "SUPERSTAR!" },
+    prizeLine1: { punk: "nice one", pg: "GREAT JOB" },
+    prizeLine2: { punk: "dingdong!", pg: "SUPERSTAR!" },
     prizeSubtitle: { punk: "PICK A PRIZE", pg: "You earned a reward!" },
-    timerModalTitle: { punk: "⏰ TIME'S UP!", pg: "⏰ TIME'S UP!" },
+    timerModalTitle: { punk: "⏰ TIME UP!", pg: "⏰ TIME'S UP!" },
     prizeNote: {
       punk: "or you can stare at this cute dumb cat",
       pg: "enjoy this cute cat!",
     },
     backToItBtn: {
-      punk: "NOW GET BACK TO WORK DUMMY",
+      punk: "NOW BACK TO WORK dummy",
       pg: "KEEP GOING, YOU'RE AMAZING! 🙌",
     },
     timerChooseLabel: { punk: "CHOOSE VIOLENCE:", pg: "SELECT YOUR TASK:" },
@@ -1741,8 +1740,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (prizeList) {
       const items = prizeList.querySelectorAll("li");
       const punkPrizes = [
-        "GO FOR A WALK.",
-        "TAKE A QUICK NAP.",
+        "listen to some slayer.",
+        "chug a mountain dew.",
         "GO GET YOUR PRODUCTIVE ASS SOME SKITTLES.",
       ];
       const pgPrizes = [

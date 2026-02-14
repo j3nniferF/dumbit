@@ -2967,7 +2967,7 @@ body.pg-mode {
 /* Timer text emphasis: bigger SET YOUR TIME + MURDER TASKS line. */
 .modal--timer-popup .timer-block:nth-of-type(2) .timer-block__title {
   font-size: clamp(2rem, 4vw, 2.8rem) !important;
-  letter-spacing: 2.4px !important;
+  letter-spacing: 2.2px !important;
 }
 
 #timerFooterMsg {
