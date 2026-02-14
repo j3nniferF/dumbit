@@ -15,8 +15,8 @@ body {
 
 /* ===== PG MODE THEME OVERRIDES ===== */
 body.pg-mode {
-  /* Use pretty texture background for PG mode - tileable for mobile and desktop */
-  background: #f8f9fa url("../assets/textures/pretty.png") center/400px repeat !important;
+  /* Use unicorn texture background for PG mode - tileable for mobile and desktop */
+  background: #f8f9fa url("../assets/textures/unicornWIDE.png") center/cover no-repeat !important;
   /* Make background fixed like shit mode */
   background-attachment: fixed !important;
 }
@@ -2432,8 +2432,8 @@ body:not(.pg-mode) .pg-switch {
 
 /* ===== PG MODE THEME OVERRIDES ===== */
 body.pg-mode {
-  /* Use pretty texture background for PG mode - tileable for mobile and desktop */
-  background: #f8f9fa url("../assets/textures/pretty.png") center/400px repeat !important;
+  /* Use unicorn texture background for PG mode - tileable for mobile and desktop */
+  background: #f8f9fa url("../assets/textures/unicornWIDE.png") center/cover no-repeat !important;
 }
 
 /* PG mode: Use Helvetica for EVERYTHING */
@@ -3599,7 +3599,7 @@ body.pg-mode {
 .pg-mode .modal--timer-done {
   background:
     linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
-    url("../assets/textures/pretty.png") center/360px repeat !important;
+    url("../assets/textures/unicornWIDE.png") center/cover no-repeat !important;
   border: 2px solid rgba(37, 99, 235, 0.25) !important;
   color: #1f2937 !important;
 }
