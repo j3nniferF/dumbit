@@ -1,9 +1,16 @@
 // Lightweight GIF-only prize enhancer using the provided GIF (no API key, no Bored API)
 console.log("tasks-edit.js loaded");
 
-// Use the specific GIPHY asset you provided (direct media URL avoids API calls)
-const PRIZE_GIF_URL =
+const PRIZE_GIF_URL_SHIT =
+  "https://media.giphy.com/media/uF4QwYRpMDuGuMXL1G/giphy.gif";
+const PRIZE_GIF_URL_PG =
   "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHBybnhveG4wdnRodGg2MnJ1NWhxNmxzcWV5Zm4weDcyZGFqMDV1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/75mBr8CLHect4tHlMb/giphy.gif";
+
+function getModePrizeGifUrl() {
+  return document.body.classList.contains("pg-mode")
+    ? PRIZE_GIF_URL_PG
+    : PRIZE_GIF_URL_SHIT;
+}
 
 /**
  * Insert the provided GIF into the prize modal (deferred load).
@@ -29,7 +36,7 @@ async function showPrizeSuggestion() {
   img.style.display = "block";
   img.style.margin = "12px auto 0";
   // store the URL but don't assign .src until modal is visible
-  img.dataset.src = PRIZE_GIF_URL;
+  img.dataset.src = getModePrizeGifUrl();
 
   const prizeList = prizeModal.querySelector("#prizeList");
   const prizeNote = prizeModal.querySelector(".prize-note");
