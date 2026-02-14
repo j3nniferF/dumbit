@@ -3954,8 +3954,9 @@ body:not(.pg-mode) .tab {
 .completed-groups--tabs .completed-group {
   background: rgba(255, 255, 255, 0.82) !important;
   border: 1px solid rgba(0, 0, 0, 0.12) !important;
-  border-radius: 999px !important;
-  padding: 6px 10px !important;
+  border-radius: 14px !important;
+  padding: 8px 12px !important;
+  overflow: hidden;
 }
 
 .completed-groups--tabs .completed-subheading {
@@ -3965,10 +3966,12 @@ body:not(.pg-mode) .tab {
   margin: 0 !important;
   font-size: clamp(1rem, 2.2vw, 1.2rem) !important;
   letter-spacing: 0.8px !important;
+  font-weight: 700 !important;
 }
 
 .completed-subheading__name {
   display: inline-block;
+  font-weight: 700 !important;
 }
 
 .completed-subheading__count {
@@ -3986,6 +3989,11 @@ body:not(.pg-mode) .tab {
 
 .completed-groups--tabs .completed-list {
   margin-top: 8px !important;
+}
+
+.completed-list li,
+.completed-list li span {
+  font-weight: 400 !important;
 }
 
 @media (max-width: 900px) {
@@ -4011,23 +4019,23 @@ body:not(.pg-mode) .tab {
   }
 }
 
-/* Small-screen spacing cleanup for tabs area to remove odd white space/wrapping. */
+/* Restore original tab behavior on smaller screens (no 2x2 stretched grid). */
 @media (max-width: 900px) {
   .tabs {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px 10px !important;
-    width: min(96vw, 700px) !important;
-    padding: 10px 12px !important;
-    margin: 6px auto 12px !important;
-    border-radius: 20px !important;
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: min(100%, 920px) !important;
+    padding: 8px 14px !important;
+    margin: 8px auto 14px !important;
+    gap: 8px !important;
   }
 
   .tab {
-    width: 100%;
-    text-align: center !important;
-    padding: 6px 8px !important;
+    width: auto !important;
+    padding: 8px 12px !important;
     white-space: nowrap;
+    text-align: center !important;
   }
 
   .tab + .tab::before {
