@@ -16,7 +16,7 @@ body {
 /* ===== PG MODE THEME OVERRIDES ===== */
 body.pg-mode {
   /* Use unicorn texture background for PG mode - tileable for mobile and desktop */
-  background: #f8f9fa url("../assets/textures/unicornWIDE.png") center/cover
+  background: #f8f9fa url("../assets/textures/pretty.png") center/cover
     no-repeat !important;
   /* Make background fixed like shit mode */
   background-attachment: fixed !important;
@@ -1100,6 +1100,28 @@ body::before {
   min-width: 0;
 }
 
+.task-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.task-edit {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.7);
+  color: #111;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-family: var(--font-ui), var(--font-stack);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.task-edit:hover {
+  background: rgba(255, 255, 255, 0.92);
+}
+
 .task:hover {
   background: rgba(0, 0, 0, 0.05);
 }
@@ -1135,11 +1157,12 @@ body::before {
 .task--selected::after {
   content: "IN PROGRESS";
   position: absolute;
-  top: -10px;
-  right: 10px;
-  font-size: 0.9rem;
+  top: -11px;
+  left: 12px;
+  right: auto;
+  font-size: 0.82rem;
   letter-spacing: 0.7px;
-  padding: 4px 8px;
+  padding: 3px 8px;
   border-radius: 999px;
   background: var(--accent-red);
   color: #fff;
@@ -2489,7 +2512,7 @@ body:not(.pg-mode) .pg-switch {
 /* ===== PG MODE THEME OVERRIDES ===== */
 body.pg-mode {
   /* Use unicorn texture background for PG mode - tileable for mobile and desktop */
-  background: #f8f9fa url("../assets/textures/unicornWIDE.png") center/cover
+  background: #f8f9fa url("../assets/textures/pretty.png") center/cover
     no-repeat !important;
 }
 
@@ -3690,7 +3713,7 @@ body.pg-mode {
 .pg-mode .modal--timer-done {
   background:
     linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
-    url("../assets/textures/unicornWIDE.png") center/cover no-repeat !important;
+    url("../assets/textures/pretty.png") center/cover no-repeat !important;
   border: 2px solid rgba(37, 99, 235, 0.25) !important;
   color: #1f2937 !important;
 }
@@ -4228,4 +4251,468 @@ body:not(.pg-mode) #timerModalTask {
   font-weight: 500 !important;
   letter-spacing: 0.5px !important;
   animation: none !important;
+}
+
+/* ===== FINAL CLEAN OVERRIDES (single source of truth) ===== */
+/* TIMER DONE MODAL */
+#timerOverlay {
+  background: rgba(8, 8, 8, 0.42) !important;
+}
+
+#timerModal {
+  padding: 18px 18px 20px !important;
+}
+
+body:not(.pg-mode) #timerModal.modal--timer-done {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.22)),
+    url("../assets/textures/dirty-paper.png") center/cover !important;
+  border: 2px solid rgba(0, 0, 0, 0.72) !important;
+}
+
+#timerModalTitle,
+#timerModalTask {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0.08em 0.28em !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  text-align: center !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+#timerModalTitle {
+  font-size: clamp(3rem, 7.8vw, 5.4rem) !important;
+  line-height: 0.9 !important;
+  letter-spacing: 0.06em !important;
+  margin-bottom: 10px !important;
+}
+
+#timerModalTask {
+  font-size: clamp(1.55rem, 3.3vw, 2.35rem) !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0.045em !important;
+  margin-bottom: 14px !important;
+}
+
+body:not(.pg-mode) #timerModalTitle,
+body:not(.pg-mode) #timerModalTask {
+  color: #0a0a0a !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+}
+
+body:not(.pg-mode) #timerModalTitle {
+  font-family: var(--font-punk), var(--font-stack) !important;
+  font-size: clamp(2.25rem, 5.4vw, 3.6rem) !important;
+  letter-spacing: 0.035em !important;
+  line-height: 0.94 !important;
+  white-space: nowrap;
+}
+
+body:not(.pg-mode) #timerModalTask {
+  font-family: var(--font-ui), var(--font-stack) !important;
+  font-size: clamp(1.45rem, 3.2vw, 2.1rem) !important;
+  letter-spacing: 0.035em !important;
+  line-height: 1.06 !important;
+}
+
+.pg-mode #timerModalTitle,
+.pg-mode #timerModalTask {
+  color: #2563eb !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+}
+
+#timerModal .timer-modal-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(180px, 1fr)) !important;
+  gap: 12px !important;
+}
+
+#timerModal .timer-modal-actions .btn,
+#timerModal .timer-modal-actions .btn--primary {
+  width: 100% !important;
+  min-height: 88px !important;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.055em !important;
+  line-height: 1.12 !important;
+}
+
+@media (max-width: 760px) {
+  #timerModal .timer-modal-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  body:not(.pg-mode) #timerModalTitle {
+    white-space: normal;
+    font-size: clamp(2rem, 8vw, 2.8rem) !important;
+  }
+}
+
+/* PRIZE MODAL TITLE CLEANUP */
+#prizeModal {
+  padding: 14px 14px 16px !important;
+  max-height: min(90vh, 820px) !important;
+  overflow-y: auto !important;
+}
+
+#prizeModal .modal-title {
+  margin: 0 0 8px !important;
+  display: grid !important;
+  gap: 2px !important;
+  justify-items: center !important;
+  text-align: center !important;
+  line-height: 0.92 !important;
+  letter-spacing: 0.02em !important;
+}
+
+#prizeModal .modal-title-line1,
+#prizeModal .modal-title-line2 {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  transform: none !important;
+  text-align: center !important;
+  letter-spacing: 0.04em !important;
+  word-spacing: 0.06em !important;
+  white-space: nowrap !important;
+}
+
+body:not(.pg-mode) #prizeModal .modal-title-line1,
+body:not(.pg-mode) #prizeModal .modal-title-line2 {
+  font-size: clamp(2.2rem, 7vw, 4.1rem) !important;
+  color: #111 !important;
+}
+
+.pg-mode #prizeModal .modal-title-line1,
+.pg-mode #prizeModal .modal-title-line2 {
+  font-size: clamp(2.2rem, 7vw, 4rem) !important;
+  color: #2663eb !important;
+}
+
+/* Prize title: smaller + centered + black in both modes */
+#prizeModal .modal-title {
+  justify-items: center !important;
+  text-align: center !important;
+  margin: 0 0 6px !important;
+}
+
+#prizeModal .modal-title-line1,
+#prizeModal .modal-title-line2 {
+  color: #111 !important;
+  font-size: clamp(1.8rem, 6.2vw, 3rem) !important;
+  line-height: 0.95 !important;
+  letter-spacing: 0.02em !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+}
+
+/* Hard override by id so PG blue rules cannot win. */
+#prizeModal #prizeLine1,
+#prizeModal #prizeLine2,
+.pg-mode #prizeModal #prizeLine1,
+.pg-mode #prizeModal #prizeLine2 {
+  color: #111 !important;
+}
+
+#prizeModal .prize-list {
+  margin: 8px 0 10px !important;
+  gap: 8px 16px !important;
+}
+
+#prizeModal .prize-list li {
+  line-height: 1.28 !important;
+  letter-spacing: 0.03em !important;
+  text-align: center !important;
+}
+
+body:not(.pg-mode) #prizeModal #prizeSubtitle,
+body:not(.pg-mode) #prizeModal #prizeNote {
+  color: #111 !important;
+  text-align: center !important;
+}
+
+#prizeModal #prizeNote {
+  width: 100% !important;
+  margin: 8px 0 10px !important;
+  text-align: center !important;
+}
+
+#prizeModal .prize-actions {
+  position: sticky;
+  bottom: 0;
+  padding-top: 10px;
+  width: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(242, 239, 231, 0.96) 65%,
+    rgba(242, 239, 231, 0)
+  );
+}
+
+#prizeModal .prize-actions .btn {
+  width: 100% !important;
+}
+
+/* Completed count chip font: Helvetica only in PG mode. */
+.pg-mode .completed-subheading__count,
+.pg-mode #completedCount {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+body:not(.pg-mode) .completed-subheading__count,
+body:not(.pg-mode) #completedCount {
+  font-family: var(--font-wrong), var(--font-stack) !important;
+}
+
+@media (max-width: 760px) {
+  #prizeModal {
+    max-height: 88vh !important;
+    padding: 10px 10px 14px !important;
+  }
+
+  #prizeModal .modal-title {
+    margin-bottom: 6px !important;
+    gap: 0 !important;
+  }
+
+  #prizeModal .modal-title-line1,
+  #prizeModal .modal-title-line2 {
+    font-size: clamp(1.7rem, 11vw, 2.65rem) !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  #prizeModal .prize-gif {
+    max-width: min(88vw, 300px) !important;
+    max-height: 34vh !important;
+  }
+}
+
+/* SHIT mode timer popup: keep dial numbers/labels high-contrast black. */
+body:not(.pg-mode) .modal--timer-popup .dial-label {
+  color: rgba(0, 0, 0, 0.72) !important;
+}
+
+body:not(.pg-mode) .modal--timer-popup .dial-scroll {
+  background: rgba(255, 255, 255, 0.65) !important;
+  border-color: rgba(0, 0, 0, 0.32) !important;
+}
+
+body:not(.pg-mode) .modal--timer-popup .dial-item {
+  color: rgba(0, 0, 0, 0.46) !important;
+}
+
+body:not(.pg-mode) .modal--timer-popup .dial-item:hover {
+  color: rgba(0, 0, 0, 0.82) !important;
+}
+
+body:not(.pg-mode) .modal--timer-popup .dial-item--selected {
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+body:not(.pg-mode) .modal--timer-popup .dial-sep {
+  color: rgba(0, 0, 0, 0.58) !important;
+}
+
+body:not(.pg-mode) .modal--timer-popup .field-select,
+body:not(.pg-mode) .modal--timer-popup .field-input {
+  background: rgba(255, 255, 255, 0.88) !important;
+  color: #111 !important;
+  border-color: rgba(0, 0, 0, 0.72) !important;
+}
+
+/* ===== Button + Popup Consistency ===== */
+/* Match ADD / EDIT / DELETE button treatment in each mode. */
+.task-add-btn,
+.task-edit,
+.task-delete {
+  min-height: 34px !important;
+  min-width: 0 !important;
+  padding: 6px 10px !important;
+  border-radius: 10px !important;
+  font-family: var(--font-ui), var(--font-stack) !important;
+  font-size: clamp(0.8rem, 1.7vw, 0.92rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  color: #fff !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.22) !important;
+}
+
+body:not(.pg-mode) .task-add-btn,
+body:not(.pg-mode) .task-edit,
+body:not(.pg-mode) .task-delete {
+  background: #c51616 !important;
+  border-color: #9f1010 !important;
+}
+
+body:not(.pg-mode) .task-add-btn:hover,
+body:not(.pg-mode) .task-edit:hover,
+body:not(.pg-mode) .task-delete:hover {
+  background: #9f1010 !important;
+}
+
+.pg-mode .task-add-btn,
+.pg-mode .task-edit,
+.pg-mode .task-delete {
+  background: #2563eb !important;
+  border-color: #1d4ed8 !important;
+  color: #fff !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.pg-mode .task-add-btn:hover,
+.pg-mode .task-edit:hover,
+.pg-mode .task-delete:hover {
+  background: #1d4ed8 !important;
+  color: #fff !important;
+}
+
+/* Keep the delete glyph readable inside the shared button shape. */
+.task-delete {
+  min-width: 42px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  font-size: 1rem !important;
+}
+
+.task-edit {
+  min-width: 56px !important;
+}
+
+.task-add-btn {
+  min-width: 64px !important;
+}
+
+/* Slight pop on hover for task action buttons in both modes. */
+.task-edit:hover,
+.task-delete:hover {
+  transform: translateY(-1px) scale(1.03) !important;
+}
+
+/* Ensure PG delete X is always white (base + hover + active). */
+.pg-mode .task-delete,
+.pg-mode .task-delete:hover,
+.pg-mode .task-delete:active,
+.pg-mode .task-delete:focus {
+  color: #fff !important;
+}
+
+/* In-progress chip should only show for selected task; mode colorized. */
+.task--selected::after {
+  background: #c51616 !important;
+}
+
+.pg-mode .task--selected::after {
+  background: #2563eb !important;
+}
+
+/* SHIT mode How To popup = black styling. */
+body:not(.pg-mode) .modal--howto {
+  background: #0b0b0b !important;
+  color: #f3f1e9 !important;
+  border: 2px solid #0a0a0a !important;
+}
+
+/* Remove white border/outline artifacts from popups. */
+.modal,
+.modal--howto,
+.modal--timer-popup,
+.modal--timer-done,
+#prizeModal {
+  outline: none !important;
+}
+
+body:not(.pg-mode) .modal,
+body:not(.pg-mode) .modal--howto,
+body:not(.pg-mode) .modal--timer-popup,
+body:not(.pg-mode) .modal--timer-done,
+body:not(.pg-mode) #prizeModal {
+  border-color: #0a0a0a !important;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.52) !important;
+}
+
+/* Strip timer-popup white inset ring specifically. */
+body:not(.pg-mode) .modal--timer-popup {
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.52) !important;
+}
+
+/* SHIT mode HOW TO modal: off-white panel, black body text, bigger red titles. */
+body:not(.pg-mode) #howtoModal {
+  background: #f3eee3 !important;
+  color: #111 !important;
+  border: 2px solid #0a0a0a !important;
+}
+
+body:not(.pg-mode) #howtoModal .modal-title {
+  color: #c51616 !important;
+  font-size: clamp(2.3rem, 5.4vw, 3.6rem) !important;
+  letter-spacing: 0.05em !important;
+  text-shadow: none !important;
+}
+
+body:not(.pg-mode) #howtoModal .howto-section h3 {
+  color: #c51616 !important;
+  font-size: clamp(1.55rem, 3.2vw, 2.1rem) !important;
+  letter-spacing: 0.03em !important;
+}
+
+body:not(.pg-mode) #howtoModal .howto-section li {
+  color: #111 !important;
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem) !important;
+  line-height: 1.36 !important;
+}
+
+body:not(.pg-mode) #howtoModal .howto-section li::before {
+  color: #c51616 !important;
+}
+
+/* How-to close button: always visible; PG close X should be white. */
+#howtoModal #closeHowtoX {
+  display: flex !important;
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  z-index: 25 !important;
+}
+
+.pg-mode #howtoModal #closeHowtoX,
+.pg-mode #howtoModal #closeHowtoX:hover {
+  color: #fff !important;
+}
+
+/* SHIT mode tasks use Wrong font explicitly. */
+body:not(.pg-mode) .task-text,
+body:not(.pg-mode) .task-input,
+body:not(.pg-mode) .task-add-btn,
+body:not(.pg-mode) .task-edit,
+body:not(.pg-mode) .task-delete {
+  font-family: var(--font-wrong), var(--font-stack) !important;
+}
+
+/* Ensure How To close X is anchored inside the modal card in both modes. */
+#howtoModal {
+  position: relative !important;
+}
+
+#howtoModal #closeHowtoX {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  left: auto !important;
+  margin: 0 !important;
+  display: flex !important;
+  z-index: 50 !important;
 }

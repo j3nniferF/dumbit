@@ -86,6 +86,7 @@ let selectedFocusValue = ""; // `${tabKey}::${taskText}`
 /* Timer state */
 let remainingSeconds = 0;
 let intervalId = null;
+let isInlineEditingTask = false;
 
 /* -------------------------------
    Celebration (confetti + modal)
@@ -805,30 +806,81 @@ function buildFocusSelect(valueToSelect) {
   const exists = Array.from(focusSelect.options).some(
     (o) => o.value === desired,
   );
-  selectedFocusValue = exists ? desired : "";
-  focusSelect.value = selectedFocusValue;
+  // Keep selected focus sticky even when current picker scope doesn't list it.
+  if (exists) {
+    selectedFocusValue = desired;
+    focusSelect.value = selectedFocusValue;
+  } else {
+    focusSelect.value = "";
+  }
 
   syncCurrentTaskText();
   renderTasks(activeTabKey);
   saveState();
 }
 
-function setSelectedFocus(value, autoOpenTimer = false) {
+function setSelectedFocus(value) {
   selectedFocusValue = value || "";
   buildFocusSelect(selectedFocusValue);
   syncCurrentTaskText();
   renderTasks(activeTabKey);
   saveState();
   syncTimerBubble();
-
-  // Auto-open timer if requested (when user clicks a task)
-  if (autoOpenTimer && value) {
-    openTimerPopup();
-  }
 }
 
 function clearSelectedFocus() {
   setSelectedFocus("");
+}
+
+function startInlineTaskEdit({ tabKey, originalText, textEl }) {
+  if (!textEl || isInlineEditingTask) return;
+  if (textEl.querySelector("input.task-edit-input")) return;
+
+  isInlineEditingTask = true;
+  const originalContent = originalText;
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "task-edit-input";
+  input.value = originalContent;
+  input.style.width = "100%";
+  input.style.fontSize = "inherit";
+  input.style.fontFamily = "inherit";
+  input.style.padding = "2px 4px";
+  input.style.border = "2px solid #c51616";
+  input.style.borderRadius = "4px";
+  input.style.background = "#fff";
+
+  textEl.textContent = "";
+  textEl.appendChild(input);
+  input.focus();
+  input.select();
+
+  const finish = (save) => {
+    const newText = input.value.trim();
+    if (save && newText && newText !== originalText) {
+      document.dispatchEvent(
+        new CustomEvent("task:edited", {
+          detail: { tabKey, originalText, newText },
+        }),
+      );
+    } else {
+      textEl.textContent = originalContent;
+    }
+    isInlineEditingTask = false;
+  };
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      finish(true);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      finish(false);
+    }
+  });
+
+  input.addEventListener("blur", () => finish(true));
 }
 
 /* -------------------------------
@@ -852,18 +904,21 @@ function renderTasks(tabKey) {
     if (value === selectedFocusValue) li.classList.add("task--selected");
 
     li.innerHTML = `
-      <label class="task-row">
+      <div class="task-row">
         <input class="task-checkbox" type="checkbox" />
         <span class="task-text"></span>
-      </label>
-      <button class="task-delete" type="button" title="Delete task" aria-label="Delete task">✕</button>
+      </div>
+      <div class="task-actions">
+        <button class="task-edit" type="button" title="Edit task" aria-label="Edit task">EDIT</button>
+        <button class="task-delete" type="button" title="Delete task" aria-label="Delete task">✕</button>
+      </div>
     `;
 
     // --- NEW: attach identifying data so inline editor can find and update this task ---
-    const rowLabel = li.querySelector(".task-row");
-    if (rowLabel) {
-      rowLabel.dataset.tab = tabKey;
-      rowLabel.dataset.task = taskText;
+    const rowEl = li.querySelector(".task-row");
+    if (rowEl) {
+      rowEl.dataset.tab = tabKey;
+      rowEl.dataset.task = taskText;
     }
     // -------------------------------------------------------------------------------
 
@@ -878,16 +933,71 @@ function renderTasks(tabKey) {
     // Prevent checkbox click from selecting the row
     checkbox.addEventListener("click", (event) => event.stopPropagation());
 
-    // Click row selects CURRENT task and opens timer (skip if inline-editing)
-    li.addEventListener("click", () => {
+    const selectThisTask = () => {
+      if (isInlineEditingTask) return;
       if (window.enhancedFeatures && window.enhancedFeatures.isEditingTask())
         return;
+
+      // Keep selection local to this list click so we don't re-render the list.
+      selectedFocusValue = value;
+      focusScope = tabKey;
+
+      // Sync focus pickers to the selected task's tab.
       const focusTabSelect = document.getElementById("focusTabSelect");
-      if (focusTabSelect && focusScope !== "all" && focusScope !== tabKey) {
-        focusScope = "all";
-        focusTabSelect.value = "all";
+      if (focusTabSelect) focusTabSelect.value = tabKey;
+
+      // Sync task picker if the option already exists.
+      const focusSelect = document.getElementById("focusSelect");
+      if (focusSelect) {
+        const hasOption = Array.from(focusSelect.options).some(
+          (o) => o.value === value,
+        );
+        if (hasOption) focusSelect.value = value;
       }
-      setSelectedFocus(value, true); // Auto-open timer when clicking a task
+
+      // Update selected styling without rebuilding tasks.
+      taskList
+        .querySelectorAll(".task")
+        .forEach((node) => node.classList.remove("task--selected"));
+      li.classList.add("task--selected");
+
+      syncCurrentTaskText();
+      saveState();
+      syncTimerBubble();
+    };
+
+    // Click row selects CURRENT task only (no auto-open timer).
+    li.addEventListener("click", () => {
+      selectThisTask();
+    });
+
+    // Double-click task text to edit inline.
+    // Double-click task text to select + open timer.
+    textEl.addEventListener("dblclick", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      selectThisTask();
+      openTimerPopup();
+    });
+
+    // Edit button also opens inline edit.
+    const editBtn = li.querySelector(".task-edit");
+    if (editBtn) {
+      editBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        selectThisTask();
+        startInlineTaskEdit({ tabKey, originalText: taskText, textEl });
+      });
+    }
+
+    // Double-click row to select + open timer popup.
+    li.addEventListener("dblclick", (event) => {
+      if (event.target.closest(".task-edit, .task-delete, .task-checkbox")) return;
+      event.preventDefault();
+      event.stopPropagation();
+      selectThisTask();
+      openTimerPopup();
     });
 
     // Checkbox completes task
@@ -1605,12 +1715,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       activeTabKey = tab.dataset.tab;
 
-      const focusTabSelect = document.getElementById("focusTabSelect");
-      if (focusTabSelect) {
-        focusScope = activeTabKey;
-        focusTabSelect.value = activeTabKey;
-      }
-
       syncActiveTabUI(tabs, activeTabKey);
       syncHeadings(activeTabKey);
 
@@ -1728,7 +1832,7 @@ document.addEventListener("DOMContentLoaded", () => {
     completedHeading: { punk: "SHIT I DID:", pg: "COMPLETED:" },
     resetBtn: { punk: "🧨", pg: "🧨" },
     prizeLine1: { punk: "nice one", pg: "GREAT JOB" },
-    prizeLine2: { punk: "dingdong!", pg: "SUPERSTAR!" },
+    prizeLine2: { punk: "ding dong!", pg: "SUPERSTAR!" },
     prizeSubtitle: { punk: "PICK A PRIZE", pg: "You earned a reward!" },
     timerModalTitle: { punk: "⏰ TIME UP!", pg: "⏰ TIME'S UP!" },
     prizeNote: {
