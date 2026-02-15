@@ -1830,6 +1830,7 @@ document.addEventListener("DOMContentLoaded", () => {
     titleLine1: { punk: "DUMB shit", pg: "SILLY STUFF" },
     titleLine2: { punk: "I GOTta dO TODay", pg: "TO DO TODAY" },
     friendNote: { punk: "HI LIZZ", pg: "HI LIZZ! ✨" },
+    beanNote: { punk: "💙Bean Loves Ween!💙", pg: "💙Bean Loves Ween!💙" },
     completedHeading: { punk: "SHIT I DID:", pg: "COMPLETED:" },
     resetBtn: { punk: "🧨", pg: "🧨" },
     prizeLine1: { punk: "nice one", pg: "GREAT JOB" },
@@ -1947,16 +1948,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedPg = localStorage.getItem(PG_STORAGE_KEY);
   setPgMode(savedPg === "1");
 
-  // ===== EASTER EGG: reveal HI LIZZ in SHIT mode =====
+  // ===== EASTER EGGS =====
   let eggTimer = null;
   let titleTapCount = 0;
   let tapResetTimer = null;
+  let beanEggTimer = null;
+  let soundTapCount = 0;
+  let soundTapResetTimer = null;
 
   function revealLizzEgg() {
     document.body.classList.add("lizz-egg-on");
     if (eggTimer) clearTimeout(eggTimer);
     eggTimer = setTimeout(() => {
       document.body.classList.remove("lizz-egg-on");
+    }, 6000);
+  }
+
+  function revealBeanEgg() {
+    document.body.classList.add("bean-egg-on");
+    if (beanEggTimer) clearTimeout(beanEggTimer);
+    beanEggTimer = setTimeout(() => {
+      document.body.classList.remove("bean-egg-on");
     }, 6000);
   }
 
@@ -1970,6 +1982,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (titleTapCount >= 5) {
       titleTapCount = 0;
       revealLizzEgg();
+    }
+  });
+
+  document.getElementById("soundToggle")?.addEventListener("click", () => {
+    soundTapCount += 1;
+    if (soundTapResetTimer) clearTimeout(soundTapResetTimer);
+    soundTapResetTimer = setTimeout(() => {
+      soundTapCount = 0;
+    }, 1000);
+
+    if (soundTapCount >= 5) {
+      soundTapCount = 0;
+      revealBeanEgg();
     }
   });
 

@@ -4717,7 +4717,7 @@ body:not(.pg-mode) .task-delete {
   z-index: 50 !important;
 }
 
-/* Friend note in header: hidden by default, revealed by easter egg in both modes. */
+/* LIZZZZZZZ cute pop up Click title 5x */
 .friend-note {
   display: none;
   margin: 0 0 0.35rem;
@@ -4765,6 +4765,35 @@ body.lizz-egg-on:not(.pg-mode) .friend-note {
 body.lizz-egg-on.pg-mode .friend-note {
   display: inline-block;
   animation: lizzEggPop 0.2s ease-out;
+}
+
+.bean-note {
+  margin-top: -0.1rem;
+}
+
+.pg-mode .bean-note {
+  color: #114d9b;
+  border-color: #6eb8ff;
+  background: #eaf6ff;
+  box-shadow: 0 3px 10px rgba(17, 77, 155, 0.22);
+}
+
+body:not(.pg-mode) .bean-note {
+  font-family: var(--font-wrong), var(--font-stack);
+  color: #d7ecff;
+  background: #132043;
+  border-color: #070d1d;
+  box-shadow:
+    0 4px 0 #070d1d,
+    0 10px 18px rgba(0, 0, 0, 0.45);
+  text-shadow: 1px 1px 0 #070d1d;
+}
+
+body.bean-egg-on .bean-note {
+  display: inline-block;
+  animation:
+    lizzEggPop 0.2s ease-out,
+    lizzEggShake 0.7s ease-in-out 0.25s 2;
 }
 
 @keyframes lizzEggPop {
