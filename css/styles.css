@@ -4948,7 +4948,7 @@ body.bean-note-on .bean-note {
 
 .bean-heart {
   position: fixed;
-  z-index: 10002;
+  z-index: 10000;
   pointer-events: none;
   font-size: clamp(1.2rem, 3.2vw, 2rem);
   transform: translate(-50%, -50%);

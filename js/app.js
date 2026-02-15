@@ -575,7 +575,16 @@ function parseTaskValue(value) {
 function getIncompleteTasks(tabKey) {
   const all = TASKS_BY_TAB[tabKey] || [];
   const done = COMPLETED_TASKS[tabKey] || [];
-  return all.filter((t) => !done.includes(t));
+  const doneCounts = new Map();
+  done.forEach((t) => doneCounts.set(t, (doneCounts.get(t) || 0) + 1));
+  return all.filter((t) => {
+    const remainingDone = doneCounts.get(t) || 0;
+    if (remainingDone > 0) {
+      doneCounts.set(t, remainingDone - 1);
+      return false;
+    }
+    return true;
+  });
 }
 
 /* -------------------------------
@@ -1004,9 +1013,6 @@ function renderTasks(tabKey) {
     checkbox.addEventListener("change", (event) => {
       if (!event.target.checked) return;
       completeTask(tabKey, taskText);
-      if (/butthole/i.test(taskText)) {
-        revealBeanEgg();
-      }
     });
 
     // Delete button removes task
@@ -1025,9 +1031,7 @@ function renderTasks(tabKey) {
 
 function completeTask(tabKey, taskText) {
   if (!COMPLETED_TASKS[tabKey]) COMPLETED_TASKS[tabKey] = [];
-  if (!COMPLETED_TASKS[tabKey].includes(taskText)) {
-    COMPLETED_TASKS[tabKey].push(taskText);
-  }
+  COMPLETED_TASKS[tabKey].push(taskText);
 
   const value = makeTaskValue(tabKey, taskText);
   if (selectedFocusValue === value) selectedFocusValue = "";
@@ -1090,9 +1094,7 @@ function wireAddTaskForm() {
 
     if (!TASKS_BY_TAB[activeTabKey]) TASKS_BY_TAB[activeTabKey] = [];
 
-    if (!TASKS_BY_TAB[activeTabKey].includes(raw)) {
-      TASKS_BY_TAB[activeTabKey].push(raw);
-    }
+    TASKS_BY_TAB[activeTabKey].push(raw);
 
     // Adding a task can make a previously-complete tab incomplete again
     // Sync last-known completion so it can be celebrated again once re-finished
@@ -1824,6 +1826,12 @@ document.addEventListener("DOMContentLoaded", () => {
       bumpStreak();
       const countEl = document.getElementById("streakCount");
       if (countEl) countEl.textContent = streak;
+
+      const taskText =
+        e.target.closest(".task")?.querySelector(".task-text")?.textContent || "";
+      if (/butthole/i.test(taskText)) {
+        revealBeanEgg();
+      }
     }
   });
 
@@ -2063,8 +2071,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function launchBeanLoveBurst() {
     const particles = ["💙", "💖", "🩵", "💘", "🌈", "✨", "💫"];
-    const originX = window.innerWidth / 2;
-    const originY = window.innerHeight * 0.5;
+    const beanNote = document.getElementById("beanNote");
+    const rect = beanNote?.getBoundingClientRect();
+    const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const originY = rect ? rect.top + rect.height / 2 : window.innerHeight * 0.5;
 
     for (let i = 0; i < 34; i++) {
       const heart = document.createElement("span");
