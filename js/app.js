@@ -1957,6 +1957,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let soundTapResetTimer = null;
 
   function revealLizzEgg() {
+    document.body.classList.remove("bean-egg-on");
+    if (beanEggTimer) clearTimeout(beanEggTimer);
     document.body.classList.add("lizz-egg-on");
     if (eggTimer) clearTimeout(eggTimer);
     eggTimer = setTimeout(() => {
@@ -1965,6 +1967,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function revealBeanEgg() {
+    document.body.classList.remove("lizz-egg-on");
+    if (eggTimer) clearTimeout(eggTimer);
     document.body.classList.add("bean-egg-on");
     if (beanEggTimer) clearTimeout(beanEggTimer);
     beanEggTimer = setTimeout(() => {

@@ -4755,14 +4755,14 @@ body:not(.pg-mode) .friend-note {
   transform: rotate(-4deg);
 }
 
-body.lizz-egg-on:not(.pg-mode) .friend-note {
+body.lizz-egg-on:not(.pg-mode) .lizz-note {
   display: inline-block;
   animation:
     lizzEggPop 0.2s ease-out,
     lizzEggShake 0.7s ease-in-out 0.25s 2;
 }
 
-body.lizz-egg-on.pg-mode .friend-note {
+body.lizz-egg-on.pg-mode .lizz-note {
   display: inline-block;
   animation: lizzEggPop 0.2s ease-out;
 }
@@ -4781,7 +4781,7 @@ body.lizz-egg-on.pg-mode .friend-note {
 body:not(.pg-mode) .bean-note {
   font-family: var(--font-wrong), var(--font-stack);
   color: #d7ecff;
-  background: #132043;
+  background-color: var(--accent-red);
   border-color: #070d1d;
   box-shadow:
     0 4px 0 #070d1d,
