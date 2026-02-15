@@ -1953,26 +1953,56 @@ document.addEventListener("DOMContentLoaded", () => {
   let titleTapCount = 0;
   let tapResetTimer = null;
   let beanEggTimer = null;
-  let soundTapCount = 0;
-  let soundTapResetTimer = null;
+  let beanPressTimer = null;
+  let beanLongPressTriggered = false;
+  const BEAN_LONG_PRESS_MS = 850;
+  let activeEgg = null;
 
   function revealLizzEgg() {
+    if (activeEgg && activeEgg !== "lizz") return;
+    activeEgg = "lizz";
     document.body.classList.remove("bean-egg-on");
     if (beanEggTimer) clearTimeout(beanEggTimer);
     document.body.classList.add("lizz-egg-on");
     if (eggTimer) clearTimeout(eggTimer);
     eggTimer = setTimeout(() => {
       document.body.classList.remove("lizz-egg-on");
+      activeEgg = null;
     }, 6000);
   }
 
-  function revealBeanEgg() {
+  function launchBeanHearts(anchorEl) {
+    const hearts = ["💙", "💖", "💫", "✨", "💙", "🩵"];
+    const rect = anchorEl?.getBoundingClientRect();
+    const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const originY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+
+    for (let i = 0; i < 12; i++) {
+      const heart = document.createElement("span");
+      heart.className = "bean-heart";
+      heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.style.left = `${originX}px`;
+      heart.style.top = `${originY}px`;
+      heart.style.setProperty("--dx", `${(Math.random() - 0.5) * 180}px`);
+      heart.style.setProperty("--dy", `${-(80 + Math.random() * 120)}px`);
+      heart.style.setProperty("--rot", `${(Math.random() - 0.5) * 50}deg`);
+      heart.style.animationDelay = `${Math.random() * 90}ms`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1200);
+    }
+  }
+
+  function revealBeanEgg(anchorEl) {
+    if (activeEgg && activeEgg !== "bean") return;
+    activeEgg = "bean";
     document.body.classList.remove("lizz-egg-on");
     if (eggTimer) clearTimeout(eggTimer);
     document.body.classList.add("bean-egg-on");
+    launchBeanHearts(anchorEl);
     if (beanEggTimer) clearTimeout(beanEggTimer);
     beanEggTimer = setTimeout(() => {
       document.body.classList.remove("bean-egg-on");
+      activeEgg = null;
     }, 6000);
   }
 
@@ -1989,18 +2019,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document.getElementById("soundToggle")?.addEventListener("click", () => {
-    soundTapCount += 1;
-    if (soundTapResetTimer) clearTimeout(soundTapResetTimer);
-    soundTapResetTimer = setTimeout(() => {
-      soundTapCount = 0;
-    }, 1000);
+  const soundToggleBtn = document.getElementById("soundToggle");
+  if (soundToggleBtn) {
+    const clearBeanPressTimer = () => {
+      if (!beanPressTimer) return;
+      clearTimeout(beanPressTimer);
+      beanPressTimer = null;
+    };
 
-    if (soundTapCount >= 5) {
-      soundTapCount = 0;
-      revealBeanEgg();
-    }
-  });
+    soundToggleBtn.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      beanLongPressTriggered = false;
+      clearBeanPressTimer();
+      beanPressTimer = setTimeout(() => {
+        beanPressTimer = null;
+        beanLongPressTriggered = true;
+        revealBeanEgg(soundToggleBtn);
+      }, BEAN_LONG_PRESS_MS);
+    });
+
+    ["pointerup", "pointerleave", "pointercancel"].forEach((evt) => {
+      soundToggleBtn.addEventListener(evt, clearBeanPressTimer);
+    });
+
+    // Prevent normal click toggle when long-press triggered the easter egg.
+    soundToggleBtn.addEventListener(
+      "click",
+      (e) => {
+        if (!beanLongPressTriggered) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        beanLongPressTriggered = false;
+      },
+      true,
+    );
+  }
 
   // ===== TASK REORDERING (for drag & drop) =====
   document.addEventListener("task:reorder", (event) => {
