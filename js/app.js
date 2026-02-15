@@ -1829,6 +1829,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const TEXT_MAP = {
     titleLine1: { punk: "DUMB shit", pg: "SILLY STUFF" },
     titleLine2: { punk: "I GOTta dO TODay", pg: "TO DO TODAY" },
+    friendNote: { punk: "HI LIZZ", pg: "HI LIZZ! ✨" },
     completedHeading: { punk: "SHIT I DID:", pg: "COMPLETED:" },
     resetBtn: { punk: "🧨", pg: "🧨" },
     prizeLine1: { punk: "nice one", pg: "GREAT JOB" },
@@ -1945,6 +1946,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // Restore saved preference (always call setPgMode to set toggle state)
   const savedPg = localStorage.getItem(PG_STORAGE_KEY);
   setPgMode(savedPg === "1");
+
+  // ===== EASTER EGG: reveal HI LIZZ in SHIT mode =====
+  let eggTimer = null;
+  let titleTapCount = 0;
+  let tapResetTimer = null;
+
+  function revealLizzEgg() {
+    document.body.classList.add("lizz-egg-on");
+    if (eggTimer) clearTimeout(eggTimer);
+    eggTimer = setTimeout(() => {
+      document.body.classList.remove("lizz-egg-on");
+    }, 6000);
+  }
+
+  document.getElementById("titleLine1")?.addEventListener("click", () => {
+    titleTapCount += 1;
+    if (tapResetTimer) clearTimeout(tapResetTimer);
+    tapResetTimer = setTimeout(() => {
+      titleTapCount = 0;
+    }, 900);
+
+    if (titleTapCount >= 5) {
+      titleTapCount = 0;
+      revealLizzEgg();
+    }
+  });
 
   // ===== TASK REORDERING (for drag & drop) =====
   document.addEventListener("task:reorder", (event) => {

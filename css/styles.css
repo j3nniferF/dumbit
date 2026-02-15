@@ -4717,9 +4717,9 @@ body:not(.pg-mode) .task-delete {
   z-index: 50 !important;
 }
 
-/* Friend note in header: visible only in PG mode. */
+/* Friend note in header: hidden by default, revealed by easter egg in both modes. */
 .friend-note {
-  display: inline-block;
+  display: none;
   margin: 0 0 0.35rem;
   padding: 0.28rem 0.7rem;
   border-radius: 999px;
@@ -4731,4 +4731,62 @@ body:not(.pg-mode) .task-delete {
   border: 2px solid #8dc4ff;
   box-shadow: 0 3px 10px rgba(21, 103, 184, 0.2);
   transform: rotate(-2deg);
+}
+
+.pg-mode .friend-note {
+  color: #0f4da8;
+  background: #ffffffd9;
+  border: 2px solid #8dc4ff;
+  box-shadow: 0 3px 10px rgba(21, 103, 184, 0.2);
+  transform: rotate(-2deg);
+}
+
+body:not(.pg-mode) .friend-note {
+  font-family: var(--font-wrong), var(--font-stack);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f6ebe0;
+  background: #7d1111;
+  border: 2px solid #120808;
+  box-shadow:
+    0 4px 0 #120808,
+    0 10px 18px rgba(0, 0, 0, 0.45);
+  text-shadow: 1px 1px 0 #120808;
+  transform: rotate(-4deg);
+}
+
+body.lizz-egg-on:not(.pg-mode) .friend-note {
+  display: inline-block;
+  animation:
+    lizzEggPop 0.2s ease-out,
+    lizzEggShake 0.7s ease-in-out 0.25s 2;
+}
+
+body.lizz-egg-on.pg-mode .friend-note {
+  display: inline-block;
+  animation: lizzEggPop 0.2s ease-out;
+}
+
+@keyframes lizzEggPop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) rotate(-8deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(-4deg) scale(1);
+  }
+}
+
+@keyframes lizzEggShake {
+  0%,
+  100% {
+    transform: rotate(-4deg) translateX(0);
+  }
+  25% {
+    transform: rotate(-3deg) translateX(-2px);
+  }
+  75% {
+    transform: rotate(-5deg) translateX(2px);
+  }
 }
