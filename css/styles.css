@@ -3438,7 +3438,7 @@ body.pg-mode {
 }
 
 .modal--howto .howto-section li {
-  font-family: var(--font-stack);
+  font-family: var(--font-);
   font-size: 0.95rem;
   line-height: 1.5;
   margin-bottom: 0.4rem;
