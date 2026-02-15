@@ -1038,6 +1038,11 @@ function completeTask(tabKey, taskText) {
 
   // ✅ celebration after UI updates
   celebrateIfTabJustCompleted(tabKey);
+
+  // Notify easter-egg listeners of completed task text.
+  document.dispatchEvent(
+    new CustomEvent("task:completed", { detail: { tabKey, taskText } }),
+  );
 }
 
 function deleteTask(tabKey, taskText) {
@@ -1953,10 +1958,87 @@ document.addEventListener("DOMContentLoaded", () => {
   let titleTapCount = 0;
   let tapResetTimer = null;
   let beanEggTimer = null;
-  let beanPressTimer = null;
-  let beanLongPressTriggered = false;
-  const BEAN_LONG_PRESS_MS = 850;
+  let beanNoteTimer = null;
+  let beanBurstInterval = null;
+  let beanBurstStopTimer = null;
   let activeEgg = null;
+
+  function isSoundEnabled() {
+    const saved = localStorage.getItem("dsigdt_sound_enabled");
+    return saved === null || saved === "1";
+  }
+
+  function getAudioCtx() {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return null;
+    return window._clickAudioCtx || (window._clickAudioCtx = new AudioCtx());
+  }
+
+  function playBeanSplatSound() {
+    if (!isSoundEnabled()) return;
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    const noise = ctx.createBufferSource();
+    const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.16, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * 0.45;
+    noise.buffer = buffer;
+
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = "lowpass";
+    noiseFilter.frequency.setValueAtTime(820, now);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.001, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.34, now + 0.018);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+    const thud = ctx.createOscillator();
+    thud.type = "triangle";
+    thud.frequency.setValueAtTime(112, now);
+    thud.frequency.exponentialRampToValueAtTime(62, now + 0.16);
+
+    const thudGain = ctx.createGain();
+    thudGain.gain.setValueAtTime(0.001, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.24, now + 0.02);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+
+    noise.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    thud.connect(thudGain);
+    thudGain.connect(ctx.destination);
+
+    noise.start(now);
+    noise.stop(now + 0.2);
+    thud.start(now);
+    thud.stop(now + 0.18);
+  }
+
+  function playBeanCuteSound() {
+    if (!isSoundEnabled()) return;
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const notes = [659, 784, 988];
+
+    notes.forEach((freq, i) => {
+      const t = now + i * 0.11;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.exponentialRampToValueAtTime(0.17, t + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.17);
+    });
+  }
 
   function revealLizzEgg() {
     if (activeEgg && activeEgg !== "lizz") return;
@@ -1971,39 +2053,70 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 6000);
   }
 
-  function launchBeanHearts(anchorEl) {
-    const hearts = ["💙", "💖", "💫", "✨", "💙", "🩵"];
-    const rect = anchorEl?.getBoundingClientRect();
-    const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-    const originY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+  function launchBeanLoveBurst() {
+    const particles = ["💙", "💖", "🩵", "💘", "🌈", "✨", "💫"];
+    const originX = window.innerWidth / 2;
+    const originY = window.innerHeight * 0.5;
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 34; i++) {
       const heart = document.createElement("span");
       heart.className = "bean-heart";
-      heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.textContent = particles[Math.floor(Math.random() * particles.length)];
       heart.style.left = `${originX}px`;
       heart.style.top = `${originY}px`;
-      heart.style.setProperty("--dx", `${(Math.random() - 0.5) * 180}px`);
-      heart.style.setProperty("--dy", `${-(80 + Math.random() * 120)}px`);
-      heart.style.setProperty("--rot", `${(Math.random() - 0.5) * 50}deg`);
-      heart.style.animationDelay = `${Math.random() * 90}ms`;
+      heart.style.setProperty("--dx", `${(Math.random() - 0.5) * 460}px`);
+      heart.style.setProperty("--dy", `${(Math.random() - 0.5) * 340}px`);
+      heart.style.setProperty("--rot", `${(Math.random() - 0.5) * 90}deg`);
+      heart.style.animationDelay = `${Math.random() * 120}ms`;
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 1200);
+      setTimeout(() => heart.remove(), 2200);
     }
   }
 
-  function revealBeanEgg(anchorEl) {
+  function launchBeanEggSplat() {
+    const splat = document.createElement("div");
+    splat.className = "bean-egg-splat";
+    splat.innerHTML =
+      '<span class="bean-egg-splat__emoji">🥚</span><span class="bean-egg-splat__text">SPLAT!</span>';
+    document.body.appendChild(splat);
+    setTimeout(() => splat.remove(), 2300);
+  }
+
+  function revealBeanEgg() {
     if (activeEgg && activeEgg !== "bean") return;
     activeEgg = "bean";
     document.body.classList.remove("lizz-egg-on");
     if (eggTimer) clearTimeout(eggTimer);
+    document.body.classList.remove("bean-note-on");
+    if (beanNoteTimer) clearTimeout(beanNoteTimer);
+    if (beanBurstInterval) clearInterval(beanBurstInterval);
+    if (beanBurstStopTimer) clearTimeout(beanBurstStopTimer);
     document.body.classList.add("bean-egg-on");
-    launchBeanHearts(anchorEl);
+    launchBeanEggSplat();
+    playBeanSplatSound();
+
+    beanNoteTimer = setTimeout(() => {
+      document.body.classList.add("bean-note-on");
+      playBeanCuteSound();
+      launchBeanLoveBurst();
+      beanBurstInterval = setInterval(launchBeanLoveBurst, 520);
+      beanBurstStopTimer = setTimeout(() => {
+        if (beanBurstInterval) clearInterval(beanBurstInterval);
+        beanBurstInterval = null;
+        beanBurstStopTimer = null;
+      }, 2000);
+    }, 1150);
+
     if (beanEggTimer) clearTimeout(beanEggTimer);
     beanEggTimer = setTimeout(() => {
       document.body.classList.remove("bean-egg-on");
+      document.body.classList.remove("bean-note-on");
+      if (beanBurstInterval) clearInterval(beanBurstInterval);
+      if (beanBurstStopTimer) clearTimeout(beanBurstStopTimer);
+      beanBurstInterval = null;
+      beanBurstStopTimer = null;
       activeEgg = null;
-    }, 6000);
+    }, 7200);
   }
 
   document.getElementById("titleLine1")?.addEventListener("click", () => {
@@ -2019,41 +2132,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const soundToggleBtn = document.getElementById("soundToggle");
-  if (soundToggleBtn) {
-    const clearBeanPressTimer = () => {
-      if (!beanPressTimer) return;
-      clearTimeout(beanPressTimer);
-      beanPressTimer = null;
-    };
-
-    soundToggleBtn.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "mouse" && e.button !== 0) return;
-      beanLongPressTriggered = false;
-      clearBeanPressTimer();
-      beanPressTimer = setTimeout(() => {
-        beanPressTimer = null;
-        beanLongPressTriggered = true;
-        revealBeanEgg(soundToggleBtn);
-      }, BEAN_LONG_PRESS_MS);
-    });
-
-    ["pointerup", "pointerleave", "pointercancel"].forEach((evt) => {
-      soundToggleBtn.addEventListener(evt, clearBeanPressTimer);
-    });
-
-    // Prevent normal click toggle when long-press triggered the easter egg.
-    soundToggleBtn.addEventListener(
-      "click",
-      (e) => {
-        if (!beanLongPressTriggered) return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        beanLongPressTriggered = false;
-      },
-      true,
-    );
-  }
+  document.addEventListener("task:completed", (e) => {
+    const taskText = String(e.detail?.taskText || "");
+    if (!/^\s*butthole\s*$/i.test(taskText)) return;
+    revealBeanEgg();
+  });
 
   // ===== TASK REORDERING (for drag & drop) =====
   document.addEventListener("task:reorder", (event) => {
