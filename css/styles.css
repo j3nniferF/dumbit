@@ -4716,3 +4716,19 @@ body:not(.pg-mode) .task-delete {
   display: flex !important;
   z-index: 50 !important;
 }
+
+/* Friend note in header: visible only in PG mode. */
+.friend-note {
+  display: inline-block;
+  margin: 0 0 0.35rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  font-size: clamp(0.95rem, 2.1vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #0f4da8;
+  background: #ffffffd9;
+  border: 2px solid #8dc4ff;
+  box-shadow: 0 3px 10px rgba(21, 103, 184, 0.2);
+  transform: rotate(-2deg);
+}
