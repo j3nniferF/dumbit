@@ -1004,6 +1004,9 @@ function renderTasks(tabKey) {
     checkbox.addEventListener("change", (event) => {
       if (!event.target.checked) return;
       completeTask(tabKey, taskText);
+      if (/butthole/i.test(taskText)) {
+        revealBeanEgg();
+      }
     });
 
     // Delete button removes task
@@ -1038,11 +1041,6 @@ function completeTask(tabKey, taskText) {
 
   // ✅ celebration after UI updates
   celebrateIfTabJustCompleted(tabKey);
-
-  // Notify easter-egg listeners of completed task text.
-  document.dispatchEvent(
-    new CustomEvent("task:completed", { detail: { tabKey, taskText } }),
-  );
 }
 
 function deleteTask(tabKey, taskText) {
@@ -1975,69 +1973,79 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function playBeanSplatSound() {
-    if (!isSoundEnabled()) return;
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    const now = ctx.currentTime;
+    try {
+      if (!isSoundEnabled()) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
 
-    const noise = ctx.createBufferSource();
-    const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.16, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * 0.45;
-    noise.buffer = buffer;
+      const noise = ctx.createBufferSource();
+      const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.16, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.45;
+      }
+      noise.buffer = buffer;
 
-    const noiseFilter = ctx.createBiquadFilter();
-    noiseFilter.type = "lowpass";
-    noiseFilter.frequency.setValueAtTime(820, now);
+      const noiseFilter = ctx.createBiquadFilter();
+      noiseFilter.type = "lowpass";
+      noiseFilter.frequency.setValueAtTime(820, now);
 
-    const noiseGain = ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.001, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.34, now + 0.018);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.001, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.34, now + 0.018);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
 
-    const thud = ctx.createOscillator();
-    thud.type = "triangle";
-    thud.frequency.setValueAtTime(112, now);
-    thud.frequency.exponentialRampToValueAtTime(62, now + 0.16);
+      const thud = ctx.createOscillator();
+      thud.type = "triangle";
+      thud.frequency.setValueAtTime(112, now);
+      thud.frequency.exponentialRampToValueAtTime(62, now + 0.16);
 
-    const thudGain = ctx.createGain();
-    thudGain.gain.setValueAtTime(0.001, now);
-    thudGain.gain.exponentialRampToValueAtTime(0.24, now + 0.02);
-    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+      const thudGain = ctx.createGain();
+      thudGain.gain.setValueAtTime(0.001, now);
+      thudGain.gain.exponentialRampToValueAtTime(0.24, now + 0.02);
+      thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
 
-    noise.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(ctx.destination);
-    thud.connect(thudGain);
-    thudGain.connect(ctx.destination);
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+      thud.connect(thudGain);
+      thudGain.connect(ctx.destination);
 
-    noise.start(now);
-    noise.stop(now + 0.2);
-    thud.start(now);
-    thud.stop(now + 0.18);
+      noise.start(now);
+      noise.stop(now + 0.2);
+      thud.start(now);
+      thud.stop(now + 0.18);
+    } catch (_) {
+      // Keep easter egg visuals running even if audio fails.
+    }
   }
 
   function playBeanCuteSound() {
-    if (!isSoundEnabled()) return;
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    const now = ctx.currentTime;
-    const notes = [659, 784, 988];
+    try {
+      if (!isSoundEnabled()) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const notes = [659, 784, 988];
 
-    notes.forEach((freq, i) => {
-      const t = now + i * 0.11;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, t);
-      gain.gain.setValueAtTime(0.001, t);
-      gain.gain.exponentialRampToValueAtTime(0.17, t + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t + 0.17);
-    });
+      notes.forEach((freq, i) => {
+        const t = now + i * 0.11;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.exponentialRampToValueAtTime(0.17, t + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.17);
+      });
+    } catch (_) {
+      // Keep easter egg visuals running even if audio fails.
+    }
   }
 
   function revealLizzEgg() {
@@ -2130,12 +2138,6 @@ document.addEventListener("DOMContentLoaded", () => {
       titleTapCount = 0;
       revealLizzEgg();
     }
-  });
-
-  document.addEventListener("task:completed", (e) => {
-    const taskText = String(e.detail?.taskText || "");
-    if (!/^\s*butthole\s*$/i.test(taskText)) return;
-    revealBeanEgg();
   });
 
   // ===== TASK REORDERING (for drag & drop) =====
