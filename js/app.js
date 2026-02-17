@@ -1086,10 +1086,29 @@ function wireAddTaskForm() {
     event.preventDefault();
 
     const raw = input.value.trim();
+    
+    // Enhanced validation
     if (!raw) {
       if (error) error.textContent = "Type something first.";
       return;
     }
+    
+    if (raw.length < 2) {
+      if (error) error.textContent = "Task must be at least 2 characters.";
+      return;
+    }
+    
+    if (raw.length > 200) {
+      if (error) error.textContent = "Task is too long (max 200 characters).";
+      return;
+    }
+    
+    // Check for duplicate tasks in current tab
+    if (TASKS_BY_TAB[activeTabKey] && TASKS_BY_TAB[activeTabKey].includes(raw)) {
+      if (error) error.textContent = "This task already exists in this list.";
+      return;
+    }
+    
     if (error) error.textContent = "";
 
     if (!TASKS_BY_TAB[activeTabKey]) TASKS_BY_TAB[activeTabKey] = [];

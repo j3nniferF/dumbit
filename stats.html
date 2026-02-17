@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Space Stats - dUMb shit I GotTA Do TODay</title>
+
+    <!-- No-file favicon -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%220.9em%22%20font-size%3D%2290%22%3E%E2%9C%85%3C/text%3E%3C/svg%3E"
+    />
+
+    <!-- Fun display font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/stats.css" />
+  </head>
+
+  <body>
+    <div class="app" id="app">
+      <div class="layout stats-layout" id="layout">
+        <!-- HEADER -->
+        <header class="header" id="header">
+          <h1 class="title" role="banner" aria-label="site title">
+            <span class="title-line">SPACE STATS</span>
+            <span class="title-line title-line--small">Daily Cosmic Inspiration</span>
+          </h1>
+          <nav class="page-nav">
+            <a href="./index.html" class="page-nav__link">← BACK TO TASKS</a>
+          </nav>
+        </header>
+
+        <main class="main stats-main" id="statsMain">
+          <!-- NASA APOD Section -->
+          <section class="card card--stats" id="apodCard" aria-labelledby="apodHeading">
+            <h2 class="card-title" id="apodHeading">NASA ASTRONOMY PICTURE OF THE DAY</h2>
+            
+            <div class="apod-loading" id="apodLoading">
+              <div class="loading-spinner">🌌</div>
+              <p>Loading cosmic awesomeness...</p>
+            </div>
+
+            <div class="apod-error is-hidden" id="apodError">
+              <p class="error-message">❌ Failed to load space image. The cosmos is shy today.</p>
+              <button class="btn" id="retryBtn" type="button">TRY AGAIN</button>
+            </div>
+
+            <div class="apod-content is-hidden" id="apodContent">
+              <div class="apod-date" id="apodDate"></div>
+              <h3 class="apod-title" id="apodTitle"></h3>
+              
+              <div class="apod-media-container" id="apodMediaContainer">
+                <img class="apod-image" id="apodImage" alt="Astronomy Picture" />
+                <iframe class="apod-video is-hidden" id="apodVideo" frameborder="0" allowfullscreen></iframe>
+              </div>
+
+              <div class="apod-explanation" id="apodExplanation"></div>
+              
+              <div class="apod-copyright" id="apodCopyright"></div>
+
+              <div class="apod-actions">
+                <button class="btn btn--primary" id="prevDayBtn" type="button">← PREVIOUS DAY</button>
+                <button class="btn btn--primary" id="nextDayBtn" type="button">NEXT DAY →</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Task Stats Section -->
+          <section class="card card--stats" id="statsCard" aria-labelledby="statsHeading">
+            <h2 class="card-title" id="statsHeading">YOUR TASK STATS</h2>
+            
+            <div class="stats-grid" id="statsGrid">
+              <div class="stat-box">
+                <div class="stat-box__value" id="totalTasksValue">0</div>
+                <div class="stat-box__label">Total Tasks</div>
+              </div>
+              
+              <div class="stat-box">
+                <div class="stat-box__value" id="completedTasksValue">0</div>
+                <div class="stat-box__label">Completed</div>
+              </div>
+              
+              <div class="stat-box">
+                <div class="stat-box__value" id="remainingTasksValue">0</div>
+                <div class="stat-box__label">Remaining</div>
+              </div>
+              
+              <div class="stat-box">
+                <div class="stat-box__value" id="completionRateValue">0%</div>
+                <div class="stat-box__label">Completion Rate</div>
+              </div>
+            </div>
+
+            <div class="countdown-section" id="countdownSection">
+              <h3 class="countdown-title">Days Until Task Deadline</h3>
+              <div class="countdown-input-group">
+                <label for="deadlineInput" class="countdown-label">Set a deadline:</label>
+                <input type="date" id="deadlineInput" class="countdown-date-input" />
+                <button class="btn" id="setDeadlineBtn" type="button">SET DEADLINE</button>
+              </div>
+              <div class="countdown-display is-hidden" id="countdownDisplay">
+                <div class="countdown-value" id="countdownValue">0</div>
+                <div class="countdown-label">Days Remaining</div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="./js/stats.js" defer></script>
+  </body>
+</html>

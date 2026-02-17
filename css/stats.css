@@ -1,0 +1,309 @@
+/* =====================================================
+   STATS PAGE SPECIFIC STYLES
+   ===================================================== */
+
+.stats-layout {
+  min-height: 100vh;
+}
+
+.stats-main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-nav {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.page-nav__link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.page-nav__link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.card--stats {
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* APOD Styles */
+.apod-loading {
+  text-align: center;
+  padding: 3rem;
+}
+
+.loading-spinner {
+  font-size: 4rem;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.apod-error {
+  text-align: center;
+  padding: 2rem;
+  color: #d32f2f;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.apod-content {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.apod-date {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.apod-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-family: 'Bangers', cursive;
+  text-transform: uppercase;
+}
+
+.apod-media-container {
+  margin: 2rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.apod-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.apod-video {
+  width: 100%;
+  height: 500px;
+  display: block;
+}
+
+.apod-explanation {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.apod-copyright {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+.apod-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.stat-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-5px);
+}
+
+.stat-box__value {
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: 'Bangers', cursive;
+  margin-bottom: 0.5rem;
+}
+
+.stat-box__label {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+/* Countdown Section */
+.countdown-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.countdown-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-family: 'Bangers', cursive;
+  text-transform: uppercase;
+}
+
+.countdown-input-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.countdown-label {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.countdown-date-input {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  min-width: 200px;
+}
+
+.countdown-display {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 12px;
+  color: white;
+  animation: fadeIn 0.5s ease;
+}
+
+.countdown-value {
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: 'Bangers', cursive;
+  margin-bottom: 0.5rem;
+}
+
+.countdown-label {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stats-main {
+    padding: 1rem;
+  }
+
+  .card--stats {
+    padding: 1.5rem;
+  }
+
+  .apod-title {
+    font-size: 1.5rem;
+  }
+
+  .apod-video {
+    height: 300px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-box__value {
+    font-size: 2rem;
+  }
+
+  .countdown-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .countdown-date-input {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .apod-actions {
+    flex-direction: column;
+  }
+
+  .apod-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .apod-title {
+    font-size: 1.2rem;
+  }
+
+  .apod-explanation {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .countdown-value {
+    font-size: 3rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
