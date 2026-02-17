@@ -244,6 +244,16 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .stats-main {
+    padding: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .stats-main {
     padding: 1rem;
@@ -264,6 +274,10 @@
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
+  }
+
+  .stat-box {
+    padding: 1.5rem;
   }
 
   .stat-box__value {
@@ -287,6 +301,11 @@
   .apod-actions .btn {
     width: 100%;
   }
+
+  .page-nav__link {
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -305,5 +324,26 @@
 
   .stats-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .card--stats {
+    padding: 1rem;
+  }
+
+  .stat-box {
+    padding: 1rem;
+  }
+
+  .stat-box__value {
+    font-size: 1.75rem;
+  }
+
+  .page-nav__link {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .apod-date {
+    font-size: 0.85rem;
   }
 }
