@@ -50,7 +50,7 @@ body.pg-mode {
   --font-punk2: "Punk2"; /* prize modal subtitle */
   --font-song: "Song"; /* existing body fallback */
   --font-wrong: "Wrong"; /* label/display fallback */
-  --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-stack: "Helvetica Neue Thin", Helvetica, Arial, sans-serif;
 
   /* choose a readable UI body font that won't kill the vibe */
   --font-body: var(--font-song), var(--font-stack);
@@ -398,7 +398,6 @@ body::before {
   right: -8px;
   bottom: -14px;
   height: 10px;
-
   background: var(--accent-red);
   border-radius: 999px;
 
@@ -2512,13 +2511,14 @@ body:not(.pg-mode) .pg-switch {
 /* ===== PG MODE THEME OVERRIDES ===== */
 body.pg-mode {
   /* Use unicorn texture background for PG mode - tileable for mobile and desktop */
-  background: #f8f9fa url("../assets/textures/pretty.png") center/cover
-    no-repeat !important;
+  background: #f8f9fa url("../assets/textures/pretty.png") center/cover;
+  /* no-repeat !important; */
 }
 
 /* PG mode: Use Helvetica for EVERYTHING */
 .pg-mode * {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-weight: 100 !important;
 }
 
 /* PG mode: Update switch label color */
@@ -3003,7 +3003,7 @@ body.pg-mode {
 /* PG mode: remove drop-shadow/filter on title */
 .pg-mode .title-line {
   color: #2563eb !important;
-  filter: none !important;
+  /* filter: none !important; */
 }
 
 /* PG mode: ensure completed subheading uses readable font */
@@ -3485,7 +3485,7 @@ body.pg-mode {
 
 /* PG mode: tighter light backgrounds for title/subtitle area, switch, and streak. */
 .pg-mode .title-line {
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: rgb(255, 255, 255) !important;
   border: 1px solid rgba(37, 99, 235, 0.24) !important;
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.14) !important;
   padding: 6px 12px !important;
@@ -3496,7 +3496,7 @@ body.pg-mode {
 }
 
 .pg-mode .pg-switch {
-  background: rgba(255, 255, 255, 0.92);
+  background: #ffffff;
   border: 1px solid rgba(37, 99, 235, 0.24);
   border-radius: 999px;
   padding: 6px 10px;
@@ -4004,8 +4004,8 @@ body:not(.pg-mode) .completed-list li span {
 /* Final mode cleanup */
 /* PG mode background: pretty texture, tiled, static/fixed like SHIT mode. */
 body.pg-mode {
-  background: #f8f9fa url("../assets/textures/pretty.png") center/360px repeat
-    fixed !important;
+  background: #f8f9fa url("../assets/textures/pretty.png") center/360px repeat;
+  /* fixed !important; */
 }
 
 /* Remove card borders in both modes. */
@@ -4147,7 +4147,7 @@ body:not(.pg-mode) .tab {
 
 .completed-list li,
 .completed-list li span {
-  font-weight: 400 !important;
+  font-weight: 300 !important;
 }
 
 @media (max-width: 900px) {
@@ -4179,10 +4179,10 @@ body:not(.pg-mode) .tab {
     display: flex !important;
     flex-wrap: wrap;
     justify-content: center;
-    width: min(100%, 920px) !important;
+    width: min(80%, 800px) !important;
     padding: 8px 14px !important;
     margin: 8px auto 14px !important;
-    gap: 8px !important;
+    gap: 15px !important;
   }
 
   .tab {
@@ -4570,7 +4570,7 @@ body:not(.pg-mode) .task-delete:hover {
   background: #2563eb !important;
   border-color: #1d4ed8 !important;
   color: #fff !important;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-family: "Helvetica Neue Thin", Helvetica, Arial, sans-serif !important;
 }
 
 .pg-mode .task-add-btn:hover,
@@ -4972,4 +4972,19 @@ body.bean-note-on .bean-note {
       )
       scale(1.32) rotate(var(--rot, 0deg));
   }
+}
+
+/* Final PG typography lock: keep all PG text in thin Helvetica. */
+body.pg-mode,
+body.pg-mode * {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-weight: 100 !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* PG mode: make main titles a bit bolder */
+body.pg-mode .title,
+body.pg-mode .title-line body.pg-mode,
+body.pg-mode * {
+  font-weight: 300 !important; /* try 300, 400, or 500 */
 }
