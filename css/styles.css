@@ -2548,16 +2548,21 @@ body.pg-mode {
 }
 
 .pg-mode .tabs {
-  background: #f5f5f5 !important;
-  border-radius: 8px;
-  border: 1px solid #ddd !important;
+  padding: 6px 10px !important;
+  margin: 10px auto 18px !important;
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: 820px;
+  gap: 10px !important;
+  border-radius: 40px !important;
+  margin: 12px auto 18px !important;
 }
 
 .pg-mode .tab {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   color: #555 !important;
   letter-spacing: 0.5px !important;
-  font-size: clamp(0.85rem, 2vw, 1.1rem) !important;
+  font-size: clamp(0.9rem, 4vw, 6.1rem) !important;
 }
 
 .pg-mode .tab::before {
@@ -2571,19 +2576,63 @@ body.pg-mode {
 .pg-mode .tab--active::after {
   background: #2563eb !important;
 }
-
+/* fix  fix */
+.pg-mode .tabs,
+.pg-mode .pg-switch,
+.pg-mode div .streak-badge,
 .pg-mode .card--tasks,
 .pg-mode .card--completed {
-  background: #ffffff !important;
-  background-image: none !important;
   border: 1px solid #e0e0e0 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-  border-radius: 12px !important;
+  border-radius: 32px !important;
   /* Remove torn edge effect and add sparkly border */
   clip-path: none !important;
   position: relative;
   /* Add animated sparkly border effect */
-  border: 2px solid transparent !important;
+  border: 3px solid transparent !important;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(
+        90deg,
+        #2563eb 0%,
+        #60a5fa 25%,
+        #f59e0b 50%,
+        #f472b6 75%,
+        #2563eb 100%
+      )
+      border-box !important;
+  animation: sparkleRotate 3s linear infinite;
+}
+
+.pg-mode .tabs,
+.pg-mode .pg-switch,
+.pg-mode div .streak-badge,
+.pg-mode .card--tasks,
+.pg-mode .card--completed {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 107, 107, 0.22),
+      rgba(255, 217, 61, 0.22),
+      rgba(107, 255, 154, 0.22),
+      rgba(107, 180, 255, 0.22),
+      rgba(195, 107, 255, 0.22)
+    ),
+    rgba(255, 255, 255, 0.9);
+  border-color: transparent;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.7),
+    0 0 0 4px rgba(255, 124, 203, 0.35);
+}
+
+.pg-mode .title-line:first-child,
+.pg-mode .title-line:last-child {
+  border: 11 px solid #e0e0e0 !important;
+  border-radius: 20px !important;
+  /* Remove torn edge effect and add sparkly border */
+  clip-path: none !important;
+  position: relative;
+  /* Add animated sparkly border effect */
+  border: 5px solid transparent !important;
   background:
     linear-gradient(#fff, #fff) padding-box,
     linear-gradient(
@@ -3585,7 +3634,7 @@ body.pg-mode {
 }
 
 .pg-mode .tabs {
-  margin: 6px auto 12px !important;
+  margin: 8px auto 16px !important;
 }
 
 /* ===== FINAL MODAL + ICON POLISH OVERRIDES ===== */
@@ -4015,7 +4064,7 @@ body.pg-mode {
 .pg-mode .card--completed,
 body:not(.pg-mode) .card--tasks,
 body:not(.pg-mode) .card--completed {
-  border: none !important;
+  /* border: none !important; */
   clip-path: none !important;
 }
 
@@ -4092,11 +4141,15 @@ body:not(.pg-mode) .tab {
 }
 
 /* PG mode stays Helvetica everywhere, including tab labels and completed headings. */
-.pg-mode .tab,
 .pg-mode .completed-subheading,
 .pg-mode .completed-groups--tabs .completed-subheading {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   letter-spacing: 0.5px !important;
+}
+
+.pg-mode .tab {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-size: clamp(1.1rem, 3vw, 3rem) !important;
 }
 
 /* Completed breakdown v2: compact chips with counts (both modes). */
@@ -4984,7 +5037,51 @@ body.pg-mode * {
 
 /* PG mode: make main titles a bit bolder */
 body.pg-mode .title,
-body.pg-mode .title-line body.pg-mode,
-body.pg-mode * {
+body.pg-mode .title-line {
   font-weight: 300 !important; /* try 300, 400, or 500 */
+}
+
+/* Final PG surface style: rainbow backing behind cards, title, tabs, and buttons. */
+body.pg-mode .card--tasks,
+body.pg-mode .card--completed,
+body.pg-mode .title-line,
+body.pg-mode .tabs,
+body.pg-mode .pg-switch,
+body.pg-mode .streak-badge,
+body.pg-mode .tab,
+body.pg-mode .btn,
+body.pg-mode .task-add-btn,
+body.pg-mode .task-edit,
+body.pg-mode .task-delete,
+body.pg-mode .icon-button,
+body.pg-mode .floating-reset {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 107, 107, 0.22),
+      rgba(255, 217, 61, 0.22),
+      rgba(107, 255, 154, 0.22),
+      rgba(107, 180, 255, 0.22),
+      rgba(195, 107, 255, 0.22)
+    ),
+    rgba(255, 255, 255, 0.9) !important;
+  border-color: transparent !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.7),
+    0 0 0 4px rgba(255, 124, 203, 0.35) !important;
+}
+
+/* Keep PG control text legible on the lighter rainbow surfaces. */
+body.pg-mode .tab,
+body.pg-mode .pg-switch,
+body.pg-mode .pg-switch__label,
+body.pg-mode .streak-badge,
+body.pg-mode .streak-badge #streakCount,
+body.pg-mode .btn,
+body.pg-mode .task-add-btn,
+body.pg-mode .task-edit,
+body.pg-mode .task-delete,
+body.pg-mode .icon-button,
+body.pg-mode .floating-reset {
+  color: #1d4ed8 !important;
 }
