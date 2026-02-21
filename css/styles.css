@@ -1650,11 +1650,6 @@ body::before {
   justify-content: center !important;
 }
 
-/* Slightly reduce tab bar height to remove excess white space */
-.tabs {
-  padding: 6px 10px !important;
-  margin: 10px auto 18px !important;
-}
 
 /* Center and tighten timer headings + controls */
 .timer-block__title {
@@ -1728,21 +1723,6 @@ body::before {
   margin-top: -2px !important;
 }
 
-/* Make tabs pill hug its content but with adequate whitespace */
-.tabs {
-  display: flex !important;
-  width: auto !important;
-  max-width: 820px;
-  padding: 8px 24px !important; /* more side padding */
-  gap: 10px !important;
-  border-radius: 40px !important;
-  margin: 12px auto 18px !important;
-}
-
-/* Ensure each tab has adequate spacing */
-.tabs > .tab {
-  padding: 6px 12px !important;
-}
 
 /* ===== ICON NAVIGATION GROUP (Top Right) ===== */
 .icon-nav {
@@ -2575,13 +2555,12 @@ body.pg-mode {
 .pg-mode .tab--active::after {
   background: #2563eb !important;
 }
-/* fix  fix */
+
 .pg-mode .tabs,
 .pg-mode .pg-switch,
 .pg-mode div .streak-badge,
 .pg-mode .card--tasks,
 .pg-mode .card--completed {
-  border: 1px solid #e0e0e0 !important;
   border-radius: 32px !important;
   /* Remove torn edge effect and add sparkly border */
   clip-path: none !important;
@@ -2599,10 +2578,8 @@ body.pg-mode {
         #2563eb 100%
       )
       border-box !important;
-  animation: sparkleRotate 3s linear infinite;
 }
-/* 
-.pg-mode .tabs, */
+
 .pg-mode .pg-switch,
 .pg-mode div .streak-badge,
 .pg-mode .timer-block,
@@ -2622,82 +2599,6 @@ body.pg-mode {
   box-shadow:
     0 0 0 2px rgba(255, 255, 255, 0.7),
     0 0 0 4px rgba(255, 124, 203, 0.35);
-}
-
-.pg-mode .title-line:first-child,
-.pg-mode .title-line:last-child {
-  border: 11 px solid #e0e0e0 !important;
-  border-radius: 30px !important;
-  clip-path: none !important;
-  position: relative;
-  border: 5px solid transparent !important;
-  background:
-    linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(
-        90deg,
-        #2563eb 0%,
-        #60a5fa 25%,
-        #f59e0b 50%,
-        #f472b6 75%,
-        #2563eb 100%
-      )
-      border-box !important;
-  animation: sparkleRotate 3s linear infinite;
-}
-
-@keyframes sparkleRotate {
-  0% {
-    background:
-      linear-gradient(#fff, #fff) padding-box,
-      linear-gradient(
-          90deg,
-          #2563eb 0%,
-          #60a5fa 25%,
-          #f59e0b 50%,
-          #f472b6 75%,
-          #2563eb 100%
-        )
-        border-box;
-  }
-  25% {
-    background:
-      linear-gradient(#fff, #fff) padding-box,
-      linear-gradient(
-          90deg,
-          #f472b6 0%,
-          #2563eb 25%,
-          #60a5fa 50%,
-          #f59e0b 75%,
-          #f472b6 100%
-        )
-        border-box;
-  }
-  50% {
-    background:
-      linear-gradient(#fff, #fff) padding-box,
-      linear-gradient(
-          90deg,
-          #f59e0b 0%,
-          #f472b6 25%,
-          #2563eb 50%,
-          #60a5fa 75%,
-          #f59e0b 100%
-        )
-        border-box;
-  }
-  75% {
-    background:
-      linear-gradient(#fff, #fff) padding-box,
-      linear-gradient(
-          90deg,
-          #60a5fa 0%,
-          #f59e0b 25%,
-          #f472b6 50%,
-          #2563eb 75%,
-          #60a5fa 100%
-        )
-        border-box;
-  }
 }
 
 .pg-mode .card-title {
@@ -3626,20 +3527,11 @@ body.pg-mode {
     margin: 0 !important;
   }
 
-  .pg-mode .title-line:first-child {
+  /* .pg-mode .title-line:first-child {
     margin-bottom: 0 !important;
-  }
+  } */
 }
 
-.pg-mode .tabs {
-  display: flex !important;
-  width: auto !important;
-  max-width: 720px;
-  padding: 8px 24px !important; /* more side padding */
-  gap: 10px !important;
-  border-radius: 40px !important;
-  margin: 12px auto 18px !important;
-}
 
 /* ===== FINAL MODAL + ICON POLISH OVERRIDES ===== */
 /* Prize modal readability: remove conflicting inline/animated list treatments. */
@@ -5089,25 +4981,6 @@ body.pg-mode .floating-reset {
   color: #1d4ed8 !important;
 }
 
-/* Small-screen polish: reduce add-row crowding in both modes. */
-@media (max-width: 640px) {
-  .task-add {
-    gap: 6px !important;
-  }
-
-  .task-input {
-    padding: 8px 10px !important;
-  }
-
-  .task-add-btn {
-    min-height: 30px !important;
-    min-width: 52px !important;
-    padding: 5px 8px !important;
-    font-size: clamp(0.72rem, 3.2vw, 0.84rem) !important;
-    letter-spacing: 0.03em !important;
-  }
-}
-
 /* Final sync: tabs + tasks/completed titles use matching card-like surfaces. */
 .tabs,
 .card--tasks .card-title,
@@ -5126,6 +4999,8 @@ body.pg-mode .floating-reset {
 /* PG mode keeps the same rainbow ring style as task/completed cards. */
 body.pg-mode .tabs,
 body.pg-mode .card--tasks .card-title,
+.pg-mode .title-line:first-child,
+.pg-mode .title-line:last-child,
 body.pg-mode .card--completed .card-title {
   background:
     linear-gradient(
@@ -5141,6 +5016,12 @@ body.pg-mode .card--completed .card-title {
   box-shadow:
     0 0 0 2px rgba(255, 255, 255, 0.7),
     0 0 0 4px rgba(255, 124, 203, 0.35) !important;
+}
+
+/* PG mode: remove border/ring around the top tabs container only. */
+body.pg-mode .tabs {
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Tighten spacing around ADD controls in both modes (desktop + mobile). */
@@ -5175,4 +5056,138 @@ body.pg-mode .card--completed .card-title {
     min-width: 48px !important;
     padding: 4px 7px !important;
   }
+}
+
+/* Final cleanup: no borders around tab labels or completed tab headings. */
+.tab,
+body.pg-mode .tab,
+body:not(.pg-mode) .tab {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.card--tasks .card-title,
+.card--completed .card-title {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.completed-groups--tabs .completed-group,
+.completed-groups--tabs .completed-subheading,
+body.pg-mode .completed-groups--tabs .completed-group,
+body.pg-mode .completed-groups--tabs .completed-subheading {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Final tab spacing cleanup: single source of truth. */
+.tabs,
+body.pg-mode .tabs,
+body:not(.pg-mode) .tabs {
+  display: flex !important;
+  width: auto !important;
+  max-width: 760px !important;
+  margin: 8px auto 14px !important;
+  padding: 4px 10px !important;
+  gap: 6px !important;
+  border-radius: 30px !important;
+}
+
+.tab,
+body.pg-mode .tab,
+body:not(.pg-mode) .tab {
+  padding: 4px 9px !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.6px !important;
+}
+
+.tab + .tab::before,
+body.pg-mode .tab + .tab::before,
+body:not(.pg-mode) .tab + .tab::before {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .tabs,
+  body.pg-mode .tabs,
+  body:not(.pg-mode) .tabs {
+    max-width: 100% !important;
+    margin: 6px auto 10px !important;
+    padding: 4px 8px !important;
+    gap: 4px !important;
+  }
+
+  .tab,
+  body.pg-mode .tab,
+  body:not(.pg-mode) .tab {
+    padding: 3px 7px !important;
+    font-size: clamp(0.92rem, 3.7vw, 1.08rem) !important;
+    letter-spacing: 0.4px !important;
+  }
+}
+
+/* PG mode: keep main title chips on the same surface style as cards. */
+body.pg-mode .title-line {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 107, 107, 0.22),
+      rgba(255, 217, 61, 0.22),
+      rgba(107, 255, 154, 0.22),
+      rgba(107, 180, 255, 0.22),
+      rgba(195, 107, 255, 0.22)
+    ),
+    rgba(255, 255, 255, 0.9) !important;
+  border: none !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.7),
+    0 0 0 4px rgba(255, 124, 203, 0.35) !important;
+}
+
+/* PG mode: task/completed title chips match SILLY STUFF border style. */
+body.pg-mode .card--tasks .card-title,
+body.pg-mode .card--completed .card-title,
+body.pg-mode .completed-groups--tabs .completed-group {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 107, 107, 0.22),
+      rgba(255, 217, 61, 0.22),
+      rgba(107, 255, 154, 0.22),
+      rgba(107, 180, 255, 0.22),
+      rgba(195, 107, 255, 0.22)
+    ),
+    rgba(255, 255, 255, 0.9) !important;
+  border: none !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.7),
+    0 0 0 4px rgba(255, 124, 203, 0.35) !important;
+}
+
+/* Center task/completed card titles. */
+body.pg-mode .card--tasks .card-title,
+body.pg-mode .card--completed .card-title {
+  display: block !important;
+  width: fit-content !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+body.pg-mode .completed-groups--tabs .completed-subheading {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  text-align: center !important;
+}
+
+body.pg-mode .completed-groups--tabs .completed-subheading .completed-subheading__name {
+  grid-column: 2;
+  justify-self: center;
+  text-align: center !important;
+}
+
+body.pg-mode .completed-groups--tabs .completed-subheading .completed-subheading__count {
+  grid-column: 3;
+  justify-self: end;
 }
