@@ -1650,7 +1650,6 @@ body::before {
   justify-content: center !important;
 }
 
-
 /* Center and tighten timer headings + controls */
 .timer-block__title {
   text-align: center;
@@ -1722,7 +1721,6 @@ body::before {
   line-height: 0.92;
   margin-top: -2px !important;
 }
-
 
 /* ===== ICON NAVIGATION GROUP (Top Right) ===== */
 .icon-nav {
@@ -3532,7 +3530,6 @@ body.pg-mode {
   } */
 }
 
-
 /* ===== FINAL MODAL + ICON POLISH OVERRIDES ===== */
 /* Prize modal readability: remove conflicting inline/animated list treatments. */
 #prizeModal {
@@ -4985,7 +4982,7 @@ body.pg-mode .floating-reset {
 .tabs,
 .card--tasks .card-title,
 .card--completed .card-title {
-  background: var(--paper) !important;
+  /* background: var(--paper) !important; */
   border: 1px solid var(--paper-border) !important;
 }
 
@@ -5181,13 +5178,19 @@ body.pg-mode .completed-groups--tabs .completed-subheading {
   text-align: center !important;
 }
 
-body.pg-mode .completed-groups--tabs .completed-subheading .completed-subheading__name {
+body.pg-mode
+  .completed-groups--tabs
+  .completed-subheading
+  .completed-subheading__name {
   grid-column: 2;
   justify-self: center;
   text-align: center !important;
 }
 
-body.pg-mode .completed-groups--tabs .completed-subheading .completed-subheading__count {
+body.pg-mode
+  .completed-groups--tabs
+  .completed-subheading
+  .completed-subheading__count {
   grid-column: 3;
   justify-self: end;
 }
