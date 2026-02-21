@@ -1,0 +1,13 @@
+{
+  "name": "dumbit",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "browser-sync start --server --files \"index.html,css/**/*.css,js/**/*.js\" --startPath index.html --port 3000 --no-open",
+    "dev:open": "browser-sync start --server --files \"index.html,css/**/*.css,js/**/*.js\" --startPath index.html --port 3000",
+    "serve": "browser-sync start --server --startPath index.html --port 3000 --no-open"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4"
+  }
+}

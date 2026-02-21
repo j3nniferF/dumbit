@@ -34,7 +34,13 @@ dumbit/
 
 ## Development
 
-This is a vanilla JavaScript project with no build process required. Simply edit the files and refresh your browser to see changes.
+Use live reload so browser updates automatically when you save:
+
+1. Install dependencies: `npm install`
+2. Start dev server: `npm run dev`
+3. Open: `http://localhost:3000`
+
+If you want the browser to open automatically, use `npm run dev:open`.
 
 ## Contributing
 

@@ -2601,8 +2601,8 @@ body.pg-mode {
       border-box !important;
   animation: sparkleRotate 3s linear infinite;
 }
-
-.pg-mode .tabs,
+/* 
+.pg-mode .tabs, */
 .pg-mode .pg-switch,
 .pg-mode div .streak-badge,
 .pg-mode .timer-block,
@@ -3632,7 +3632,13 @@ body.pg-mode {
 }
 
 .pg-mode .tabs {
-  margin: 8px auto 16px !important;
+  display: flex !important;
+  width: auto !important;
+  max-width: 720px;
+  padding: 8px 24px !important; /* more side padding */
+  gap: 10px !important;
+  border-radius: 40px !important;
+  margin: 12px auto 18px !important;
 }
 
 /* ===== FINAL MODAL + ICON POLISH OVERRIDES ===== */
@@ -5041,12 +5047,12 @@ body.pg-mode .title-line {
 
 /* Final PG surface style: rainbow backing behind cards, title, tabs, and buttons. */
 body.pg-mode .card--tasks,
+body.pg-mode .tab,
+body.pg-mode .tabs,
 body.pg-mode .card--completed,
 body.pg-mode .title-line,
-/* body.pg-mode .tabs, */
 body.pg-mode .pg-switch,
 body.pg-mode .streak-badge,
-body.pg-mode .tab,
 body.pg-mode .btn,
 body.pg-mode .task-add-btn,
 body.pg-mode .task-edit,
@@ -5070,7 +5076,6 @@ body.pg-mode .floating-reset {
 }
 
 /* Keep PG control text legible on the lighter rainbow surfaces. */
-/* body.pg-mode .tab, */
 body.pg-mode .pg-switch,
 body.pg-mode .pg-switch__label,
 body.pg-mode .streak-badge,
@@ -5103,9 +5108,71 @@ body.pg-mode .floating-reset {
   }
 }
 
-/* PG mode: remove visible borders/rings from the tab bar and tab pills. */
+/* Final sync: tabs + tasks/completed titles use matching card-like surfaces. */
+.tabs,
+.card--tasks .card-title,
+.card--completed .card-title {
+  background: var(--paper) !important;
+  border: 1px solid var(--paper-border) !important;
+}
+
+.card--tasks .card-title,
+.card--completed .card-title {
+  display: inline-block !important;
+  border-radius: 12px !important;
+  padding: 6px 14px !important;
+}
+
+/* PG mode keeps the same rainbow ring style as task/completed cards. */
 body.pg-mode .tabs,
-body.pg-mode .tab {
+body.pg-mode .card--tasks .card-title,
+body.pg-mode .card--completed .card-title {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 107, 107, 0.22),
+      rgba(255, 217, 61, 0.22),
+      rgba(107, 255, 154, 0.22),
+      rgba(107, 180, 255, 0.22),
+      rgba(195, 107, 255, 0.22)
+    ),
+    rgba(255, 255, 255, 0.9) !important;
   border: none !important;
-  box-shadow: none !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.7),
+    0 0 0 4px rgba(255, 124, 203, 0.35) !important;
+}
+
+/* Tighten spacing around ADD controls in both modes (desktop + mobile). */
+.task-add {
+  gap: 6px !important;
+}
+
+.task-input {
+  padding: 8px 10px !important;
+}
+
+.task-add-btn {
+  min-height: 30px !important;
+  min-width: 52px !important;
+  padding: 5px 8px !important;
+  border-radius: 8px !important;
+  font-size: clamp(0.72rem, 1.55vw, 0.84rem) !important;
+  letter-spacing: 0.03em !important;
+}
+
+@media (max-width: 640px) {
+  .task-add {
+    gap: 5px !important;
+  }
+
+  .task-input {
+    padding: 7px 9px !important;
+  }
+
+  .task-add-btn {
+    min-height: 28px !important;
+    min-width: 48px !important;
+    padding: 4px 7px !important;
+  }
 }
