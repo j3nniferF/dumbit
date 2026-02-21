@@ -2501,7 +2501,7 @@ body.pg-mode {
 
 /* PG mode: Update switch label color */
 .pg-mode .pg-switch__label {
-  color: #2563eb !important;
+  color: #000000 !important;
 }
 
 .pg-mode .app {
@@ -2510,7 +2510,7 @@ body.pg-mode {
 
 .pg-mode .title {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  color: #2563eb !important;
+  color: #000000 !important;
   font-weight: 700 !important;
 }
 
@@ -2552,51 +2552,6 @@ body.pg-mode {
 
 .pg-mode .tab--active::after {
   background: #2563eb !important;
-}
-
-.pg-mode .tabs,
-.pg-mode .pg-switch,
-.pg-mode div .streak-badge,
-.pg-mode .card--tasks,
-.pg-mode .card--completed {
-  border-radius: 32px !important;
-  /* Remove torn edge effect and add sparkly border */
-  clip-path: none !important;
-  position: relative;
-  /* Add animated sparkly border effect */
-  border: 3px solid transparent !important;
-  background:
-    linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(
-        90deg,
-        #2563eb 0%,
-        #60a5fa 25%,
-        #f59e0b 50%,
-        #f472b6 75%,
-        #2563eb 100%
-      )
-      border-box !important;
-}
-
-.pg-mode .pg-switch,
-.pg-mode div .streak-badge,
-.pg-mode .timer-block,
-.pg-mode .card--tasks,
-.pg-mode .card--completed {
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 107, 107, 0.22),
-      rgba(255, 217, 61, 0.22),
-      rgba(107, 255, 154, 0.22),
-      rgba(107, 180, 255, 0.22),
-      rgba(195, 107, 255, 0.22)
-    ),
-    rgba(255, 255, 255, 0.9);
-  border-color: transparent;
-  box-shadow:
-    0 0 0 2px rgba(255, 255, 255, 0.7),
-    0 0 0 4px rgba(255, 124, 203, 0.35);
 }
 
 .pg-mode .card-title {
@@ -3504,9 +3459,31 @@ body.pg-mode {
   padding: 4px 10px !important;
 }
 
-.pg-mode .title-line:first-child {
+/* .pg-mode .title-line:first-child,
+.pg-mode .title-line:last-child, */
+.pg-mode .card--tasks {
   margin-bottom: 2px !important;
   line-height: 0.86 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+  clip-path: none !important;
+  position: relative;
+  border: 10px solid transparent !important;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(
+        90deg,
+        #2563eb 0%,
+        #60a5fa 25%,
+        #f59e0b 50%,
+        #f472b6 75%,
+        #2563eb 100%
+      )
+      border-box !important;
+  animation: sparkleRotate 3s linear infinite;
 }
 
 .pg-mode .title-line:last-child {
@@ -3981,30 +3958,48 @@ body:not(.pg-mode) .card--completed::after {
   text-shadow: none !important;
 }
 
+/* fix fixx fixxx */
 /* Reduce desktop whitespace around "SILLY STUFF" title in PG mode. */
 .pg-mode .header {
   margin-bottom: 0 !important;
   gap: 0 !important;
 }
 
-.pg-mode .title {
+/* .pg-mode .title {
   margin: 0 !important;
-  line-height: 0.9 !important;
-}
+  line-height: 0.2 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+  clip-path: none !important;
+  position: relative;
+  border: 2px solid transparent !important;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(
+        90deg,
+        #2563eb 0%,
+        #60a5fa 25%,
+        #f59e0b 50%,
+        #f472b6 75%,
+        #2563eb 100%
+      )
+      border-box !important;
+  animation: sparkleRotate 3s linear infinite;
+} */
 
 .pg-mode .title-line {
   margin-bottom: 2px !important;
-  padding: 3px 10px !important;
+  padding: 10px 10px !important;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1294px) {
   .pg-mode .title-line:first-child {
-    font-size: clamp(3.6rem, 8vw, 7rem) !important;
+    font-size: clamp(4.6rem, 9vw, 9rem) !important;
     margin-bottom: 0 !important;
   }
 
   .pg-mode .title-line:last-child {
-    font-size: clamp(1.6rem, 2.8vw, 2.8rem) !important;
+    font-size: clamp(1.6rem, 1.8vw, 1.8rem) !important;
     margin-top: 0 !important;
   }
 }
@@ -4928,18 +4923,13 @@ body.pg-mode * {
   -webkit-font-smoothing: antialiased;
 }
 
-/* PG mode: make main titles a bit bolder */
-body.pg-mode .title,
-body.pg-mode .title-line {
-  font-weight: 300 !important; /* try 300, 400, or 500 */
-}
-
 /* Final PG surface style: rainbow backing behind cards, title, tabs, and buttons. */
+
 body.pg-mode .card--tasks,
+.pg-mode .title-line,
 body.pg-mode .tab,
 body.pg-mode .tabs,
 body.pg-mode .card--completed,
-body.pg-mode .title-line,
 body.pg-mode .pg-switch,
 body.pg-mode .streak-badge,
 body.pg-mode .btn,
@@ -4996,8 +4986,8 @@ body.pg-mode .floating-reset {
 /* PG mode keeps the same rainbow ring style as task/completed cards. */
 body.pg-mode .tabs,
 body.pg-mode .card--tasks .card-title,
-.pg-mode .title-line:first-child,
-.pg-mode .title-line:last-child,
+/* .pg-mode .title-line:first-child,
+.pg-mode .title-line:last-child, */
 body.pg-mode .card--completed .card-title {
   background:
     linear-gradient(
@@ -5047,7 +5037,6 @@ body.pg-mode .tabs {
   .task-input {
     padding: 7px 9px !important;
   }
-
   .task-add-btn {
     min-height: 28px !important;
     min-width: 48px !important;
@@ -5059,12 +5048,6 @@ body.pg-mode .tabs {
 .tab,
 body.pg-mode .tab,
 body:not(.pg-mode) .tab {
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.card--tasks .card-title,
-.card--completed .card-title {
   border: none !important;
   box-shadow: none !important;
 }
@@ -5104,7 +5087,7 @@ body:not(.pg-mode) .tab + .tab::before {
   display: none !important;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 740px) {
   .tabs,
   body.pg-mode .tabs,
   body:not(.pg-mode) .tabs {
@@ -5124,7 +5107,7 @@ body:not(.pg-mode) .tab + .tab::before {
 }
 
 /* PG mode: keep main title chips on the same surface style as cards. */
-body.pg-mode .title-line {
+/* body.pg-mode .title-line {
   background:
     linear-gradient(
       135deg,
@@ -5139,7 +5122,7 @@ body.pg-mode .title-line {
   box-shadow:
     0 0 0 2px rgba(255, 255, 255, 0.7),
     0 0 0 4px rgba(255, 124, 203, 0.35) !important;
-}
+} */
 
 /* PG mode: task/completed title chips match SILLY STUFF border style. */
 body.pg-mode .card--tasks .card-title,
